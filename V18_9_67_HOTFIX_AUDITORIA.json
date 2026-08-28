@@ -1,0 +1,27 @@
+{
+  "version": "18.9.67",
+  "base": "18.9.66",
+  "bug_principal": "ReferenceError: save() se ejecutaba antes de inicializar const save, provocando pantalla negra al cargar.",
+  "correcciones": [
+    "Migración OLIMPO movida después de inicializar Memory Card y save().",
+    "Límite real del mazo cambiado de 10 a 11 en guardado, editor y duelo.",
+    "Las cartas OLIMPO 5–11 ya no son eliminadas por el sanitizador de Memory Card.",
+    "El duelo toma 11 cartas del mazo activo.",
+    "Se mantiene Titán del Olimpo como Fusión extra fuera de los 11 slots."
+  ],
+  "olimpo_deck_ids": [
+    "dios-jupiter",
+    "zeus-emperador-rayo",
+    "kronos-devorador-tiempo",
+    "apolo-guardian-solar",
+    "olimpo-atenea",
+    "olimpo-poseidon",
+    "olimpo-hermes",
+    "olimpo-egida",
+    "olimpo-rayo-maestro",
+    "olimpo-consejo",
+    "olimpo-ascension"
+  ],
+  "node_check": "PASS",
+  "early_save_calls_before_declaration": 0
+}

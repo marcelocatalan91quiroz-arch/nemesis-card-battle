@@ -1,0 +1,22 @@
+{
+  "version": "18.9.71",
+  "base": "18.9.70",
+  "cards": 12,
+  "unique_ids": 12,
+  "review": [
+    "Carta 11 corregida: Erinias reemplaza la imagen repetida de Orto.",
+    "Las cartas 9–12 finales siguen las imágenes aprobadas/generadas, no el borrador inicial.",
+    "Identidad Hades: Tártaro + Óbolos + control; sin copiar Furia/Almas/Esencia."
+  ],
+  "boss": {
+    "hp": 32000,
+    "phases": [
+      "Rey del Inframundo",
+      "Señor del Tártaro",
+      "Hades Desencadenado"
+    ],
+    "ai": "Modo Dios II"
+  },
+  "js_pass": true,
+  "missing_assets": []
+}

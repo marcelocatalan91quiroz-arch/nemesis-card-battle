@@ -1,0 +1,77 @@
+{
+  "version": "18.9.56",
+  "feature": "Introducción Dios Fantasma — Modo Bestia Celestial",
+  "integration": {
+    "trigger": "Después de derrotar al Rey Espectral en Campaña II",
+    "preserve_existing_game": true,
+    "replace_existing_systems": false,
+    "flow": [
+      "Termina el duelo contra Rey Espectral y conserva recompensa/progreso/Memory Card existentes.",
+      "Antes de volver al mundo, abrir cinemática de transición a pantalla completa.",
+      "Oscurecer arena espectral y aplicar destello violeta-dorado, niebla, partículas de almas y vibración suave de cámara.",
+      "Mostrar último diálogo del rival derrotado.",
+      "Fundido al fondo celestial de Dios Fantasma.",
+      "Revelar progresivamente la imagen de Dios Fantasma con halo, energía, relámpagos y partículas.",
+      "Mostrar título DIOS FANTASMA — MODO BESTIA CELESTIAL.",
+      "Ejecutar diálogo introductorio.",
+      "Mostrar botones VOLVER AL MUNDO y ENFRENTAR AL DIOS FANTASMA.",
+      "ENFRENTAR continúa al futuro duelo del jefe; hasta integrar su mazo, no inventar cartas ni efectos."
+    ]
+  },
+  "dialogue": [
+    {
+      "speaker": "REY ESPECTRAL",
+      "text": "Has vencido mi trono... pero mi reino nunca fue el final."
+    },
+    {
+      "speaker": "REY ESPECTRAL",
+      "text": "Ahora te enfrentarás al Dios de tu Alma."
+    },
+    {
+      "speaker": "NARRADOR",
+      "text": "El cielo espectral se rompe. Las almas dejan de gritar... y comienzan a arrodillarse."
+    },
+    {
+      "speaker": "DIOS FANTASMA",
+      "text": "Has atravesado la muerte para llegar hasta mí."
+    },
+    {
+      "speaker": "DIOS FANTASMA",
+      "text": "Tu poder, tus victorias y las almas que has liberado... todo ha sido observado."
+    },
+    {
+      "speaker": "DIOS FANTASMA",
+      "text": "Entra en mi reino. Aquí no lucharás contra un rey."
+    },
+    {
+      "speaker": "DIOS FANTASMA",
+      "text": "Lucharás contra un dios."
+    }
+  ],
+  "cinematic_effects": [
+    "fade-to-black",
+    "violet-gold-flash",
+    "spectral-fog",
+    "floating-souls",
+    "celestial-particles",
+    "portal-pulse",
+    "character-reveal",
+    "halo-pulse",
+    "purple-lightning",
+    "subtle-camera-shake",
+    "cinematic-letterbox",
+    "typewriter-dialogue"
+  ],
+  "boss_reserved_design": {
+    "name": "Dios Fantasma",
+    "hp": 35000,
+    "phases": 3,
+    "final_form_hp": 5000,
+    "resource": "Esencia Celestial",
+    "note": "Descripción reservada para la integración del duelo. Esta entrega solo prepara la introducción y los assets."
+  },
+  "assets": {
+    "background": "assets/images/dios-fantasma/fondo-celestial.png",
+    "character": "assets/images/dios-fantasma/dios-fantasma.png"
+  }
+}

@@ -1,0 +1,23 @@
+NÉMESIS V18.9.58 — DIOS FANTASMA 10/10 + FINAL CAMPAÑA II
+Base: V18.9.57 completa. Actualización aditiva.
+
+Incluye imágenes 6–10 y definición funcional de sus efectos:
+6 Puerta Celestial del Más Allá
+7 Ojo del Dios Fantasma
+8 Juicio Celestial del Más Allá
+9 Resurrección Celestial del Más Allá
+10 Decreto Celestial del Más Allá
+
+Mantiene Dios Fantasma: 35.000 HP, 3 fases, Forma Celestial Final 5.000 HP,
+Esencia Celestial, Cuerpo Entre Dos Mundos e IA de prioridades.
+
+FINAL:
+Al confirmar la derrota definitiva del Dios Fantasma, el motor existente debe llamar:
+nemesisFinishCampaign2({wonCards:[...idsDeCartasGanadasEnElDuelo]});
+La función conserva progreso y colección existentes, marca Campaña II completada,
+desbloquea Campaña III, muestra “Me vengaré...” y vuelve al inicio.
+No borra las cartas ganadas en Campaña I ni II.
+
+IMPORTANTE: para no romper el motor actual, este módulo no sustituye game.js.
+La llamada de final debe conectarse al punto real de victoria del jefe si el motor base
+todavía no expone automáticamente ese hook.

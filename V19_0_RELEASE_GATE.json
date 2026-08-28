@@ -1,0 +1,34 @@
+{
+  "version": "19.0.0",
+  "base": "18.12.00",
+  "js_pass": true,
+  "requirements": {
+    "dragon": true,
+    "ra": true,
+    "caballero": true,
+    "rey": true,
+    "ghost": true,
+    "ares": true,
+    "hades": true,
+    "olimpo": true,
+    "fusion": true,
+    "collection": true,
+    "memory": true,
+    "phase": true,
+    "supervisor": true,
+    "enemyGuard": true
+  },
+  "missing_assets": [],
+  "http_smoke": {
+    "index.html": 200,
+    "js/game.js": 200,
+    "css/game.css": 200,
+    "data/v19-stable-restoration-contract.json": 200
+  },
+  "release_gate": true,
+  "notes": [
+    "No se añadió Santuario ni contenido nuevo.",
+    "Se reforzó el flujo de turnos y recuperación anti-softlock.",
+    "Se conservaron Campañas I–III, OLIMPO, Ares, Hades y Colección Global."
+  ]
+}

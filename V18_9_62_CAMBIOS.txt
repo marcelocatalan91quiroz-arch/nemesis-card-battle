@@ -1,0 +1,13 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.62
+EQUIPAMIENTO UNIFICADO + AUDITORÍA TOTAL
+
+- Base completa V18.9.61.
+- No se elimina ninguna campaña, carta, asset, recompensa, Memory Card ni sistema PC.
+- Ranuras lógicas por criatura: ARMA / ARMADURA / RELIQUIA.
+- Equipamiento visual 3D y líneas siguen activos.
+- Equipamiento destruido revierte su bonus y pasa al Cementerio.
+- Fusiones originales conservadas y verificadas.
+- Apolo queda conectado a sus habilidades defensivas/de Fusión.
+- Dios Fantasma usa 10/10 cartas dentro del motor real.
+- Efectos celestiales 1–10 conectados al duelo e IA.
+- Contrahechizos, fullscreen, PC Ultra, Cementerio, mágicas, trampas y campañas conservados.

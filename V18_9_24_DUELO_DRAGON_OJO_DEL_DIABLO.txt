@@ -1,0 +1,25 @@
+NÉMESIS · LLAMAS DEL CAOS
+VERSIÓN 18.9.24 · DUELO DRAGÓN OJO DEL DIABLO
+
+CAMPAÑA
+- Tras vencer al Guardián de los Dragones aparece la escena del Dragón Ojo del Diablo.
+- El botón INICIAR DUELO abre su combate exclusivo.
+- La victoria queda guardada en la Memory Card como dragonDefeated.
+
+DUELO DEL DRAGÓN
+- HP del Dragón Ojo del Diablo: 12000.
+- Mazo rival exclusivo: 12 cartas de tipo dragón/mágica.
+- Ojo del Diablo recupera 2000 HP sin superar el máximo.
+- Locura del Dragón quita 1000 HP directamente al jugador.
+- Turnos, colocación, revelado, combate, cementerio y reintento mantienen el flujo automático.
+- Al reintentar se conserva el rival correcto.
+
+COMPATIBILIDAD
+- El duelo anterior contra el Guardián conserva sus 10000 HP y su mazo original de 10 cartas.
+- La colección del jugador conserva capacidad para 500 cartas y sus espacios vacíos.
+- Las 12 cartas del Dragón son exclusivas del enemigo y no reemplazan cartas del inventario.
+
+VALIDACIÓN
+- Sintaxis JavaScript comprobada.
+- 12/12 cartas del Dragón comprobadas, todas únicas y con imagen disponible.
+- Flujo de campaña, HP, efectos mágicos, victoria guardada y reintento comprobados.

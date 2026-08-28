@@ -1,0 +1,7 @@
+NÉMESIS V18.9.73 — REGLA DE INTEGRIDAD
+1. Toda actualización parte de esta base completa.
+2. Los motores que usan variables del duelo viven dentro de battle().
+3. Todo jefe debe registrarse con HP + mazo + ruta + resultado.
+4. Todo ID de Memory Card se valida contra CARDS, nunca contra una lista antigua parcial.
+5. Antes de generar un ZIP: node --check de todos los JS, comprobar IDs de todos los mazos y comprobar assets.
+6. Nunca sustituir Campañas I–III ni motores aprobados al agregar una carta/jefe nuevo.

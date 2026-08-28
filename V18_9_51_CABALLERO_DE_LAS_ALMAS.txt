@@ -1,0 +1,14 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.51
+CAMPAÑA II: DIOS FANTASMA
+RIVAL 1: CABALLERO DE LAS ALMAS
+
+Integrado sobre V18.9.50 sin reconstruir los sistemas anteriores.
+- Fondo cinematográfico Reino Espectral.
+- Personaje Caballero de las Almas.
+- Diálogo de entrada y botón RETAR.
+- Mazo espectral de 10 cartas con imágenes reales.
+- IA usa el motor inteligente existente y prioriza Cementerio/resurrección/potenciación.
+- Efectos: daño directo, resurrección, Ejército de Almas, Corona, Guadaña, Alma Persistente y contador Reino de los Muertos.
+- Recompensa: +100 estrellas y 1 carta aleatoria del mazo del Caballero a la colección.
+- Memory Card conserva progreso y deja preparado Rey Espectral como siguiente rival.
+- Se conservan Campaña I, Ra, PC ULTRA, fullscreen, fusiones divinas, equipamiento, animaciones y sistemas previos.

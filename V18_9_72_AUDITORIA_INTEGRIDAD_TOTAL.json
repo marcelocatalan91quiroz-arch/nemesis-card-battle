@@ -1,0 +1,45 @@
+{
+  "version": "18.9.72",
+  "base": "18.9.71",
+  "js_pass": true,
+  "boss_card_counts": {
+    "dragon": 12,
+    "ra": 15,
+    "caballero": 10,
+    "rey_espectral": 10,
+    "dios_fantasma": 10,
+    "ares": 12,
+    "hades": 12
+  },
+  "missing_card_assets": [],
+  "unreferenced_effect_names": [
+    "abyssDragon",
+    "apoloSolarGuardian",
+    "aresConqueror",
+    "beyondCall",
+    "etherealForm",
+    "hadesDeepSleep",
+    "hadesGuiltWhip",
+    "hadesThresholdWatch",
+    "mortalHarvest"
+  ],
+  "memory_card_campaign3": true,
+  "runtime_inside_battle": true,
+  "critical_fixes": [
+    "Ares/OLIMPO/Hades runtime moved inside battle scope.",
+    "Dragon enemyTurn no longer dies on Hades/Ares scope ReferenceError.",
+    "Dios Fantasma battle route fixed.",
+    "Ares/Ghost/Hades result progression isolated from Guardian.",
+    "Hades 32k HP + 12-card deck + AI route.",
+    "Memory Card preserves Campaign III and all registered CARDS.",
+    "Support/trap/relic handling expanded for Hades."
+  ],
+  "http_smoke": {
+    "index.html": 200,
+    "js/game.js": 200,
+    "css/game.css": 200,
+    "assets/images/dragon-ojo-del-diablo.png": 200,
+    "assets/images/campaign3/ares/ares-personaje.png": 200,
+    "assets/images/campaign3/hades/hades-personaje.png": 200
+  }
+}

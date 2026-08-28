@@ -1,0 +1,31 @@
+{
+  "version": "18.9.70",
+  "base": "18.9.69",
+  "hades_deck": "5/12",
+  "cards": [
+    "Cerbero",
+    "Caronte",
+    "Perséfone",
+    "Thanatos",
+    "Nyx"
+  ],
+  "effects": [
+    "Tres Puertas",
+    "Precio del Viaje",
+    "Reina de Dos Mundos",
+    "Sentencia Mortal",
+    "Noche Eterna"
+  ],
+  "systems_added": [
+    "Tártaro base",
+    "Óbolos base",
+    "IA elección Perséfone",
+    "IA Caronte",
+    "marcado Thanatos",
+    "bloqueo Nyx",
+    "transiciones/invocaciones individuales"
+  ],
+  "duel_status": "No se activa aún el duelo final de Hades: faltan cartas 6–12.",
+  "js_pass": true,
+  "assets_missing": []
+}

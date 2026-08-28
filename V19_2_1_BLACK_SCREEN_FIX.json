@@ -1,0 +1,27 @@
+{
+  "version": "19.2.1",
+  "fix": "pantalla negra al inicio",
+  "diagnosis": {
+    "defer_game": false,
+    "app_present": true,
+    "menu_function": true,
+    "boot_calls": [
+      "nemesisEnsureSanctuary"
+    ]
+  },
+  "checks": {
+    "boot_guard": true,
+    "safe_sanctuary_boot": true,
+    "safe_sanctuary_button": true,
+    "v19_enemy_guard": true,
+    "campaigns": true,
+    "hades": true,
+    "olimpo": true,
+    "sanctuary": true,
+    "index_app": true
+  },
+  "js_pass": true,
+  "release_gate": true,
+  "content_removed": false,
+  "combat_rules_changed": false
+}

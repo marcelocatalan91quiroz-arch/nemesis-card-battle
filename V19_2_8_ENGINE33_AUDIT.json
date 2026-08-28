@@ -1,0 +1,43 @@
+{
+  "version": "19.2.8",
+  "cards": 33,
+  "public_cards": 23,
+  "duel_master_cards": 10,
+  "decks": {
+    "MAZO_1": "OLIMPO",
+    "MAZO_2": "DUEL_MASTER"
+  },
+  "tests": {
+    "syntax": {
+      "ok": true,
+      "out": ""
+    },
+    "external33": {
+      "ok": true,
+      "out": "PASS external33 engine static integration\n"
+    },
+    "simulator16": {
+      "ok": true,
+      "out": "PASS TARGET→ACTION sin objetivo\nPASS IA sin cartas devuelve turno\nPASS Cementerio recibe destruida\nPASS HP=0 final estable\nPASS Supervisor anti-softlock\nPASS Guardia IA\nPASS Rey Espectral\nPASS Dios Fantasma\nPASS Ares fases\nPASS Ares mazo\nPASS Hades fases/IA\nPASS OLIMPO/Fusión\nPASS Memory Card\nPASS Respuestas\nPASS Equipamiento\nPASS Cementerio motor\n"
+    }
+  },
+  "systems_preserved": {
+    "GUARDIAN_BOSS_CARD_IDS": true,
+    "DRAGON_OJO_DECK": true,
+    "IRA_RA_BOSS_DECK": true,
+    "CABALLERO_ALMAS_DECK": true,
+    "REY_ESPECTRAL_TEST_DECK": true,
+    "DIOS_FANTASMA_DECK": true,
+    "ARES_CARDS": true,
+    "HADES_DECK_IDS": true,
+    "OLIMPO_DECK_IDS": true,
+    "NEMESIS_COLLECTION": true,
+    "NEMESIS_SANCTUARY": true,
+    "nemesisFlowSupervisor": true,
+    "NEMESIS_ENEMY_TURN_GUARD": true,
+    "CEMENTERIO": true
+  },
+  "missing_external_visuals": [],
+  "release_gate": true,
+  "limitations": "Las 33 cartas están conectadas al motor mediante adaptador común y handlers ejecutables. Efectos complejos se traducen a operaciones compatibles con el motor existente; no se afirma equivalencia perfecta con cada frase visual de la carta sin una prueba jugada manual de cada combinación."
+}

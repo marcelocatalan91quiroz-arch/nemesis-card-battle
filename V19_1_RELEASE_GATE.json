@@ -1,0 +1,22 @@
+{
+  "version": "19.1.0",
+  "base": "19.0.0",
+  "js_pass": true,
+  "checks": {
+    "v19Guard": true,
+    "phaseSupervisor": true,
+    "campaignProfiles": true,
+    "bossAdapters": true,
+    "hades": true,
+    "ares": true,
+    "ghost": true,
+    "olimpo": true,
+    "collection": true,
+    "sanctuary": true,
+    "uniqueLaw": true,
+    "images": true
+  },
+  "release_gate": true,
+  "campaigns_preserved": true,
+  "unique_cards_auto_awarded": false
+}

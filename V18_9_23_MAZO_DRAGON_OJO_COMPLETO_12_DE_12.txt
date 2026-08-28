@@ -1,0 +1,25 @@
+NÉMESIS — V18.9.23 — MAZO COMPLETO DEL DRAGÓN OJO DEL DIABLO
+
+MAZO ENEMIGO: 12/12 CARTAS
+1. Dragón Escarlata — ATK 2200 / DEF 3000
+2. Dragón Escondido de Fuego — ATK 3000 / DEF 1200
+3. Dragón Dorado — ATK 3000 / DEF 3000
+4. Dragón Ojo del Diablo — ATK 5600 / DEF 8000 / CARTA ESPECIAL
+5. Dragón de la Tumba — ATK 3500 / DEF 0
+6. Ojo del Diablo — MÁGICA / RECUPERA 2000 HP
+7. Locura del Dragón — MÁGICA / QUITA 1000 HP AL JUGADOR RIVAL
+8. Mirada del Dragón Rojo — ATK 4000 / DEF 4500
+9. Mago del Dragón — ÉPICA / ATK 1000 / DEF 4000
+10. Dragón Diamante — ATK 2000 / DEF 2000
+11. Rayo del Abismo — ATK 3600 / DEF 3000
+12. Sombra del Diablo — ATK 5000 / DEF 4800
+
+INTEGRACIÓN SEGURA
+- Las 12 cartas son exclusivas del enemigo Dragón Ojo del Diablo.
+- No aparecen en tienda, colección, inventario ni mazo del jugador.
+- No reemplazan ninguna carta existente.
+- El inventario del jugador conserva sus 500 espacios.
+- El mazo y el duelo automático del Guardián permanecen intactos.
+- Los efectos mágicos heal 2000 y damageOpponent 1000 están registrados.
+- La escena de campaña muestra MAZO DEL DRAGÓN 12/12.
+- Esta versión completa el mazo; la activación del duelo del Dragón se realiza en la siguiente etapa.

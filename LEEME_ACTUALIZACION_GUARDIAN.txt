@@ -1,0 +1,23 @@
+NÉMESIS — ACTUALIZACIÓN LIGERA V19.2.4 GUARDIÁN
+
+BASE REQUERIDA:
+NEMESIS_V19_2_3_FIX_INICIO_REAL.zip
+
+REEMPLAZAR:
+- js/game.js
+
+COPIAR A LA RAÍZ:
+- V19_2_4_GUARDIAN_AUDIT.json
+
+CAMBIOS:
+- Guardián con 10/10 cartas únicas.
+- Eliminación de duplicados.
+- Registro del Guardián normalizado.
+- Auditoría específica del Guardián.
+
+NO CAMBIA:
+Campañas I–III, Dragón, Ra, Caballero de las Almas, Rey Espectral, Dios Fantasma,
+Ares, Hades, OLIMPO, Fusión Divina, Colección Global, Santuario y Memory Card.
+
+REGLA FUTURA:
+Entregar actualizaciones ligeras con solo los archivos modificados siempre que sea posible.

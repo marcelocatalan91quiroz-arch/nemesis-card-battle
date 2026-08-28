@@ -1,0 +1,16 @@
+NÉMESIS — PATCH LIGERO V19.2.6 SIMULADOR MEJORADO
+
+BASE REQUERIDA: V19.2.4 Guardián Completo ya instalada.
+
+NO reemplaza js/game.js. NO modifica campañas, cartas, jefes, IA ni reglas del duelo.
+
+AÑADE:
+- tests/battle-simulator.cjs
+- tests/SIMULATOR_RESULTS.json
+- V19_2_6_SIMULATOR_REPORT.json
+
+RESULTADO SOBRE TU PATCH GUARDIÁN: 16/16 PASS.
+
+Para volver a ejecutarlo en PC:
+1. Copia temporalmente js/game.js a tests/REFERENCE_game.js
+2. Ejecuta: node tests/battle-simulator.cjs

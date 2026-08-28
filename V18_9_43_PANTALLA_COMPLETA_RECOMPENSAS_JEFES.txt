@@ -1,0 +1,27 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.43
+
+Cambios sobre V18.9.42, sin reconstruir el juego ni cambiar el flujo de duelo:
+
+1. PANTALLA COMPLETA PC
+- El botón de pantalla completa ahora usa el documento completo, no solo el contenedor .battle.
+- El selector "ELIGE CARTA RIVAL" y la confirmación de ataque quedan visibles en pantalla completa.
+- Se agrega botón "PANTALLA COMPLETA" también en el menú inicial.
+
+2. PROGRESIÓN DE CARTAS DE JEFES
+- Al vencer al Guardián de los Dragones, sus cartas quedan desbloqueadas en INTERCAMBIO NÉMESIS para canjear con estrellas.
+- Al vencer al Dragón Ojo del Diablo, su mazo queda desbloqueado para canje.
+- Al vencer a Ira de Ra, su mazo ancestral queda desbloqueado para canje.
+- Los mazos rivales originales no se modifican.
+
+3. CARTA ALEATORIA POR VICTORIA
+- Cada vez que vences a un rival de campaña recibes automáticamente 1 carta al azar de su propio mazo.
+- La carta se agrega a MI COLECCIÓN y se guarda en Memory Card.
+- Se priorizan cartas que todavía no posees; cuando completas todo el mazo rival, se informa que la colección de ese rival está completa.
+
+4. CONSERVADO
+- PC ULTRA y perfiles gráficos.
+- Motor de daño y flujo de turnos.
+- Cinemática de Ira de Ra.
+- Efectos y estadísticas actuales de Ira de Ra y su mazo.
+- Dios Júpiter y Fantasma del Universo con sus habilidades.
+- Colección de 500 espacios y mazo de 10 cartas.

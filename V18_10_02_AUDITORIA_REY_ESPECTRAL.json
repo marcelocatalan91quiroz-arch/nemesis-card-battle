@@ -1,0 +1,21 @@
+{
+  "version": "18.10.02",
+  "base": "18.10.01",
+  "root_cause": "Al volver del turno enemigo, el juego podía entrar en ACTION pero ocultaba igualmente los botones de combate. Esto producía un softlock visible especialmente tras destruir cartas del Rey Espectral.",
+  "fixes": [
+    "ACTION ahora muestra los botones cuando no hay carta que colocar.",
+    "Corona de la Eternidad usa transición explícita y continúa el flujo.",
+    "Watchdog del Rey Espectral recupera TARGET/ACTION si desaparece el objetivo.",
+    "Se conservaron Almas Reales, resurrección, equipamiento y estrategia IA."
+  ],
+  "spectral_king": {
+    "cards": 10,
+    "missing_ids": [],
+    "effects": 10,
+    "missing_effect_handlers": [],
+    "missing_assets": []
+  },
+  "global_turn_fix_ok": true,
+  "js_pass": true,
+  "other_systems_preserved": true
+}

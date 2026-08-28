@@ -1,0 +1,12 @@
+NÉMESIS CARD BATTLE — V18.9.21
+
+CAMPAÑA · PRIMER CASTILLO
+
+- Después de vencer al Guardián de los Dragones aparece automáticamente el Dragón Ojo del Diablo.
+- Nueva escena narrativa con fondo propio del interior del castillo.
+- Personaje Dragón Ojo del Diablo con fondo transparente.
+- Diálogo: “Te enfrentarás a mi ira del diablo.”
+- El avance se guarda en la Memory Card como dragon-ojo-diablo.
+- El menú muestra CONTINUAR CAMPAÑA cuando el Guardián ya fue derrotado.
+- El duelo del Dragón Ojo del Diablo se construirá en la siguiente etapa; no se reutiliza ni se inventa un mazo todavía.
+- El duelo funcional del Guardián permanece intacto.

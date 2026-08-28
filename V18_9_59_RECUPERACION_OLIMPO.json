@@ -1,0 +1,50 @@
+{
+  "version": "18.9.59",
+  "base": "18.9.58",
+  "recovery_source": "18.9.49 FUSION DIVINA OLIMPO",
+  "audit": {
+    "Dios Júpiter 8500/3000": true,
+    "Zeus 10000/6000": true,
+    "Kronos 7500/8500": true,
+    "Titán 20000/15000": true,
+    "Castigo Celestial": true,
+    "Señor del Trueno": true,
+    "Detener el Tiempo": true,
+    "Retroceso Temporal": true,
+    "Juicio de los Tres Dioses": true,
+    "Voluntad del Olimpo": true,
+    "Fusión Júpiter+Zeus+Kronos": true
+  },
+  "assets": {
+    "assets/images/dios-jupiter.png": {
+      "original_v18_9_49": "d6ced3cd9a3d32e09d51387b85b9f4c0c92931249f160aa127a64260c3813c19",
+      "recovered_v18_9_59": "d6ced3cd9a3d32e09d51387b85b9f4c0c92931249f160aa127a64260c3813c19",
+      "identical": true
+    },
+    "assets/images/zeus-emperador-rayo.png": {
+      "original_v18_9_49": "bd551725c124454c97c022eab4dd30b2ccade4479b67fd660b4ef8bc1eec5a4b",
+      "recovered_v18_9_59": "bd551725c124454c97c022eab4dd30b2ccade4479b67fd660b4ef8bc1eec5a4b",
+      "identical": true
+    },
+    "assets/images/kronos-devorador-tiempo.png": {
+      "original_v18_9_49": "21513d6f0381f6c38252be194b585c4b4cf4605ba4de236e3a26419d27d766a8",
+      "recovered_v18_9_59": "21513d6f0381f6c38252be194b585c4b4cf4605ba4de236e3a26419d27d766a8",
+      "identical": true
+    },
+    "assets/images/titan-del-olimpo.png": {
+      "original_v18_9_49": "db245f369cf71a3a68c8904caa433dd48badfdc71d0d8fa0d5756c0b94e37e60",
+      "recovered_v18_9_59": "db245f369cf71a3a68c8904caa433dd48badfdc71d0d8fa0d5756c0b94e37e60",
+      "identical": true
+    }
+  },
+  "recovery_behavior": {
+    "owned_restored": [
+      "dios-jupiter",
+      "zeus-emperador-rayo",
+      "kronos-devorador-tiempo"
+    ],
+    "deck_restore": "Se agregan solo si hay espacio; nunca reemplaza una carta del mazo actual.",
+    "fusion_card": "Titán del Olimpo sigue siendo una carta de fusión; no se fuerza dentro del mazo.",
+    "campaigns_and_progress": "No se modifican."
+  }
+}

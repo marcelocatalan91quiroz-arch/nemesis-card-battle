@@ -1,0 +1,12 @@
+NÉMESIS CARD BATTLE — V18.9.19
+
+INTEGRACIÓN SEGURA DE CARTAS MÁGICAS
+
+- Curandero NÉMESIS y Nosferatu ahora forman parte de la colección seleccionable.
+- Luz de NÉMESIS: recupera 1500 HP.
+- Furia del Abismo: +1200 ATK hasta terminar el turno.
+- Escudo del Caos: +1500 DEF durante el próximo ataque enemigo.
+- Resurrección Oscura: devuelve 1 monstruo del Cementerio al campo en modo ataque.
+- Llama Purificadora: destruye 1 carta mágica o trampa rival presente en el campo.
+- Las cartas mágicas se agregan a la colección sin reemplazar automáticamente el mazo guardado.
+- Motor de turnos, combate, cámaras, fusiones, trampa, cementerio y Memory Card conservados.

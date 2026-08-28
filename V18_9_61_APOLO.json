@@ -1,0 +1,14 @@
+{
+  "card": "Apolo — Guardián Solar del Olimpo",
+  "ATK": 6500,
+  "DEF": 8500,
+  "cost": 4,
+  "abilities": [
+    "Santuario del Sol",
+    "Llamado de los Dioses",
+    "Protector de la Fusión Divina",
+    "Último Resplandor"
+  ],
+  "epic_entry": "Descenso del Sol",
+  "deck_rule": "Se agrega si hay espacio; no reemplaza cartas existentes."
+}

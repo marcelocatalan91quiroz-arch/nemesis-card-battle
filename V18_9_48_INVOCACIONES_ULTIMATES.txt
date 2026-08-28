@@ -1,0 +1,16 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.48
+EVOLUCIÓN: INVOCACIONES Y ULTIMATES CINEMATOGRÁFICOS PC
+
+Integrado sobre V18.9.47 sin reconstruir el motor de duelo.
+
+NUEVO:
+- Dios Júpiter: invocación cinematográfica, Escudo Solar cinematográfico y ataque Rayo del Padre del Cielo.
+- Ira de Ra: invocación al revelarse, Explosión Solar cinematográfica y ataque Juicio del Sol.
+- Dragón Ojo del Diablo: invocación al revelarse, Mirada Maldita cinematográfica y ataque Ira del Ojo del Diablo.
+- Overlays cinematográficos 16:9 compatibles con pantalla completa.
+- Efectos 3D asociados: pilares de energía, anillos, partículas, sonido y golpe de cámara.
+- Los efectos cinematográficos no cambian ATK, DEF, HP, IA, habilidades ni resolución de daño.
+
+SE MANTIENE:
+PC ULTRA, IA de jefes, fases, fullscreen, selector de objetivo, equipamiento físico, Memory Card,
+recompensas de jefes, carta aleatoria al ganar, Júpiter, Fantasma del Universo, Ira de Ra y cinemática de entrada.

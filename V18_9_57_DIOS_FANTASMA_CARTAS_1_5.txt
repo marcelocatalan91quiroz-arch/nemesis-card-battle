@@ -1,0 +1,28 @@
+NÉMESIS V18.9.57 — DIOS FANTASMA · MODO BESTIA CELESTIAL · CARTAS 1–5
+
+Base: V18.9.56 COMPLETA CORREGIDA. No se elimina contenido anterior.
+
+JEFE
+- Dios Fantasma: 35.000 HP.
+- Recurso: Esencia Celestial.
+- Forma Celestial Final: una vez al llegar a 0 HP, renace con 5.000 HP.
+- El duelo usa por ahora exclusivamente las primeras 5 cartas creadas. Las cartas 6–10 se añadirán después.
+
+CARTAS
+1. Ángel Fantasma del Umbral — 6.000 ATK / 6.500 DEF.
+   Guardián del Umbral: genera Esencia Celestial al entrar. Primera destrucción: puede consumir 2 Esencias y permanecer con 1.500 DEF.
+2. Arcángel de las Almas Perdidas — 7.500 ATK / 5.500 DEF.
+   Espada de las Almas: diseñado como generador ofensivo de Esencia y prioridad alta de IA.
+3. Dragón Celestial del Vacío — 9.000 ATK / 8.000 DEF.
+   Aliento del Vacío: 1.200 de daño directo al ser invocado; preparado para su gasto de 3 Esencias/segundo ataque en la evolución completa.
+4. Emperador Fantasma Celestial — 8.500 ATK / 9.000 DEF.
+   Dominio Celestial: al entrar debilita en 1.500 ATK y 1.500 DEF a la amenaza rival prioritaria.
+5. Serafín de la Muerte Eterna — 10.000 ATK / 6.000 DEF.
+   Sentencia Eterna: ejecutor celestial; la IA lo prioriza como rematador. Su destierro al Vacío se conserva como especificación para completar con el bloque 6–10.
+
+IA
+- Se añadieron prioridades específicas para las cinco cartas.
+- Dragón aumenta prioridad cuando 1.200 de daño directo puede cerrar el duelo.
+- Emperador prioriza control cuando existe campo rival.
+- Serafín tiene prioridad alta como ejecutor.
+- El sistema existente de turnos, animaciones, PC Ultra, fullscreen, daño, Memory Card y campañas permanece intacto.

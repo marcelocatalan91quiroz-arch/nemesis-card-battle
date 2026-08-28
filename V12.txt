@@ -1,0 +1,1 @@
+NÉMESIS V12: cámara de ataque mejorada. Al elegir objetivo, enfoca y amplía las cartas rivales para leer ATK/DEF y modo. Mantiene un ataque por turno.

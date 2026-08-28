@@ -1,0 +1,20 @@
+NÉMESIS LLAMAS DEL CAOS · V18.9.49
+PRIMERA FUSIÓN DIVINA · OLIMPO
+
+NUEVAS CARTAS DEL JUGADOR
+- Zeus — Emperador del Rayo · DIVINA/UNIVERSO · ATK 10000 · DEF 6000
+  Castigo Celestial: 1 vez por duelo destruye 1 equipamiento rival y puede seguir atacando.
+  Señor del Trueno (pasiva): +500 ATK cuando el rival aumenta ATK por un efecto.
+- Kronos — Devorador del Tiempo · DIVINA/UNIVERSO · ATK 7500 · DEF 8500
+  Detener el Tiempo: 1 vez por duelo el rival pierde su siguiente turno completo.
+  Retroceso Temporal (pasiva): evita su primera destrucción y recupera 8500 DEF.
+
+FUSIÓN DIVINA SUPREMA
+- Requiere simultáneamente en el campo: Dios Júpiter + Zeus + Kronos.
+- Sacrifica los 3 materiales y los envía al Cementerio.
+- Invoca Titán del Olimpo · SUPREMA DIVINA/UNIVERSO · ATK 20000 · DEF 15000.
+- Juicio de los Tres Dioses: 1 vez por duelo destruye hasta 2 equipamientos rivales y puede seguir atacando.
+- Voluntad del Olimpo (pasiva): evita su primera destrucción y queda con 3000 DEF.
+- Dominio Supremo (pasiva): otras cartas DIVINAS propias ganan +500 ATK/+500 DEF mientras el Titán esté en campo.
+
+Se preservan sistemas anteriores: PC ULTRA, IA de jefes, fases, fullscreen, respuestas, animaciones avanzadas, equipamiento físico, cinemáticas, recompensas, Memory Card, mazos y efectos de Ra/Dragón.

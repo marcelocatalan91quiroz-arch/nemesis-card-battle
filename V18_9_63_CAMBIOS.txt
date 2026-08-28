@@ -1,0 +1,26 @@
+NÉMESIS V18.9.63 — CAMPAÑA III / ARES
+
+Base completa: V18.9.62.
+Se conserva todo lo anterior.
+
+AGREGADO:
+- Campaña III: GUERRA DE LOS DIOSES.
+- Ares — Dios de la Guerra · 30.000 HP.
+- 3 fases: Estratega del Olimpo / Dios de la Guerra / Bestia Divina de Ares.
+- Recurso FURIA DE GUERRA y prioridades de gasto.
+- IA MODO DIOS con lectura de HP, campo, Cementerio, equipamiento, daño y Fusión Divina.
+- Reconocimiento de Júpiter + Zeus + Kronos y protección de Apolo.
+- Eventos de Campo: Lluvia de Lanzas, Tormenta del Olimpo, Suelo en Llamas, Choque de Ejércitos.
+- Entrada cinematográfica PC Ultra con fondo y personaje de Ares.
+- Pantalla de encuentro de Ares.
+- El botón de duelo queda bloqueado hasta crear su mazo 1 por 1, para no inventar cartas ni romper el motor.
+
+NO MODIFICADO:
+- Campañas I y II
+- cartas existentes
+- fusiones
+- equipamiento
+- Memory Card
+- recompensas
+- fullscreen / PC Ultra
+- motor de daño existente

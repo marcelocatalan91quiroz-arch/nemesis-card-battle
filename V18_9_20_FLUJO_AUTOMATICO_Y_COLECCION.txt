@@ -1,0 +1,13 @@
+NÉMESIS CARD BATTLE — V18.9.20
+
+CORRECCIÓN AISLADA
+
+- Elimina las cartas de relleno que repetían imágenes para aparentar 50 cartas.
+- Mantiene únicamente las cartas reales ya creadas, incluidas las 7 cartas mágicas.
+- Amplía el inventario a 500 espacios; los espacios todavía no usados quedan vacíos.
+- Cada carta futura ocupará un espacio libre sin reemplazar cartas existentes.
+- Conserva las 5 cartas exclusivas del jugador al cargar y sanear la Memory Card.
+- Si una carta mágica se usa sin monstruos en la Arena, el duelo vuelve automáticamente a COLOCAR.
+- Si hay un monstruo en la Arena, el duelo continúa automáticamente en ACCIÓN.
+- Si ya no queda una carta en mano para colocar, continúa automáticamente el turno del Guardián.
+- No modifica ataques, defensa, daño, cámaras, fusiones, trampa, cementerio ni recompensas.

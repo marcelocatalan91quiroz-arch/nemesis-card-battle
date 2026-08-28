@@ -1,0 +1,8 @@
+NÉMESIS V11 — EVOLUCIÓN DEL DUELO
+- Mantiene UN ataque/acción por turno, igual que V10.
+- Zonas visuales diferenciadas para monstruos y mágicas.
+- Cementerio visible para jugador y Guardián, con contador.
+- Selección de objetivo más clara al atacar.
+- IA del Guardián mejorada: elige objetivos vulnerables, decide ataque/defensa según el tablero y no desperdicia Curandero con HP completo.
+- Efectos visuales reforzados sin cambiar las reglas base.
+- Conserva 10.000 HP, fusiones, mágicas, ataque/defensa, destrucción, daño y derrota por quedarse sin cartas.

@@ -1,0 +1,43 @@
+{
+  "version": "18.9.65",
+  "base": "18.9.64",
+  "ares_cards_defined": 12,
+  "missing_ares_assets": [],
+  "js_checks": {
+    "game.js": {
+      "ok": true,
+      "err": ""
+    },
+    "campaign3-ares.js": {
+      "ok": true,
+      "err": ""
+    }
+  },
+  "boss": {
+    "hp": 30000,
+    "phases": [
+      "30.000-20.001 Estratega del Olimpo",
+      "20.000-8.001 Dios de la Guerra",
+      "8.000-1 Bestia Divina de Ares"
+    ]
+  },
+  "systems": [
+    "Furia de Guerra",
+    "IA Modo Dios",
+    "transiciones de fase",
+    "eventos de campo",
+    "equipamiento central",
+    "reconocimiento de amenazas/fusión",
+    "mazo 12/12"
+  ],
+  "cards_6_12": [
+    "Lanza Rompe-Olimpos",
+    "Coraza del Dios de la Guerra",
+    "Estandarte de Ares",
+    "Colosus de Ares",
+    "Carnero de Guerra de Ares",
+    "Ojo de la Guerra",
+    "Ares, Dios de la Guerra"
+  ],
+  "note": "Se preserva la base V18.9.64 completa. Validación automática: sintaxis JS, 12 assets de Ares y ZIP."
+}

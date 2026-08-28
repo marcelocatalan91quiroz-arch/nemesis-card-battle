@@ -1,0 +1,6 @@
+V18.9.56 — DIOS FANTASMA INTRO CINEMÁTICA (PAQUETE COMPLETO)
+
+Corrección del paquete anterior: esta versión SÍ contiene el juego completo y puede desplegarse directamente en Vercel Drop.
+Base: V18.9.55 completa, sin eliminar archivos.
+Agrega: fondo celestial, imagen del Dios Fantasma, intro cinematográfica y transición desde la victoria del Rey Espectral.
+No integra todavía el mazo/duelo definitivo del Dios Fantasma.

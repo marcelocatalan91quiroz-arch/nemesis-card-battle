@@ -1,0 +1,16 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.46
+ANIMACIONES AVANZADAS PC
+
+Base: V18.9.45 intacta.
+
+Añadido como capa visual, sin modificar motor de daño, IA, habilidades, turnos ni progresión:
+- Cartas atacantes se elevan, inclinan, rotan y embisten manteniendo retorno exacto al slot.
+- Proyectiles 3D elementales: fuego, hielo, rayo, luz/solar, sangre, oscuridad, cósmico/universo y arcano.
+- Impactos por elemento con geometría, partículas, destellos, ondas y sonido adaptado.
+- Golpe de cámara en impactos importantes respetando la opción Cámara cinematográfica de PC ULTRA.
+- Reacción física de la carta objetivo al choque.
+- Destrucción física mejorada: giro/colapso de carta + fragmentos y efecto elemental propio antes del Cementerio.
+- Optimización especial durante Ira de Ra: menor número de partículas/fragmentos para evitar degradación de FPS.
+
+Se mantienen V18.9.45 y anteriores: fases de jefes, IA estratégica, controles PC, respuestas/contrahechizos,
+PC ULTRA, pantalla completa, recompensas, Memory Card, Júpiter, Fantasma del Universo, mazos y efectos de Ra.

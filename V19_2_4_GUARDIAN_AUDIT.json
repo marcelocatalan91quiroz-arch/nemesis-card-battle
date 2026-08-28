@@ -1,0 +1,26 @@
+{
+  "version": "19.2.4",
+  "base": "19.2.3",
+  "guardian": {
+    "hp": 10000,
+    "deck": [
+      "dragon-carmesi-caos",
+      "dragon-abisal-nemesis",
+      "dragon-negro-ruinas",
+      "dragon-infernal-sangre",
+      "magica-curandero",
+      "magica-nosferatu",
+      "df-dragon-vacio",
+      "dragon",
+      "dragon-infernal",
+      "esp-dragon-abismo"
+    ],
+    "count": 10,
+    "unique": 10,
+    "missing_ids": [],
+    "missing_assets": []
+  },
+  "js_pass": true,
+  "other_systems_preserved": true,
+  "release_gate": true
+}

@@ -1,0 +1,22 @@
+{
+  "patch": "19.2.6-simulator-only",
+  "base_required": "19.2.4-guardian-completo",
+  "files": {
+    "V19_2_6_SIMULATOR_REPORT.json": {
+      "bytes": 1381,
+      "sha256": "72eedc04b2fadc55cc65dd5f64041c155af68a946e89d6e04362eeb3d93b363d"
+    },
+    "LEEME_SIMULADOR.txt": {
+      "bytes": 486,
+      "sha256": "a52af8874459ff2d4552c59f56d3f9f73be06b590453f38bf3d2fd637de339e0"
+    },
+    "tests/battle-simulator.cjs": {
+      "bytes": 2209,
+      "sha256": "244909295e2a40b0a2fedd2219a5341fa1496c19e62ebd78a82bd12513845e5a"
+    },
+    "tests/SIMULATOR_RESULTS.json": {
+      "bytes": 1088,
+      "sha256": "eb06d5392eb32c8ecaf563353039d6d33ae29c3bcdc0d2ebf92c79be07ee3283"
+    }
+  }
+}

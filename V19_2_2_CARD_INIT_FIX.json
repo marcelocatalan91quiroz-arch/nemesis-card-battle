@@ -1,0 +1,20 @@
+{
+  "version": "19.2.2",
+  "error_fixed": "Cannot access 'card' before initialization",
+  "root_cause": "Auditoría V19 accedía a card() durante el arranque antes de inicializar su binding léxico.",
+  "replacement_count": 1,
+  "checks": {
+    "syntax": true,
+    "audit_exists": true,
+    "audit_no_card_call": true,
+    "boot_guard": true,
+    "enemy_guard": true,
+    "campaigns": true,
+    "hades": true,
+    "olimpo": true,
+    "sanctuary": true
+  },
+  "release_gate": true,
+  "combat_rules_changed": false,
+  "content_removed": false
+}

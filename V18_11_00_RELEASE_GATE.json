@@ -1,0 +1,40 @@
+{
+  "version": "18.11.00",
+  "base": "18.10.02",
+  "js_pass": true,
+  "boss_contract_symbols": {
+    "dragon": true,
+    "ra": true,
+    "caballero-almas": true,
+    "rey-espectral": true,
+    "dios-fantasma": true,
+    "ares": true,
+    "hades": true
+  },
+  "architecture": {
+    "phase_guard": true,
+    "boss_adapters": true,
+    "flow_supervisor": true,
+    "runtime_audit": true,
+    "global_registry": true,
+    "heroic": true,
+    "memory": true
+  },
+  "all_architecture_pass": true,
+  "preserved": [
+    "Campaign I",
+    "Campaign II",
+    "Campaign III",
+    "OLIMPO",
+    "Fusion Divina",
+    "Ares",
+    "Hades",
+    "Heroic Battlefield",
+    "equipment",
+    "relics",
+    "graveyard",
+    "responses",
+    "Memory Card"
+  ],
+  "important": "This release separates orchestration through boss adapters and centralizes phase integrity without deleting existing boss engines."
+}

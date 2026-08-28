@@ -1,0 +1,56 @@
+{
+  "version": "18.9.68",
+  "base": "18.9.67",
+  "critical_fix": "dios-fantasma y ares vuelven a rutearse a sus duelos reales; antes caían en guardian por el selector duelKey.",
+  "campaign_boss_routes": {
+    "dragon": true,
+    "ra": true,
+    "caballero-almas": true,
+    "rey-espectral": true,
+    "dios-fantasma": true,
+    "ares": true
+  },
+  "olympus_cards": {
+    "dios-jupiter": true,
+    "zeus-emperador-rayo": true,
+    "kronos-devorador-tiempo": true,
+    "apolo-guardian-solar": true,
+    "olimpo-atenea": true,
+    "olimpo-poseidon": true,
+    "olimpo-hermes": true,
+    "olimpo-egida": true,
+    "olimpo-rayo-maestro": true,
+    "olimpo-consejo": true,
+    "olimpo-ascension": true,
+    "titan-del-olimpo": true
+  },
+  "features": {
+    "sinergia_tormenta": true,
+    "sinergia_bastion": true,
+    "sinergia_instante": true,
+    "zona_olimpo": true,
+    "fusion_pc_ultra": true,
+    "ventana_respuesta_fusion": true,
+    "ia_lee_solo_campo": true,
+    "cinematicas_dioses": true,
+    "fusion_original": true,
+    "respuestas": true,
+    "equipamiento": true
+  },
+  "js_all_pass": true,
+  "missing_referenced_assets": [],
+  "scope_preserved": [
+    "Campaña I",
+    "Campaña II",
+    "Campaña III",
+    "Memory Card",
+    "equipamiento",
+    "contrahechizos",
+    "Furia de Ares",
+    "Esencia Celestial",
+    "Almas Reales",
+    "Fusiones anteriores",
+    "Mazo OLIMPO 11/11"
+  ],
+  "runtime_note": "Auditoría automatizada verifica sintaxis, rutas, IDs, referencias y assets. Una partida completa extremo a extremo requiere ejecución interactiva en navegador."
+}

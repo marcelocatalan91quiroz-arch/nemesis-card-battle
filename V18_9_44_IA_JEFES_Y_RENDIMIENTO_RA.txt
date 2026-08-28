@@ -1,0 +1,27 @@
+NÉMESIS CARD BATTLE — V18.9.44
+
+ACTUALIZACIÓN: IA DE JEFES + RENDIMIENTO IRA DE RA
+
+1. IA ESTRATÉGICA PARA JEFES
+- Ira de Ra y Dragón Ojo del Diablo ya no eligen cartas ni objetivos al azar.
+- Evalúan cartas disponibles, estado del campo, HP, ATK/DEF y efectos antes de jugar.
+- Priorizan combinaciones útiles (Ira de Ra + Armadura/Esencia, resurrección cuando corresponde, petrificación, daño directo y cartas de control).
+- Eligen ATAQUE/DEFENSA según el riesgo real contra el campo del jugador.
+- Seleccionan el atacante y objetivo con mejor resultado esperado.
+- Evitan atacar Fantasma del Universo cuando su Reflejo Fantasmal representa una desventaja grave, salvo que no exista una opción mejor.
+
+2. IRA DE RA MÁS DIFÍCIL
+- Ira de Ra puede entrar antes al campo si estratégicamente conviene.
+- Sus cartas de soporte se reservan hasta que tengan utilidad real.
+- Sus habilidades existentes, +500 ATK por turno, Armadura de Ra, Fragmento de Esencia, Mehen, Mnevis, Ojo de Ra y demás efectos siguen intactos.
+
+3. OPTIMIZACIÓN DE RENDIMIENTO EN IRA DE RA
+- Se mantiene el perfil visual PC ULTRA seleccionado por el usuario.
+- Durante el duelo de Ira de Ra se limita internamente el coste máximo de pixel ratio y sombras para evitar caídas fuertes de FPS.
+- Partículas del escenario/impacto y fragmentos de destrucción se reducen solo lo necesario en este jefe.
+- No se eliminan cinemáticas, efectos, cartas, reflejos, cámara, audio ni sistemas del duelo.
+
+4. INTEGRIDAD
+- Motor de daño sin reconstruir.
+- Flujo de campaña intacto.
+- Recompensas, colección, Memory Card, pantalla completa, PC ULTRA y cartas divinas intactas.

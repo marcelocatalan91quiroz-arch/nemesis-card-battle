@@ -1,0 +1,52 @@
+{
+  "version": "18.9.58",
+  "cards": [
+    {
+      "id": "df-06",
+      "n": 6,
+      "name": "Puerta Celestial del Más Allá",
+      "kind": "MAGICA",
+      "cost": 5,
+      "effect": "Gasta 5 Esencias Celestiales. Revive 1 criatura DIVINA o ESPECTRAL del Cementerio con estadísticas originales y +1000 ATK/+1000 DEF durante 2 turnos.",
+      "ai": "Alta: usar si existe objetivo fuerte en Cementerio; evitar desperdiciarla sin objetivo útil."
+    },
+    {
+      "id": "df-07",
+      "n": 7,
+      "name": "Ojo del Dios Fantasma",
+      "kind": "MAGICA",
+      "cost": 4,
+      "effect": "Gasta 4 Esencias Celestiales. Anula 1 efecto, habilidad o invocación enemiga activa; si el objetivo es una FUSIÓN, también niega su invocación.",
+      "ai": "Alta reactiva: reservar para FUSIONES DIVINAS, resurrecciones masivas o amenazas decisivas."
+    },
+    {
+      "id": "df-08",
+      "n": 8,
+      "name": "Juicio Celestial del Más Allá",
+      "kind": "MAGICA_SUPREMA",
+      "cost": 7,
+      "once_per_duel": true,
+      "effect": "Gasta 7 Esencias Celestiales. Destruye o anula hasta 2 cartas enemigas según la amenaza y luego invoca o revive 1 criatura DIVINA o ESPECTRAL propia.",
+      "ai": "Muy alta situacional: no usar apenas llegue a 7; buscar cambio de partida o cierre."
+    },
+    {
+      "id": "df-09",
+      "n": 9,
+      "name": "Resurrección Celestial del Más Allá",
+      "kind": "MAGICA_SUPREMA",
+      "cost": 6,
+      "effect": "Gasta 6 Esencias Celestiales. Selecciona hasta 2 criaturas del Cementerio; vuelven con 1000 ATK/1000 DEF o 50% de sus estadísticas originales, usando el valor mayor. Son INMORTALES durante 1 turno. Si revive 2, Dios Fantasma recupera 1500 HP. Luego esta mágica se destruye.",
+      "ai": "Alta: priorizar con 2 objetivos útiles, HP bajo o posibilidad de combo letal."
+    },
+    {
+      "id": "df-10",
+      "n": 10,
+      "name": "Decreto Celestial del Más Allá",
+      "kind": "MAGICA_SUPREMA",
+      "cost": 8,
+      "once_per_duel": true,
+      "effect": "Gasta 8 Esencias. Si HP <30%, elige un efecto: DESTRUCCIÓN ABSOLUTA (destruye cartas del campo/Cementerio/deck rival, sin afectar Invocadas Inmortales); DOMINIO ETERNO (toma control permanente de 1 criatura enemiga potenciada); JUICIO FINAL (daño directo igual al ATK total de las criaturas propias, no reducible ni evitable). Luego se destruye.",
+      "ai": "Suprema: solo con HP <30%; elegir destrucción contra campo amplio, dominio contra una amenaza clave y juicio final si asegura victoria."
+    }
+  ]
+}

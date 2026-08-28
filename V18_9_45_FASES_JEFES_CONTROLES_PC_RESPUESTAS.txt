@@ -1,0 +1,47 @@
+NÉMESIS CARD BATTLE — V18.9.45
+Base: V18.9.44 IA JEFES + RENDIMIENTO IRA DE RA
+
+ACTUALIZACIÓN INCREMENTAL. NO SE RECONSTRUYÓ EL JUEGO.
+
+1. JEFES CON 3 FASES
+- Guardián: GUARDIÁN -> GUARDIA FEROZ -> ÚLTIMO RUGIDO.
+- Dragón Ojo del Diablo: CAZADOR DRACÓNICO -> IRA DEL DIABLO -> FURIA DRACÓNICA.
+- Ira de Ra: DIOS SOLAR -> IRA DESATADA -> JUICIO DEL SOL.
+- Ra cambia de fase a 10.000 HP y 5.000 HP.
+- Las fases de Ra NO regalan ATK artificial: modifican la estrategia de su IA, prioridades, selección de cartas, modo y objetivos.
+- Se conserva el crecimiento original +500 ATK/turno propio de la carta Ira de Ra y todos los efectos ancestrales existentes.
+- El Dragón conserva sus efectos de Ira del Diablo ya existentes.
+- Las transiciones no reinician HP, tablero, Cementerio, cartas, equipamiento ni efectos.
+
+2. IA ADAPTATIVA POR FASE
+- Mayor prioridad a amenazas reales, control, contrahechizos, curación útil y jugadas de cierre.
+- En fases II/III los jefes son menos pasivos y evalúan mejor cuándo atacar o defender.
+- Se mantiene protección estratégica frente a Fantasma del Universo.
+
+3. CONTROLES PC
+- Teclas 1–5: seleccionar cartas de mano o del campo según la fase.
+- A: ATACAR.
+- D: DEFENDER.
+- H: HABILIDAD.
+- N: PODER NÉMESIS.
+- G: FUSIÓN.
+- F: PANTALLA COMPLETA.
+- ESC: cancelar selección de objetivo/cerrar inspección.
+- Se reutilizan los mismos botones y funciones del duelo, sin crear un motor paralelo.
+
+4. SISTEMA DE RESPUESTAS
+- Se conserva la ventana RESPONDER / ANULAR / DEJAR PASAR ya existente.
+- Ahora añade atajos 1 / 2 / 3 y ESC.
+- Mantiene temporizador y cadena de efectos.
+- Continúa usando las cartas reales con efecto negateMagic/contrahechizo.
+
+5. INTACTO
+- PC ULTRA y optimización de Ira de Ra.
+- Pantalla completa y selector de objetivo.
+- Cinemática de Ira de Ra.
+- Motor de daño y resolveBattle.
+- Mazos de Guardian, Dragón e Ira de Ra.
+- Habilidades de cartas, mágicas, trampas y equipamiento.
+- Dios Júpiter y Fantasma del Universo.
+- Recompensa aleatoria de carta por victoria.
+- Intercambio por estrellas, colección 500, mazo 10 y Memory Card.

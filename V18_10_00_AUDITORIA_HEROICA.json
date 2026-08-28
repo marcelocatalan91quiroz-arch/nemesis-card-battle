@@ -1,0 +1,18 @@
+{
+  "version": "18.10.00",
+  "base": "18.9.73",
+  "js_pass": true,
+  "heroic_systems": [
+    "posicionamiento táctico",
+    "Formaciones OLIMPO",
+    "Clímax Heroico",
+    "Voluntad del Campo",
+    "eventos dinámicos",
+    "estados heroicos",
+    "IA con intención",
+    "combos contextuales"
+  ],
+  "integrity_registry": true,
+  "memory_card": false,
+  "campaigns_preserved": true
+}

@@ -1,0 +1,11 @@
+NÉMESIS V18.9.65 — ARES 12/12 MODO DIOS COMPLETO
+- Base V18.9.64 preservada.
+- Ares 30.000 HP y 3 fases funcionales.
+- Mazo 12/12 integrado.
+- Cartas 6–8 usan arma/armadura/reliquia del sistema central.
+- Cartas 9–12 conectadas al motor.
+- Furia de Guerra conectada a cartas y fases.
+- IA Modo Dios puntúa recursos, fase, campo y amenazas.
+- Transiciones Fase II y Fase III con HUD/aviso.
+- Eventos de campo continúan activos.
+- Reto de Ares habilitado.

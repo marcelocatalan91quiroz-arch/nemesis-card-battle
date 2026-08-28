@@ -1,0 +1,10 @@
+NÉMESIS · LLAMAS DEL CAOS
+VERSIÓN 18.9.25 · IRA DEL DIABLO
+
+- Mecánica exclusiva del duelo Dragón Ojo del Diablo.
+- Al llegar a 8000 HP activa Ira del Diablo.
+- Sus monstruos presentes y futuros ganan +500 ATK una sola vez.
+- Al llegar a 4000 HP activa la Fase II con ambiente visual rojo.
+- Durante la Fase II coloca una segunda carta en cada turno, si todavía tiene cartas disponibles.
+- Al invocar su carta especial aparece su diálogo de jefe.
+- El Guardián, el inventario, las cartas del jugador y el resto del flujo permanecen sin cambios.

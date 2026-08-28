@@ -1,0 +1,25 @@
+{
+  "version": "18.10.01",
+  "base": "18.10.00 HEROIC",
+  "problem_found": "Forma Celestial Final podía activarse desde un ataque a carta y devolver el flujo mientras phase seguía en TARGET; el turno enemigo no arrancaba y el duelo quedaba bloqueado.",
+  "fix": "La Forma Final ahora continúa explícitamente al turno enemigo después de combate; habilidades recuperan ACTION; watchdog recupera TARGET si el objetivo fue destruido.",
+  "ghost_deck": {
+    "count": 10,
+    "missing_ids": [],
+    "missing_assets": []
+  },
+  "ghost_effects": {
+    "count": 10,
+    "missing_handlers": []
+  },
+  "ai_checked": [
+    "bossAiCardScore",
+    "bossAiPickQueueIndex",
+    "bossAiAttackChoice",
+    "Essence economy",
+    "second attack",
+    "final form"
+  ],
+  "js_pass": true,
+  "other_campaigns_preserved": true
+}

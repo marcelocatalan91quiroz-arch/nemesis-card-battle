@@ -1,0 +1,15 @@
+NÉMESIS V18.9.64 — ARES CARTAS 1–5
+
+Base completa V18.9.63.
+Se conservan Campañas I–II, Campaña III, Memory Card, Fusiones, Apolo, equipamiento, fullscreen, PC Ultra y efectos previos.
+
+ARES:
+1. Hoplita Inmortal de Ares — Primera Línea.
+2. Berserker de la Sangre Divina — Sed de Guerra.
+3. Cerbero de Guerra del Olimpo — Tres Fauces.
+4. General Supremo de Esparta — Formación de Guerra.
+5. Titán de la Guerra Eterna — Impacto Titánico.
+
+Efectos conectados a Furia, combate y fases.
+Las ranuras futuras de arma/armadura/reliquia quedan listas para las cartas 6–8.
+El duelo final de Ares permanece bloqueado hasta completar las 12 cartas.

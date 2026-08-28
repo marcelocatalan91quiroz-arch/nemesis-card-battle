@@ -1,0 +1,78 @@
+{
+  "version": "18.9.62",
+  "base": "18.9.61",
+  "changes": [
+    "Sistema central de equipamiento: 1 arma + 1 armadura + 1 reliquia por criatura.",
+    "Equipamientos actuales migrados al registro central sin cambiar sus efectos.",
+    "Destrucción de equipamiento revierte bonificaciones y envía el equipo al Cementerio.",
+    "Fusiones limpian equipamiento de materiales antes de resolver.",
+    "Apolo conectado a Santuario del Sol, Llamado de los Dioses y Último Resplandor.",
+    "Dios Fantasma: cartas 6–10 incorporadas al mazo real y efectos 1–10 conectados.",
+    "IA del Dios Fantasma usa sus 10 cartas y Esencia Celestial.",
+    "Cuerpo Entre Dos Mundos y segundo ataque del Dragón Celestial conectados.",
+    "Fondo del Rey Espectral corregido al Reino Espectral cinematográfico."
+  ],
+  "missing_images": [],
+  "duplicate_card_ids": [],
+  "fusion_audit": [
+    {
+      "materials": [
+        "dios-jupiter",
+        "zeus-emperador-rayo",
+        "kronos-devorador-tiempo"
+      ],
+      "result": "titan-del-olimpo",
+      "ok": true
+    },
+    {
+      "materials": [
+        "dragon-carmesi-caos",
+        "dragon-abisal-nemesis"
+      ],
+      "result": "fusion-caotico-supremo",
+      "ok": true
+    },
+    {
+      "materials": [
+        "dragon-negro-ruinas",
+        "dragon-infernal-sangre"
+      ],
+      "result": "fusion-dragon-caos",
+      "ok": true
+    }
+  ],
+  "term_audit": {
+    "RESPONDER": true,
+    "ANULAR": true,
+    "DEJAR PASAR": true,
+    "pcEquipVisual": true,
+    "nemesisEquip": true,
+    "nemesisUnequip": true,
+    "FUSIÓN DIVINA SUPREMA": true,
+    "titan-del-olimpo": true,
+    "apolo-guardian-solar": true,
+    "celestialGate": true,
+    "ghostGodEye": true,
+    "celestialJudgment": true,
+    "celestialResurrection": true,
+    "celestialDecree": true,
+    "CABALLERO DE LAS ALMAS": true,
+    "REY ESPECTRAL": true,
+    "DIOS FANTASMA": true,
+    "playerDirectShieldUntil": true
+  },
+  "js_checks": {
+    "dios-fantasma-mazo-completo.js": {
+      "ok": true,
+      "error": ""
+    },
+    "js/dios-fantasma-intro.js": {
+      "ok": true,
+      "error": ""
+    },
+    "js/game.js": {
+      "ok": true,
+      "error": ""
+    }
+  }
+}

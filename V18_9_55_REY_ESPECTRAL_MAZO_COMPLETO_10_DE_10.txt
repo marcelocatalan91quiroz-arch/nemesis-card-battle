@@ -1,0 +1,24 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.55
+REY ESPECTRAL — MAZO MODO BESTIA COMPLETO 10/10
+
+Base: V18.9.54. Se conservan Campaña I, Campaña II, Caballero de las Almas, arena espectral, fullscreen, PC ULTRA, IA de jefes, equipamiento, animaciones, fusiones, Memory Card, recompensas y cartas anteriores.
+
+CARTAS 1–5 CONSERVADAS
+1 Heredero del Trono Muerto — 5500/5000 — Sangre Real: al morir genera 2 Almas Reales; +300 ATK por Alma Real.
+2 General de la Legión Espectral — 6500/5500 — Orden de Ejecución: +1000 ATK durante 2 turnos a la criatura espectral aliada más fuerte; si está solo, se potencia él.
+3 Devorador de Almas Reales — 7500/4500 — consume hasta 3 Almas; +700 ATK permanente por cada una.
+4 Dragón del Trono Espectral — 8500/7000 — 1000 daño directo al entrar; primera destrucción puede consumir 2 Almas y sobrevivir con 1000 DEF.
+5 Nigromante Supremo del Rey — 4000/7500 — Resurrección Real una vez: revive criatura espectral al 100%.
+
+CARTAS 6–10 INTEGRADAS
+6 Verdugo de la Corona Maldita — 9000/3500 — Ejecución: al atacar criatura con DEF <=4000 la destruye tras el ataque; Corte Maldito genera 1 Alma Real adicional.
+7 Decreto del Rey — Mágica — consume 6 Almas Reales; una vez por duelo revive hasta 2 criaturas espectrales, una en ATAQUE y otra en DEFENSA.
+8 Portal Real del Más Allá — Mágica — consume 1 Alma Real; revive 1 criatura espectral y le concede +1000 ATK/+1000 DEF durante 2 turnos.
+9 Corona de las Mil Almas — Reliquia — equipa criatura espectral: +1500 DEF y +500 ATK por cada 2 Almas Reales. Si cae la criatura, la reliquia desaparece con ella y el Rey conserva sus Almas.
+10 Espada del Rey Sin Muerte — Arma — equipa criatura espectral: +2000 ATK; al destruir una criatura genera 1 Alma Real adicional; con 6+ Almas Reales aporta +1000 ATK adicional mientras siga equipada.
+
+IA DEL REY
+La IA puntúa y reserva recursos: Decreto solo se juega con 6 Almas, Cementerio útil y sin haberlo usado; Portal solo con Alma y objetivo válido; Corona/Espada solo con criatura espectral en campo. Prioriza Ejecución contra DEF <=4000, resurrecciones útiles, equipamiento sobre objetivos fuertes y mantiene la lógica previa de fases, supervivencia y Corona de la Eternidad del jefe.
+
+JEFE
+HP 25.000. Tres fases. Almas Reales. Corona de la Eternidad: primera derrota se evita y el Rey renace con 2.500 HP. Decreto del Rey se limita a una vez por duelo.

@@ -1,0 +1,11 @@
+NÉMESIS V18.9.68 — EVOLUCIÓN OLIMPO PC ULTRA
+
+- Sinergias: Zeus+Poseidón / Atenea+Apolo / Hermes+Kronos.
+- Zona del Olimpo reactiva: 2 dioses despierta, 3 manifiesta templo, Júpiter+Zeus+Kronos abre portal visual.
+- Fusión Divina PC Ultra: materiales → círculo → Zona de Fusión → Titán del Olimpo.
+- Ventana de respuesta rival RESPONDER / ANULAR / DEJAR PASAR antes de Fusión Divina.
+- Respeta Apolo, Consejo y Ascensión.
+- IA Modo Dios lee solo cartas visibles del campo, no la mano.
+- Cinemáticas de ataque exclusivas para Apolo, Atenea, Poseidón y Hermes.
+- CORRECCIÓN IMPORTANTE: Dios Fantasma y Ares ahora se enrutan correctamente a sus duelos.
+- Se preservan Campañas I–III, cartas, jefes, equipamiento, Memory Card y fusiones existentes.

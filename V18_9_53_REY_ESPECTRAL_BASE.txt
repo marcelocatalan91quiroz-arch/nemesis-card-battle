@@ -1,0 +1,16 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.53
+REY ESPECTRAL · BASE COMPLETA ANTES DEL MAZO DEFINITIVO
+
+- Segundo jefe de Campaña II desbloqueado tras Caballero de las Almas.
+- Presentación y diálogo inicial.
+- HP: 25.000.
+- Fase I: Rey de los Condenados (25.000–16.001).
+- Fase II: Trono de las Almas (16.000–8.001).
+- Fase III: Rey Sin Muerte (8.000–1).
+- Pasiva El Rey No Lucha Solo: obtiene Almas Reales con criaturas enviadas al Cementerio.
+- Puede consumir 2 Almas Reales para recuperar 700 HP cuando está herido.
+- Corona de la Eternidad: una vez por duelo evita la derrota y deja al Rey en 2.500 HP.
+- Arena Espectral y efectos por fases reutilizan el motor existente.
+- IA inteligente existente conectada al jefe.
+- Memory Card guarda el estado del Rey Espectral.
+- IMPORTANTE: el mazo poderoso definitivo del Rey NO se ha creado todavía. Para permitir pruebas, usa temporalmente el mazo espectral del Caballero. Se reemplazará en la próxima evolución.

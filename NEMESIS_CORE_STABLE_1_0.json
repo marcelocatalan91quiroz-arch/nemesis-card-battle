@@ -1,0 +1,32 @@
+{
+  "version": "19.2.0",
+  "name": "NÉMESIS CORE STABLE 1.0",
+  "base": "V19.1 Santuario",
+  "game_js_modified": false,
+  "policy": {
+    "stable_base": "No editar la versión publicada directamente.",
+    "one_change_per_branch": "Cada mejora se desarrolla aislada.",
+    "required_gate": [
+      "integrity",
+      "flow-regression",
+      "browser-e2e"
+    ],
+    "release_rule": "Si falla un test obligatorio, no se publica."
+  },
+  "protected_content": [
+    "Campañas I-III",
+    "mazos de jefes",
+    "IA privada",
+    "fases",
+    "efectos",
+    "armas",
+    "armaduras",
+    "reliquias",
+    "OLIMPO",
+    "Fusión Divina",
+    "Campo Heroico",
+    "Memory Card",
+    "Colección Global",
+    "Santuario"
+  ]
+}

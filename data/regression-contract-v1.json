@@ -1,0 +1,41 @@
+{
+  "schema": "nemesis.regression.v1",
+  "version": "18.11.00",
+  "mandatory_cases": [
+    "start duel with correct boss HP and full deck",
+    "boss places a card and takes a turn",
+    "destroy one enemy card then continue",
+    "destroy last enemy field card then continue",
+    "return to player ACTION with controls visible",
+    "graveyard add and resurrection",
+    "equipment weapon/armor/relic attach and destroy",
+    "response window resolves and returns flow",
+    "boss HP reaches zero",
+    "boss survival/transformation phase resolves exactly once",
+    "fusion resolves or is negated then flow continues",
+    "Memory Card save/load preserves campaigns and deck"
+  ],
+  "boss_specific": {
+    "rey-espectral": [
+      "Royal Souls",
+      "Crown -> 2500 HP",
+      "Royal resurrection"
+    ],
+    "dios-fantasma": [
+      "Celestial Essence",
+      "Final Form -> 5000 HP",
+      "Celestial resurrection"
+    ],
+    "ares": [
+      "phase transitions",
+      "Fury",
+      "God AI"
+    ],
+    "hades": [
+      "Obols",
+      "Tartarus Portal",
+      "graveyard control",
+      "God AI"
+    ]
+  }
+}

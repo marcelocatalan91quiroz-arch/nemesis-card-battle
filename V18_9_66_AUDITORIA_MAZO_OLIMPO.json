@@ -1,0 +1,33 @@
+{
+  "version": "18.9.66",
+  "base": "18.9.65",
+  "deck": "OLIMPO",
+  "main_deck_count": 11,
+  "main_deck": [
+    "Dios Júpiter",
+    "Zeus — Emperador del Rayo",
+    "Kronos — Devorador del Tiempo",
+    "Apolo — Guardián Solar del Olimpo",
+    "Atenea — Guardiana del Olimpo",
+    "Poseidón — Señor de los Mares",
+    "Hermes — Mensajero Divino",
+    "Égida del Olimpo",
+    "Rayo Maestro del Olimpo",
+    "Consejo de los Dioses",
+    "Ascensión del Olimpo"
+  ],
+  "fusion_extra": "Titán del Olimpo — 20.000 ATK / 15.000 DEF (no ocupa uno de los 11 slots)",
+  "verified": [
+    "Júpiter + Zeus + Kronos siguen siendo los materiales originales de Fusión Divina",
+    "Apolo conserva Santuario, Llamado de los Dioses, Protección de Fusión y Último Resplandor",
+    "Atenea protege una DIVINA por turno",
+    "Poseidón controla equipamiento y debilita ATK",
+    "Hermes busca material faltante una vez por duelo",
+    "Égida usa ranura de armadura y absorbe una destrucción",
+    "Rayo Maestro usa ranura de arma y entrega +2.500 ATK",
+    "Consejo busca material o protege contra una anulación",
+    "Ascensión exige los 3 materiales y protege la Fusión",
+    "Titán conserva Juicio, Voluntad del Olimpo y Dominio ya existentes",
+    "Sintaxis game.js PASS y assets 5–11 presentes"
+  ]
+}

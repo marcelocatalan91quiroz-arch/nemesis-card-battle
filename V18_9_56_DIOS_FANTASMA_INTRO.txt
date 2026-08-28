@@ -1,0 +1,28 @@
+NÉMESIS V18.9.56 — DIOS FANTASMA / INTRODUCCIÓN CINEMÁTICA
+
+Este paquete es ADITIVO para integrar sobre V18.9.55.
+No sustituye game.js ni altera cartas, IA, daño, campañas, Memory Card, fullscreen, PC Ultra o recompensas existentes.
+
+CONTENIDO
+- assets/images/dios-fantasma/fondo-celestial.png
+- assets/images/dios-fantasma/dios-fantasma.png
+- dios-fantasma-intro.js
+- dios-fantasma-intro.json
+
+INTEGRACIÓN
+1. Copiar assets conservando las rutas.
+2. Cargar dios-fantasma-intro.js después del game.js existente.
+3. En la victoria FINAL del REY ESPECTRAL, después de guardar recompensa/progreso, llamar:
+   showDiosFantasmaIntro({
+     onWorld: () => { /* usar aquí la función YA EXISTENTE para volver al mundo */ },
+     onFight: () => { /* usar aquí la función YA EXISTENTE para abrir el futuro duelo Dios Fantasma */ }
+   });
+4. No duplicar el motor de duelo ni inventar el mazo del Dios Fantasma todavía.
+
+FLUJO
+Rey Espectral derrotado -> último diálogo -> ruptura celestial -> fondo nuevo ->
+revelación Dios Fantasma -> diálogo -> VOLVER AL MUNDO / ENFRENTAR.
+
+NOTA
+El jefe queda reservado como diseño: 35.000 HP, Esencia Celestial, 3 fases y forma final de 5.000 HP.
+El mazo y sus efectos se integrarán después para no inventar cartas antes de crearlas.

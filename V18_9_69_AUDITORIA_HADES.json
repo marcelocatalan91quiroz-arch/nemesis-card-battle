@@ -1,0 +1,31 @@
+{
+  "version": "18.9.69",
+  "base": "18.9.68",
+  "hades": {
+    "hp": 32000,
+    "deck": 12,
+    "resource": "Óbolos",
+    "zone": "Tártaro",
+    "mechanic": "Pacto del Estigia",
+    "ai": "Modo Dios II"
+  },
+  "integrated": [
+    "fondo",
+    "personaje",
+    "transición Ares→Hades",
+    "diálogo",
+    "efectos visuales",
+    "presentación Tártaro",
+    "Capítulo II",
+    "persistencia"
+  ],
+  "pending": [
+    "motor Tártaro",
+    "Óbolos funcionales",
+    "Pacto del Estigia",
+    "12 cartas Hades",
+    "duelo Hades"
+  ],
+  "js_pass": true,
+  "missing_assets": []
+}

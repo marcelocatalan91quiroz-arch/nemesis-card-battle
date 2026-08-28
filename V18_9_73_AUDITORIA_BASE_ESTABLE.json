@@ -1,0 +1,58 @@
+{
+  "version": "18.9.73",
+  "base": "18.9.72",
+  "status": "BASE ESTABLE DE INTEGRIDAD",
+  "js_all_pass": true,
+  "runtime_scope_ok": true,
+  "boss_decks": {
+    "dragon": {
+      "count": 12,
+      "missing_ids": []
+    },
+    "ra": {
+      "count": 15,
+      "missing_ids": []
+    },
+    "caballero": {
+      "count": 10,
+      "missing_ids": []
+    },
+    "rey_espectral": {
+      "count": 10,
+      "missing_ids": []
+    },
+    "dios_fantasma": {
+      "count": 10,
+      "missing_ids": []
+    },
+    "ares": {
+      "count": 12,
+      "missing_ids": []
+    },
+    "hades": {
+      "count": 12,
+      "missing_ids": []
+    }
+  },
+  "missing_assets": [],
+  "memory_card_fields_ok": true,
+  "module_bridge_ok": true,
+  "campaign3_continue_ok": true,
+  "effect_routing_ok": true,
+  "root_cause_fixed": "Motores de Ares/OLIMPO/Hades ya no viven fuera de battle(), por lo que enemyTurn del Dragón/Guardián/Ra/Campaña II no ejecuta funciones con variables fuera de scope.",
+  "preserved": [
+    "Campaña I",
+    "Campaña II",
+    "Campaña III",
+    "OLIMPO 11/11",
+    "Fusión Divina",
+    "Ares 12/12",
+    "Hades 12/12",
+    "equipamiento",
+    "reliquias",
+    "armas",
+    "contrahechizos",
+    "PC Ultra",
+    "Memory Card"
+  ]
+}

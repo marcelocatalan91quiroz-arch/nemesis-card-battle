@@ -1,0 +1,20 @@
+NÉMESIS LLAMAS DEL CAOS — V18.9.42
+
+INTEGRACIÓN ADITIVA. NO SE RECONSTRUYÓ NI SE MODIFICÓ EL MOTOR BASE DEL DUELO.
+
+NUEVAS CARTAS DEL JUGADOR:
+1. DIOS JÚPITER — DIVINA / UNIVERSO — ATK 8500 / DEF 3000
+   Habilidad: ESCUDO SOLAR.
+   Al activarla desde HABILIDAD, durante 2 turnos enemigos bloquea ataques directos contra los HP del jugador.
+   No bloquea combate normal entre cartas ni altera el cálculo de daño ya existente.
+
+2. FANTASMA DEL UNIVERSO — DIVINA / UNIVERSO — ATK 0 / DEF 0
+   Habilidad pasiva: REFLEJO FANTASMAL.
+   Cuando recibe un ataque, copia automáticamente el ATK actual del atacante y causa esa misma cantidad de daño directo a los HP del rival. Después el combate continúa con el motor normal.
+
+INTEGRACIÓN:
+- Ambas cartas quedan en MI COLECCIÓN.
+- Se agregan al mazo automáticamente solo si existen espacios libres, sin eliminar ni reemplazar cartas seleccionadas.
+- Conservan Memory Card y autoguardado existentes.
+- No entran en los mazos del Guardián, Dragón Ojo del Diablo ni Ira de Ra.
+- Se usan las dos imágenes originales entregadas para las cartas.

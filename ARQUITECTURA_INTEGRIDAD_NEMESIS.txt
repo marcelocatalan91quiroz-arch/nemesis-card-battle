@@ -1,0 +1,25 @@
+NÉMESIS V18.11.00 — ARQUITECTURA DE INTEGRIDAD
+
+NÚCLEO COMPARTIDO:
+- Estados/turnos
+- Daño
+- Cementerio
+- Equipamiento
+- Respuestas
+- Fusión
+- Campo Heroico
+- Memory Card
+
+CAPAS AISLADAS:
+- Cada jefe conserva mazo, HP, fases, IA, recursos y efectos.
+- El adaptador del jefe activo es el único que ejecuta hooks privados.
+- Agregar un jefe nuevo = nuevo perfil + nuevo adaptador. No editar perfiles anteriores.
+
+PUERTA DE ENTREGA:
+1. JavaScript válido.
+2. Contratos de todos los mazos presentes.
+3. Registro de todos los jefes presente.
+4. Supervisor anti-softlock presente.
+5. ACTION jugable / TARGET válido.
+6. Campañas I–III preservadas.
+7. Contrato de regresión incluido.

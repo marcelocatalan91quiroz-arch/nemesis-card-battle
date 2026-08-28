@@ -1,0 +1,9 @@
+NÉMESIS LLAMAS DEL CAOS · V18.9.52
+ARENA ESPECTRAL EXCLUSIVA · CAMPAÑA II
+
+- Arena del Caballero de las Almas usa el Reino Espectral cinematográfico.
+- Niebla y atmósfera violeta/azul en Three.js.
+- Almas/partículas ambientales y pulso espectral visual.
+- Cementerios, zonas, HUD y equipamiento adaptados visualmente a Campaña II.
+- Las fases II y III intensifican la arena sin reiniciar el duelo.
+- No se modifican slots, motor de daño, IA, cartas, Memory Card, recompensas ni sistemas anteriores.

@@ -1,0 +1,44 @@
+{
+  "version": "18.9.63",
+  "campaign": "CAMPAÑA III — GUERRA DE LOS DIOSES",
+  "boss": "Ares — Dios de la Guerra",
+  "hp": 30000,
+  "phases": [
+    {
+      "name": "Estratega del Olimpo",
+      "range": "30.000–20.001",
+      "behavior": "control y análisis del mazo"
+    },
+    {
+      "name": "Dios de la Guerra",
+      "range": "20.000–8.001",
+      "behavior": "armas, combos y arena fracturada"
+    },
+    {
+      "name": "Bestia Divina de Ares",
+      "range": "8.000–1",
+      "behavior": "IA ofensiva total y búsqueda de letal"
+    }
+  ],
+  "resource": "FURIA DE GUERRA",
+  "fury_costs": {
+    "2": "Contraataque Divino",
+    "3": "Equipamiento inmediato",
+    "4": "Ataque adicional",
+    "5": "Invocación del Cementerio",
+    "7": "Ira de Ares"
+  },
+  "field_events": [
+    "Lluvia de Lanzas",
+    "Tormenta del Olimpo",
+    "Suelo en Llamas",
+    "Choque de Ejércitos"
+  ],
+  "ai": "IA Modo Dios: HP, campo, Cementerio, equipamiento, daño potencial, Furia y preparación de Fusión Divina.",
+  "fusion_awareness": "Detecta Júpiter + Zeus + Kronos; respeta la protección de Apolo.",
+  "assets": {
+    "background": "assets/images/campaign3/ares/ares-arena-pc-ultra.png",
+    "character": "assets/images/campaign3/ares/ares-personaje.png"
+  },
+  "deck_status": "PENDIENTE — se creará carta por carta después. No se inventaron cartas en esta versión."
+}

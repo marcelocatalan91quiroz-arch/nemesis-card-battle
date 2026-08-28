@@ -1,0 +1,54 @@
+{
+  "version": "18.12.00",
+  "base": "18.11.00",
+  "js_pass": true,
+  "requirements": {
+    "campaignProfiles": true,
+    "bossAdapters": true,
+    "globalRegistry": true,
+    "globalCollection": true,
+    "savedDecks": true,
+    "memorySavedDecks": true,
+    "allBossRewardPools": true,
+    "campaignUnlocks": true,
+    "olimpoPreserved": true,
+    "fusionPreserved": true,
+    "heroicPreserved": true,
+    "phaseIntegrity": true
+  },
+  "release_gate": true,
+  "missing_assets": [],
+  "http_smoke": {
+    "index.html": 200,
+    "js/game.js": 200,
+    "css/game.css": 200,
+    "data/campaign-isolation-global-collection-v1.json": 200
+  },
+  "preserved": [
+    "Campaña I",
+    "Campaña II",
+    "Campaña III",
+    "todos los jefes",
+    "IA",
+    "fases",
+    "estrategias",
+    "mazos enemigos",
+    "armas",
+    "armaduras",
+    "reliquias",
+    "efectos",
+    "OLIMPO",
+    "Fusión Divina",
+    "Campo Heroico",
+    "Memory Card"
+  ],
+  "new": [
+    "perfiles de campaña aislados",
+    "colección global",
+    "desbloqueo total al completar campaña",
+    "mazos guardados",
+    "selección de mazo activo",
+    "canje colección↔mazo sin borrar cartas",
+    "migración retroactiva de campañas completadas"
+  ]
+}

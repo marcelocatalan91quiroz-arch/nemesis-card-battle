@@ -1,0 +1,13 @@
+NÉMESIS LLAMAS DEL CAOS · V18.9.50
+CAMPAÑA II · CONTINUIDAD DE PARTIDA
+
+- Derrotar a IRA DE RA completa oficialmente la CAMPAÑA I.
+- Al ganar se conservan y guardan en Memory Card: colección, carta aleatoria ganada, estrellas y mazo.
+- IRA DE RA continúa desbloqueando su mazo ancestral para intercambio.
+- Tras la victoria aparece CAMPAÑA I COMPLETADA y CAMPAÑA II DESBLOQUEADA.
+- El jugador vuelve al inicio principal.
+- El menú muestra el estado de ambas campañas.
+- Botón INICIAR CAMPAÑA II inicia la segunda campaña sobre la misma partida.
+- La Campaña II tiene intro y hub propio, sin duplicar el motor de duelo ni modificar Campaña I.
+- Partidas antiguas que ya derrotaron a Ra migran automáticamente al final de Campaña I sin perder progreso.
+- Preparado para añadir el primer rival, escenarios y jefes de Campaña II en siguientes evoluciones.

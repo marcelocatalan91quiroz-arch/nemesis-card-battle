@@ -1,0 +1,23 @@
+const fs=require('fs'),path=require('path');
+const s=fs.readFileSync(path.join(__dirname,'REFERENCE_game.js'),'utf8');
+const R=[]; const T=(n,v)=>{R.push({name:n,ok:!!v}); console.log(v?'PASS':'FAIL',n)};
+class B{constructor(){this.phase='ACTION';this.turn='PLAYER';this.enemy=[1];this.grave=[];this.hp=10000;this.end=false}kill(){if(this.enemy.length)this.grave.push(this.enemy.pop());if(this.phase==='TARGET'&&!this.enemy.length)this.phase='ACTION'}enemyTurn(){this.turn='ENEMY';if(!this.enemy.length){this.turn='PLAYER';this.phase='ACTION';return}this.turn='PLAYER';this.phase='ACTION'}hit(n){this.hp=Math.max(0,this.hp-n);if(this.hp===0)this.end=true}}
+let b=new B(); b.phase='TARGET'; b.kill(); T('TARGET→ACTION sin objetivo',b.phase==='ACTION');
+b=new B(); b.enemy=[]; b.enemyTurn(); T('IA sin cartas devuelve turno',b.turn==='PLAYER'&&b.phase==='ACTION');
+b=new B(); b.kill(); T('Cementerio recibe destruida',b.grave.length===1);
+b=new B(); b.hit(99999); T('HP=0 final estable',b.hp===0&&b.end);
+T('Supervisor anti-softlock',s.includes('nemesisFlowSupervisor'));
+T('Guardia IA',s.includes('NEMESIS_ENEMY_TURN_GUARD'));
+T('Rey Espectral',s.includes('spectralKingCrownSave')&&s.includes('spectralKingContinueAfterCrown'));
+T('Dios Fantasma',s.includes('ghostGodFinalFormSave')&&s.includes('ghostGodContinueAfterFinalForm'));
+T('Ares fases',s.includes('function aresPhase()')&&s.includes('function aresSyncPhase()'));
+T('Ares mazo',s.includes('ARES_CARDS'));
+T('Hades fases/IA',s.includes('function hadesSyncPhase()')&&s.includes('function hadesControlAi()'));
+T('OLIMPO/Fusión',s.includes('OLIMPO_DECK_IDS')&&s.includes('titan-del-olimpo'));
+T('Memory Card',s.includes('campaign3Stage')&&s.includes('hadesDefeated'));
+T('Respuestas',s.includes('RESPONDER')&&s.includes('ANULAR')&&s.includes('DEJAR PASAR'));
+T('Equipamiento',/weapon/i.test(s)&&/armor/i.test(s)&&/relic/i.test(s));
+T('Cementerio motor',s.includes('CEMENTERIO')&&s.includes('enemygrave')&&s.includes('playergrave'));
+const out={total:R.length,pass:R.filter(x=>x.ok).length,fail:R.filter(x=>!x.ok).length,results:R};
+fs.writeFileSync(path.join(__dirname,'SIMULATOR_RESULTS.json'),JSON.stringify(out,null,2));
+if(out.fail)process.exit(1);

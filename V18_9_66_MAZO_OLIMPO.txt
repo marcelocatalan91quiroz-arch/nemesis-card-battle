@@ -1,0 +1,14 @@
+NÉMESIS V18.9.66 — MAZO OLIMPO 11/11
+Base V18.9.65 preservada.
+Titán del Olimpo sigue como Fusión extra.
+- Júpiter + Zeus + Kronos siguen siendo los materiales originales de Fusión Divina
+- Apolo conserva Santuario, Llamado de los Dioses, Protección de Fusión y Último Resplandor
+- Atenea protege una DIVINA por turno
+- Poseidón controla equipamiento y debilita ATK
+- Hermes busca material faltante una vez por duelo
+- Égida usa ranura de armadura y absorbe una destrucción
+- Rayo Maestro usa ranura de arma y entrega +2.500 ATK
+- Consejo busca material o protege contra una anulación
+- Ascensión exige los 3 materiales y protege la Fusión
+- Titán conserva Juicio, Voluntad del Olimpo y Dominio ya existentes
+- Sintaxis game.js PASS y assets 5–11 presentes

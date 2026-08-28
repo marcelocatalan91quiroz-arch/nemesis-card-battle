@@ -1,0 +1,60 @@
+{
+  "version": "18.9.64",
+  "base": "18.9.63",
+  "campaign": "Campaña III — Guerra de los Dioses",
+  "boss": "Ares — Dios de la Guerra",
+  "hp": 30000,
+  "phases": [
+    "Estratega del Olimpo 30.000–20.001",
+    "Dios de la Guerra 20.000–8.001",
+    "Bestia Divina de Ares 8.000–1"
+  ],
+  "fury": "Sistema Furia de Guerra conservado",
+  "cards": [
+    {
+      "n": 1,
+      "name": "Hoplita Inmortal de Ares",
+      "atk": 5500,
+      "def": 7000,
+      "effect": "Primera Línea: en DEF reduce 500 daño a las demás tropas; al morir +1 Furia."
+    },
+    {
+      "n": 2,
+      "name": "Berserker de la Sangre Divina",
+      "atk": 7500,
+      "def": 4000,
+      "effect": "Sed de Guerra: +500 ATK permanente por combate; al matar +1 Furia."
+    },
+    {
+      "n": 3,
+      "name": "Cerbero de Guerra del Olimpo",
+      "atk": 8000,
+      "def": 6500,
+      "effect": "Tres Fauces: segundo ataque 2 Furia, 1 si el primero mata; al matar +1 Furia."
+    },
+    {
+      "n": 4,
+      "name": "General Supremo de Esparta",
+      "atk": 6500,
+      "def": 8500,
+      "effect": "Formación de Guerra: aliados +700 ATK/DEF; al morir +1 Furia."
+    },
+    {
+      "n": 5,
+      "name": "Titán de la Guerra Eterna",
+      "atk": 10000,
+      "def": 8000,
+      "effect": "Impacto Titánico: 1000 daño directo, -500 ATK rival 1 turno, +1500 ATK en Fase III, al matar +2 Furia."
+    }
+  ],
+  "future_slots": {
+    "6": "Arma Divina",
+    "7": "Armadura",
+    "8": "Reliquia",
+    "9": "Mágica de Evento",
+    "10": "Mágica de Evento",
+    "11": "Resurrección",
+    "12": "Ira de Ares"
+  },
+  "duel_status": "El mazo 1–5 está integrado al motor; el reto final de Ares permanece bloqueado hasta completar 12/12 para no inventar cartas faltantes."
+}

@@ -1,0 +1,14 @@
+NÉMESIS LLAMAS DEL CAOS · V18.9.47 · EQUIPAMIENTO FÍSICO PC
+
+Base: V18.9.46. No se reconstruye ni reemplaza el motor de duelo.
+
+- Armas, armaduras y reliquias aparecen físicamente junto a la criatura afectada.
+- Línea luminosa conecta visualmente cada equipo con su portador.
+- HUD PC muestra ARMA / ARMADURA / RELIQUIA y el nombre del objeto equipado.
+- Animación de entrada al equipar: escala, giro, halo y sonido.
+- Equipos temporales desaparecen al finalizar su duración.
+- Cuando la criatura es destruida, su equipo se rompe visualmente con partículas antes de ir al Cementerio.
+- Mjölnir y otros boost de ataque se representan como arma; escudos como armadura; Fragmento de Esencia como reliquia.
+- Armadura de Ra mantiene su efecto original +1000 DEF y ahora además queda representada físicamente.
+- Lanza Solar, Gran Lanza de Bronce, Ojo de Ra y Cetro Was conservan sus reglas y reciben representación física donde corresponde.
+- Se conservan PC ULTRA, IA estratégica, fases de jefes, animaciones avanzadas, cinemática de Ra, pantalla completa, recompensas, Memory Card y cartas divinas.

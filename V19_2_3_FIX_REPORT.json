@@ -1,0 +1,39 @@
+{
+  "version": "19.2.3",
+  "root_cause": "La migración del mazo OLIMPO llamaba card() antes de inicializar const card.",
+  "exact_error": "Cannot access 'card' before initialization",
+  "fix": "Se cambió card de const arrow function a function declaration hoisted.",
+  "checks": {
+    "syntax": {
+      "ok": true,
+      "output": ""
+    },
+    "card-order": {
+      "ok": true,
+      "output": "PASS: card() está disponible antes de las migraciones.\n"
+    },
+    "integrity.test.cjs": {
+      "ok": true,
+      "output": "PASS index.html\nPASS css/game.css\nPASS motor de fases\nPASS supervisor anti-softlock\nPASS guard IA V19\nPASS campañas aisladas\nPASS colección global\nPASS Memory Card\nPASS OLIMPO\nPASS Santuario aislado\nPASS jefe Dragón\nPASS jefe Ira de Ra\nPASS jefe Caballero de las Almas\nPASS jefe Rey Espectral\nPASS jefe Dios Fantasma\nPASS jefe Ares\nPASS jefe Hades\nINFO IDs repetidos detectados por parser simple: \u001b[33m4\u001b[39m (puede incluir definiciones de configuración; la auditoría runtime decide validez real)\nPASS assets de cartas\nNÉMESIS CORE INTEGRITY: PASS\n"
+    },
+    "flow-regression.test.cjs": {
+      "ok": true,
+      "output": "PASS ACTION recupera controles\nPASS TARGET oculta acciones\nPASS TARGET sin enemigo vuelve a ACTION\nPASS PLACE inválido vuelve a ACTION\nPASS IA tiene try/catch de recuperación\nPASS Rey Espectral continúa tras Corona\nPASS Dios Fantasma continúa tras Forma Final\nPASS END protegido\nNÉMESIS FLOW REGRESSION: PASS\n"
+    }
+  },
+  "systems_preserved": {
+    "card_function_hoisted": true,
+    "no_const_card": true,
+    "campaign1": true,
+    "campaign2": true,
+    "campaign3": true,
+    "olimpo": true,
+    "collection": true,
+    "sanctuary": true,
+    "flow_guard": true
+  },
+  "combat_rules_changed": false,
+  "content_removed": false,
+  "browser_note": "La validación de navegador local está bloqueada por la política del entorno; no se afirma una prueba E2E que no pudo ejecutarse.",
+  "release_gate": true
+}

@@ -1,0 +1,39 @@
+NÉMESIS: LLAMAS DEL CAOS — V18.9.54
+REY ESPECTRAL — MAZO MODO BESTIA, BLOQUE 1/2
+
+Base: V18.9.53. Se conservan Campaña I, Campaña II, Caballero de las Almas, Arena Espectral, PC ULTRA, fullscreen, Memory Card, fusiones, equipamiento, recompensas y motores anteriores.
+
+REY ESPECTRAL
+HP: 25.000
+Fase I: 25.000–16.001 · Rey de los Condenados
+Fase II: 16.000–8.001 · Trono de las Almas
+Fase III: 8.000–1 · Rey Sin Muerte
+Almas Reales: cada criatura de cualquier lado destruida genera 1 Alma Real.
+2 Almas: recuperación inteligente de 700 HP cuando el Rey está bajo 40%.
+Corona de la Eternidad: una vez por duelo evita 0 HP y renace con 2.500 HP.
+
+CARTAS DEFINITIVAS INTEGRADAS 1–5
+1. Heredero del Trono Muerto — ATK 5.500 / DEF 5.000
+   Sangre Real: al ser destruido genera 2 Almas Reales en vez de 1.
+   Legado del Trono: +300 ATK por cada Alma Real actual del Rey.
+2. General de la Legión Espectral — ATK 6.500 / DEF 5.500
+   Orden de Ejecución: al entrar, la criatura espectral aliada con mayor ATK obtiene +1.000 ATK durante 2 turnos; si está solo, recibe el bonus.
+3. Devorador de Almas Reales — ATK 7.500 / DEF 4.500
+   Banquete de Almas: consume hasta 3 Almas Reales; +700 ATK permanente por cada una.
+4. Dragón del Trono Espectral — ATK 8.500 / DEF 7.000
+   Aliento del Inframundo: 1.000 de daño directo al ser invocado.
+   Resurgir Espectral: primera destrucción puede consumir 2 Almas Reales y sobrevivir con 1.000 DEF.
+5. Nigromante Supremo del Rey — ATK 4.000 / DEF 7.500
+   Resurrección Real: una vez por duelo revive la criatura espectral más poderosa disponible del Cementerio con 100% de ATK y DEF.
+
+IA DEL REY
+- Usa el mismo motor inteligente de jefes, ampliado para el Rey Espectral.
+- Puntúa las cinco cartas según HP, campo, Cementerio, Almas Reales y fase.
+- Reserva y consume Almas según impacto; la curación no se dispara hasta estar bajo 40%.
+- El Devorador consume hasta 3 almas para crecimiento permanente.
+- El Nigromante prioriza resurrección cuando hay objetivo útil.
+- El General potencia la mejor amenaza espectral disponible.
+- El Dragón presiona con daño directo y conserva su resurrección si existen 2 almas.
+- En Fase III la IA aumenta agresividad y busca jugadas letales.
+
+NOTA: Las cartas 6–10 quedan reservadas para el bloque 2/2. No se han inventado ni reemplazado en esta versión.

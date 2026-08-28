@@ -1,0 +1,45 @@
+{
+  "version": "19.2.6-full-integrado",
+  "base": "19.2.3",
+  "guardian_patch": "19.2.4",
+  "simulator_patch": "19.2.6",
+  "guardian_deck": [
+    "dragon-carmesi-caos",
+    "dragon-abisal-nemesis",
+    "dragon-negro-ruinas",
+    "dragon-infernal-sangre",
+    "magica-curandero",
+    "magica-nosferatu",
+    "df-dragon-vacio",
+    "dragon",
+    "dragon-infernal",
+    "esp-dragon-abismo"
+  ],
+  "checks": {
+    "guardian_10": true,
+    "guardian_unique_10": true,
+    "dragon": true,
+    "ra": true,
+    "caballero": true,
+    "rey": true,
+    "fantasma": true,
+    "ares": true,
+    "hades": true,
+    "olimpo": true,
+    "sanctuary": true,
+    "collection": true,
+    "flow_guard": true,
+    "simulator_file": true,
+    "simulator_results": true,
+    "js_syntax": true,
+    "simulator_pass": true,
+    "assets_ok": true
+  },
+  "missing_assets": [],
+  "simulator": {
+    "ok": true,
+    "stdout": "PASS TARGET→ACTION sin objetivo\nPASS IA sin cartas devuelve turno\nPASS Cementerio recibe destruida\nPASS HP=0 final estable\nPASS Supervisor anti-softlock\nPASS Guardia IA\nPASS Rey Espectral\nPASS Dios Fantasma\nPASS Ares fases\nPASS Ares mazo\nPASS Hades fases/IA\nPASS OLIMPO/Fusión\nPASS Memory Card\nPASS Respuestas\nPASS Equipamiento\nPASS Cementerio motor\n",
+    "stderr": ""
+  },
+  "release_gate": true
+}

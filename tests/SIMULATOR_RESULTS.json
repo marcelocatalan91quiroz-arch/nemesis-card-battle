@@ -1,0 +1,71 @@
+{
+  "total": 16,
+  "pass": 16,
+  "fail": 0,
+  "results": [
+    {
+      "name": "TARGET→ACTION sin objetivo",
+      "ok": true
+    },
+    {
+      "name": "IA sin cartas devuelve turno",
+      "ok": true
+    },
+    {
+      "name": "Cementerio recibe destruida",
+      "ok": true
+    },
+    {
+      "name": "HP=0 final estable",
+      "ok": true
+    },
+    {
+      "name": "Supervisor anti-softlock",
+      "ok": true
+    },
+    {
+      "name": "Guardia IA",
+      "ok": true
+    },
+    {
+      "name": "Rey Espectral",
+      "ok": true
+    },
+    {
+      "name": "Dios Fantasma",
+      "ok": true
+    },
+    {
+      "name": "Ares fases",
+      "ok": true
+    },
+    {
+      "name": "Ares mazo",
+      "ok": true
+    },
+    {
+      "name": "Hades fases/IA",
+      "ok": true
+    },
+    {
+      "name": "OLIMPO/Fusión",
+      "ok": true
+    },
+    {
+      "name": "Memory Card",
+      "ok": true
+    },
+    {
+      "name": "Respuestas",
+      "ok": true
+    },
+    {
+      "name": "Equipamiento",
+      "ok": true
+    },
+    {
+      "name": "Cementerio motor",
+      "ok": true
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "version": "19.2.0",
+  "base_hash": "647365574547284be076e2630f9b2b1abe45e490b141560181980c55959d2858",
+  "final_hash": "647365574547284be076e2630f9b2b1abe45e490b141560181980c55959d2858",
+  "game_js_unchanged": true,
+  "static_tests": {
+    "integrity": {
+      "ok": true,
+      "output": "PASS index.html\nPASS css/game.css\nPASS motor de fases\nPASS supervisor anti-softlock\nPASS guard IA V19\nPASS campañas aisladas\nPASS colección global\nPASS Memory Card\nPASS OLIMPO\nPASS Santuario aislado\nPASS jefe Dragón\nPASS jefe Ira de Ra\nPASS jefe Caballero de las Almas\nPASS jefe Rey Espectral\nPASS jefe Dios Fantasma\nPASS jefe Ares\nPASS jefe Hades\nINFO IDs repetidos detectados por parser simple: \u001b[33m4\u001b[39m (puede incluir definiciones de configuración; la auditoría runtime decide validez real)\nPASS assets de cartas\nNÉMESIS CORE INTEGRITY: PASS\n"
+    },
+    "flow": {
+      "ok": true,
+      "output": "PASS ACTION recupera controles\nPASS TARGET oculta acciones\nPASS TARGET sin enemigo vuelve a ACTION\nPASS PLACE inválido vuelve a ACTION\nPASS IA tiene try/catch de recuperación\nPASS Rey Espectral continúa tras Corona\nPASS Dios Fantasma continúa tras Forma Final\nPASS END protegido\nNÉMESIS FLOW REGRESSION: PASS\n"
+    },
+    "syntax": {
+      "ok": true,
+      "output": ""
+    }
+  },
+  "release_gate": true,
+  "e2e_ready": true,
+  "e2e_note": "Playwright está configurado; requiere npm install para ejecutar navegador Chromium."
+}
