@@ -1,7 +1,7 @@
 {
   "name": "nemesis-card-battle",
   "private": true,
-  "version": "19.2.0",
+  "version": "19.2.9",
   "scripts": {
     "test:integrity": "node tests/integrity.test.cjs",
     "test:flow": "node tests/flow-regression.test.cjs",
