@@ -30,3 +30,19 @@ test('Santuario está registrado sin alterar campañas', async ({ page }) => {
   }));
   expect(result).toEqual({sanctuary:true,campaigns:true,adapters:true});
 });
+
+
+test('auditoría Duel Master 10/10 y assets', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForTimeout(900);
+  const audit=await page.evaluate(() => typeof window.NEMESIS_DUEL_MASTER_AUDIT==='function' ? window.NEMESIS_DUEL_MASTER_AUDIT() : null);
+  expect(audit).not.toBeNull();
+  expect(audit.total).toBe(10);
+  expect(audit.ok).toBeTruthy();
+  expect(audit.onkolxon).toEqual({hp:13000,energia:14});
+  expect(audit.handlers.every(x=>x.handler)).toBeTruthy();
+  for(const src of audit.images){
+    const res=await page.request.get(new URL(src,page.url()).href);
+    expect(res.ok()).toBeTruthy();
+  }
+});
