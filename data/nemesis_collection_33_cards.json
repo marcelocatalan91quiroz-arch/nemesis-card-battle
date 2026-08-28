@@ -931,7 +931,8 @@
         "CONTROL",
         "TIEMPO",
         "GUERRERO"
-      ]
+      ],
+      "img": "assets/images/external33/dm-001.svg"
     },
     {
       "id": "DM-002",
@@ -985,7 +986,8 @@
         "LUZ",
         "RAYO",
         "UNIVERSAL"
-      ]
+      ],
+      "img": "assets/images/external33/dm-002.svg"
     },
     {
       "id": "DM-003",
@@ -1039,7 +1041,8 @@
         "THOR",
         "ORIGENES"
       ],
-      "elementos": []
+      "elementos": [],
+      "img": "assets/images/external33/dm-003.svg"
     },
     {
       "id": "DM-004",
@@ -1093,7 +1096,8 @@
         "ZEUS",
         "DRAGON_DORADO",
         "ORACULO_DE_DELFOS"
-      ]
+      ],
+      "img": "assets/images/external33/dm-004.svg"
     },
     {
       "id": "DM-005",
@@ -1157,7 +1161,8 @@
         "PRIMORDIAL",
         "UNIVERSAL"
       ],
-      "elementos": []
+      "elementos": [],
+      "img": "assets/images/external33/dm-005.svg"
     },
     {
       "id": "DM-006",
@@ -1172,13 +1177,26 @@
         "OSCURIDAD"
       ],
       "rareza": "LEGENDARIA_UNICA",
-      "efecto": "Castigo escalante: cuanto mayor sea el ATK de la criatura enemiga, mayor es el daño, destrucción y negación.",
+      "efecto": "Cuando el adversario Invoca o Invoca Especialmente una criatura, o declara un ataque con una criatura de 3000 ATK o más, selecciona 1 monstruo rival e inflige daño igual a la diferencia entre su ATK y tu ATK más alto. Aplica efectos adicionales según su ATK.",
       "habilidades": [
-        "Sentencia Escalante",
-        "Anulación Táctica",
-        "Castigo Absoluto",
-        "Justicia del Cazador"
-      ]
+        {
+          "nombre": "Sentencia Escalante",
+          "efecto": "3000–5999 ATK: inflige la diferencia. 6000–9999: además destruye esa carta. 10000–14999: además niega los efectos de cartas del rival por el resto del turno. 15000 o más: además destruye cartas rivales con ATK menor a la mitad del objetivo y el rival no puede Invocar Especialmente este turno."
+        },
+        {
+          "nombre": "Anulación Táctica",
+          "efecto": "Niega efectos ligados a Invocaciones Especiales del rival durante este turno al superar el umbral de 10000 ATK."
+        },
+        {
+          "nombre": "Castigo Absoluto",
+          "efecto": "Si el objetivo tiene 15000 ATK o más, destruye además todas las cartas rivales con ATK menor a la mitad de su ATK."
+        },
+        {
+          "nombre": "Justicia del Cazador",
+          "efecto": "Esta respuesta no puede ser negada si el objetivo tiene 15000 ATK o más."
+        }
+      ],
+      "img": "assets/images/external33/dm-006.svg"
     },
     {
       "id": "DM-007",
@@ -1200,12 +1218,34 @@
       "energia": 10,
       "velocidad": "ALTA",
       "habilidades": [
-        "Ascensión Celestial",
-        "Retorno del Eterno",
-        "Vientos Renovadores",
-        "Torbellino Sagrado"
+        {
+          "nombre": "Ascensión Celestial",
+          "efecto": "Una vez por turno, retira temporalmente esta carta del Campo sin destruirla. Regresa al inicio de tu próximo turno y no puede ser objetivo durante la ausencia."
+        },
+        {
+          "nombre": "Retorno del Eterno",
+          "efecto": "Cuando regresa al Campo obtiene +3000 ATK, +3000 DEF y una Carga de Pluma Celestial, máximo 3."
+        },
+        {
+          "nombre": "Vientos Renovadores",
+          "efecto": "Descarta 1 carta de VIENTO o LUZ; recupera 3000 HP y remueve 1 carta Mágica/Trampa del Campo."
+        },
+        {
+          "nombre": "Torbellino Sagrado",
+          "efecto": "Puede atacar a todos los monstruos rivales, infligiendo 2000 de daño a cada uno ignorando DEF."
+        }
       ],
-      "ultimate": "Pluma de la Eternidad: abandona temporalmente el Campo para evitar destrucción y regresa fortalecido."
+      "ultimate": {
+        "nombre": "Pluma de la Eternidad",
+        "efecto": "Costo 8 Energía. Retira esta carta del Campo y regresa al inicio del próximo turno con +5000 ATK y +5000 DEF permanentes; durante 2 turnos no puede ser destruida por efectos y tus monstruos VIENTO/LUZ recuperan 2000 HP. Si fue retirada por Ascensión Celestial, el costo baja a 4."
+      },
+      "img": "assets/images/external33/dm-007.svg",
+      "pasivos": [
+        "Alas del Viento: no puede ser seleccionada por efectos rivales mientras tenga 1 o más Contadores de Pluma Celestial.",
+        "Renovación Divina: al final de cada turno recupera 1000 HP por cada carta de VIENTO o LUZ en tu Cementerio, máximo 5000.",
+        "Sabiduría Ancestral: puedes tener 1 carta adicional en tu mano.",
+        "Gracia Quetzal: reduce a 0 el daño de efectos que no destruyan esta carta."
+      ]
     },
     {
       "id": "DM-008",
@@ -1226,13 +1266,35 @@
       "energia": 9,
       "velocidad": "MEDIA",
       "habilidades": [
-        "Estratega Supremo",
-        "Ofrenda de Guerra",
-        "Sol Naciente",
-        "Último Tlatoani"
+        {
+          "nombre": "Estratega Supremo",
+          "efecto": "Al inicio del turno mira las 3 primeras cartas de tu Deck y reordénalas."
+        },
+        {
+          "nombre": "Ofrenda de Guerra",
+          "efecto": "Sacrifica 1 carta propia; Moctezuma gana 2000 ATK hasta el final del turno y tus cartas de FUEGO cuestan 1 Energía menos este turno."
+        },
+        {
+          "nombre": "Sol Naciente",
+          "efecto": "Con 5 o más Contadores Solares, tus cartas de FUEGO ganan 1500 ATK y 1500 DEF hasta el final del turno."
+        },
+        {
+          "nombre": "Último Tlatoani",
+          "efecto": "Una vez por duelo sacrifica hasta 5 cartas propias e inflige daño directo igual a la suma de su ATK."
+        }
       ],
       "pasivo": "Convierte sacrificios y cartas destruidas en Contadores Solares y recursos.",
-      "ultimate": "Eclipse del Quinto Sol"
+      "ultimate": {
+        "nombre": "Eclipse del Quinto Sol",
+        "efecto": "Costo 10 Energía + 5 Contadores Solares. Sacrifica todas las cartas en ambos Campos; inflige daño igual a la suma del ATK de las cartas sacrificadas y después Moctezuma gana +5000 ATK y +5000 DEF hasta el final del duelo."
+      },
+      "img": "assets/images/external33/dm-008.svg",
+      "pasivos": [
+        "Sacrificio Sagrado: cuando una o más cartas propias son destruidas, Moctezuma gana +500 ATK y +500 DEF por cada carta sacrificada.",
+        "Tributo del Sol: cuando una carta propia es destruida obtienes 1 Contador Solar, máximo 10; no se pierden al final del turno.",
+        "Poder Imperial: puedes remover 3 Contadores Solares para invocar desde el Deck una carta de FUEGO de nivel 7 o menor, o añadir Sacrificio Azteca a la mano.",
+        "Voluntad del Tlatoani: inmune a efectos que reduzcan su ATK o tomen control de esta carta."
+      ]
     },
     {
       "id": "DM-009",
@@ -1243,7 +1305,8 @@
         "HECHICERA"
       ],
       "elementos": [
-        "OSCURIDAD"
+        "OSCURIDAD",
+        "PACTO_OSCURO"
       ],
       "rareza": "LEGENDARIA_UNICA",
       "atk": 0,
@@ -1252,13 +1315,35 @@
       "energia": 12,
       "velocidad": "MEDIA",
       "habilidades": [
-        "Usurpación Arcana",
-        "Pacto de Sombras",
-        "Dominio del Cementerio",
-        "Retribución Oscura"
+        {
+          "nombre": "Usurpación Arcana",
+          "efecto": "Toma el control de 1 Mágica/Trampa rival hasta la End Phase; si es de Juego Rápido, puede activarla este turno."
+        },
+        {
+          "nombre": "Pacto de Sombras",
+          "efecto": "Selecciona 1 Contador del rival; este turno cuenta como tuyo y si era permanente sus efectos te benefician."
+        },
+        {
+          "nombre": "Dominio del Cementerio",
+          "efecto": "Mira las 5 primeras cartas del Cementerio rival; elige 1 para desterrarla y colocarla boca abajo en tu zona de Mágicas/Trampas como Trampa Continua."
+        },
+        {
+          "nombre": "Retribución Oscura",
+          "efecto": "Si una carta o efecto rival intenta perder o destruir cartas, puedes negar ese efecto y robar 1 carta, una vez por turno."
+        }
       ],
       "pasivo": "Apropia temporalmente recursos enemigos y convierte cartas destruidas en cargas de Pacto.",
-      "ultimate": "Pacto de la Tirana Suprema"
+      "ultimate": {
+        "nombre": "Pacto de la Tirana Suprema",
+        "efecto": "Costo 12 Energía + 6 cargas. Toma temporalmente el control de cartas y recursos rivales hasta la End Phase; además todas las cartas rivales pierden 1200 ATK y 1200 DEF y no pueden activar efectos hasta el final del turno. Si el rival no controla cartas en Campo, inflige 5000 de daño directo."
+      },
+      "img": "assets/images/external33/dm-009.svg",
+      "pasivos": [
+        "Pacto Profano: al inicio del turno puedes tomar el control temporal de 1 Contador, Mágica/Trampa o recurso rival hasta el final del turno.",
+        "Eco del Cementerio: puedes usar 1 carta de tu Cementerio como si estuviera en tu mano una vez por turno, sin Invocación Especial.",
+        "Corrupción de Recursos: cuando una carta rival es destruida, La Tirana gana 1 carga, máximo 6; por cada carga gana 300 ATK y 300 DEF.",
+        "Besos de la Reina: con 4 o más cargas, todas las cartas rivales pierden 800 ATK y 800 DEF mientras La Tirana esté en Campo."
+      ]
     },
     {
       "id": "DM-010",
@@ -1275,17 +1360,39 @@
       "rareza": "ANCESTRAL_UNICA",
       "atk": 0,
       "def": 0,
-      "hp": 12000,
-      "energia": 10,
+      "hp": 13000,
+      "energia": 14,
       "velocidad": "ALTA",
       "habilidades": [
-        "Aura del Invierno",
-        "Aliento Iceberg",
-        "Eco de los Oprimidos",
-        "Ascenso del Espíritu"
+        {
+          "nombre": "Respiro del Abismo",
+          "efecto": "Mientras sus HP sean 4000 o menos, gana inmunidad a destrucción y a efectos que reduzcan su ATK."
+        },
+        {
+          "nombre": "Nevada de Destinos",
+          "efecto": "Destierra 1 carta del Campo rival por cada Contador Austral que tengas, máximo 3 destierros por turno."
+        },
+        {
+          "nombre": "Llamado del Vacío",
+          "efecto": "Invoca de Modo Especial desde tu Cementerio 1 carta ESPÍRITU o HIELO en Posición de Defensa."
+        },
+        {
+          "nombre": "Ciclo del Deshielo",
+          "efecto": "Cuando una carta propia es destruida, coloca 1 Contador Austral. Al obtener 5 Contadores, roba 2 cartas y recupera 1000 HP."
+        }
       ],
       "pasivo": "Por cada 1000 HP perdido gana +500 ATK y +500 DEF.",
-      "ultimate": "Despertar del Fin Austral: condición de remontada en estado crítico; recupera HP, repone mano, limpia amenazas y fortalece aliados."
+      "ultimate": {
+        "nombre": "Aurora del Fin Austral",
+        "efecto": "Costo 16 Energía. Se activa automáticamente cuando tus HP son 2000 o menos o cuando no tienes cartas en Campo: reinicia efectos negativos que te afecten, devuelve al Campo todas tus cartas desde el Cementerio, limpia el Campo rival, gana 5 Contadores Austral y 3000 HP; durante este turno tus cartas ganan +1500 ATK y +1500 DEF y pueden atacar directamente."
+      },
+      "img": "assets/images/external33/dm-010.svg",
+      "pasivos": [
+        "Espíritu Resiliente: mientras sus HP sean menores al 50%, gana +1000 ATK y +1000 DEF por cada 2000 puntos de daño recibidos en el duelo.",
+        "Frío Desgarrador: las cartas rivales pierden 300 ATK por cada carta propia destruida durante el duelo.",
+        "Eco del Fin Austral: si Onkolxón está en tu Cementerio, al inicio de tu turno recupera 1 Contador Austral.",
+        "Guardián del Último Aliento: mientras controles 1 o menos cartas en Campo, no puede ser destruido por efectos del rival."
+      ]
     }
   ],
   "integration": {
