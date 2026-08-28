@@ -932,7 +932,7 @@
         "TIEMPO",
         "GUERRERO"
       ],
-      "img": "assets/images/external33/dm-001.webp"
+      "img": "assets/images/external33/dm-001.svg"
     },
     {
       "id": "DM-002",
@@ -987,7 +987,7 @@
         "RAYO",
         "UNIVERSAL"
       ],
-      "img": "assets/images/external33/dm-002.webp"
+      "img": "assets/images/external33/dm-002.svg"
     },
     {
       "id": "DM-003",
@@ -1042,7 +1042,7 @@
         "ORIGENES"
       ],
       "elementos": [],
-      "img": "assets/images/external33/dm-003.webp"
+      "img": "assets/images/external33/dm-003.svg"
     },
     {
       "id": "DM-004",
@@ -1097,7 +1097,7 @@
         "DRAGON_DORADO",
         "ORACULO_DE_DELFOS"
       ],
-      "img": "assets/images/external33/dm-004.webp"
+      "img": "assets/images/external33/dm-004.svg"
     },
     {
       "id": "DM-005",
@@ -1162,7 +1162,7 @@
         "UNIVERSAL"
       ],
       "elementos": [],
-      "img": "assets/images/external33/dm-005.webp"
+      "img": "assets/images/external33/dm-005.svg"
     },
     {
       "id": "DM-006",
@@ -1196,7 +1196,7 @@
           "efecto": "Esta respuesta no puede ser negada si el objetivo tiene 15000 ATK o más."
         }
       ],
-      "img": "assets/images/external33/dm-006.webp"
+      "img": "assets/images/external33/dm-006.svg"
     },
     {
       "id": "DM-007",
@@ -1239,7 +1239,7 @@
         "nombre": "Pluma de la Eternidad",
         "efecto": "Costo 8 Energía. Retira esta carta del Campo y regresa al inicio del próximo turno con +5000 ATK y +5000 DEF permanentes; durante 2 turnos no puede ser destruida por efectos y tus monstruos VIENTO/LUZ recuperan 2000 HP. Si fue retirada por Ascensión Celestial, el costo baja a 4."
       },
-      "img": "assets/images/external33/dm-007.webp",
+      "img": "assets/images/external33/dm-007.svg",
       "pasivos": [
         "Alas del Viento: no puede ser seleccionada por efectos rivales mientras tenga 1 o más Contadores de Pluma Celestial.",
         "Renovación Divina: al final de cada turno recupera 1000 HP por cada carta de VIENTO o LUZ en tu Cementerio, máximo 5000.",
@@ -1288,7 +1288,7 @@
         "nombre": "Eclipse del Quinto Sol",
         "efecto": "Costo 10 Energía + 5 Contadores Solares. Sacrifica todas las cartas en ambos Campos; inflige daño igual a la suma del ATK de las cartas sacrificadas y después Moctezuma gana +5000 ATK y +5000 DEF hasta el final del duelo."
       },
-      "img": "assets/images/external33/dm-008.webp",
+      "img": "assets/images/external33/dm-008.svg",
       "pasivos": [
         "Sacrificio Sagrado: cuando una o más cartas propias son destruidas, Moctezuma gana +500 ATK y +500 DEF por cada carta sacrificada.",
         "Tributo del Sol: cuando una carta propia es destruida obtienes 1 Contador Solar, máximo 10; no se pierden al final del turno.",
@@ -1337,7 +1337,7 @@
         "nombre": "Pacto de la Tirana Suprema",
         "efecto": "Costo 12 Energía + 6 cargas. Toma temporalmente el control de cartas y recursos rivales hasta la End Phase; además todas las cartas rivales pierden 1200 ATK y 1200 DEF y no pueden activar efectos hasta el final del turno. Si el rival no controla cartas en Campo, inflige 5000 de daño directo."
       },
-      "img": "assets/images/external33/dm-009.webp",
+      "img": "assets/images/external33/dm-009.svg",
       "pasivos": [
         "Pacto Profano: al inicio del turno puedes tomar el control temporal de 1 Contador, Mágica/Trampa o recurso rival hasta el final del turno.",
         "Eco del Cementerio: puedes usar 1 carta de tu Cementerio como si estuviera en tu mano una vez por turno, sin Invocación Especial.",
@@ -1386,7 +1386,7 @@
         "nombre": "Aurora del Fin Austral",
         "efecto": "Costo 16 Energía. Se activa automáticamente cuando tus HP son 2000 o menos o cuando no tienes cartas en Campo: reinicia efectos negativos que te afecten, devuelve al Campo todas tus cartas desde el Cementerio, limpia el Campo rival, gana 5 Contadores Austral y 3000 HP; durante este turno tus cartas ganan +1500 ATK y +1500 DEF y pueden atacar directamente."
       },
-      "img": "assets/images/external33/dm-010.webp",
+      "img": "assets/images/external33/dm-010.svg",
       "pasivos": [
         "Espíritu Resiliente: mientras sus HP sean menores al 50%, gana +1000 ATK y +1000 DEF por cada 2000 puntos de daño recibidos en el duelo.",
         "Frío Desgarrador: las cartas rivales pierden 300 ATK por cada carta propia destruida durante el duelo.",
