@@ -2410,7 +2410,220 @@ function nemesisDmKeepTurnAfterAttack(c){
 }
 window.NEMESIS_DUEL_MASTER_AUDIT=()=>{const cards=NEMESIS_DUEL_MASTER_IDS.map(id=>card(id)),o=card('DM-010');return{total:cards.filter(Boolean).length,ids:cards.filter(Boolean).map(c=>c.id),images:cards.filter(Boolean).map(c=>c.img),onkolxon:o?{hp:o.externalData?.hp,energia:o.externalData?.energia}:null,handlers:cards.filter(Boolean).map(c=>({id:c.id,type:c.type,handler:c.type==='monster'?!!dmSkillDescriptor(c):['DM-005','DM-006'].includes(c.id)})),ok:cards.filter(Boolean).length===10&&o?.externalData?.hp===13000&&o?.externalData?.energia===14}}
 
+
+/* V19.2.9 — DUEL MASTER: motor específico DM-001..DM-010.
+   Incremental: no reemplaza campañas ni motor de daño. */
+function dmIs(c,id=null){return !!c&&/^DM-\d{3}$/.test(String(c.id||''))&&(!id||c.id===id)}
+function dmOwn(side){return side==='p'?playerCards:enemyCards}
+function dmRival(side){return side==='p'?enemyCards:playerCards}
+function dmGrave(side){return side==='p'?playerGrave:enemyGrave}
+function dmRivalGrave(side){return side==='p'?enemyGrave:playerGrave}
+function dmState(c){
+ if(!c)return null;
+ if(!c._dm)c._dm={energy:Number(c.externalData?.energia||0),charges:0,solar:0,pact:0,austral:0,uses:0,phase:1,destroyedOwn:0};
+ return c._dm
+}
+function dmTag(c,t){
+ t=String(t||'').toLowerCase();
+ return !!c&&[...(c.tags||[]),...(c.externalData?.tipos||[]),...(c.externalData?.elementos||[])].map(x=>String(x).toLowerCase()).includes(t)
+}
+function dmDamage(side,n){
+ n=Math.max(0,Math.floor(Number(n)||0));
+ if(side==='p'){ehpv=Math.max(0,ehpv-n);damageFx(n,'e')}else{phpv=Math.max(0,phpv-n);damageFx(n,'p')}
+ return n
+}
+function dmHeal(side,n){
+ n=Math.max(0,Math.floor(Number(n)||0));
+ if(side==='p')phpv=Math.min(playerMaxHp,phpv+n);else ehpv=Math.min(enemyMaxHp,ehpv+n);
+ return n
+}
+function dmPay(c,n){
+ const st=dmState(c);if((st.energy||0)<n){toast(c.name+': Energía insuficiente ('+st.energy+'/'+n+').');return false}
+ st.energy-=n;return true
+}
+function dmBestTarget(side){
+ return dmRival(side).map((c,i)=>({c,i})).filter(x=>x.c).sort((a,b)=>(b.c.atk||0)-(a.c.atk||0))[0]||null
+}
+async function dmDestroy(side,target){
+ if(!target?.c)return false;
+ return await destroyCard(side==='p'?'e':'p',target.i)
+}
+async function dmDestroyAll(side){
+ let n=0,arr=dmRival(side);
+ for(let i=0;i<arr.length;i++)if(arr[i]&&await destroyCard(side==='p'?'e':'p',i))n++;
+ return n
+}
+function dmAura(c,key,atk,def,on){
+ if(!c)return;const k='_dmAura_'+key;
+ if(on&&!c[k]){c.atk=(c.atk||0)+atk;c.def=(c.def||0)+def;c[k]=true}
+ else if(!on&&c[k]){c.atk=Math.max(0,(c.atk||0)-atk);c.def=Math.max(0,(c.def||0)-def);delete c[k]}
+}
+function dmSyncPassives(){
+ for(const side of ['p','e']){
+  const own=dmOwn(side),riv=dmRival(side);
+  const zeus=own.find(c=>dmIs(c,'DM-001')),dragon=own.find(c=>dmIs(c,'DM-002')),thor=own.find(c=>dmIs(c,'DM-004')),
+        moct=own.find(c=>dmIs(c,'DM-008')),tirana=own.find(c=>dmIs(c,'DM-009')),onk=own.find(c=>dmIs(c,'DM-010'));
+  own.forEach(c=>{
+   if(!c)return;
+   dmAura(c,'zeus',2000,1500,!!zeus&&c!==zeus&&dmTag(c,'divina'));
+   dmAura(c,'dragon',1500,1000,!!dragon&&c!==dragon&&dmTag(c,'dragon'))
+  });
+  if(thor){
+   const st=dmState(thor),want=(st.charges||0)*500,old=thor._dmChargeAtk||0;
+   if(want!==old){thor.atk=Math.max(0,thor.atk-old+want);thor._dmChargeAtk=want}
+  }
+  if(moct){
+   const st=dmState(moct),want=(st.solar||0)*500,old=moct._dmSolarBonus||0;
+   if(want!==old){moct.atk=Math.max(0,moct.atk-old+want);moct.def=Math.max(0,moct.def-old+want);moct._dmSolarBonus=want}
+  }
+  if(tirana){
+   const st=dmState(tirana),want=(st.pact||0)*300,old=tirana._dmPactBonus||0;
+   if(want!==old){tirana.atk=Math.max(0,tirana.atk-old+want);tirana.def=Math.max(0,tirana.def-old+want);tirana._dmPactBonus=want}
+   riv.forEach(c=>dmAura(c,'tirana',-800,-800,!!c&&(st.pact||0)>=4))
+  }
+  if(onk){
+   const st=dmState(onk),hp=side==='p'?phpv:ehpv,max=side==='p'?playerMaxHp:enemyMaxHp;
+   const phase=(hp<=2000||own.filter(Boolean).length===0)?3:(hp<max*.5?2:1);
+   if(st.phase!==phase){st.phase=phase;toast(onk.name+': FASE '+phase+(phase===3?' · FIN AUSTRAL':''))}
+   const missing=Math.max(0,max-hp),want=phase>=2?Math.floor(missing/2000)*1000:0,old=onk._dmResilient||0;
+   if(want!==old){onk.atk=Math.max(0,onk.atk-old+want);onk.def=Math.max(0,onk.def-old+want);onk._dmResilient=want}
+   const deb=(st.destroyedOwn||0)*300;
+   riv.forEach(c=>{if(!c)return;const oldDeb=c._dmOnkDebuff||0;if(oldDeb!==deb){c.atk=Math.max(0,c.atk+oldDeb-deb);c._dmOnkDebuff=deb}})
+  }
+ }
+}
+function dmSkillDescriptor(c){
+ if(!dmIs(c)||c.type!=='monster')return null;
+ const d=c.externalData||{},list=d.habilidades||[],st=dmState(c),u=d.ultimate||d.definitivo;
+ const ultimateText=typeof u==='string'?u:(u?u.nombre+': '+(u.efecto||''):'');
+ if(ultimateText&&!c._extUltimateUsed&&st.uses>=Math.max(1,list.length)){
+  return {name:String(typeof u==='string'?'ULTIMATE':u.nombre||'ULTIMATE').toUpperCase(),kind:'dmUltimate',desc:ultimateText,onceDuel:true}
+ }
+ const raw=list.length?list[st.uses%list.length]:'Poder Duel Master';
+ const desc=typeof raw==='string'?raw:(raw.nombre+': '+(raw.efecto||''));
+ const name=typeof raw==='string'?raw.split(':')[0]:(raw.nombre||'Habilidad');
+ return {name:String(name).toUpperCase(),kind:'dmAbility',desc,dmIndex:list.length?st.uses%list.length:0}
+}
+async function dmUseAbility(side,i,c,sk){
+ const st=dmState(c),k=sk.dmIndex||0,own=dmOwn(side),riv=dmRival(side),rgrave=dmRivalGrave(side);
+ let t;
+ if(sk.kind==='dmUltimate'){
+  if(c._extUltimateUsed)return false;
+  if(c.id==='DM-001'){
+   if(!dmPay(c,4))return false;
+   const n=await dmDestroyAll(side);dmDamage(side,8000*Math.max(1,n));window.__nemesisDmLockUntil=turnNo+1
+  }else if(c.id==='DM-002'){
+   if(!dmPay(c,5))return false;
+   const n=await dmDestroyAll(side);c.atk+=3000*n;c._dmUnlimitedAttackTurn=turnNo
+  }else if(c.id==='DM-003'){
+   if(!dmPay(c,6))return false;
+   await extDraw(side,2);enemySkipTurns=Math.max(enemySkipTurns,1);c.atk+=3000
+  }else if(c.id==='DM-004'){
+   if((st.charges||0)<3||!dmPay(c,5)){toast('Thor requiere 3 Cargas de Tormenta y 5 Energía.');return false}
+   st.charges-=3;dmDamage(side,6000);
+   for(let j=0;j<riv.length;j++)if(riv[j]&&(riv[j].def||0)<=Math.floor((c.atk||0)/2))await destroyCard(side==='p'?'e':'p',j)
+  }else if(c.id==='DM-007'){
+   const cost=c._dmAscendedUntil>=turnNo?4:8;if(!dmPay(c,cost))return false;
+   c._dmAscendedUntil=turnNo+1;c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+2);c.atk+=5000;c.def+=5000;dmHeal(side,2000)
+  }else if(c.id==='DM-008'){
+   if((st.solar||0)<5||!dmPay(c,10)){toast('Moctezuma requiere 5 Contadores Solares y 10 Energía.');return false}
+   st.solar-=5;let sum=0;
+   for(const ss of ['p','e']){const a=dmOwn(ss);for(let j=0;j<a.length;j++)if(a[j]){sum+=a[j].atk||0;await destroyCard(ss,j)}}
+   dmDamage(side,sum);c.atk+=5000;c.def+=5000
+  }else if(c.id==='DM-009'){
+   if((st.pact||0)<6||!dmPay(c,12)){toast('La Tirana requiere 6 Cargas de Pacto y 12 Energía.');return false}
+   st.pact-=6;riv.forEach(x=>{if(x){x.atk=Math.max(0,x.atk-1200);x.def=Math.max(0,x.def-1200)}});window.__nemesisDmLockUntil=turnNo;
+   if(!riv.some(Boolean))dmDamage(side,5000)
+  }else if(c.id==='DM-010'){
+   const hp=side==='p'?phpv:ehpv;
+   if((st.energy||0)<16&&hp>2000&&own.filter(Boolean).length){toast('Aurora del Fin Austral requiere 16 Energía o estado crítico.');return false}
+   st.energy=Math.max(0,(st.energy||0)-16);st.austral=(st.austral||0)+5;dmHeal(side,3000);
+   await dmDestroyAll(side);await extResurrect(side,1);await extResurrect(side,1);
+   own.forEach(x=>{if(x){x.atk+=1500;x.def+=1500;x._dmAuroraTurn=turnNo}})
+  }else return await applyExternalAbility(side,i,c,sk.desc,true);
+  c._extUltimateUsed=true;toast(c.name+': ULTIMATE '+sk.name+'.');update();return true
+ }
+ if(c.id==='DM-001'){
+  if(k===0){t=dmBestTarget(side);if(t){const monster=t.c.type!=='magic'&&t.c.type!=='trap';await dmDestroy(side,t);if(monster)dmDamage(side,3000)}}
+  else if(k===1){for(let j=0;j<riv.length;j++)if(riv[j]){riv[j].def=Math.max(0,(riv[j].def||0)-4000);if(riv[j].def===0)await destroyCard(side==='p'?'e':'p',j)}await extDraw(side,1)}
+  else if(k===2)c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+1);
+  else if(k===3){const q=side==='p'?enemyQueue:deckQueue;if(q?.length){const gone=q.shift(),gc=typeof gone==='string'?card(gone):gone;if(gc)rgrave.push(gc)}}
+  else window.__nemesisDmLockUntil=turnNo;
+ }else if(c.id==='DM-002'){
+  if(k===0){t=dmBestTarget(side);if(t){t.c.def=Math.max(0,(t.c.def||0)-6000);if(t.c.def===0){await dmDestroy(side,t);dmDamage(side,3000)}}}
+  else if(k===1){window.__nemesisDmLockUntil=turnNo;st.energy+=2;t=riv.map((x,j)=>({c:x,i:j})).find(x=>x.c&&(x.c.type==='magic'||x.c.type==='trap'));if(t)await dmDestroy(side,t)}
+  else if(k===2){c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+1);if(side==='p')playerDirectShieldUntil=Math.max(playerDirectShieldUntil,turnNo)}
+  else {t=rgrave.map((x,j)=>({c:x,i:j})).filter(x=>x.c).sort((a,b)=>(b.c.atk||0)-(a.c.atk||0))[0];if(t){rgrave.splice(t.i,1);if(t.c.type!=='magic'&&t.c.type!=='trap')dmDamage(side,4000)}}
+ }else if(c.id==='DM-003'){
+  if(k===0)await extDraw(side,1);
+  else if(k===1)await extDraw(side,1);
+  else if(k===2){enemySkipTurns=Math.max(enemySkipTurns,1);c._immortalUntil=Math.max(c._immortalUntil||0,turnNo)}
+  else if(own.filter(x=>x&&dmTag(x,'divina')).length>=2){await extDraw(side,2);st.energy++}
+ }else if(c.id==='DM-004'){
+  if(k===0){if((st.charges||0)<1){toast('Thor necesita 1 Carga de Tormenta.');return false}st.charges--;dmDamage(side,2500);t=riv.map((x,j)=>({c:x,i:j})).find(x=>x.c&&(x.c.def||0)<=4000);if(t)await dmDestroy(side,t)}
+  else if(k===1){c.atk+=3000;c._dmMjolnir=true}
+  else if(k===2){if((st.charges||0)<2){toast('Thor necesita 2 Cargas de Tormenta.');return false}st.charges-=2;c._dmSecondAttackTurn=turnNo;c.atk+=1000}
+  else {c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+1);t=dmBestTarget(side);if(t)await dmDestroy(side,t)}
+ }else if(c.id==='DM-007'){
+  if(k===0){c._dmAscendedUntil=turnNo+1;c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+1)}
+  else if(k===1){c.atk+=3000;c.def+=3000;st.charges=Math.min(3,(st.charges||0)+1)}
+  else if(k===2){dmHeal(side,3000);t=riv.map((x,j)=>({c:x,i:j})).find(x=>x.c&&(x.c.type==='magic'||x.c.type==='trap'));if(t)await dmDestroy(side,t)}
+  else for(let j=0;j<riv.length;j++)if(riv[j])dmDamage(side,2000)
+ }else if(c.id==='DM-008'){
+  if(k===0&&side==='p'&&deckQueue.length>2){const top=deckQueue.splice(0,3).reverse();deckQueue.unshift(...top)}
+  else if(k===1){t=own.map((x,j)=>({c:x,i:j})).find(x=>x.c&&x.c!==c);if(t){await destroyCard(side,t.i);c.atk+=2000}}
+  else if(k===2&&(st.solar||0)>=5)own.forEach(x=>{if(x&&dmTag(x,'fuego')){x.atk+=1500;x.def+=1500}});
+  else if(k===3){let sum=0,n=0;for(let j=0;j<own.length&&n<5;j++)if(own[j]&&own[j]!==c){sum+=own[j].atk||0;await destroyCard(side,j);n++}if(sum)dmDamage(side,sum)}
+ }else if(c.id==='DM-009'){
+  if(k===0){t=riv.map((x,j)=>({c:x,i:j})).find(x=>x.c&&(x.c.type==='magic'||x.c.type==='trap'));if(t)await dmDestroy(side,t)}
+  else if(k===1)st.pact=Math.min(6,(st.pact||0)+1);
+  else if(k===2&&rgrave.length)rgrave.splice(Math.max(0,rgrave.length-5),1);
+  else if(k===3){c._immortalUntil=Math.max(c._immortalUntil||0,turnNo);await extDraw(side,1)}
+ }else if(c.id==='DM-010'){
+  if(k===0&&((side==='p'?phpv:ehpv)<=4000))c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+1);
+  else if(k===1){let n=Math.min(3,st.austral||0);while(n-->0){t=dmBestTarget(side);if(!t)break;await dmDestroy(side,t);st.austral=Math.max(0,st.austral-1)}}
+  else if(k===2)await extResurrect(side,1);
+  else if(k===3&&(st.austral||0)>=5){st.austral-=5;await extDraw(side,2);dmHeal(side,1000)}
+ }else return await applyExternalAbility(side,i,c,sk.desc,false);
+ st.uses=(st.uses||0)+1;c._extSkillUses=(c._extSkillUses||0)+1;update();return true
+}
+function dmAfterDestroyed(side,victim){
+ dmOwn(side).forEach(c=>{if(!dmIs(c))return;const st=dmState(c);st.destroyedOwn=(st.destroyedOwn||0)+1;if(c.id==='DM-008')st.solar=Math.min(10,(st.solar||0)+1);if(c.id==='DM-010')st.austral=(st.austral||0)+1;if(c.id==='DM-004'&&c!==victim)dmDamage(side,800)});
+ dmRival(side).forEach(c=>{if(dmIs(c,'DM-009')){const st=dmState(c);st.pact=Math.min(6,(st.pact||0)+1)}})
+}
+function dmTurnStart(){
+ playerCards.forEach(c=>{if(!dmIs(c))return;const st=dmState(c);st.energy=(st.energy||0)+1;if(c.id==='DM-004')st.charges=Math.min(5,(st.charges||0)+1)});
+ playerGrave.forEach(c=>{if(dmIs(c,'DM-010'))dmState(c).austral=(dmState(c).austral||0)+1});
+ dmSyncPassives()
+}
+async function dmApplyMagic(side,c){
+ if(c.id==='DM-005'){
+  window.__nemesisOriginsUntil=turnNo+2;enemySkipTurns=Math.max(enemySkipTurns,1);
+  dmOwn(side).forEach(x=>{if(x){delete x._skillDebuff;delete x._hadesChainedUntil;delete x._petrifiedUntil}});
+  await extDraw(side,2);toast('ORÍGENES altera reglas y reinicia estados temporales durante 2 turnos.');return true
+ }
+ if(c.id==='DM-006'){
+  const t=dmBestTarget(side);if(!t)return true;
+  const ownMax=Math.max(0,...dmOwn(side).filter(Boolean).map(x=>x.atk||0)),atk=t.c.atk||0,diff=Math.max(0,atk-ownMax);
+  dmDamage(side,diff);
+  if(atk>=6000)await dmDestroy(side,t);
+  if(atk>=10000)window.__nemesisDmLockUntil=turnNo;
+  if(atk>=15000){for(let j=0;j<dmRival(side).length;j++){const x=dmRival(side)[j];if(x&&(x.atk||0)<atk/2)await destroyCard(side==='p'?'e':'p',j)}}
+  toast('CACERÍA DE DEMONIOS: Sentencia Escalante resuelta.');return true
+ }
+ return false
+}
+window.NEMESIS_DUEL_MASTER_AUDIT=()=>({
+ total:NEMESIS_DUEL_MASTER_IDS.length,
+ exactDeck:Array.isArray(state.savedDecks?.DUEL_MASTER)?state.savedDecks.DUEL_MASTER.length:0,
+ ids:[...NEMESIS_DUEL_MASTER_IDS],
+ onkolxon:(()=>{const c=card('DM-010');return c?{hp:c.externalData?.hp,energia:c.externalData?.energia}:null})(),
+ handlers:NEMESIS_DUEL_MASTER_IDS.every(id=>{const c=card(id);return c&&(c.type!=='monster'||!!dmSkillDescriptor(c))}),
+ ok:NEMESIS_DUEL_MASTER_IDS.length===10&&card('DM-010')?.externalData?.hp===13000&&card('DM-010')?.externalData?.energia===14
+});
+
 function extAbilityDescriptor(c){
+ if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);
  const list=extTextList(c),uses=c._extSkillUses||0,ultimate=extUltimateText(c);
  if(ultimate&&uses>=Math.min(2,Math.max(1,list.length-1))&&!c._extUltimateUsed)return{name:'ULTIMATE',kind:'externalUltimate',desc:ultimate,onceDuel:true};
  const text=list.length?list[uses%list.length]:'Poder NÉMESIS externo.';
@@ -2499,7 +2712,7 @@ function applyTitanDominion(){
  playerCards?.forEach(c=>{if(!c||c.id==='titan-del-olimpo'||c.rarity!=='divina')return;if(titan&&!c._titanAuraBonus){c.atk+=500;c.def+=500;c._titanAuraBonus=true}else if(!titan&&c._titanAuraBonus){c.atk=Math.max(0,c.atk-500);c.def=Math.max(0,c.def-500);delete c._titanAuraBonus}})
 }
 function updateSkillButtons(){const c=playerCards?.[active],sk=skillFor(c),action=phase==='ACTION'&&!!c,used=sk?.onceDuel?c?._skillUsedDuel:c?._skillUsedTurn===turnNo;if(skillBtn){skillBtn.disabled=!action||!sk||!!used;skillBtn.textContent=sk?(used?'HABILIDAD USADA':sk.name):'HABILIDAD'}if(playerPowerBtn){const remain=Math.max(0,playerPowerReadyTurn-turnNo);playerPowerBtn.disabled=!action||remain>0;playerPowerBtn.textContent=remain?`PODER · ${remain}T`:'PODER NÉMESIS'}}
-async function useCreatureSkill(side,i){const arr=side==='p'?playerCards:enemyCards,c=arr[i],sk=skillFor(c);if(!c||!sk||(sk.onceDuel?c._skillUsedDuel:c._skillUsedTurn===turnNo))return false;if(sk.onceDuel)c._skillUsedDuel=true;else c._skillUsedTurn=turnNo;if(pcCinematicProfile(c))await pcCardCinematic('skill',side,i,c);skillFx(side,i,sk,c);if(sk.kind==='dmAbility'||sk.kind==='dmUltimate'){await dmUseAbility(side,i,c,sk)}else if(sk.kind==='external'){await applyExternalAbility(side,i,c,sk.desc,false)}else if(sk.kind==='externalUltimate'){await applyExternalAbility(side,i,c,sk.desc,true)}else if(sk.kind==='attack'){c.atk+=sk.value;olympusNotifyAttackIncrease(side,sk.value);const key=side==='p'?'_skillAtkBonus':'_enemySkillAtkBonus';c[key]=(c[key]||0)+sk.value}else if(sk.kind==='shield'){c._shieldBonus=(c._shieldBonus||0)+sk.value;c._shieldPending=true}else if(sk.kind==='heal'){if(side==='p')phpv=Math.min(playerMaxHp,phpv+sk.value);else ehpv=Math.min(enemyMaxHp,ehpv+sk.value)}else if(sk.kind==='damage'){if(side==='p')ehpv=Math.max(0,ehpv-sk.value);else phpv=Math.max(0,phpv-sk.value);damageFx(sk.value,side==='p'?'e':'p')}else if(sk.kind==='solarShield'){if(side==='p'){playerDirectShieldUntil=Math.max(playerDirectShieldUntil,turnNo+1);toast(`${c.name}: Escudo Solar protege tus HP de ataques directos durante 2 turnos.`)}else{toast(`${c.name}: Escudo Solar activado.`)}}else if(sk.kind==='debuff'){const rivals=side==='p'?enemyCards:playerCards,target=rivals.map((x,j)=>({c:x,j})).filter(x=>x.c).sort((a,b)=>b.c.atk-a.c.atk)[0];if(target){target.c.atk=Math.max(0,target.c.atk-sk.value);target.c._skillDebuff=(target.c._skillDebuff||0)+sk.value;toast(`${target.c.name} pierde ${sk.value} ATK durante este turno.`)}}else if(sk.kind==='stopTime'){if(side==='p'){enemySkipTurns=Math.max(enemySkipTurns,1);toast('KRONOS DETIENE EL TIEMPO: el rival perderá su siguiente turno completo.')}else{playerAttackBlockedUntil=Math.max(playerAttackBlockedUntil,turnNo+1)}}else if(sk.kind==='destroyEquipment'){await destroyEnemyEquipment(side,sk.value||1,c)}update();updateSkillButtons();await wait(280);return true}
+async function useCreatureSkill(side,i){const arr=side==='p'?playerCards:enemyCards,c=arr[i],sk=skillFor(c);if(!c||!sk||(sk.onceDuel?c._skillUsedDuel:c._skillUsedTurn===turnNo))return false;if(sk.onceDuel)c._skillUsedDuel=true;else c._skillUsedTurn=turnNo;if(pcCinematicProfile(c))await pcCardCinematic('skill',side,i,c);skillFx(side,i,sk,c);if(sk.kind==='dmAbility'||sk.kind==='dmUltimate'){await dmUseAbility(side,i,c,sk)}else if(sk.kind==='dmAbility'||sk.kind==='dmUltimate'){await dmUseAbility(side,i,c,sk)}else if(sk.kind==='external'){await applyExternalAbility(side,i,c,sk.desc,false)}else if(sk.kind==='externalUltimate'){await applyExternalAbility(side,i,c,sk.desc,true)}else if(sk.kind==='attack'){c.atk+=sk.value;olympusNotifyAttackIncrease(side,sk.value);const key=side==='p'?'_skillAtkBonus':'_enemySkillAtkBonus';c[key]=(c[key]||0)+sk.value}else if(sk.kind==='shield'){c._shieldBonus=(c._shieldBonus||0)+sk.value;c._shieldPending=true}else if(sk.kind==='heal'){if(side==='p')phpv=Math.min(playerMaxHp,phpv+sk.value);else ehpv=Math.min(enemyMaxHp,ehpv+sk.value)}else if(sk.kind==='damage'){if(side==='p')ehpv=Math.max(0,ehpv-sk.value);else phpv=Math.max(0,phpv-sk.value);damageFx(sk.value,side==='p'?'e':'p')}else if(sk.kind==='solarShield'){if(side==='p'){playerDirectShieldUntil=Math.max(playerDirectShieldUntil,turnNo+1);toast(`${c.name}: Escudo Solar protege tus HP de ataques directos durante 2 turnos.`)}else{toast(`${c.name}: Escudo Solar activado.`)}}else if(sk.kind==='debuff'){const rivals=side==='p'?enemyCards:playerCards,target=rivals.map((x,j)=>({c:x,j})).filter(x=>x.c).sort((a,b)=>b.c.atk-a.c.atk)[0];if(target){target.c.atk=Math.max(0,target.c.atk-sk.value);target.c._skillDebuff=(target.c._skillDebuff||0)+sk.value;toast(`${target.c.name} pierde ${sk.value} ATK durante este turno.`)}}else if(sk.kind==='stopTime'){if(side==='p'){enemySkipTurns=Math.max(enemySkipTurns,1);toast('KRONOS DETIENE EL TIEMPO: el rival perderá su siguiente turno completo.')}else{playerAttackBlockedUntil=Math.max(playerAttackBlockedUntil,turnNo+1)}}else if(sk.kind==='destroyEquipment'){await destroyEnemyEquipment(side,sk.value||1,c)}update();updateSkillButtons();await wait(280);return true}
 function clearSkillTurnEffects(){playerCards.forEach(c=>{if(c?._skillDebuff){c.atk+=c._skillDebuff;delete c._skillDebuff}});enemyCards.forEach(c=>{if(c?._enemySkillAtkBonus){c.atk=Math.max(0,c.atk-c._enemySkillAtkBonus);delete c._enemySkillAtkBonus}})}
 function update(){nemesisDmSync();heroicSync();const hp=document.getElementById('heroicP'),he=document.getElementById('heroicE'),hpt=document.getElementById('heroicPT'),het=document.getElementById('heroicET'),hf=document.getElementById('heroicFormation'),hi=document.getElementById('heroicIntent'),hw=document.getElementById('heroicWeather');if(hp)hp.style.width=HEROIC.climaxP+'%';if(he)he.style.width=HEROIC.climaxE+'%';if(hpt)hpt.textContent=HEROIC.climaxP+'%';if(het)het.textContent=HEROIC.climaxE+'%';if(hf)hf.textContent=heroicFormation()?.name||'SIN FORMACIÓN';if(hi)hi.textContent='IA: '+heroicIntent();if(hw)hw.textContent=HEROIC.weather;if(aresIsBoss())aresSyncPhase();if(hadesIsBoss())hadesSyncPhase();applyTitanDominion();v188UpdateHUD();applyDragonRage();applyBossPhases();olympusEvaluateSynergies();olympusUpdateZone();updatePcStrategicHud();updateSkillButtons()}
 const NEMESIS_PHASES=Object.freeze(['DRAW','PLACE','ACTION','TARGET','ENEMY','END']);
@@ -3011,7 +3224,7 @@ async function enemyTurn(){
 try{
 nemesisBossTurnStart();endPlayerMagicTurn();v172ClosePicker();v171HideAttackConfirm();v17PendingTarget=-1;v181ReturnOverview();v12TargetCamera(false);targetbanner?.classList.add('hidden');
  if(phase==='END')return;
- if(enemySkipTurns>0){enemySkipTurns--;setPhase('ENEMY','KRONOS · TIEMPO DETENIDO');toast(`${enemyTurnName} pierde su turno completo por DETENER EL TIEMPO.`);pcLog(`${enemyTurnName} pierde el turno por Kronos.`,'effect');await wait(900);clearSkillTurnEffects();turnNo++;await drawPlayerCard();nemesisDmTurnStart();const canPlace=handState.length>0&&playerCards.some(c=>!c);setPhase(canPlace?'PLACE':'ACTION',canPlace?`TU TURNO ${turnNo} · COLOCAR`:`TU TURNO ${turnNo} · ACCIÓN`);active=playerCards.findIndex(Boolean);battleActions.classList.toggle('hidden',canPlace);await v16PlayerTurnCamera().catch(()=>{});busy=false;return}
+ if(enemySkipTurns>0){enemySkipTurns--;setPhase('ENEMY','KRONOS · TIEMPO DETENIDO');toast(`${enemyTurnName} pierde su turno completo por DETENER EL TIEMPO.`);pcLog(`${enemyTurnName} pierde el turno por Kronos.`,'effect');await wait(900);clearSkillTurnEffects();turnNo++;await drawPlayerCard();dmTurnStart();nemesisDmTurnStart();const canPlace=handState.length>0&&playerCards.some(c=>!c);setPhase(canPlace?'PLACE':'ACTION',canPlace?`TU TURNO ${turnNo} · COLOCAR`:`TU TURNO ${turnNo} · ACCIÓN`);active=playerCards.findIndex(Boolean);battleActions.classList.toggle('hidden',canPlace);await v16PlayerTurnCamera().catch(()=>{});busy=false;return}
  if(isRa){if(playerAttackBlockedUntil&&playerAttackBlockedUntil<=turnNo){const mehen=enemyCards.findIndex(c=>c&&c.id==='anc-mehen');if(mehen>=0)await destroyCard('e',mehen);playerAttackBlockedUntil=0;toast('Mehen completó su protección y fue destruida.')}applyRaTurnGrowth()}
  if(checkNoCards())return;
  setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · COLOCAR`);battleActions.classList.add('hidden');await v16Cam('ENEMY_FIELD','e',2);
@@ -3035,7 +3248,7 @@ nemesisBossTurnStart();endPlayerMagicTurn();v172ClosePicker();v171HideAttackConf
  }catch(err){console.error('enemyTurn',err);toast('El turno rival se recuperó automáticamente.')}finally{
   if(phase!=='END'){
    clearSkillTurnEffects();
-   turnNo++;await drawPlayerCard();nemesisDmTurnStart();if(checkNoCards())return;const canPlace=handState.length>0&&playerCards.some(c=>!c);setPhase(canPlace?'PLACE':'ACTION',canPlace?`TU TURNO ${turnNo} · COLOCAR`:`TU TURNO ${turnNo} · ACCIÓN`);active=playerCards.findIndex(Boolean);toast(canPlace?'Coloca una nueva carta.':'Toca una carta de tu Arena para actuar.');battleActions.classList.toggle('hidden',canPlace);await guardStep(v16PlayerTurnCamera(),1600,'vista de turno').catch(()=>{});busy=false
+   turnNo++;await drawPlayerCard();dmTurnStart();nemesisDmTurnStart();if(checkNoCards())return;const canPlace=handState.length>0&&playerCards.some(c=>!c);setPhase(canPlace?'PLACE':'ACTION',canPlace?`TU TURNO ${turnNo} · COLOCAR`:`TU TURNO ${turnNo} · ACCIÓN`);active=playerCards.findIndex(Boolean);toast(canPlace?'Coloca una nueva carta.':'Toca una carta de tu Arena para actuar.');battleActions.classList.toggle('hidden',canPlace);await guardStep(v16PlayerTurnCamera(),1600,'vista de turno').catch(()=>{});busy=false
   }
  }
 
