@@ -80,3 +80,12 @@ A(game.includes('ARENA_SCAR'),'impactos dejan huellas temporales en arena');
 A(game.includes('pcPerformanceBudget'),'presupuesto VFX adaptativo');
 A(game.includes('pcTrimTransientFx'),'limpieza automática de VFX transitorios');
 A(game.includes("graphicsMode==='NEMESIS'?180"),'perfil NÉMESIS dispone de presupuesto VFX PC alto');
+
+// V19.5.5 — Evolución Audio PC
+A(game.includes('pcIntroInstrumental'),'instrumental original inicial integrado');
+A(game.includes('pcElementSfx'),'audio diferenciado por elemento');
+A(game.includes("sfx('transform')"),'audio de transformación');
+A(game.includes("sfx('fusion')"),'audio de Fusión');
+A(game.includes("sfx('ultimate')"),'audio de Ultimate');
+A(game.includes("sfx('grave')"),'audio de Cementerio');
+A(game.includes("sfx('phase')"),'audio de cambio de fase');
