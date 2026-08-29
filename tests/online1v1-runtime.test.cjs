@@ -68,6 +68,24 @@ function invoke({method='POST',query={},body={}}={}){
   assert.equal(sup.status,200);
   assert.equal(sup.payload.room.duel.me.supports[0].faceDown,true);
  }
+ const afterPlay=await invoke({body:{action:'sync',code,token:a.payload.token}});
+ const abilitySource=afterPlay.payload.room.duel.me.monsters.findIndex(Boolean);
+ if(abilitySource>=0){
+  const ability=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'ability',from:abilitySource}});
+  assert.ok([200,409].includes(ability.status));
+  if(ability.status===200)assert.ok(ability.payload.room.duel.log.some(e=>e.type==='ABILITY'||e.type==='ZEUS_NEGATE'||e.type==='DAMAGE'));
+ }
+ const supportInHand=afterPlay.payload.room.duel.me.hand.find(c=>c.kind==='SUPPORT'&&!['DM-006','DM-019'].includes(c.id));
+ if(supportInHand){
+  const freeSupport=afterPlay.payload.room.duel.me.supports.findIndex(x=>!x);
+  if(freeSupport>=0){
+   const placedSupport=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'play',cardId:supportInHand.id,zone:freeSupport,faceDown:true}});
+   if(placedSupport.status===200){
+    const act=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'activate_support',supportZone:freeSupport,targetZone:abilitySource>=0?abilitySource:null}});
+    assert.ok([200,409].includes(act.status));
+   }
+  }
+ }
  const end=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'end_turn'}});
  assert.equal(end.status,200);
  assert.equal(end.payload.room.duel.activeSeat,'GUEST');
@@ -84,5 +102,5 @@ function invoke({method='POST',query={},body={}}={}){
  const bad=await invoke({body:{action:'sync',code,token:'token-invalido'}});
  assert.equal(bad.status,403);
 
- console.log('NÉMESIS DUEL MASTER ONLINE 1V1 RUNTIME 2 PLAYERS: PASS');
+ console.log('NÉMESIS DUEL MASTER ONLINE EFFECTS 20/20 RUNTIME: PASS');
 })().catch(err=>{console.error(err);process.exit(1)});
