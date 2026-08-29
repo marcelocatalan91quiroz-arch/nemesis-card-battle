@@ -1,0 +1,322 @@
+{
+  "schema": "NEMESIS_CARD_V1",
+  "set": "TESOROS_NEMESIS",
+  "version": "19.4.0",
+  "precio_estrellas": 1000,
+  "obtencion": "CANJE_EXCLUSIVO",
+  "count": 5,
+  "cards": [
+    {
+      "id": "TN-MAG-001",
+      "slug": "eclipse-de-la-eternidad",
+      "nombre": "Eclipse de la Eternidad",
+      "familia": "TESOROS_NEMESIS",
+      "clase": "MAGICA",
+      "subtipo": "CONTROL",
+      "elementos": [
+        "OSCURIDAD",
+        "TIEMPO"
+      ],
+      "rareza": "NEMESIS_UNICA",
+      "nivel": 0,
+      "atk": 0,
+      "def": 0,
+      "compatibilidad": "UNIVERSAL",
+      "habilidades": [
+        "TIEMPO MUERTO: anula los efectos activados por el rival durante el turno.",
+        "ECLIPSE TOTAL: destruye 1 Mágica o Trampa rival.",
+        "PARADOJA PROTECTORA: tus cartas no pueden ser destruidas por efectos hasta tu próximo turno."
+      ],
+      "estrategias": [
+        "CONTROL",
+        "RESPUESTA",
+        "PROTECCION"
+      ],
+      "img": "assets/images/treasures/tn-mag-001.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "precio_estrellas": 1000,
+      "obtencion": "CANJE_EXCLUSIVO",
+      "limite_copias": 1,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "TESOROS_NEMESIS"
+          ],
+          "elementos": [
+            "OSCURIDAD",
+            "TIEMPO"
+          ],
+          "tipos": [
+            "MAGICA",
+            "CONTROL"
+          ]
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": "UNIVERSAL"
+        }
+      }
+    },
+    {
+      "id": "TN-MAG-002",
+      "slug": "renacimiento-del-nexo",
+      "nombre": "Renacimiento del Nexo",
+      "familia": "TESOROS_NEMESIS",
+      "clase": "MAGICA",
+      "subtipo": "SOPORTE",
+      "elementos": [
+        "LUZ",
+        "DIMENSIONAL"
+      ],
+      "rareza": "NEMESIS_UNICA",
+      "nivel": 0,
+      "atk": 0,
+      "def": 0,
+      "compatibilidad": "UNIVERSAL",
+      "habilidades": [
+        "RETORNO DEL NEXO: devuelve hasta 2 cartas del Cementerio al Deck.",
+        "FLUJO DIMENSIONAL: roba 2 cartas.",
+        "RENACIMIENTO: recupera 2000 HP."
+      ],
+      "estrategias": [
+        "RECUPERACION",
+        "ROBO",
+        "CEMENTERIO",
+        "COMBO"
+      ],
+      "img": "assets/images/treasures/tn-mag-002.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "precio_estrellas": 1000,
+      "obtencion": "CANJE_EXCLUSIVO",
+      "limite_copias": 1,
+      "no_anulable": true,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "TESOROS_NEMESIS"
+          ],
+          "elementos": [
+            "LUZ",
+            "DIMENSIONAL"
+          ],
+          "tipos": [
+            "MAGICA",
+            "SOPORTE"
+          ]
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": "UNIVERSAL"
+        }
+      }
+    },
+    {
+      "id": "TN-ARM-001",
+      "slug": "excalibur-nemesis-filo-del-destino",
+      "nombre": "Excalibur NÉMESIS — Filo del Destino",
+      "familia": "TESOROS_NEMESIS",
+      "clase": "ARMA",
+      "subtipo": "ESPADA",
+      "elementos": [
+        "LUZ",
+        "DIVINA"
+      ],
+      "rareza": "NEMESIS_UNICA",
+      "nivel": 3,
+      "atk_bonus": 3000,
+      "def_bonus": 0,
+      "compatibilidad": "UNIVERSAL",
+      "habilidades": [
+        "FILO DEL DESTINO: los ataques del portador ignoran DEF.",
+        "VOLUNTAD DEL REY: una vez por duelo evita la destrucción del portador.",
+        "RESONANCIA DIVINA: si el portador es LUZ o DIVINA gana +500 ATK."
+      ],
+      "estrategias": [
+        "OTK",
+        "PENETRACION",
+        "SUPERVIVENCIA",
+        "DIVINA"
+      ],
+      "img": "assets/images/treasures/tn-arm-001.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "precio_estrellas": 1000,
+      "obtencion": "CANJE_EXCLUSIVO",
+      "limite_copias": 1,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "TESOROS_NEMESIS"
+          ],
+          "elementos": [
+            "LUZ",
+            "DIVINA"
+          ],
+          "tipos": [
+            "ARMA",
+            "ESPADA"
+          ]
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": "CRIATURA/PERSONAJE"
+        }
+      }
+    },
+    {
+      "id": "TN-ARM-002",
+      "slug": "guadana-del-vacio-absoluto",
+      "nombre": "Guadaña del Vacío Absoluto",
+      "familia": "TESOROS_NEMESIS",
+      "clase": "ARMA",
+      "subtipo": "GUADANA",
+      "elementos": [
+        "VACIO",
+        "OSCURIDAD"
+      ],
+      "rareza": "NEMESIS_UNICA",
+      "nivel": 4,
+      "atk_bonus": 2200,
+      "def_bonus": 1200,
+      "compatibilidad": "UNIVERSAL",
+      "habilidades": [
+        "COSECHA DEL VACÍO: al destruir un monstruo en batalla inflige 1000 HP directo.",
+        "MARCA DEL VACÍO: +300 ATK por cada carta OSCURIDAD o VACÍO que controles.",
+        "HAMBRE INFINITA: una vez por turno consume 1 carta del Cementerio y gana +500 ATK ese turno."
+      ],
+      "estrategias": [
+        "OSCURIDAD",
+        "VACIO",
+        "CEMENTERIO",
+        "DAÑO_DIRECTO"
+      ],
+      "img": "assets/images/treasures/tn-arm-002.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "precio_estrellas": 1000,
+      "obtencion": "CANJE_EXCLUSIVO",
+      "limite_copias": 1,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "TESOROS_NEMESIS"
+          ],
+          "elementos": [
+            "VACIO",
+            "OSCURIDAD"
+          ],
+          "tipos": [
+            "ARMA",
+            "GUADANA"
+          ]
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": "CRIATURA/PERSONAJE"
+        }
+      }
+    },
+    {
+      "id": "TN-TRP-001",
+      "slug": "juicio-final-nemesis",
+      "nombre": "Juicio Final NÉMESIS",
+      "familia": "TESOROS_NEMESIS",
+      "clase": "TRAMPA_RESPUESTA",
+      "subtipo": "RESPUESTA",
+      "elementos": [
+        "CAOS",
+        "DIVINA"
+      ],
+      "rareza": "NEMESIS_UNICA",
+      "nivel": 5,
+      "atk": 0,
+      "def": 0,
+      "compatibilidad": "UNIVERSAL",
+      "habilidades": [
+        "SENTENCIA NÉMESIS: anula el ataque, carta o efecto rival.",
+        "DESTRUCCIÓN ABSOLUTA: destruye la criatura rival de mayor ATK.",
+        "FIN DEL TURNO: el rival no puede realizar más acciones durante ese turno."
+      ],
+      "estrategias": [
+        "RESPUESTA",
+        "ANULACION",
+        "CONTROL",
+        "DESTRUCCION"
+      ],
+      "img": "assets/images/treasures/tn-trp-001.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "precio_estrellas": 1000,
+      "obtencion": "CANJE_EXCLUSIVO",
+      "limite_copias": 1,
+      "no_anulable": true,
+      "no_destruible_por_efectos": true,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "TESOROS_NEMESIS"
+          ],
+          "elementos": [
+            "CAOS",
+            "DIVINA"
+          ],
+          "tipos": [
+            "TRAMPA",
+            "RESPUESTA"
+          ]
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": "UNIVERSAL"
+        }
+      }
+    }
+  ]
+}
