@@ -272,7 +272,7 @@ const IMPERIO_DRAGON_CARDS=[
  {id:"IDR-005",name:"Dragón Ala de Tormenta",atk:2600,def:2100,type:"monster",family:'imperio-dragon',tags:["fuego","dragon"],rarity:"epica",effect:"idr_005",img:"assets/images/imperio-dragon/idr-005.svg",desc:"DOMINIO DEL CLIMA:  Una vez por turno puede cambiar el clima a Tormenta de Fuego; mientras esté activo, todas tus cartas Imperio Dragón ganan 300 ATK y 300 DEF. Si es Invocada de Modo Especial, puede destruir hasta 2 cartas en el Campo rival.",ascensionMax:3,transformTo:"Dragón Alas de Tormenta Supremo",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-005.png",idrImageStatus:"ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"},
  {id:"IDR-006",name:"Dragón Guardián de la Forja",atk:2500,def:2800,type:"monster",family:'imperio-dragon',tags:["fuego","dragon","tierra"],rarity:"epica",effect:"idr_006",img:"assets/images/imperio-dragon/idr-006.svg",desc:"ESCAMAS DE LA FORJA: Muro defensivo del Imperio Dragón; protege piezas clave y acelera Ascensión. Una vez por turno, protege 1 carta Imperio Dragón en el Campo de la destrucción por efectos de cartas durante ese turno. Si esa carta hubiera sido destruida, en su lugar gana 1 Marca de Ascensión. Mientras esta carta esté en el Campo, todas tus criaturas Imperio Dragón ganan 300 DEF.",ascensionMax:3,transformTo:"Dragón Guardián de la Forja Supremo",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-006.png",idrImageStatus:"ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"},
  {id:"IDR-007",name:"Dragón Azoth del Abismo",atk:3200,def:2000,type:"monster",family:'imperio-dragon',tags:["fuego","dragon","oscuridad"],rarity:"epica",effect:"idr_007",img:"assets/images/imperio-dragon/idr-007.svg",desc:"VÓRTICE DEL ABISMO: Agresor de control; elimina cartas rivales y escala con Ascensión. Una vez por turno, puedes destruir 1 carta que controle el adversario; si lo haces, esta carta gana ATK igual al ATK original de esa carta destruida hasta el final del turno. Si esta carta es Invocada de Modo Especial, puedes destruir 1 carta Mágica o Trampa en el Campo. ALMA DEL CAOS: mientras tenga 2 o más Marcas de Ascensión, no puede ser objetivo de efectos de cartas del adversario.",ascensionMax:3,transformTo:"Azoth, Señor Supremo del Abismo",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-007.png",idrImageStatus:"ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"},
- {id:"IDR-008",name:"Dragón Emperador Infernal",atk:3500,def:3000,type:"monster",family:'imperio-dragon',tags:["fuego","dragon"],rarity:"epica",effect:"idr_008",img:"assets/images/imperio-dragon/idr-008.svg",desc:"INFIERNO DOMINANTE: Líder ofensivo; convierte destrucción, daño directo y Marcas de Ascensión en presión constante. Una vez por turno, puedes destruir 1 carta en el Campo; si lo haces, esta carta gana 500 ATK y tu adversario pierde 500 LP. Si esta carta fuera a ser destruida, puedes desterrar 1 carta Imperio Dragón de tu Cementerio en su lugar. AURA INFERNAL: todas tus criaturas Imperio Dragón ganan 200 ATK por cada Marca de Ascensión que tengan.",ascensionMax:3,transformTo:"Emperador Dragón del Cataclismo",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-008.png",idrImageStatus:"ORIGINAL_REGENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"},
+ {id:"IDR-008",name:"Dragón Emperador Infernal",atk:3500,def:3000,type:"monster",family:'imperio-dragon',tags:["fuego","dragon"],rarity:"epica",effect:"idr_008",img:"assets/images/imperio-dragon/idr-008.svg",ascensionMax:4,desc:"INFIERNO DOMINANTE: Líder ofensivo; convierte destrucción, daño directo y Marcas de Ascensión en presión constante. Una vez por turno, puedes destruir 1 carta en el Campo; si lo haces, esta carta gana 500 ATK y tu adversario pierde 500 LP. Si esta carta fuera a ser destruida, puedes desterrar 1 carta Imperio Dragón de tu Cementerio en su lugar. AURA INFERNAL: todas tus criaturas Imperio Dragón ganan 200 ATK por cada Marca de Ascensión que tengan.",transformTo:"Emperador Dragón NÉMESIS",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-008.png",idrImageStatus:"ORIGINAL_REGENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"},
  {id:"IDR-009",name:"Dragón Carmesí Imperial",atk:3200,def:2600,type:"monster",family:'imperio-dragon',tags:["fuego","dragon"],rarity:"mitica",effect:"idr_009",img:"assets/images/imperio-dragon/idr-009.svg",desc:"CORONA CARMESÍ: Primera transformación del arquetipo; presión y daño explosivo. Solo puede aparecer transformando a Dragón Carmesí Joven con 2 Marcas de Ascensión. Al transformarse, inflige 800 de daño directo. Una vez por turno, si destruye una carta en batalla, gana 500 ATK permanente.",ascensionMax:2,transformOrigin:"IDR-001",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-009.png",idrImageStatus:"PENDIENTE_ILUSTRACION_OFICIAL"},
  {id:"IDR-010",name:"Emperador Dragón NÉMESIS",atk:4800,def:4200,type:"monster",family:'imperio-dragon',tags:["fuego","dragon","divina"],rarity:"ancestral",effect:"idr_010",img:"assets/images/imperio-dragon/idr-010.svg",desc:"TRONO DE LOS MIL DRAGONES: Transformación suprema y condición de cierre del mazo. Solo puede aparecer transformando a Dragón Primogénito del Imperio con 4 Marcas de Ascensión. Al transformarse, todas tus cartas Imperio Dragón ganan 700 ATK/DEF. Una vez por duelo, destruye hasta 2 cartas rivales y este turno puede realizar un segundo ataque.",ascensionMax:4,transformOrigin:"IDR-008",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-010.png",idrImageStatus:"PENDIENTE_ILUSTRACION_OFICIAL"},
  {id:"IDR-011",name:"Llamado de la Sangre Imperial",atk:0,def:0,type:"magic",family:'imperio-dragon',tags:["fuego","dragon"],rarity:"epica",effect:"idr_011",img:"assets/images/imperio-dragon/idr-011.svg",desc:"CONVOCATORIA IMPERIAL: Consistencia: busca la criatura necesaria para iniciar o continuar Ascensión. Busca 1 criatura Imperio Dragón de Nivel 6 o menor y añádela a tu mano. Si controlas una carta transformada, puedes además colocar 1 Marca de Ascensión en un dragón aliado.",idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-011.png",idrImageStatus:"PENDIENTE_ILUSTRACION_OFICIAL"},
@@ -3004,10 +3004,47 @@ async function pcResponseWindow(side,c){
 
 function idrIs(c){return !!c&&c.family==='imperio-dragon'}
 function idrMarks(c){return Math.max(0,Number(c?._idrAscension)||0)}
+
+const IDR_TRANSFORM_RULES=Object.freeze({
+ 'IDR-001':{to:'IDR-009',marks:2,label:'ASCENSIÓN CARMESÍ'},
+ 'IDR-008':{to:'IDR-010',marks:4,label:'ASCENSIÓN DEL EMPERADOR'}
+});
+let idrTransformBusy=false;
+async function pcTransformationCinematic(from,to,side,i){
+ if(!from||!to)return;
+ const host=document.createElement('div');host.className='pc-transformation-cinematic';
+ host.innerHTML=`<div class="pc-transform-energy"></div><section><small>TRANSFORMACIÓN NÉMESIS</small><div class="pc-transform-cards"><img class="from" src="${from.img}" alt="${esc(from.name)}"><span>✦</span><img class="to" src="${to.img}" alt="${esc(to.name)}"></div><b>${esc(from.name)}</b><strong>→ ${esc(to.name)}</strong></section>`;
+ document.body.appendChild(host);host.offsetWidth;host.classList.add('show');
+ const g=board?.[side]?.[i];if(g){pcEvolutionImpact(from,g.position,1.2);await wait(260);pcEvolutionImpact(to,g.position,1.6);v1892ScreenShake()}
+ await wait(900);host.classList.add('out');await wait(180);host.remove();
+}
+async function idrTryTransform(c){
+ if(idrTransformBusy||!c)return false;
+ const rule=IDR_TRANSFORM_RULES[c.id];if(!rule||idrMarks(c)<rule.marks)return false;
+ const side=playerCards.includes(c)?'p':enemyCards.includes(c)?'e':null;if(!side)return false;
+ const arr=side==='p'?playerCards:enemyCards,modes=side==='p'?playerModes:enemyModes,i=arr.indexOf(c),to=card(rule.to);if(i<0||!to)return false;
+ idrTransformBusy=true;
+ try{
+  await pcTransformationCinematic(c,to,side,i);
+  const keepMarks=idrMarks(c),oldMesh=board?.[side]?.[i];
+  if(oldMesh){scene.remove(oldMesh);board[side][i]=null}
+  const evolved={...to,_idrAscension:keepMarks,_idrTransformedFrom:c.id,_idrTransformed:true};
+  arr[i]=evolved;modes[i]='ATAQUE';
+  await place(side,i,evolved);if(side==='e')await revealEnemy(i);else await revealPlayer(i);await setMode(side,i,'ATAQUE');
+  if(to.id==='IDR-009'){if(side==='p'){ehpv=Math.max(0,ehpv-800);damageFx(800,'e')}else{phpv=Math.max(0,phpv-800);damageFx(800,'p')}toast('CORONA CARMESÍ: 800 de daño directo.')}
+  if(to.id==='IDR-010'){
+    const own=side==='p'?playerCards:enemyCards;own.forEach(x=>{if(idrIs(x)){x.atk+=700;x.def+=700;x._idrEmperorBlessing=(x._idrEmperorBlessing||0)+700}});
+    toast('TRONO DE LOS MIL DRAGONES: ejército Imperio Dragón +700 ATK / +700 DEF.');
+  }
+  pcLog?.(`${c.name} se transforma en ${to.name}.`,'effect');update();return true
+ }finally{idrTransformBusy=false}
+}
+function idrScheduleTransform(c){Promise.resolve().then(()=>idrTryTransform(c)).catch(e=>console.error('[IDR TRANSFORM]',e))}
 function idrAddMark(c,n=1){
  if(!idrIs(c))return 0;
  c._idrAscension=Math.min(Number(c.ascensionMax)||3,idrMarks(c)+Math.max(0,n));
  toast(c.name+' · ASCENSIÓN '+c._idrAscension+'/'+(c.ascensionMax||3));
+ idrScheduleTransform(c);
  return c._idrAscension
 }
 function idrStormSync(){
@@ -3565,7 +3602,23 @@ skillBtn.onclick=async()=>{if(busy||phase!=='ACTION'||active<0||!playerCards[act
 playerPowerBtn.onclick=async()=>{if(busy||phase!=='ACTION'||active<0||!playerCards[active]||turnNo<playerPowerReadyTurn)return;busy=true;try{const c=playerCards[active];playerPowerReadyTurn=turnNo+2;c.atk+=800;c._playerPowerBonus=(c._playerPowerBonus||0)+800;skillFx('p',active,{name:'IMPULSO NÉMESIS',kind:'attack',value:800,desc:`${state.name} concede +800 ATK durante este turno.`},{name:state.name});toast(`¡${state.name} activa Impulso NÉMESIS! ${c.name} gana +800 ATK.`);update()}finally{busy=false;setPhase('ACTION',`TU TURNO ${turnNo} · ACCIÓN`);battleActions.classList.remove('hidden')}};
 atk.onclick=async()=>{if(busy||active<0||!playerCards[active])return;if(isRa&&playerAttackBlockedUntil>=turnNo){toast("Mehen bloquea los ataques durante este turno. Puedes defender para continuar.");return}if(playerCards[active]._petrifiedUntil>=turnNo){toast("Esta criatura está petrificada y no puede atacar este turno.");return}busy=true;try{await guardStep(revealPlayer(active),2200,'revelar carta');if(playerModes[active]==='DEFENSA'){await guardStep(setMode('p',active,'ATAQUE'),2200,'cambiar ataque');toast('Carta cambiada a MODO ATAQUE. Elige una carta rival.')}const targets=enemyCards.map((c,i)=>c?i:-1).filter(i=>i>=0);battleActions.classList.add('hidden');if(!targets.length){const c=playerCards[active];const directDmg=ghostReduceIncomingHpDamage(c.atk,c);await guardStep(attackAnim('p',active,'e',0,c,directDmg),5000,'ataque directo');ehpv-=directDmg;update();await nemesisDmAfterPlayerAttack(c);if(ehpv<=0){if(ghostGodFinalFormSave()){await ghostGodContinueAfterFinalForm();return}if(spectralKingCrownSave()){await spectralKingContinueAfterCrown();return}return finish(true)};if(nemesisDmKeepTurnAfterAttack(c)){setPhase('ACTION',`TU TURNO ${turnNo} · ATAQUE ADICIONAL`,{force:true});battleActions.classList.remove('hidden');busy=false;return}await enemyTurn();return}v171HideAttackConfirm();v17PendingTarget=-1;setPhase('TARGET','ELIGE CARTA RIVAL');targetbanner?.classList.add('hidden');v12TargetCamera(false);await v17Camera('DUEL','p',2);v172OpenPicker();toast('Elige una carta rival en la vista de selección.');}catch(err){console.error('player attack',err);toast('El ataque se recuperó. Puedes continuar.');setPhase('ACTION',`TU TURNO ${turnNo} · ACCIÓN`);battleActions.classList.remove('hidden')}finally{if(phase!=='TARGET'&&phase!=='ENEMY'&&phase!=='END')busy=false;else if(phase==='TARGET')busy=false}}
 def.onclick=async()=>{if(busy||active<0)return;if(!hadesCanAct(playerCards[active])){toast('El control del Inframundo impide cambiar de posición.');return}busy=true;try{await guardStep(revealPlayer(active),2200,'revelar defensa');await guardStep(setMode('p',active,'DEFENSA'),2200,'modo defensa');toast('Carta colocada en MODO DEFENSA. Fin del turno.');await enemyTurn()}catch(err){console.error('defense',err);toast('Turno recuperado.');setPhase('ACTION',`TU TURNO ${turnNo} · ACCIÓN`)}finally{busy=false;v181ReturnOverview()}}
-fus.onclick=async()=>{if(busy||enAnimacionGSAP)return;const combos=[{m:['dios-jupiter','zeus-emperador-rayo','kronos-devorador-tiempo'],r:'titan-del-olimpo',divine:true},{m:['dragon-carmesi-caos','dragon-abisal-nemesis'],r:'fusion-caotico-supremo'},{m:['dragon-negro-ruinas','dragon-infernal-sangre'],r:'fusion-dragon-caos'}];let found=null;for(const co of combos){const slots=co.m.map(id=>playerCards.findIndex(c=>c&&c.id===id));if(slots.every(i=>i>=0)){found={slots,r:card(co.r),divine:co.divine};break}}if(!found){toast('No tienes una combinación de FUSIÓN válida en la Arena.');return}
+
+async function pcFusionEvolutionCinematic(slots,result){
+ const mats=(slots||[]).map(i=>playerCards[i]).filter(Boolean);if(!mats.length||!result)return;
+ const d=document.createElement('div');d.className='pc-fusion-evolution';
+ d.innerHTML=`<div class="pc-fusion-vortex"></div><section><small>FUSIÓN NÉMESIS</small><div class="pc-fusion-materials">${mats.map(c=>`<img src="${c.img}" alt="${esc(c.name)}">`).join('')}<span>✦</span></div><div class="pc-fusion-result"><img src="${result.img}" alt="${esc(result.name)}"><b>${esc(result.name)}</b></div></section>`;
+ document.body.appendChild(d);d.offsetWidth;d.classList.add('show');
+ for(const i of slots){const g=board?.p?.[i];if(g)pcEvolutionImpact(playerCards[i],g.position,1.15)}
+ await wait(650);const g=board?.p?.[slots[0]];if(g)pcEvolutionImpact(result,g.position,1.9);v1892ScreenShake();await wait(700);
+ d.classList.add('out');await wait(180);d.remove();
+}
+fus.onclick=async()=>{if(busy||enAnimacionGSAP)return;const combos=[
+ {m:['dios-jupiter','zeus-emperador-rayo','kronos-devorador-tiempo'],r:'titan-del-olimpo',divine:true},
+ {m:['IDR-003','IDR-004'],r:'IDR-019',idr:true},
+ {m:['IDR-009','IDR-008'],r:'IDR-020',idr:true},
+ {m:['dragon-carmesi-caos','dragon-abisal-nemesis'],r:'fusion-caotico-supremo'},
+ {m:['dragon-negro-ruinas','dragon-infernal-sangre'],r:'fusion-dragon-caos'}
+];let found=null;for(const co of combos){const slots=co.m.map(id=>playerCards.findIndex(c=>c&&c.id===id));if(slots.every(i=>i>=0)){found={slots,r:card(co.r),divine:co.divine};break}}if(!found){toast('No tienes una combinación de FUSIÓN válida en la Arena.');return}
 if(hadesChainsInterceptFusion(found.slots))return;
 if(found.divine){
  const protectedActivation=apoloFusionGuardActive()||olympusFusionGuardCharges>0;
@@ -3577,7 +3630,10 @@ if(found.divine){
  if(protectedActivation&&olympusFusionGuardCharges>0)olympusFusionGuardCharges--;
  await olympusFusionUltraCinematic(found.slots,found.r);
 }
-busy=true;try{battleActions.classList.add('hidden');for(let n=0;n<found.slots.length;n++)await guardStep(revealPlayer(found.slots[n]),2200,`revelar fusión ${n+1}`);const dest=found.slots[0];await guardStep(fusionAnim(found.slots[0],found.slots[1],found.r,dest),7000,'fusión');for(const slot of found.slots){if(slot===dest)continue;nemesisBreakAllEquipment('p',slot);const material=playerCards[slot];if(material)playerGrave.push(material);if(board.p[slot]){scene.remove(board.p[slot]);board.p[slot]=null}playerCards[slot]=null;playerModes[slot]=null}nemesisBreakAllEquipment('p',dest);const firstMaterial=playerCards[dest];if(firstMaterial)playerGrave.push(firstMaterial);playerCards[dest]={...found.r};playerModes[dest]='ATAQUE';if(board.p[dest]){scene.remove(board.p[dest]);board.p[dest]=null}await place('p',dest,playerCards[dest]);await flip('p',dest);await setMode('p',dest,'ATAQUE');active=dest;if(found.divine){await pcCardCinematic('summon','p',dest,playerCards[dest]);toast('¡FUSIÓN DIVINA SUPREMA! Júpiter + Zeus + Kronos → TITÁN DEL OLIMPO.')}else toast(`¡FUSIÓN! ${found.r.name} invocado.`);update();await enemyTurn()}catch(err){console.error('fusion',err);toast('La fusión se recuperó. Puedes continuar.');setPhase('ACTION',`TU TURNO ${turnNo} · ACCIÓN`)}finally{busy=false;v181ReturnOverview()}};
+busy=true;try{battleActions.classList.add('hidden');for(let n=0;n<found.slots.length;n++)await guardStep(revealPlayer(found.slots[n]),2200,`revelar fusión ${n+1}`);await pcFusionEvolutionCinematic(found.slots,found.r);const dest=found.slots[0];await guardStep(fusionAnim(found.slots[0],found.slots[1],found.r,dest),7000,'fusión');for(const slot of found.slots){if(slot===dest)continue;nemesisBreakAllEquipment('p',slot);const material=playerCards[slot];if(material)playerGrave.push(material);if(board.p[slot]){scene.remove(board.p[slot]);board.p[slot]=null}playerCards[slot]=null;playerModes[slot]=null}nemesisBreakAllEquipment('p',dest);const firstMaterial=playerCards[dest];if(firstMaterial)playerGrave.push(firstMaterial);playerCards[dest]={...found.r};playerModes[dest]='ATAQUE';if(board.p[dest]){scene.remove(board.p[dest]);board.p[dest]=null}await place('p',dest,playerCards[dest]);await flip('p',dest);await setMode('p',dest,'ATAQUE');active=dest;if(found.divine){await pcCardCinematic('summon','p',dest,playerCards[dest]);toast('¡FUSIÓN DIVINA SUPREMA! Júpiter + Zeus + Kronos → TITÁN DEL OLIMPO.')}
+else if(found.r.id==='IDR-019'){for(let j=enemyCards.length-1;j>=0;j--)if(enemyCards[j]&&(enemyCards[j].type==='magic'||enemyCards[j].type==='trap'))await destroyCard('e',j);toast('ECLIPSE DRACÓNICO: soportes rivales destruidos.')}
+else if(found.r.id==='IDR-020'){window.__idrFireStorm=true;idrStormSync();toast('APOCALIPSIS IMPERIAL: Cielo del Imperio Ardiente domina la arena.')}
+else toast(`¡FUSIÓN! ${found.r.name} invocado.`);update();await enemyTurn()}catch(err){console.error('fusion',err);toast('La fusión se recuperó. Puedes continuar.');setPhase('ACTION',`TU TURNO ${turnNo} · ACCIÓN`)}finally{busy=false;v181ReturnOverview()}};
 
 // V18.9.45 — Controles PC: teclado + mouse, reutilizando las acciones existentes.
 const pcShortcutHandler=e=>{
