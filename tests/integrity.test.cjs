@@ -4,6 +4,7 @@ const root=path.resolve(__dirname,'..');
 const game=fs.readFileSync(path.join(root,'js/game.js'),'utf8');
 const exists=p=>fs.existsSync(path.join(root,p));
 const must=(name,ok)=>{ if(!ok){console.error('FAIL',name);process.exitCode=1}else console.log('PASS',name) };
+const A=(ok,name)=>must(name,ok);
 
 must('index.html',exists('index.html'));
 must('css/game.css',exists('css/game.css'));
@@ -37,12 +38,9 @@ if(process.exitCode) process.exit(process.exitCode);
 console.log('NÉMESIS CORE INTEGRITY: PASS');
 
 
-test('registro global de cartas no reintroduce familias duplicadas',()=>{
- const game=fs.readFileSync(path.join(root,'js/game.js'),'utf8');
- assert.match(game,/const CARDS_RAW=\[\.\.\.COLLECTIBLE_CARDS,\.\.\.IMPERIO_DRAGON_CARDS,\.\.\.APOLO_PLAYER_CARDS,\.\.\.OLIMPO_PLAYER_CARDS,\.\.\.HADES_CARDS,\.\.\.ARES_CARDS_1_5,\.\.\.DIVINE_FUSION_CARDS,\.\.\.EXTERNAL_GAME_CARDS\]/);
- assert.doesNotMatch(game,/\.\.\.NEW_CARDS,\.\.\.DRAGON_OJO_CARDS,\.\.\.ANCESTRAL_CARDS,\.\.\.SPECTRAL_CARDS,\.\.\.REY_ESPECTRAL_CARDS,\.\.\.DIOS_FANTASMA_CARDS/);
- assert.match(game,/new Map\(CARDS_RAW\.map\(c=>\[c\.id,c\]\)\)/);
-});
+must('registro global usa fuente deduplicada',/const CARDS_RAW=\[\.\.\.COLLECTIBLE_CARDS,\.\.\.IMPERIO_DRAGON_CARDS,\.\.\.APOLO_PLAYER_CARDS,\.\.\.OLIMPO_PLAYER_CARDS,\.\.\.HADES_CARDS,\.\.\.ARES_CARDS_1_5,\.\.\.DIVINE_FUSION_CARDS,\.\.\.EXTERNAL_GAME_CARDS\]/.test(game));
+must('familias históricas no se reinsertan duplicadas',!/\.\.\.NEW_CARDS,\.\.\.DRAGON_OJO_CARDS,\.\.\.ANCESTRAL_CARDS,\.\.\.SPECTRAL_CARDS,\.\.\.REY_ESPECTRAL_CARDS,\.\.\.DIOS_FANTASMA_CARDS/.test(game));
+must('deduplicación global por Map ID',/new Map\(CARDS_RAW\.map\(c=>\[c\.id,c\]\)\)/.test(game));
 
 // V19.4.3 — cierre de los 9 efectos históricos pendientes
 const pending=['etherealForm','mortalHarvest','beyondCall','abyssDragon','aresConqueror','apoloSolarGuardian','hadesDeepSleep','hadesGuiltWhip','hadesThresholdWatch'];
