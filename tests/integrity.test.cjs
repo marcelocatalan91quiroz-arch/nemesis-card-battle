@@ -35,3 +35,11 @@ if(missing.length) console.error(missing);
 
 if(process.exitCode) process.exit(process.exitCode);
 console.log('NÉMESIS CORE INTEGRITY: PASS');
+
+
+test('registro global de cartas no reintroduce familias duplicadas',()=>{
+ const game=fs.readFileSync(path.join(root,'js/game.js'),'utf8');
+ assert.match(game,/const CARDS_RAW=\[\.\.\.COLLECTIBLE_CARDS,\.\.\.IMPERIO_DRAGON_CARDS,\.\.\.APOLO_PLAYER_CARDS,\.\.\.OLIMPO_PLAYER_CARDS,\.\.\.HADES_CARDS,\.\.\.ARES_CARDS_1_5,\.\.\.DIVINE_FUSION_CARDS,\.\.\.EXTERNAL_GAME_CARDS\]/);
+ assert.doesNotMatch(game,/\.\.\.NEW_CARDS,\.\.\.DRAGON_OJO_CARDS,\.\.\.ANCESTRAL_CARDS,\.\.\.SPECTRAL_CARDS,\.\.\.REY_ESPECTRAL_CARDS,\.\.\.DIOS_FANTASMA_CARDS/);
+ assert.match(game,/new Map\(CARDS_RAW\.map\(c=>\[c\.id,c\]\)\)/);
+});
