@@ -347,7 +347,7 @@ function nemesisTreasureScene(){
 window.nemesisTreasureScene=nemesisTreasureScene;
 
 const INITIAL_OWNED=SHOP_CARDS.slice(0,20).map(c=>c.id);
-let state={name:'',dialog:0,fear:null,stars:0,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'OLIMPO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,11)};
+let state={name:'',dialog:0,fear:null,stars:0,retryBattle:null,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'OLIMPO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,11)};
 
 
 // V18.9.18 — MEMORY CARD SEGURA
@@ -380,6 +380,7 @@ function v18918LoadMemoryCard(){
    if(typeof mc.aresDefeated==='boolean')state.aresDefeated=mc.aresDefeated;
    if(typeof mc.hadesIntroSeen==='boolean')state.hadesIntroSeen=mc.hadesIntroSeen;
    if(typeof mc.hadesDefeated==='boolean')state.hadesDefeated=mc.hadesDefeated;
+   if(typeof mc.retryBattle==='string')state.retryBattle=mc.retryBattle;
    if(mc.savedDecks&&typeof mc.savedDecks==='object')state.savedDecks=mc.savedDecks;
    if(typeof mc.activeDeckName==='string')state.activeDeckName=mc.activeDeckName;
    if(mc.sanctuary&&typeof mc.sanctuary==='object')state.sanctuary=mc.sanctuary;
@@ -415,6 +416,7 @@ function v18918SaveMemoryCard(){
    savedDecks:state.savedDecks&&typeof state.savedDecks==='object'?state.savedDecks:{},
    activeDeckName:typeof state.activeDeckName==='string'?state.activeDeckName:'OLIMPO',
    sanctuary:state.sanctuary&&typeof state.sanctuary==='object'?state.sanctuary:{awake:false,claimed:[],trials:{primordial:false,time:false,void:false}},
+   retryBattle:typeof state.retryBattle==='string'?state.retryBattle:null,
    savedAt:Date.now()
   };
   localStorage.setItem(NEMESIS_MC_KEY,JSON.stringify(payload));
@@ -686,6 +688,46 @@ function sanctuaryScene(){
 }
 window.sanctuaryScene=sanctuaryScene;
 
+
+/* V19.5 — RETOS / REVANCHA PERMANENTE
+   Un rival solo aparece tras ser derrotado en Campaña.
+   Guardianes: ★100. Jefes: ★200 (doble).
+   Reutiliza battle() y los mazos/jefes oficiales; no duplica el motor. */
+const NEMESIS_RETRY_ROSTER=Object.freeze([
+ {id:'guardian',name:'Guardián de los Dragones',role:'GUARDIÁN',flag:'guardianDefeated',reward:100,img:AS.guardian,battleKey:null},
+ {id:'dragon-ojo',name:'Dragón Ojo del Diablo',role:'JEFE',flag:'dragonDefeated',reward:200,img:'assets/images/dragon-ojo-del-diablo.png',battleKey:'dragon-ojo'},
+ {id:'ira-ra',name:'Ira de Ra',role:'JEFE',flag:'raDefeated',reward:200,img:'assets/images/ira-de-ra-jefe.png',battleKey:'ira-ra'},
+ {id:'caballero-almas',name:'Caballero de las Almas',role:'GUARDIÁN',flag:'caballeroAlmasDefeated',reward:100,img:AS.caballeroAlmas,battleKey:'caballero-almas'},
+ {id:'rey-espectral',name:'Rey Espectral',role:'JEFE',flag:'reyEspectralDefeated',reward:200,img:AS.reyEspectral,battleKey:'rey-espectral'},
+ {id:'dios-fantasma',name:'Dios Fantasma',role:'JEFE',flag:'diosFantasmaDefeated',reward:200,img:'assets/images/dios-fantasma/dios-fantasma.png',battleKey:'dios-fantasma'},
+ {id:'ares',name:'Ares',role:'JEFE',flag:'aresDefeated',reward:200,img:'assets/images/campaign3/ares/ares-personaje.png',battleKey:'ares'},
+ {id:'hades',name:'Hades',role:'JEFE',flag:'hadesDefeated',reward:200,img:'assets/images/campaign3/hades/hades-personaje.png',battleKey:'hades'}
+]);
+function nemesisRetryUnlocked(r){return state[r.flag]===true}
+function nemesisRetryActive(){return state.retryBattle&&NEMESIS_RETRY_ROSTER.some(r=>r.id===state.retryBattle)}
+function nemesisRetryRewardFor(key){
+ const r=NEMESIS_RETRY_ROSTER.find(x=>x.id===state.retryBattle);
+ if(!r)return null;
+ const expected=r.battleKey||'guardian',actual=key||'guardian';
+ return expected===actual?r:null
+}
+function nemesisStartRetry(id){
+ const r=NEMESIS_RETRY_ROSTER.find(x=>x.id===id);if(!r||!nemesisRetryUnlocked(r))return;
+ if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}
+ state.retryBattle=id;save();battle(r.battleKey||undefined);
+}
+function nemesisRetryScene(){
+ const unlocked=NEMESIS_RETRY_ROSTER.filter(nemesisRetryUnlocked);
+ app.innerHTML=`<section class="deck retry-hall"><div class="deckbar"><div><h2>RETOS · REVANCHA</h2><small>Rivales derrotados en Campaña · puedes retarlos todas las veces que quieras</small></div><b>★ ${state.stars||0}</b></div>
+ <div class="retry-rules"><b>GANA ESTRELLAS EN CADA VICTORIA</b><span>GUARDIÁN ★100 · JEFE ★200 · LOS JEFES DAN EL DOBLE</span><small>Las revanchas reutilizan el rival, mazo, IA, fases y efectos oficiales.</small></div>
+ <div class="retry-grid">${NEMESIS_RETRY_ROSTER.map(r=>{const open=nemesisRetryUnlocked(r);return `<article class="retry-card ${open?'open':'locked'}"><div class="retry-portrait">${open?`<img src="${r.img}" alt="${esc(r.name)}">`:'<div class="retry-lock">🔒</div>'}</div><small>${r.role}</small><h3>${open?esc(r.name):'RIVAL BLOQUEADO'}</h3><b>VICTORIA · ★${r.reward}</b><button class="btn retry-fight" data-retry="${r.id}" ${open?'':'disabled'}>${open?'RETAR OTRA VEZ':'DERROTAR EN CAMPAÑA'}</button></article>`}).join('')}</div>
+ <div class="deckbar"><span>Desbloqueados ${unlocked.length}/${NEMESIS_RETRY_ROSTER.length}</span><button class="btn" id="retryBack">VOLVER AL MENÚ</button></div></section>`;
+ document.querySelectorAll('.retry-fight:not([disabled])').forEach(b=>b.onclick=()=>nemesisStartRetry(b.dataset.retry));
+ retryBack.onclick=menuScene;
+}
+window.nemesisRetryScene=nemesisRetryScene;
+window.NEMESIS_RETRY_AUDIT=()=>({total:NEMESIS_RETRY_ROSTER.length,unlocked:NEMESIS_RETRY_ROSTER.filter(nemesisRetryUnlocked).length,guardianReward:100,bossReward:200,active:state.retryBattle||null});
+
 function menuScene(){
  const unlockedCount=unlockedShopCards().length;
  const campaignButton=state.campaign3Started?(state.hadesDefeated?'CAMPAÑA III · HADES DERROTADO':'CONTINUAR CAMPAÑA III'):state.campaign1Completed&&!state.campaign2Started?'INICIAR CAMPAÑA II':state.campaign2Started?'CONTINUAR CAMPAÑA II':state.campaignStage!=='guardian'?'CONTINUAR CAMPAÑA I':'EMPEZAR CAMPAÑA I';
@@ -693,12 +735,13 @@ function menuScene(){
  app.innerHTML=`<section class="deck menu-home"><div class="deckbar"><div><div class="logo" style="font-size:42px">NÉMESIS<small>CARD BATTLE</small></div><small>PREPARA TU MAZO ANTES DE ENTRAR AL REINO</small></div><b>★ ${state.stars||0}</b></div>
  ${campaignStatus}
  <div class="menu-panel"><h2>JUGADOR</h2><div class="name-row"><input id="nm" maxlength="24" placeholder="NOMBRE DEL JUGADOR" value="${esc(state.name||'')}"><button class="btn" id="changeName">CAMBIAR</button></div><small>Tu nombre aparecerá en la historia y en los duelos.</small></div>
- <div class="menu-actions"><button class="btn" id="shopBtn">INTERCAMBIAR CARTAS · ${unlockedCount}</button><button class="btn" id="deckBtn">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="treasureBtn">TESOROS NÉMESIS · ★1000</button><button class="btn sanctuary-entry" id="sanctuaryBtn">SANTUARIO · 3 ÚNICAS</button><button class="btn" id="menuFullscreen">⛶ PANTALLA COMPLETA</button></div>
+ <div class="menu-actions"><button class="btn" id="shopBtn">INTERCAMBIAR CARTAS · ${unlockedCount}</button><button class="btn" id="deckBtn">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="treasureBtn">TESOROS NÉMESIS · ★1000</button><button class="btn retry-entry" id="retryBtn">RETOS · REVANCHA ★</button><button class="btn sanctuary-entry" id="sanctuaryBtn">SANTUARIO · 3 ÚNICAS</button><button class="btn" id="menuFullscreen">⛶ PANTALLA COMPLETA</button></div>
  <div class="menu-panel"><h2>MAZO DE BATALLA</h2><p>Elige hasta <b>11 cartas</b> de tu colección para usar en batalla.</p><div class="mini-deck">${state.deck.map(id=>{const c=card(id);return c?`<img src="${c.img}" alt="${esc(c.name)}" title="${esc(c.name)}">`:''}).join('')}</div><b>${state.deck.length}/11 seleccionadas</b></div>
  <div class="deckbar"><span>Tu colección, estrellas, cartas ganadas y mazo se conservan entre campañas. <small class="mc-safe">MEMORY CARD · AUTO-GUARDADO</small></span><button class="btn big-start" id="startStory">${campaignButton}</button></div></section>`;
  changeName.onclick=()=>{state.name=nm.value.trim()||'Viajero';save();changeName.textContent='GUARDADO ✓';setTimeout(()=>menuScene(),500)};
  shopBtn.onclick=shopScene;deckBtn.onclick=collectionScene;if(typeof treasureBtn!=='undefined'&&treasureBtn)treasureBtn.onclick=nemesisTreasureScene;
 if(typeof sanctuaryBtn!=='undefined'&&sanctuaryBtn)sanctuaryBtn.onclick=sanctuaryScene;
+if(typeof retryBtn!=='undefined'&&retryBtn)retryBtn.onclick=nemesisRetryScene;
 menuFullscreen.onclick=requestNemesisFullscreen;startStory.onclick=()=>{state.name=nm.value.trim()||state.name||'Viajero';if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}if(state.campaign1Completed&&!state.campaign2Started){state.campaign2Started=true;state.campaignStage='campaign2-intro';state.campaign2Stage='intro'}save();continueCampaign()};
 }
 function shopPrice(c,i){return Math.max(50,Math.round((c.atk+c.def)/20/10)*10 + (i%5)*20)}
@@ -3926,8 +3969,12 @@ function finish(win,reason=''){clearInterval(nemesisFlowSupervisorTimer);clearIn
  setPhase('END',win?'VICTORIA':'DERROTA');battleActions.classList.add('hidden');busy=false;document.body.classList.remove('v14-target-turn','v14-player-turn');
  let rewardCard=null;
  if(win){
-  state.stars=(state.stars||0)+100;
-  if(isHades){state.hadesDefeated=true;state.campaign3Unlocked=true;state.campaign3Started=true;state.campaign3Stage='hades-defeated'}
+  const retryReward=nemesisRetryRewardFor(duelKey);
+  const starsWon=retryReward?retryReward.reward:100;
+  state.stars=(state.stars||0)+starsWon;
+  if(retryReward){
+   state.retryBattle=null;
+  }else if(isHades){state.hadesDefeated=true;state.campaign3Unlocked=true;state.campaign3Started=true;state.campaign3Stage='hades-defeated'}
   else if(isAres){state.aresDefeated=true;state.campaign3Unlocked=true;state.campaign3Started=true;state.campaign3Stage='hades-revealed'}
   else if(isGhostGod){state.diosFantasmaDefeated=true;state.campaign2Stage='complete';state.campaignStage='campaign2-hub';state.campaign3Unlocked=true;state.campaign3Started=true;state.campaign3Stage='ares-intro'}
   else if(isSpectralKing){state.reyEspectralDefeated=true;state.campaign2Stage='dios-fantasma';state.campaignStage='campaign2-hub'}
@@ -3935,24 +3982,25 @@ function finish(win,reason=''){clearInterval(nemesisFlowSupervisorTimer);clearIn
   else if(isRa){state.raDefeated=true;state.campaign1Completed=true;state.campaign2Unlocked=true;state.campaign2Started=false;state.campaign2Stage='intro';state.campaignStage='campaign1-complete'}
   else if(isDragon){state.dragonDefeated=true;state.campaignStage='ira-ra'}
   else{state.guardianDefeated=true;state.campaignStage='dragon-ojo-diablo'}
-  rewardCard=grantRandomBossCard(duelKey);
-  if(isRa)nemesisUnlockCampaignDecks('campaign1');
-  if(isGhostGod)nemesisUnlockCampaignDecks('campaign2');
-  if(isHades)nemesisUnlockCampaignDecks('campaign3');
+  rewardCard=retryReward?null:grantRandomBossCard(duelKey);
+  if(!retryReward&&isRa)nemesisUnlockCampaignDecks('campaign1');
+  if(!retryReward&&isGhostGod)nemesisUnlockCampaignDecks('campaign2');
+  if(!retryReward&&isHades)nemesisUnlockCampaignDecks('campaign3');
   save();
  }
  let d=document.createElement('div');d.className='result';
+ const retryHtml=retryReward?`<div class="retry-win-reward"><b>REVANCHA GANADA</b><span>${retryReward.role} · ★ +${starsWon} ESTRELLAS</span><small>${retryReward.role==='JEFE'?'BONO JEFE · RECOMPENSA DOBLE':'RECOMPENSA GUARDIÁN'}</small></div>`:'';
  const rewardHtml=rewardCard?`<div class="boss-card-reward"><small>CARTA GANADA AL AZAR DEL MAZO RIVAL</small><img src="${rewardCard.img}" alt="${esc(rewardCard.name)}"><b>${esc(rewardCard.name)}</b><span>${cardStats(rewardCard)}</span><em>AGREGADA A MI COLECCIÓN</em></div>`:`<p class="boss-card-reward-complete">Mazo rival ya completado en tu colección.</p>`;
  if(win){
   d.classList.add('guardian-defeat');
-  if(isHades)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="assets/images/campaign3/hades/hades-personaje.png" alt="Hades"><div class="guardian-defeat-dialog"><h2>HADES DERROTADO</h2><p>El Tártaro se cierra.</p><p>★ +100 ESTRELLAS</p>${rewardHtml}<button class="btn" id="again">VOLVER AL INICIO</button></div></div>`;
-  else if(isAres)d.innerHTML=`<div class="guardian-defeat-card"><img src="assets/images/campaign3/ares/ares-personaje.png" alt="Ares"><div class="guardian-defeat-dialog"><h2>ARES DERROTADO</h2><p>La guerra se detiene... y surge una risa desde la oscuridad.</p><p class="dark-warning">HADES TE ESPERA</p><p>★ +100 ESTRELLAS</p>${rewardHtml}<button class="btn" id="again">CONTINUAR</button></div></div>`;
-  else if(isGhostGod)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="assets/images/dios-fantasma.png" alt="Dios Fantasma"><div class="guardian-defeat-dialog"><h2>DIOS FANTASMA DERROTADO</h2><p>Me vengaré...</p><p class="dark-warning">CAMPAÑA III DESBLOQUEADA</p><p>★ +100 ESTRELLAS</p>${rewardHtml}<button class="btn" id="again">ENTRAR A CAMPAÑA III</button></div></div>`;
-  else if(isSpectralKing)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="${AS.reyEspectral}" alt="Rey Espectral"><div class="guardian-defeat-dialog"><h2>REY ESPECTRAL DERROTADO</h2><p>La Corona de la Eternidad se rompe y el trono queda en silencio.</p><p class="dark-warning">SIGUIENTE: DIOS FANTASMA</p><p>★ +100 ESTRELLAS</p>${rewardHtml}<button class="btn" id="again">VOLVER A CAMPAÑA II</button></div></div>`;
-  else if(isSoulKnight)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="${AS.caballeroAlmas}" alt="Caballero de las Almas"><div class="guardian-defeat-dialog"><h2>CABALLERO DE LAS ALMAS DERROTADO</h2><p>Las almas se dispersan y el camino hacia el Rey Espectral queda abierto.</p><p class="dark-warning">SIGUIENTE: REY ESPECTRAL</p><p>★ +100 ESTRELLAS</p>${rewardHtml}<button class="btn" id="again">VOLVER A CAMPAÑA II</button></div></div>`;
-  else if(isRa)d.innerHTML=`<div><h1>CAMPAÑA I COMPLETADA</h1><p>Has derrotado a IRA DE RA y superado el poder del Sol ancestral.</p><p class="dark-warning">CAMPAÑA II DESBLOQUEADA</p><p>★ +100 ESTRELLAS</p><p>La Memory Card guardó tus cartas ganadas, estrellas, colección y mazo.</p>${rewardHtml}<button class="btn" id="again">VOLVER AL INICIO</button></div>`;
-  else if(isDragon)d.innerHTML=`<div class="guardian-defeat-card"><img src="assets/images/dragon-ojo-del-diablo.png" alt="Dragón Ojo del Diablo"><div class="guardian-defeat-dialog"><h2>DRAGÓN OJO DEL DIABLO</h2><p>No soy el más poderoso... ¡JA, JA, JA!</p><p class="dark-warning">IRA DE RA TE ESPERA</p><p>★ +100 ESTRELLAS</p>${rewardHtml}<button class="btn" id="again">VOLVER AL MENÚ</button></div></div>`;
-  else d.innerHTML=`<div class="guardian-defeat-card"><img src="assets/images/guardian-dragones.webp" alt="Guardián de los Dragones"><div class="guardian-defeat-dialog"><h2>GUARDIÁN DE LOS DRAGONES</h2><p>Oh... me mataste.</p><p class="dark-warning">Pero te enfrentarás a la oscuridad.</p><p>★ +100 ESTRELLAS</p><p>Sus cartas quedaron desbloqueadas en INTERCAMBIO NÉMESIS.</p>${rewardHtml}<button class="btn" id="again">CONTINUAR</button></div></div>`
+  if(isHades)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="assets/images/campaign3/hades/hades-personaje.png" alt="Hades"><div class="guardian-defeat-dialog"><h2>HADES DERROTADO</h2><p>El Tártaro se cierra.</p><p>★ +100 ESTRELLAS</p>${retryHtml}${rewardHtml}<button class="btn" id="again">VOLVER AL INICIO</button></div></div>`;
+  else if(isAres)d.innerHTML=`<div class="guardian-defeat-card"><img src="assets/images/campaign3/ares/ares-personaje.png" alt="Ares"><div class="guardian-defeat-dialog"><h2>ARES DERROTADO</h2><p>La guerra se detiene... y surge una risa desde la oscuridad.</p><p class="dark-warning">HADES TE ESPERA</p><p>★ +100 ESTRELLAS</p>${retryHtml}${rewardHtml}<button class="btn" id="again">CONTINUAR</button></div></div>`;
+  else if(isGhostGod)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="assets/images/dios-fantasma.png" alt="Dios Fantasma"><div class="guardian-defeat-dialog"><h2>DIOS FANTASMA DERROTADO</h2><p>Me vengaré...</p><p class="dark-warning">CAMPAÑA III DESBLOQUEADA</p><p>★ +100 ESTRELLAS</p>${retryHtml}${rewardHtml}<button class="btn" id="again">ENTRAR A CAMPAÑA III</button></div></div>`;
+  else if(isSpectralKing)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="${AS.reyEspectral}" alt="Rey Espectral"><div class="guardian-defeat-dialog"><h2>REY ESPECTRAL DERROTADO</h2><p>La Corona de la Eternidad se rompe y el trono queda en silencio.</p><p class="dark-warning">SIGUIENTE: DIOS FANTASMA</p><p>★ +100 ESTRELLAS</p>${retryHtml}${rewardHtml}<button class="btn" id="again">VOLVER A CAMPAÑA II</button></div></div>`;
+  else if(isSoulKnight)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="${AS.caballeroAlmas}" alt="Caballero de las Almas"><div class="guardian-defeat-dialog"><h2>CABALLERO DE LAS ALMAS DERROTADO</h2><p>Las almas se dispersan y el camino hacia el Rey Espectral queda abierto.</p><p class="dark-warning">SIGUIENTE: REY ESPECTRAL</p><p>★ +100 ESTRELLAS</p>${retryHtml}${rewardHtml}<button class="btn" id="again">VOLVER A CAMPAÑA II</button></div></div>`;
+  else if(isRa)d.innerHTML=`<div><h1>CAMPAÑA I COMPLETADA</h1><p>Has derrotado a IRA DE RA y superado el poder del Sol ancestral.</p><p class="dark-warning">CAMPAÑA II DESBLOQUEADA</p><p>★ +100 ESTRELLAS</p><p>La Memory Card guardó tus cartas ganadas, estrellas, colección y mazo.</p>${retryHtml}${rewardHtml}<button class="btn" id="again">VOLVER AL INICIO</button></div>`;
+  else if(isDragon)d.innerHTML=`<div class="guardian-defeat-card"><img src="assets/images/dragon-ojo-del-diablo.png" alt="Dragón Ojo del Diablo"><div class="guardian-defeat-dialog"><h2>DRAGÓN OJO DEL DIABLO</h2><p>No soy el más poderoso... ¡JA, JA, JA!</p><p class="dark-warning">IRA DE RA TE ESPERA</p><p>★ +100 ESTRELLAS</p>${retryHtml}${rewardHtml}<button class="btn" id="again">VOLVER AL MENÚ</button></div></div>`;
+  else d.innerHTML=`<div class="guardian-defeat-card"><img src="assets/images/guardian-dragones.webp" alt="Guardián de los Dragones"><div class="guardian-defeat-dialog"><h2>GUARDIÁN DE LOS DRAGONES</h2><p>Oh... me mataste.</p><p class="dark-warning">Pero te enfrentarás a la oscuridad.</p><p>★ +100 ESTRELLAS</p><p>Sus cartas quedaron desbloqueadas en INTERCAMBIO NÉMESIS.</p>${retryHtml}${rewardHtml}<button class="btn" id="again">CONTINUAR</button></div></div>`
  }else{const msg=reason||`${enemyDisplayName} te ha derrotado.`;d.innerHTML=`<div><h1>DERROTA</h1><p>${msg}</p><button class="btn" id="again">REINTENTAR</button></div>`}
  app.appendChild(d);if(win&&isDragon)preloadIraRaCinematic();d.querySelector('#again').onclick=()=>{
  if(!win)return battle(duelKey);
