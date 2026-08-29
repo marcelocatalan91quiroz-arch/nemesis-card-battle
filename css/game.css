@@ -690,3 +690,22 @@ body[data-heroic-weather="TORMENTA DIVINA"] .battle{filter:saturate(1.18);box-sh
 .battle[data-graphics="NEMESIS"] #stage canvas{filter:saturate(1.08) contrast(1.035)}
 .battle[data-graphics="NEMESIS"] .battlecard{box-shadow:0 0 28px rgba(183,85,255,.48),0 14px 34px rgba(0,0,0,.65)}
 @media (prefers-reduced-motion:reduce){.pc-card-cinematic,.v15flash,.v15summon,.v15trapfx{animation-duration:.01ms!important}}
+
+/* V19.5.1 — Transformaciones y Fusiones cinematográficas PC */
+.pc-transformation-cinematic,.pc-fusion-evolution{position:fixed;inset:0;z-index:12000;display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,rgba(94,22,135,.5),rgba(2,1,6,.96) 70%);opacity:0;pointer-events:none;transition:.22s}
+.pc-transformation-cinematic.show,.pc-fusion-evolution.show{opacity:1}.pc-transformation-cinematic.out,.pc-fusion-evolution.out{opacity:0}
+.pc-transformation-cinematic section,.pc-fusion-evolution section{position:relative;z-index:2;text-align:center;width:min(94vw,980px)}
+.pc-transformation-cinematic small,.pc-fusion-evolution small{display:block;letter-spacing:.36em;font-weight:900;color:#e7b9ff;margin-bottom:18px;text-shadow:0 0 16px #a84cff}
+.pc-transform-cards,.pc-fusion-materials{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap}
+.pc-transform-cards img,.pc-fusion-materials img,.pc-fusion-result img{width:min(24vw,230px);max-height:54vh;object-fit:contain;border-radius:14px;box-shadow:0 0 38px rgba(181,92,255,.5),0 22px 50px rgba(0,0,0,.75)}
+.pc-transform-cards .from{animation:pcOldForm .95s ease both}.pc-transform-cards .to{animation:pcNewForm .95s ease both}
+.pc-transform-cards span,.pc-fusion-materials span{font-size:56px;color:#fff2b0;text-shadow:0 0 26px #ffb13d}
+.pc-transformation-cinematic b,.pc-transformation-cinematic strong,.pc-fusion-result b{display:block;margin-top:14px;font:900 clamp(20px,3vw,34px) Georgia;color:#fff;text-shadow:0 0 22px #9e46ff}
+.pc-transformation-cinematic strong{color:#ffd36f}
+.pc-fusion-result{margin-top:24px;animation:pcFusionResult 1.15s ease both}
+.pc-fusion-vortex,.pc-transform-energy{position:absolute;width:min(70vw,720px);aspect-ratio:1;border-radius:50%;border:2px solid rgba(227,171,255,.35);box-shadow:0 0 90px rgba(165,62,255,.45),inset 0 0 80px rgba(255,164,57,.16);animation:pcVortex 1.2s linear infinite}
+@keyframes pcOldForm{0%{transform:scale(1);filter:brightness(1)}70%{transform:scale(.82);filter:brightness(1.8) blur(1px)}100%{transform:scale(.58);opacity:.15}}
+@keyframes pcNewForm{0%{transform:scale(.55);opacity:.05;filter:brightness(2)}55%{opacity:.75}100%{transform:scale(1.08);opacity:1;filter:brightness(1.15)}}
+@keyframes pcFusionResult{0%{transform:scale(.35) rotate(-4deg);opacity:0;filter:brightness(2.2)}65%{opacity:1}100%{transform:scale(1);opacity:1;filter:brightness(1)}}
+@keyframes pcVortex{to{transform:rotate(360deg) scale(1.04)}}
+@media(max-width:700px){.pc-transform-cards img,.pc-fusion-materials img,.pc-fusion-result img{width:min(38vw,180px)}.pc-transform-cards span,.pc-fusion-materials span{font-size:34px}}
