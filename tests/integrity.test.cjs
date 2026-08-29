@@ -68,3 +68,9 @@ A(game.includes('pcTransformationCinematic'),'cinemática de transformación PC 
 A(game.includes('PC_BOSS_PHASE_VISUALS'),'perfiles visuales de fases de jefes');
 A(game.includes('pcBossPhaseEvolution'),'arena reactiva por fase');
 A(game.includes('pcEquipmentCinematic'),'cinemática 3D de equipamiento');
+
+// V19.5.3 — destrucción/cementerio/Ultimate
+A(game.includes('pcGraveCinematic(side,victim'),'destrucción conecta viaje visual al Cementerio');
+A(game.includes('PC_ULTIMATE_IDS'),'registro de cartas Ultimate');
+A(game.includes('pcUltimateCinematic(attSide,ai'),'Ultimate conectado al combate real');
+A(game.includes('pcAttackSignature'),'firma visual de ataque disponible');
