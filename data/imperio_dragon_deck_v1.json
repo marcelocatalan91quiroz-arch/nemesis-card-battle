@@ -383,8 +383,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-011.png",
       "img_game": "assets/images/magica-furia-abismo.webp",
-      "imagen_estado": "IMAGEN_GENERADA_EN_CHAT__NO_COINCIDE_FICHA_MAESTRA__PENDIENTE_REGENERAR",
-      "img_original_conversation_file_id": "file_00000000b1f4820e9cfee9f5b1ccd547"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_0000000053e4820eae2efb297e6765f3"
     },
     {
       "id": "IDR-012",
@@ -412,7 +412,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-012.png",
       "img_game": "assets/images/magica-escudo-caos.webp",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_000000003d0c820ea61cf255a89149de"
     },
     {
       "id": "IDR-013",
@@ -442,7 +443,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-013.png",
       "img_game": "assets/images/castillo-dragon-ojo-diablo.webp",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_0000000089b0820e857c5acce655a549"
     },
     {
       "id": "IDR-014",
@@ -734,5 +736,6 @@
   ],
   "ultima_actualizacion": "2026-08-29",
   "regla_operativa": "Cada carta nueva o regenerada debe actualizarse inmediatamente en esta ficha maestra y en js/game.js antes de pasar a la siguiente.",
-  "nota_integracion_imagenes": "IDR-009 e IDR-010 registradas con sus imágenes generadas. IDR-011 queda marcada para regeneración porque la imagen generada no corresponde a su ficha maestra Llamado de la Sangre Imperial."
+  "nota_integracion_imagenes": "IDR-009 e IDR-010 registradas con sus imágenes generadas. IDR-011 queda marcada para regeneración porque la imagen generada no corresponde a su ficha maestra Llamado de la Sangre Imperial.",
+  "nota_integracion_magicas": "IDR-011, IDR-012 e IDR-013 registradas como las tres mágicas ilustradas del mazo. La lógica jugable conserva las fichas maestras oficiales."
 }
