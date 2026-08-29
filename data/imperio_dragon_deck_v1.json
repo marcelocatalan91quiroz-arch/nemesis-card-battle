@@ -3,7 +3,7 @@
   "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1",
   "set": "IMPERIO_DRAGON",
   "version": "19.4.0",
-  "estado": "PLANTILLA_MAESTRA_20_DE_20__ILUSTRACIONES_5_DE_20",
+  "estado": "PLANTILLA_MAESTRA_20_DE_20__FICHAS_RECUPERADAS__ILUSTRACIONES_8_DE_20",
   "mecanica": "ASCENSION_DRACONICA",
   "deck_ids": [
     "IDR-001",
@@ -202,85 +202,90 @@
       "nivel": 6,
       "atk": 2500,
       "def": 2800,
-      "copias_max": 2,
+      "copias_max": 3,
       "habilidad": "ESCAMAS DE LA FORJA",
-      "estrategia": "Muro defensivo y protector del motor de Ascensión.",
+      "estrategia": "Muro defensivo del Imperio Dragón; protege piezas clave y acelera Ascensión.",
       "efectos": [
-        "Mientras esté en Campo, la primera carta Imperio Dragón que fuera a ser destruida cada turno no es destruida.",
-        "Cada vez que evita una destrucción, gana 1 Marca de Ascensión."
+        "Una vez por turno, protege 1 carta Imperio Dragón en el Campo de la destrucción por efectos de cartas durante ese turno.",
+        "Si esa carta hubiera sido destruida, en su lugar gana 1 Marca de Ascensión.",
+        "Mientras esta carta esté en el Campo, todas tus criaturas Imperio Dragón ganan 300 DEF."
       ],
       "transformacion": {
         "marcas": 3,
-        "destino": "Dragón Bastión de la Forja"
+        "destino": "Dragón Guardián de la Forja Supremo"
       },
       "img": "assets/images/imperio-dragon/idr-006.png",
       "img_game": "assets/images/dragon-diamante.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img_original_conversation_file_id": "file_00000000fc10820e8cbfb746c4fd8cca"
     },
     {
       "id": "IDR-007",
-      "nombre": "Dragón Cazador Celeste",
-      "tipo": "CRIATURA",
-      "subtipo": "EFECTO",
-      "afinidades": [
-        "VIENTO",
-        "DRAGON",
-        "RAYO"
-      ],
-      "arquetipos": [
-        "IMPERIO_DRAGON"
-      ],
-      "rareza": "EPICA",
-      "nivel": 6,
-      "atk": 2700,
-      "def": 1900,
-      "copias_max": 2,
-      "habilidad": "CAZA DESDE LAS NUBES",
-      "estrategia": "Atacante veloz que elimina soportes y abre el campo.",
-      "efectos": [
-        "Al ser Invocado, puede devolver 1 Mágica o Trampa rival a la mano.",
-        "Si el rival no controla cartas de apoyo, puede atacar directamente; el daño directo se reduce a la mitad."
-      ],
-      "transformacion": {
-        "marcas": 3,
-        "destino": "Dragón Tempestad Imperial"
-      },
-      "img": "assets/images/imperio-dragon/idr-007.png",
-      "img_game": "assets/images/dragon-dorado.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
-    },
-    {
-      "id": "IDR-008",
-      "nombre": "Dragón Primogénito del Imperio",
+      "nombre": "Dragón Azoth del Abismo",
       "tipo": "CRIATURA",
       "subtipo": "EFECTO",
       "afinidades": [
         "FUEGO",
         "DRAGON",
-        "DIVINA"
+        "OSCURIDAD"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 7,
+      "atk": 3200,
+      "def": 2000,
+      "copias_max": 3,
+      "habilidad": "VÓRTICE DEL ABISMO",
+      "estrategia": "Agresor de control; elimina cartas rivales y escala con Ascensión.",
+      "efectos": [
+        "Una vez por turno, puedes destruir 1 carta que controle el adversario; si lo haces, esta carta gana ATK igual al ATK original de esa carta destruida hasta el final del turno.",
+        "Si esta carta es Invocada de Modo Especial, puedes destruir 1 carta Mágica o Trampa en el Campo.",
+        "ALMA DEL CAOS: mientras tenga 2 o más Marcas de Ascensión, no puede ser objetivo de efectos de cartas del adversario."
+      ],
+      "transformacion": {
+        "marcas": 3,
+        "destino": "Azoth, Señor Supremo del Abismo"
+      },
+      "img": "assets/images/imperio-dragon/idr-007.png",
+      "img_game": "assets/images/dragon-dorado.png",
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img_original_conversation_file_id": "file_000000000ad0820ea3d72ebe35cd2d91"
+    },
+    {
+      "id": "IDR-008",
+      "nombre": "Dragón Emperador Infernal",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
       ],
       "arquetipos": [
         "IMPERIO_DRAGON",
         "PANTEON_DIVINO"
       ],
-      "rareza": "MITICA",
+      "rareza": "EPICA",
       "nivel": 8,
-      "atk": 3200,
+      "atk": 3500,
       "def": 3000,
-      "copias_max": 1,
-      "habilidad": "MANDATO DEL PRIMOGÉNITO",
-      "estrategia": "Jefe del núcleo; acelera Ascensión y coordina todo el arquetipo.",
+      "copias_max": 3,
+      "habilidad": "INFIERNO DOMINANTE",
+      "estrategia": "Líder ofensivo; convierte destrucción, daño directo y Marcas de Ascensión en presión constante.",
       "efectos": [
-        "Al entrar al Campo, coloca 1 Marca de Ascensión en hasta 2 dragones aliados.",
-        "Una vez por turno, puedes retirar 1 Marca de Ascensión de una carta aliada para negar una reducción de ATK/DEF o una destrucción."
+        "Una vez por turno, puedes destruir 1 carta en el Campo; si lo haces, esta carta gana 500 ATK y tu adversario pierde 500 LP.",
+        "Si esta carta fuera a ser destruida, puedes desterrar 1 carta Imperio Dragón de tu Cementerio en su lugar.",
+        "AURA INFERNAL: todas tus criaturas Imperio Dragón ganan 200 ATK por cada Marca de Ascensión que tengan."
       ],
       "transformacion": {
-        "marcas": 4,
-        "destino": "Emperador Dragón NÉMESIS"
+        "marcas": 3,
+        "destino": "Emperador Dragón del Cataclismo"
       },
       "img": "assets/images/imperio-dragon/idr-008.png",
       "img_game": "assets/images/carta-dragon-ojo-del-diablo.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_REGENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img_original_conversation_file_id": "file_000000007d18820e8ba62785553f4051"
     },
     {
       "id": "IDR-009",
@@ -709,5 +714,21 @@
       "IDR-020"
     ]
   },
-  "flujo_trabajo": "Cada nueva ilustración oficial se sustituye inmediatamente en su ID reservado y se valida en GitHub antes de continuar a la siguiente carta."
+  "flujo_trabajo": "Cada nueva ilustración oficial se sustituye inmediatamente en su ID reservado y se valida en GitHub antes de continuar a la siguiente carta.",
+  "fichas_recuperadas": [
+    "IDR-009",
+    "IDR-010",
+    "IDR-011",
+    "IDR-012",
+    "IDR-013",
+    "IDR-014",
+    "IDR-015",
+    "IDR-016",
+    "IDR-017",
+    "IDR-018",
+    "IDR-019",
+    "IDR-020"
+  ],
+  "ultima_actualizacion": "2026-08-29",
+  "regla_operativa": "Cada carta nueva o regenerada debe actualizarse inmediatamente en esta ficha maestra y en js/game.js antes de pasar a la siguiente."
 }
