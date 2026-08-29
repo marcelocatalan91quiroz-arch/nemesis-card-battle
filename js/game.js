@@ -2373,7 +2373,7 @@ function dmRivalGrave(side){return side==='p'?enemyGrave:playerGrave}
 function dmTags(c){return [...(c?.tags||[]),...(c?.externalData?.tipos||[]),...(c?.externalData?.elementos||[])].map(x=>String(x).toLowerCase())}
 function dmHas(c,t){return dmTags(c).includes(String(t).toLowerCase())}
 function dmState(c){
- if(!c._dm)c._dm={energy:Number(c.energia??c.externalData?.energia??0),charges:0,solar:0,pact:0,austral:0,uses:0,destroyedOwn:0,phase:1};
+ if(!c._dm)c._dm={energy:Number(c.energia??c.externalData?.energia??0),charges:0,solar:0,pact:0,austral:0,uses:0,destroyedOwn:0,phase:1,fieldTurns:0};
  return c._dm
 }
 
@@ -2569,6 +2569,19 @@ async function dmUseAbility(side,i,c,sk){
   else if(k===1){let n=Math.min(3,st.austral);while(n-->0){t=dmBest(side);if(!t)break;await dmBanish(side,t.i);st.austral--}}
   else if(k===2){const grave=dmGrave(side),pick=grave.map((x,j)=>({c:x,j})).find(x=>x.c&&(dmHas(x.c,'espiritu')||dmHas(x.c,'hielo')));const free=own.findIndex(x=>!x);if(pick&&free>=0){const rev={...pick.c};grave.splice(pick.j,1);own[free]=rev;(side==='p'?playerModes:enemyModes)[free]='DEFENSA';await place(side,free,rev);await flip(side,free);await setMode(side,free,'DEFENSA')}}
   else if(k===3&&st.austral>=5){st.austral-=5;await extDraw(side,2);dmHeal(side,1000)}
+ }else if(c.id==='DM-011'){
+  if(k===0){t=dmBest(side);if(t){t.c.atk=Math.max(0,(t.c.atk||0)-1500);t.c._dmAphroditeLockedUntil=turnNo;toast('SEDUCCIÓN DEL ALMA: '+t.c.name+' pierde 1500 ATK y queda contenida.')}}
+  else if(k===1){c._dmAfroditaBondTurn=turnNo;toast('VÍNCULO DE AFRODITA protege a Duel Master este turno.')}
+  else if(k===2){if(st.fieldTurns<3){toast('CORAZÓN CAUTIVO requiere 3 turnos en Campo.');return false}if(side==='p')await extStealStrongest(side);else{t=dmBest(side);if(t)await dmBanish(side,t.i)}}
+ }else if(c.id==='DM-012'){
+  if(k===0){t=dmBest(side);if(t){t.c._dmPetrifiedUntil=turnNo+1;t.c._petrifiedUntil=turnNo+1;t.c._attackDisabledUntil=turnNo+1;c.atk+=500;c.def+=500;c._dmStoneBonus=Math.min(2000,(c._dmStoneBonus||0)+500);toast('MIRADA PETRIFICANTE: '+t.c.name+' queda petrificada.')}}
+  else if(k===1){c._dmReflectReadyTurn=turnNo;toast('REFLEJO DE GORGONA preparado.')}
+  else if(k===2){const petrified=riv.filter(x=>x&&((x._dmPetrifiedUntil||-1)>=turnNo)).length,want=Math.min(2000,petrified*500),old=c._dmGalleryBonus||0;c.atk=Math.max(0,c.atk-old+want);c.def=Math.max(0,c.def-old+want);c._dmGalleryBonus=want}
+ }else if(c.id==='DM-018'){
+  if(k===0){riv.forEach(x=>{if(x){x.atk=Math.max(0,(x.atk||0)-1500);x._dmShinyDebuff=(x._dmShinyDebuff||0)+1500}});dmHit(side,2500);toast('TRUENO ETERNO domina el Campo.')}
+  else if(k===1){const gods=[...own,...dmGrave(side)].filter(x=>x&&dmIs(x)&&(dmHasDeep(x,'dios')||dmHasDeep(x,'divina'))).length,bonus=Math.max(1000,gods*1000);c.atk+=bonus;c._dmShinyTempAtk=(c._dmShinyTempAtk||0)+bonus}
+  else if(k===2){own.forEach(x=>{if(dmIs(x)){x._dmShinyProtectedUntil=turnNo;x._shieldBonus=(x._shieldBonus||0)+1000;x._shieldPending=true}})}
+  else if(k===3){if(!dmPay(c,3))return false;for(let j=0;j<riv.length;j++){const x=riv[j];if(x&&(x.atk||0)<=4000)await dmDestroy(side,j)}dmHit(side,4000);c._extUltimateUsed=true;toast('GOLPE DEL BIFRÖST: ULTIMATE SHINY.')}
  }
  st.uses++;c._extSkillUses=(c._extSkillUses||0)+1;nemesisDmSync();update();return true
 }
@@ -2579,8 +2592,9 @@ async function nemesisDmPreventDestroy(side,i,victim){
  if(victim.id==='DM-010'&&own.filter(Boolean).length<=1){toast('GUARDIÁN DEL ÚLTIMO ALIENTO evita la destrucción de Onkolxón.');return true}
  const deep=dmDeepState(side);
  if(deep.titanShieldTurn===turnNo){toast('ESCUDO DE LOS TITANES evita la destrucción.');return true}
+ if((victim._dmShinyProtectedUntil||-1)>=turnNo){toast('PROTECTOR DE LOS NUEVE REINOS evita la destrucción.');return true}
  const afro=own.find(c=>dmIs(c,'DM-011'));if(afro&&afro!==victim&&deep.afroditaGuardTurn!==turnNo){deep.afroditaGuardTurn=turnNo;toast('VÍNCULO DE AFRODITA protege a '+victim.name+'.');return true}
- if(victim.id==='DM-012'&&deep.medusaReflectTurn!==turnNo){deep.medusaReflectTurn=turnNo;const t=dmBest(side);if(t){toast('REFLEJO DE GORGONA devuelve la destrucción.');await dmDestroy(side,t.i)}return true}
+ if(victim.id==='DM-012'&&(victim._dmReflectReadyTurn===turnNo||deep.medusaReflectTurn!==turnNo)){deep.medusaReflectTurn=turnNo;const t=dmBest(side);if(t){toast('REFLEJO DE GORGONA devuelve la destrucción.');await dmDestroy(side,t.i)}return true}
  if(victim._dmDomainProtected||victim._dmTorchProtected){toast('DOMINIO DUEL MASTER protege a '+victim.name+'.');return true}
  if(dmEq(victim,'weapon','DM-017')){nemesisUnequip(side,i,'weapon',{broken:true,toGrave:true,reason:'Bendición del Portador'});toast('ARMA SANTA se sacrifica y protege a '+victim.name+'.');return true}
  return false
@@ -2591,7 +2605,7 @@ function nemesisDmAfterDestroyed(side,victim){
  rival.forEach(c=>{if(dmIs(c,'DM-009')){const st=dmState(c);st.pact=Math.min(6,st.pact+1)}});nemesisDmSync()
 }
 function nemesisDmTurnStart(){
- playerCards.forEach(c=>{if(!dmIs(c))return;const st=dmState(c);if(c.id==='DM-004')st.charges=Math.min(5,st.charges+1);if(c.id==='DM-007'&&c._dmReturnTurn&&turnNo>=c._dmReturnTurn){c._dmReturnTurn=0;c.atk+=3000;c.def+=3000;st.charges=Math.min(3,st.charges+1);toast('RETORNO DEL ETERNO: Quetzalcóatl regresa fortalecido.')}});
+ playerCards.forEach(c=>{if(!dmIs(c))return;const st=dmState(c);st.fieldTurns=(st.fieldTurns||0)+1;if(c.id==='DM-004')st.charges=Math.min(5,st.charges+1);if(c.id==='DM-007'&&c._dmReturnTurn&&turnNo>=c._dmReturnTurn){c._dmReturnTurn=0;c.atk+=3000;c.def+=3000;st.charges=Math.min(3,st.charges+1);toast('RETORNO DEL ETERNO: Quetzalcóatl regresa fortalecido.')}});
  playerGrave.forEach(c=>{if(dmIs(c,'DM-010'))dmState(c).austral++});dmTryShinyAwakening('p').catch(()=>{});nemesisDmSync()
 }
 function nemesisDmEndTurn(){
@@ -2628,7 +2642,7 @@ function nemesisDmKeepTurnAfterAttack(c){
  if((c.id==='DM-004'||c.id==='DM-018')&&c._dmSecondAttackTurn===turnNo&&c._dmSecondAttackUsedTurn!==turnNo){c._dmSecondAttackUsedTurn=turnNo;return true}
  return false
 }
-window.NEMESIS_DUEL_MASTER_AUDIT=()=>{const cards=NEMESIS_DUEL_MASTER_IDS.map(id=>card(id)),o=card('DM-010'),missing=NEMESIS_DUEL_MASTER_IDS.filter(id=>!card(id));return{total:cards.filter(Boolean).length,unique:new Set(NEMESIS_DUEL_MASTER_IDS).size,missing,ids:cards.filter(Boolean).map(c=>c.id),images:cards.filter(Boolean).map(c=>c.img),onkolxon:o?{hp:o.externalData?.hp,energia:o.externalData?.energia}:null,systems:{deep:typeof dmDeepSync==='function',shiny:typeof dmTryShinyAwakening==='function',realmFusion:typeof dmRealmFusion==='function',titanCounter:typeof dmTitanJudgement==='function'},ok:cards.filter(Boolean).length===20&&new Set(NEMESIS_DUEL_MASTER_IDS).size===20&&missing.length===0&&o?.externalData?.hp===13000&&o?.externalData?.energia===14}}
+window.NEMESIS_DUEL_MASTER_AUDIT=()=>{const cards=NEMESIS_DUEL_MASTER_IDS.map(id=>card(id)),o=card('DM-010'),missing=NEMESIS_DUEL_MASTER_IDS.filter(id=>!card(id)),handlers=cards.filter(Boolean).map(c=>({id:c.id,type:c.type,handler:c.type==='monster'?!!dmSkillDescriptor(c):['DM-005','DM-006','DM-013','DM-014','DM-015','DM-016','DM-017','DM-019','DM-020'].includes(c.id)}));return{total:cards.filter(Boolean).length,unique:new Set(NEMESIS_DUEL_MASTER_IDS).size,missing,ids:cards.filter(Boolean).map(c=>c.id),images:cards.filter(Boolean).map(c=>c.img),onkolxon:o?{hp:o.externalData?.hp,energia:o.externalData?.energia}:null,handlers,systems:{deep:typeof dmDeepSync==='function',shiny:typeof dmTryShinyAwakening==='function',realmFusion:typeof dmRealmFusion==='function',titanCounter:typeof dmTitanJudgement==='function'},ok:cards.filter(Boolean).length===20&&new Set(NEMESIS_DUEL_MASTER_IDS).size===20&&missing.length===0&&handlers.every(x=>x.handler)&&o?.externalData?.hp===13000&&o?.externalData?.energia===14}}
 
 
 /* V19.3.0 — 23 CARTAS GENERALES: motor específico.
