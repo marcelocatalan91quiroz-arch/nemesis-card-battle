@@ -5,6 +5,9 @@ const MEMORY=globalThis.__NEMESIS_ONLINE_ROOMS||(globalThis.__NEMESIS_ONLINE_ROO
 const KV_URL=process.env.KV_REST_API_URL||process.env.UPSTASH_REDIS_REST_URL||'';
 const KV_TOKEN=process.env.KV_REST_API_TOKEN||process.env.UPSTASH_REDIS_REST_TOKEN||'';
 const hasKv=()=>Boolean(KV_URL&&KV_TOKEN);
+const isProduction=()=>process.env.VERCEL_ENV==='production'||process.env.NODE_ENV==='production';
+const storageMode=()=>hasKv()?'PERSISTENT_KV':(isProduction()?'PERSISTENCE_REQUIRED':'FLUID_MEMORY_DEV');
+const storageReady=()=>hasKv()||!isProduction();
 const now=()=>Date.now();
 const code=()=>Array.from({length:6},()=> 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'[crypto.randomInt(0,32)]).join('');
 const id=(n=18)=>crypto.randomBytes(n).toString('base64url');
@@ -39,7 +42,7 @@ function publicRoom(room,token){
  const t=now();
  return {
   code:room.code,status:room.status,version:room.version,createdAt:room.createdAt,updatedAt:room.updatedAt,
-  serverTime:t,transport:hasKv()?'VERCEL_KV':'FLUID_MEMORY',tickMs:1200,
+  serverTime:t,transport:storageMode(),persistent:hasKv(),tickMs:1200,
   me:{id:me.id,seat:me.seat,name:me.name,ready:me.ready,connected:t-me.lastSeen<10000},
   players:room.players.map(p=>({id:p.id,seat:p.seat,name:p.name,ready:p.ready,connected:t-p.lastSeen<10000})),
   countdownAt:room.countdownAt||null,result:room.result||null,
@@ -61,7 +64,8 @@ function cors(res){
 module.exports=async function handler(req,res){
  cors(res);if(req.method==='OPTIONS')return res.status(204).end();
  try{
-  if(req.method==='GET'&&req.query?.action==='health')return res.status(200).json({ok:true,service:'NEMESIS ONLINE 1V1',authority:'server',storage:hasKv()?'VERCEL_KV':'FLUID_MEMORY',time:now()});
+  if(req.method==='GET'&&req.query?.action==='health')return res.status(storageReady()?200:503).json({ok:storageReady(),service:'NEMESIS ONLINE 1V1',authority:'server',storage:storageMode(),persistent:hasKv(),production:isProduction(),time:now()});
+  if(!storageReady())return res.status(503).json({ok:false,error:'PERSISTENCE_REQUIRED',message:'Configure KV_REST_API_URL/KV_REST_API_TOKEN or UPSTASH_REDIS_REST_URL/UPSTASH_REDIS_REST_TOKEN before enabling production multiplayer.'});
   if(req.method==='GET'){
    const room=await readRoom(req.query?.room);if(!room)return res.status(404).json({ok:false,error:'ROOM_NOT_FOUND'});
    const view=publicRoom(room,req.query?.token);if(!view)return res.status(403).json({ok:false,error:'INVALID_SESSION'});
