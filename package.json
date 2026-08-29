@@ -1,14 +1,15 @@
 {
   "name": "nemesis-card-battle",
   "private": true,
-  "version": "19.2.0",
+  "version": "19.3.0",
   "scripts": {
     "test:integrity": "node tests/integrity.test.cjs",
     "test:flow": "node tests/flow-regression.test.cjs",
-    "test:static": "npm run test:integrity && npm run test:flow && npm run test:duel-master && node tests/external33-engine.test.cjs",
+    "test:static": "npm run test:integrity && npm run test:flow && npm run test:duel-master && node tests/external33-engine.test.cjs && npm run test:public23",
     "test:e2e": "playwright test",
     "test:all": "npm run test:static && npm run test:e2e",
-    "test:duel-master": "node tests/duel-master.test.cjs"
+    "test:duel-master": "node tests/duel-master.test.cjs",
+    "test:public23": "node tests/public23-engine.test.cjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
