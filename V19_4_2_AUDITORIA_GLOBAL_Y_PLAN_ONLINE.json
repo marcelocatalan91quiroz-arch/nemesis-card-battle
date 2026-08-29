@@ -1,0 +1,94 @@
+{
+  "version": "19.4.2-audit",
+  "date": "2026-08-29",
+  "scope": "Auditoría estructural completa sobre rama de desarrollo. No despliega ni altera main.",
+  "verified": {
+    "simulator": "16/16 PASS según tests/SIMULATOR_RESULTS.json",
+    "bosses": [
+      "guardian",
+      "dragon",
+      "ra",
+      "caballero-almas",
+      "rey-espectral",
+      "dios-fantasma",
+      "ares",
+      "hades"
+    ],
+    "boss_deck_counts": {
+      "guardian": 10,
+      "dragon": 12,
+      "ra": 15,
+      "caballero-almas": 10,
+      "rey-espectral": 10,
+      "dios-fantasma": 10,
+      "ares": 12,
+      "hades": 12
+    },
+    "campaign_boss_cards_total_slots": 91,
+    "systems": [
+      "turn state machine",
+      "damage",
+      "graveyard",
+      "equipment",
+      "responses",
+      "fusion",
+      "heroic battlefield",
+      "memory card"
+    ],
+    "duel_master": {
+      "cards": 10,
+      "engine": "specific V19.2.9",
+      "status": "static tests present"
+    },
+    "external_collection": {
+      "total": 33,
+      "public": 23,
+      "duel_master": 10
+    },
+    "imperio_dragon": {
+      "cards": 20,
+      "unique_visual_paths": 20
+    }
+  },
+  "findings": [
+    "La auditoría histórica V18.9.72 registraba 9 nombres de efectos no referenciados; deben verificarse por comportamiento antes de afirmar cobertura perfecta.",
+    "Los tests actuales prueban estructura, simulador y smoke/e2e; no equivalen a jugar manualmente todas las combinaciones posibles.",
+    "El modo Duel Master existente es un motor de cartas/mazo específico local; no es todavía multijugador online en red.",
+    "Three.js se importa por CDN durante el duelo; la capa PC ya incluye WebGL, cámara, PC Ultra, equipamiento, respuestas, partículas e invocaciones, pero puede evolucionarse sin reemplazar el motor de reglas."
+  ],
+  "online_duel_master_plan": {
+    "recommendation": "Agregar una capa de red encima del motor existente, sin reescribir damage/turns/cards.",
+    "architecture": [
+      "estado autoritativo de partida en servidor",
+      "salas privadas/publicas",
+      "WebSocket para acciones/turnos",
+      "validación server-side de acciones",
+      "reconexion y snapshots",
+      "matchmaking opcional",
+      "versionado de protocolo para que cartas nuevas no rompan partidas"
+    ],
+    "safe_sequence": [
+      "1 contrato serializable del estado",
+      "2 adaptador local/online",
+      "3 servidor de sala",
+      "4 sincronización de turnos",
+      "5 reconexión",
+      "6 pruebas deterministas",
+      "7 UI lobby"
+    ]
+  },
+  "pc_advanced_plan": {
+    "preserve": "motor actual",
+    "upgrades": [
+      "assets reales por carta en alta resolución",
+      "transformaciones/fusiones con modelos o sprites dedicados",
+      "VFX por elemento",
+      "postprocesado y partículas escalables",
+      "cámara cinematográfica por habilidad/ultimate",
+      "materiales PBR para tablero/equipamiento",
+      "selector Media/Alta/Ultra",
+      "precarga y caché de assets",
+      "audio espacial y golpes sincronizados"
+    ]
+  }
+}
