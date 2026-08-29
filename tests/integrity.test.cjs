@@ -39,4 +39,12 @@ must('registro global de cartas no reintroduce familias duplicadas',
   registryIncludesExpected&&registryExcludesDuplicatedFamilies&&registryDeduplicates);
 
 if(process.exitCode) process.exit(process.exitCode);
+
+const dmNew=['DM-011','DM-012','DM-013','DM-014','DM-015'];
+const ext33=fs.readFileSync(path.join(root,'js/universal-cards-33.js'),'utf8');
+for(const id of dmNew)must('Duel Master nueva '+id,ext33.includes('"id": "'+id+'"')||ext33.includes('"id":"'+id+'"'));
+must('Duel Master 15 IDs runtime',game.includes('NEMESIS_DUEL_MASTER_IDS'));
+must('Alma de Afrodita handler',game.includes("'DM-011'")&&game.includes('dmAphrodite'));
+must('Medusa handler',game.includes("'DM-012'")&&game.includes('dmMedusa'));
+must('Equipamientos 13-15',game.includes("['DM-013','DM-014','DM-015']"));
 console.log('NÉMESIS CORE INTEGRITY: PASS');
