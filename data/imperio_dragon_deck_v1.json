@@ -605,7 +605,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-018.png",
       "img_game": "assets/images/reliquia-cristal-del-vacio.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_00000000cb08820e8ae32ab80f833323"
     },
     {
       "id": "IDR-019",
@@ -743,5 +744,6 @@
   "nota_integracion_imagenes": "IDR-009 e IDR-010 registradas con sus imágenes generadas. IDR-011 queda marcada para regeneración porque la imagen generada no corresponde a su ficha maestra Llamado de la Sangre Imperial.",
   "nota_integracion_magicas": "IDR-011, IDR-012 e IDR-013 registradas como las tres mágicas ilustradas del mazo. La lógica jugable conserva las fichas maestras oficiales.",
   "nota_integracion_trampas": "IDR-014 e IDR-015 registradas como las dos trampas ilustradas oficiales de Imperio Dragón.",
-  "nota_integracion_armas": "IDR-016 Espada Colmillo del Emperador e IDR-017 Lanza de Ala Carmesí registradas como las dos armas ilustradas oficiales de Imperio Dragón."
+  "nota_integracion_armas": "IDR-016 Espada Colmillo del Emperador e IDR-017 Lanza de Ala Carmesí registradas como las dos armas ilustradas oficiales de Imperio Dragón.",
+  "nota_integracion_reliquia": "IDR-018 Corona del Primer Dragón registrada como Reliquia Ancestral ilustrada oficial de Imperio Dragón."
 }
