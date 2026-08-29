@@ -45,7 +45,7 @@
       "atk": 1800,
       "def": 1600,
       "copias_max": 3,
-      "img": "assets/images/imperio-dragon/idr-001.png",
+      "img": "assets/images/imperio-dragon/idr-001.svg",
       "habilidad": "SANGRE IMPERIAL",
       "efectos": [
         "Cada vez que ataca gana 1 Marca de Ascensión (máx. 2).",
@@ -56,8 +56,8 @@
         "destino": "Dragón Carmesí Imperial"
       },
       "img_original_conversation_file_id": "file_000000008548820ebec9930059105586",
-      "img_game": "assets/images/dragon-carmesi.webp",
-      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
+      "img_game": "assets/images/imperio-dragon/idr-001.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "IDR-002",
@@ -76,7 +76,7 @@
       "atk": 2300,
       "def": 1900,
       "copias_max": 3,
-      "img": "assets/images/imperio-dragon/idr-002.png",
+      "img": "assets/images/imperio-dragon/idr-002.svg",
       "habilidad": "FURIA ESCARLATA",
       "efectos": [
         "Una vez por turno, si destruye un monstruo en batalla, gana 500 ATK y puede atacar nuevamente.",
@@ -88,8 +88,8 @@
         "destino": "Dragón Guerrero Escarlata Supremo"
       },
       "img_original_conversation_file_id": "file_00000000fe90820eb480c145be6a9bc0",
-      "img_game": "assets/images/dragon-infernal-sangre.webp",
-      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
+      "img_game": "assets/images/imperio-dragon/idr-002.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "IDR-003",
@@ -108,7 +108,7 @@
       "atk": 2300,
       "def": 2000,
       "copias_max": 3,
-      "img": "assets/images/imperio-dragon/idr-003.png",
+      "img": "assets/images/imperio-dragon/idr-003.svg",
       "habilidad": "ALIENTO INCINERADOR",
       "efectos": [
         "Al declarar un ataque, puede destruir 1 Mágica o Trampa rival; si lo hace, ese ataque gana 500 ATK.",
@@ -119,8 +119,8 @@
         "destino": "Dragón Llamasangre Supremo"
       },
       "img_original_conversation_file_id": "file_0000000004ec820e98965bd89a62ab56",
-      "img_game": "assets/images/dragon-negro-ruinas.webp",
-      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
+      "img_game": "assets/images/imperio-dragon/idr-003.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "IDR-004",
@@ -139,7 +139,7 @@
       "atk": 2400,
       "def": 1800,
       "copias_max": 3,
-      "img": "assets/images/imperio-dragon/idr-004.png",
+      "img": "assets/images/imperio-dragon/idr-004.svg",
       "habilidad": "LANZA DEL CATACLISMO",
       "efectos": [
         "Al atacar, inflige 400 de daño por cada monstruo que controle el adversario.",
@@ -151,8 +151,8 @@
         "destino": "Dragón Obsidiana Escamarreal Supremo"
       },
       "img_original_conversation_file_id": "file_00000000f718820e968ae0f9a270842d",
-      "img_game": "assets/images/dragon-abisal.webp",
-      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
+      "img_game": "assets/images/imperio-dragon/idr-004.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "IDR-005",
@@ -171,7 +171,7 @@
       "atk": 2600,
       "def": 2100,
       "copias_max": 3,
-      "img": "assets/images/imperio-dragon/idr-005.png",
+      "img": "assets/images/imperio-dragon/idr-005.svg",
       "habilidad": "DOMINIO DEL CLIMA",
       "efectos": [
         "Una vez por turno puede cambiar el clima a Tormenta de Fuego; mientras esté activo, todas tus cartas Imperio Dragón ganan 300 ATK y 300 DEF.",
@@ -182,8 +182,8 @@
         "destino": "Dragón Alas de Tormenta Supremo"
       },
       "img_original_conversation_file_id": "file_00000000216c820ea2794a404622d657",
-      "img_game": "assets/images/dragon-dorado.png",
-      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
+      "img_game": "assets/images/imperio-dragon/idr-005.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "IDR-006",
@@ -214,9 +214,9 @@
         "marcas": 3,
         "destino": "Dragón Guardián de la Forja Supremo"
       },
-      "img": "assets/images/imperio-dragon/idr-006.png",
-      "img_game": "assets/images/dragon-diamante.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img": "assets/images/imperio-dragon/idr-006.svg",
+      "img_game": "assets/images/imperio-dragon/idr-006.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_00000000fc10820e8cbfb746c4fd8cca"
     },
     {
@@ -248,9 +248,9 @@
         "marcas": 3,
         "destino": "Azoth, Señor Supremo del Abismo"
       },
-      "img": "assets/images/imperio-dragon/idr-007.png",
-      "img_game": "assets/images/dragon-dorado.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img": "assets/images/imperio-dragon/idr-007.svg",
+      "img_game": "assets/images/imperio-dragon/idr-007.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_000000000ad0820ea3d72ebe35cd2d91"
     },
     {
@@ -282,9 +282,9 @@
         "marcas": 3,
         "destino": "Emperador Dragón del Cataclismo"
       },
-      "img": "assets/images/imperio-dragon/idr-008.png",
-      "img_game": "assets/images/carta-dragon-ojo-del-diablo.png",
-      "imagen_estado": "ORIGINAL_REGENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img": "assets/images/imperio-dragon/idr-008.svg",
+      "img_game": "assets/images/imperio-dragon/idr-008.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_000000007d18820e8ba62785553f4051"
     },
     {
@@ -316,9 +316,9 @@
         "marcas": 2,
         "destino": null
       },
-      "img": "assets/images/imperio-dragon/idr-009.png",
-      "img_game": "assets/images/dragon-carmesi.webp",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img": "assets/images/imperio-dragon/idr-009.svg",
+      "img_game": "assets/images/imperio-dragon/idr-009.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_000000009e2c820e82b7259cbfddc728"
     },
     {
@@ -352,9 +352,9 @@
         "marcas": 4,
         "destino": null
       },
-      "img": "assets/images/imperio-dragon/idr-010.png",
-      "img_game": "assets/images/dragon-ojo-del-diablo.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB",
+      "img": "assets/images/imperio-dragon/idr-010.svg",
+      "img_game": "assets/images/imperio-dragon/idr-010.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_000000008640820ea8717cf2b996d07f"
     },
     {
@@ -381,9 +381,9 @@
         "Si controlas una carta transformada, puedes además colocar 1 Marca de Ascensión en un dragón aliado."
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-011.png",
-      "img_game": "assets/images/magica-furia-abismo.webp",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-011.svg",
+      "img_game": "assets/images/imperio-dragon/idr-011.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_0000000053e4820eae2efb297e6765f3"
     },
     {
@@ -410,9 +410,9 @@
         "Si con esa marca alcanza el requisito de transformación, puede transformarse inmediatamente antes de resolver la acción rival."
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-012.png",
-      "img_game": "assets/images/magica-escudo-caos.webp",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-012.svg",
+      "img_game": "assets/images/imperio-dragon/idr-012.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_000000003d0c820ea61cf255a89149de"
     },
     {
@@ -441,9 +441,9 @@
         "Si esta carta es destruida, roba 1 carta."
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-013.png",
-      "img_game": "assets/images/castillo-dragon-ojo-diablo.webp",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-013.svg",
+      "img_game": "assets/images/imperio-dragon/idr-013.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_0000000089b0820e857c5acce655a549"
     },
     {
@@ -470,9 +470,9 @@
         "Si sobrevive, el atacante pierde 600 ATK hasta el final de su próximo turno."
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-014.png",
-      "img_game": "assets/images/trampa-calavera-muerta.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-014.svg",
+      "img_game": "assets/images/imperio-dragon/idr-014.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_00000000c9a0820ea50bb5292881f499"
     },
     {
@@ -501,9 +501,9 @@
         "Luego destruye 1 carta rival. Si la carta protegida estaba transformada, roba 1 carta."
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-015.png",
-      "img_game": "assets/images/trampa-calavera-muerta.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-015.svg",
+      "img_game": "assets/images/imperio-dragon/idr-015.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_00000000f460820e9a4c76e9fe39ff4e"
     },
     {
@@ -536,9 +536,9 @@
         "def": 0
       },
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-016.png",
-      "img_game": "assets/images/ancestral-lanza-solar-dorada.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-016.svg",
+      "img_game": "assets/images/imperio-dragon/idr-016.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_00000000a2c8820ebfe7f75f5332f196"
     },
     {
@@ -572,9 +572,9 @@
         "def": 400
       },
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-017.png",
-      "img_game": "assets/images/ancestral-gran-lanza-bronce.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-017.svg",
+      "img_game": "assets/images/imperio-dragon/idr-017.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_00000000b1a8820e9e6d195b233a424f"
     },
     {
@@ -603,9 +603,9 @@
         "Si esta reliquia deja el Campo, recupera 1 carta Imperio Dragón del Cementerio a la mano."
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-018.png",
-      "img_game": "assets/images/reliquia-cristal-del-vacio.png",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-018.svg",
+      "img_game": "assets/images/imperio-dragon/idr-018.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_00000000cb08820e8ae32ab80f833323"
     },
     {
@@ -640,9 +640,9 @@
         "IDR-004"
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-019.png",
-      "img_game": "assets/images/fusion-caotico-supremo.webp",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-019.svg",
+      "img_game": "assets/images/imperio-dragon/idr-019.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_000000005d58820e980721528ec684e6"
     },
     {
@@ -679,9 +679,9 @@
         "IDR-008"
       ],
       "transformacion": null,
-      "img": "assets/images/imperio-dragon/idr-020.png",
-      "img_game": "assets/images/fusion-dragon-caos.webp",
-      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img": "assets/images/imperio-dragon/idr-020.svg",
+      "img_game": "assets/images/imperio-dragon/idr-020.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID",
       "img_original_conversation_file_id": "file_00000000e4e8820e822300d79b71bdfd"
     }
   ],
@@ -748,5 +748,6 @@
   "nota_integracion_trampas": "IDR-014 e IDR-015 registradas como las dos trampas ilustradas oficiales de Imperio Dragón.",
   "nota_integracion_armas": "IDR-016 Espada Colmillo del Emperador e IDR-017 Lanza de Ala Carmesí registradas como las dos armas ilustradas oficiales de Imperio Dragón.",
   "nota_integracion_reliquia": "IDR-018 Corona del Primer Dragón registrada como Reliquia Ancestral ilustrada oficial de Imperio Dragón.",
-  "nota_integracion_final": "IDR-019 Dragón Eclipse de la Corona e IDR-020 NÉMESIS Dracónico — Emperador del Fin registradas. Plantilla maestra Imperio Dragón completa 20/20."
+  "nota_integracion_final": "IDR-019 Dragón Eclipse de la Corona e IDR-020 NÉMESIS Dracónico — Emperador del Fin registradas. Plantilla maestra Imperio Dragón completa 20/20.",
+  "nota_reparacion_global": "Se eliminan fallbacks compartidos/presentación en Imperio Dragón. Cada IDR-001..020 apunta a un visual propio existente en el repositorio; registro global de cartas deduplicado."
 }
