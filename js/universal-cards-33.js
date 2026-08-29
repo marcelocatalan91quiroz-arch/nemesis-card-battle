@@ -1613,5 +1613,116 @@ window.NEMESIS_EXTERNAL_COLLECTION_33 = [
       "DUEL_MASTER"
     ],
     "img": "assets/images/external33/dm-015.svg"
+  },
+  {
+    "id": "DM-016",
+    "nombre": "Corona del Dominio",
+    "familia": "DUEL_MASTER",
+    "clase": "RELIQUIA",
+    "subtipo": "CAMPO",
+    "rareza": "ANCESTRAL",
+    "atk_bonus": 1000,
+    "def_bonus": 1000,
+    "hp_bonus": 2000,
+    "habilidades": [
+      {
+        "nombre": "Dominio Absoluto",
+        "efecto": "Mientras esté activa, todas tus cartas Duel Master obtienen +1000 ATK, +1000 DEF, +2000 HP y sus habilidades cuestan 1 Energía menos, mínimo 1."
+      },
+      {
+        "nombre": "Unión de Orígenes",
+        "efecto": "Si controlas cartas Duel Master de 5 o más tipos diferentes, obtienen +2000 ATK adicional y protección frente a destrucción por efectos rivales."
+      },
+      {
+        "nombre": "Voluntad del Maestro",
+        "efecto": "Una vez por turno, selecciona 1 carta Duel Master: puede atacar nuevamente o activar su habilidad principal sin pagar su coste."
+      },
+      {
+        "nombre": "Legado Eterno",
+        "efecto": "Si es destruida, permanece como Reliquia recuperable; puedes sacrificar 1 carta Duel Master para reactivarla."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER"
+    ],
+    "img": "assets/images/external33/dm-016.svg"
+  },
+  {
+    "id": "DM-017",
+    "nombre": "Arma Santa",
+    "familia": "DUEL_MASTER",
+    "clase": "ARMA",
+    "subtipo": "EQUIPAMIENTO",
+    "rareza": "ANCESTRAL",
+    "atk_bonus": 2500,
+    "def_bonus": 2500,
+    "hp_bonus": 1000,
+    "habilidades": [
+      {
+        "nombre": "Luz Consagrada",
+        "efecto": "El portador obtiene +2500 ATK y +2500 DEF."
+      },
+      {
+        "nombre": "Purificación",
+        "efecto": "Cuando el portador ataca, elimina 1 efecto negativo que afecte a una carta Duel Master."
+      },
+      {
+        "nombre": "Juicio Sagrado",
+        "efecto": "Contra Oscuridad, Demonio o No Muerto, el portador obtiene +2000 ATK durante ese combate."
+      },
+      {
+        "nombre": "Bendición del Portador",
+        "efecto": "La primera vez que el portador fuera a ser destruido por un efecto rival, Arma Santa se destruye en su lugar."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER"
+    ],
+    "img": "assets/images/external33/dm-017.svg"
+  },
+  {
+    "id": "DM-018",
+    "nombre": "Thor Shiny — Señor de la Tormenta Eterna",
+    "familia": "DUEL_MASTER",
+    "clase": "PERSONAJE_ALIADO",
+    "tipos": [
+      "DIOS",
+      "GUERRERO",
+      "SHINY"
+    ],
+    "elementos": [
+      "LUZ",
+      "RAYO"
+    ],
+    "rareza": "SHINY_ANCESTRAL",
+    "atk": 6000,
+    "def": 4500,
+    "hp": 4200,
+    "energia": 6,
+    "habilidades": [
+      {
+        "nombre": "Trueno Eterno",
+        "efecto": "Al entrar al Campo, inflige 2500 de daño a las cartas rivales y reduce su ATK en 1500 hasta el final del próximo turno."
+      },
+      {
+        "nombre": "Ira del Asgard",
+        "efecto": "Una vez por turno gana +1000 ATK por cada carta Dios propia en Campo y Cementerio hasta el final del turno."
+      },
+      {
+        "nombre": "Protector de los Nueve Reinos",
+        "efecto": "Mientras esté en Campo, tus cartas Duel Master obtienen +1000 DEF y protección frente a destrucción por efectos rivales."
+      },
+      {
+        "nombre": "Golpe del Bifröst",
+        "efecto": "Ultimate, coste 3 Energía: destruye las cartas rivales con ATK menor o igual a 4000 e inflige 4000 de daño directo."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER",
+      "THOR",
+      "SHINY",
+      "OLIMPO"
+    ],
+    "img": "assets/images/external33/dm-018.svg"
   }
 ];
