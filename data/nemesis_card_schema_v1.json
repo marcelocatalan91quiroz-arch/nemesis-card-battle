@@ -1,0 +1,78 @@
+{
+  "schema": "NEMESIS_CARD_V1",
+  "descripcion": "Contrato oficial incremental para cartas nuevas y existentes. No sustituye motores; normaliza datos y compatibilidad futura.",
+  "campos_obligatorios": [
+    "id",
+    "slug",
+    "nombre",
+    "familia",
+    "clase",
+    "subtipo",
+    "elementos",
+    "rareza",
+    "nivel",
+    "compatibilidad",
+    "habilidades",
+    "estrategias",
+    "img",
+    "schema_version",
+    "compatibilidad_futura"
+  ],
+  "estadisticas_segun_clase": [
+    "atk",
+    "def",
+    "hp",
+    "energia",
+    "velocidad",
+    "atk_bonus",
+    "def_bonus",
+    "resistencia_bonus",
+    "bonos"
+  ],
+  "efectos_segun_carta": [
+    "efecto",
+    "efectos",
+    "pasivo",
+    "pasivos",
+    "ultimate",
+    "definitivo",
+    "activacion"
+  ],
+  "compatibilidad_futura": {
+    "fusion": [
+      "habilitada",
+      "familias",
+      "elementos",
+      "tipos"
+    ],
+    "equipamiento": [
+      "puede_equipar",
+      "es_equipamiento",
+      "restricciones",
+      "grupo_exclusivo"
+    ]
+  },
+  "regla": "Toda carta nueva debe declarar identidad, clase, afinidades, estadísticas aplicables, habilidades/efectos y compatibilidad. Las fusiones y equipamientos validarán estos campos sin depender del nombre visible.",
+  "elementos_actuales": [
+    "AGUA",
+    "CAOS",
+    "DIMENSIONAL",
+    "DIVINA",
+    "DRAGON",
+    "FUEGO",
+    "HIELO",
+    "LUZ",
+    "MULTIELEMENTAL",
+    "OSCURIDAD",
+    "PACTO_OSCURO",
+    "RAGNAROK",
+    "RAYO",
+    "SABIDURIA",
+    "TIEMPO",
+    "TIERRA",
+    "UNIVERSAL",
+    "VACIO",
+    "VIENTO"
+  ],
+  "regla_equipamiento": "Solo CRIATURA, PERSONAJE y PERSONAJE_ALIADO declaran puede_equipar. ARMA/ARMADURA/RELIQUIA declaran es_equipamiento. Los grupos exclusivos impiden equipar dos variantes del mismo artefacto a una criatura."
+}

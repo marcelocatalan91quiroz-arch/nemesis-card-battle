@@ -2565,6 +2565,7 @@ async function pub23UseMagic(side,c){
    const ab=Number(d.atk_bonus??d.bonos?.atk??0),db=Number(d.def_bonus??d.bonos?.def??0);
    nemesisEquip(side,idx,kind,c,{atkBonus:ab,defBonus:db,flag:'_p23_'+id.replace(/-/g,'_')});
    const target=own[idx];if(target){
+    if((id==='ML-006'||id==='ML-010')&&target._p23Mjolnir){toast('Esta criatura ya tiene una variante de Mjölnir equipada.');return false}
     target._p23Equip=target._p23Equip||{};target._p23Equip[id]=true;
     if(id==='UNI-004'){target._p23EclipseWeapon=true}
     if(id==='UNI-005'){target._p23DragonArmor=true}
