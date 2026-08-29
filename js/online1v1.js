@@ -2,7 +2,7 @@
 'use strict';
 const API='/api/online1v1';
 const SESSION_KEY='nemesis_online1v1_session';
-let pollTimer=null,lastPing=0,lastVersion=0,current=null,dmSelectedCard=null,dmSelectedAttacker=null;
+let pollTimer=null,lastPing=0,lastVersion=0,current=null,dmSelectedCard=null,dmSelectedAttacker=null,dmSelectedSupport=null;
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const api=async(body,method='POST')=>{
@@ -101,7 +101,8 @@ function renderRoom(room){
 
 function dmCardHtml(card,extra=''){
  if(!card)return '<div class="dm-empty"></div>';
- return `<article class="dm-card ${extra}" data-card="${esc(card.id)}"><img src="${esc(card.img||'')}" alt="${esc(card.name||card.id)}"><div><b>${esc(card.name||card.id)}</b><span>ATK ${Number(card.atk||0).toLocaleString('es-CL')} · DEF ${Number(card.def||0).toLocaleString('es-CL')}</span></div></article>`;
+ const st=card.state||{},eq=st.equipment||{},eqTxt=[eq.weapon,eq.relic].filter(Boolean).join(' · ');
+ return `<article class="dm-card ${extra}" data-card="${esc(card.id)}"><img src="${esc(card.img||'')}" alt="${esc(card.name||card.id)}"><div><b>${esc(card.name||card.id)}</b><span>ATK ${Number(card.atk||0).toLocaleString('es-CL')} · DEF ${Number(card.def||0).toLocaleString('es-CL')}</span>${card.kind==='MONSTER'?'<small>ENERGÍA '+Number(st.energy??card.energy??0)+' · USOS '+Number(st.uses||0)+'</small>':''}${eqTxt?'<em>'+esc(eqTxt)+'</em>':''}</div></article>`;
 }
 function dmMonsterZones(cards=[],side='me'){
  return cards.map((card,i)=>`<button class="dm-zone monster ${card?'occupied':''}" data-zone="${i}" data-side="${side}">${card?dmCardHtml(card):'<span>MONSTRUO '+(i+1)+'</span>'}</button>`).join('');
@@ -115,7 +116,7 @@ function dmLogHtml(log=[]){
 async function dmSend(payload){
  try{
   const j=await api({action:'duel',code:current.code,token:current.token,...payload});
-  dmSelectedCard=null;dmSelectedAttacker=null;updateRoom(j.room);
+  dmSelectedCard=null;dmSelectedAttacker=null;dmSelectedSupport=null;updateRoom(j.room);
  }catch(e){
   const box=document.getElementById('dmNotice');
   if(box)box.textContent=errorText(e.message)||e.message;
@@ -147,7 +148,10 @@ function renderDuelMasterBoard(room){
   </main>
   <aside class="dm-tactical-panel">
    <header><b>CONTROL TÁCTICO</b><span>${active?'SERVIDOR AUTORIZA ACCIONES':'BLOQUEADO · TURNO RIVAL'}</span></header>
-   <div id="dmNotice" class="dm-notice">${d.phase==='END'?(d.winnerSeat===d.mySeat?'VICTORIA':'DERROTA'):(dmSelectedCard?'Carta seleccionada: '+esc(dmSelectedCard):dmSelectedAttacker!==null?'Atacante seleccionado · elige objetivo rival':'Selecciona una carta o una criatura')}</div>
+   <div id="dmNotice" class="dm-notice">${d.phase==='END'?(d.winnerSeat===d.mySeat?'VICTORIA':'DERROTA'):(dmSelectedCard?'Carta seleccionada: '+esc(dmSelectedCard):dmSelectedSupport!==null?'Soporte seleccionado · elige portador o ACTIVAR':dmSelectedAttacker!==null?'Criatura seleccionada · ataque/habilidad disponible':'Selecciona una carta o una criatura')}</div>
+   <button id="dmAbility" ${!active||dmSelectedAttacker===null?'disabled':''}>HABILIDAD</button>
+   <button id="dmUltimate" ${!active||dmSelectedAttacker===null?'disabled':''}>ULTIMATE</button>
+   <button id="dmSupportActivate" ${!active||dmSelectedSupport===null?'disabled':''}>ACTIVAR SOPORTE</button>
    <button id="dmDirect" ${!active||dmSelectedAttacker===null||op.monsters.some(Boolean)?'disabled':''}>ATAQUE DIRECTO</button>
    <button id="dmEnd" ${!active?'disabled':''}>FINALIZAR TURNO</button>
    <div class="dm-eventlog">${dmLogHtml(d.log)}</div>
@@ -155,22 +159,29 @@ function renderDuelMasterBoard(room){
   <section class="dm-hand-wrap"><div class="dm-hand-title"><b>TU MANO · ${me.hand.length}</b><span>Haz clic y luego elige una zona válida.</span></div><div class="dm-hand">${me.hand.map(card=>dmCardHtml(card,dmSelectedCard===card.id?'selected':'')).join('')}</div></section>
  </section>`;
  document.getElementById('dmLeave').onclick=async()=>{stopPoll();try{await api({action:'leave',code:current.code,token:current.token})}catch(_){}clearSession();location.reload()};
- document.querySelectorAll('.dm-hand .dm-card').forEach(el=>el.onclick=()=>{if(!active)return;dmSelectedCard=el.dataset.card;dmSelectedAttacker=null;renderDuelMasterBoard(room)});
+ document.querySelectorAll('.dm-hand .dm-card').forEach(el=>el.onclick=()=>{if(!active)return;dmSelectedCard=el.dataset.card;dmSelectedAttacker=null;dmSelectedSupport=null;renderDuelMasterBoard(room)});
  document.querySelectorAll('.dm-zone[data-side="me"][data-zone]').forEach(el=>el.onclick=()=>{
    if(!active)return;
    const z=Number(el.dataset.zone);
-   if(dmSelectedCard){
+   if(dmSelectedSupport!==null&&me.monsters[z]){dmSend({duelAction:'activate_support',supportZone:dmSelectedSupport,targetZone:z})}
+   else if(dmSelectedCard){
      const card=me.hand.find(x=>x.id===dmSelectedCard);if(card?.kind==='MONSTER')dmSend({duelAction:'play',cardId:dmSelectedCard,zone:z});
-   }else if(me.monsters[z]){dmSelectedAttacker=z;dmSelectedCard=null;renderDuelMasterBoard(room)}
+   }else if(me.monsters[z]){dmSelectedAttacker=z;dmSelectedCard=null;dmSelectedSupport=null;renderDuelMasterBoard(room)}
  });
  document.querySelectorAll('.dm-zone[data-side="me"][data-support-zone]').forEach(el=>el.onclick=()=>{
-   if(!active||!dmSelectedCard)return;
-   const card=me.hand.find(x=>x.id===dmSelectedCard);if(card?.kind==='SUPPORT')dmSend({duelAction:'play',cardId:dmSelectedCard,zone:Number(el.dataset.supportZone),faceDown:true});
+   if(!active)return;
+   const z=Number(el.dataset.supportZone);
+   if(dmSelectedCard){
+     const card=me.hand.find(x=>x.id===dmSelectedCard);if(card?.kind==='SUPPORT')dmSend({duelAction:'play',cardId:dmSelectedCard,zone:z,faceDown:true});
+   }else if(me.supports[z]){dmSelectedSupport=z;dmSelectedAttacker=null;renderDuelMasterBoard(room)}
  });
  document.querySelectorAll('.dm-zone[data-side="op"][data-zone]').forEach(el=>el.onclick=()=>{
    if(!active||dmSelectedAttacker===null||!op.monsters[Number(el.dataset.zone)])return;
    dmSend({duelAction:'attack',from:dmSelectedAttacker,target:Number(el.dataset.zone)});
  });
+ document.getElementById('dmAbility').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'ability',from:dmSelectedAttacker})};
+ document.getElementById('dmUltimate').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'ultimate',from:dmSelectedAttacker})};
+ document.getElementById('dmSupportActivate').onclick=()=>{if(active&&dmSelectedSupport!==null)dmSend({duelAction:'activate_support',supportZone:dmSelectedSupport,targetZone:null})};
  document.getElementById('dmDirect').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'attack',from:dmSelectedAttacker,target:null})};
  document.getElementById('dmEnd').onclick=()=>{if(active)dmSend({duelAction:'end_turn'})};
  current.room=room;saveSession();
@@ -220,5 +231,5 @@ function schedulePoll(){
   schedulePoll();
  },1200);
 }
-window.NEMESIS_ONLINE_1V1={open:()=>onlineHome(menuName()),resume:()=>{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');if(s)resume(s)},version:'2.0.0'};
+window.NEMESIS_ONLINE_1V1={open:()=>onlineHome(menuName()),resume:()=>{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');if(s)resume(s)},version:'2.1.0'};
 })();
