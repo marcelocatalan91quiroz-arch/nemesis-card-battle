@@ -54,7 +54,7 @@
         "OSCURIDAD_CEMENTERIO"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-001.svg"
+      "img": "assets/images/public23/uni-001.webp"
     },
     {
       "id": "UNI-002",
@@ -96,7 +96,7 @@
         "PRESION_CONSTANTE"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-002.svg"
+      "img": "assets/images/public23/uni-002.webp"
     },
     {
       "id": "UNI-003",
@@ -136,7 +136,7 @@
         "TIEMPO_HECHICERO"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-003.svg"
+      "img": "assets/images/public23/uni-003.webp"
     },
     {
       "id": "UNI-004",
@@ -176,7 +176,7 @@
         "OSCURIDAD"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-004.svg"
+      "img": "assets/images/public23/uni-004.webp"
     },
     {
       "id": "UNI-005",
@@ -219,7 +219,7 @@
         "EQUIPAMIENTO"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-005.svg"
+      "img": "assets/images/public23/uni-005.webp"
     },
     {
       "id": "UNI-006",
@@ -298,7 +298,7 @@
         "Corrupción Silenciosa: durante tu Standby Phase reduce 300 ATK/DEF de todas las cartas enemigas.",
         "Portal del Abismo: si una criatura OSCURIDAD que controlas sería destruida, puedes desterrarla en su lugar y luego robas 1 carta."
       ],
-      "img": "assets/images/public23/uni-008.svg"
+      "img": "assets/images/public23/uni-008.webp"
     },
     {
       "id": "UNI-009",
@@ -323,7 +323,7 @@
         "Parada Temporal: si anuló una carta de gran poder, el rival pierde su próxima oportunidad de respuesta.",
         "Reflejo de Poder: si anulas una carta Épica, Mítica o Ancestral, roba 1 carta."
       ],
-      "img": "assets/images/public23/uni-009.svg"
+      "img": "assets/images/public23/uni-009.webp"
     },
     {
       "id": "UNI-010",
@@ -349,7 +349,7 @@
         "Portal de Salvación: con 2000 LP o menos recupera 1500 LP y roba 1 carta.",
         "Flujo Temporal: este turno tus cartas no pueden ser desterradas ni enviadas al Cementerio por efectos rivales."
       ],
-      "img": "assets/images/public23/uni-010.svg"
+      "img": "assets/images/public23/uni-010.webp"
     },
     {
       "id": "UNI-011",
@@ -378,7 +378,7 @@
         "Ignora DEF y Escudos: el daño principal ignora DEF y escudos.",
         "Debilitamiento Elemental: reduce 1000 ATK/DEF a las cartas rivales durante 2 turnos."
       ],
-      "img": "assets/images/public23/uni-011.svg"
+      "img": "assets/images/public23/uni-011.webp"
     },
     {
       "id": "UNI-012",
@@ -407,7 +407,7 @@
         "Protección Fractal: esta carta no puede ser destruida por otros efectos.",
         "Caos Controlado: si es destruida, ambos jugadores barajan 2 cartas aleatorias de su mano al Deck."
       ],
-      "img": "assets/images/public23/uni-012.svg"
+      "img": "assets/images/public23/uni-012.webp"
     },
     {
       "id": "ML-001",
@@ -451,7 +451,7 @@
         "OSCURIDAD",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-001.svg"
+      "img": "assets/images/public23/ml-001.webp"
     },
     {
       "id": "ML-002",
@@ -494,7 +494,7 @@
         "UNIVERSAL",
         "RAGNAROK"
       ],
-      "img": "assets/images/public23/ml-002.svg"
+      "img": "assets/images/public23/ml-002.webp"
     },
     {
       "id": "ML-003",
@@ -537,7 +537,7 @@
         "UNIVERSAL",
         "RAGNAROK"
       ],
-      "img": "assets/images/public23/ml-003.svg"
+      "img": "assets/images/public23/ml-003.webp"
     },
     {
       "id": "ML-004",
@@ -581,7 +581,7 @@
         "OSCURIDAD",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-004.svg"
+      "img": "assets/images/public23/ml-004.webp"
     },
     {
       "id": "ML-005",
@@ -624,7 +624,7 @@
         "TIERRA",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-005.svg"
+      "img": "assets/images/public23/ml-005.webp"
     },
     {
       "id": "ML-006",
@@ -668,7 +668,7 @@
         "ARMA",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-006.svg"
+      "img": "assets/images/public23/ml-006.webp"
     },
     {
       "id": "ML-007",
@@ -712,7 +712,7 @@
         "FENRIR"
       ],
       "elementos": [],
-      "img": "assets/images/public23/ml-007.svg"
+      "img": "assets/images/public23/ml-007.webp"
     },
     {
       "id": "ML-008",
@@ -757,7 +757,7 @@
         "UNIVERSAL",
         "TIEMPO"
       ],
-      "img": "assets/images/public23/ml-008.svg"
+      "img": "assets/images/public23/ml-008.webp"
     },
     {
       "id": "ML-009",
@@ -801,7 +801,7 @@
         "UNIVERSAL"
       ],
       "elementos": [],
-      "img": "assets/images/public23/ml-009.svg"
+      "img": "assets/images/public23/ml-009.webp"
     },
     {
       "id": "ML-010",
@@ -848,7 +848,7 @@
         "RELIQUIA",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-010.svg"
+      "img": "assets/images/public23/ml-010.webp"
     },
     {
       "id": "ML-011",
@@ -899,7 +899,7 @@
         "FENRIR",
         "JORMUNGANDR"
       ],
-      "img": "assets/images/public23/ml-011.svg"
+      "img": "assets/images/public23/ml-011.webp"
     },
     {
       "id": "DM-001",
