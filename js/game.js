@@ -267,6 +267,20 @@ const NEMESIS_DUEL_MASTER_IDS=EXTERNAL_GAME_CARDS.filter(c=>c.id.startsWith('DM-
 const CARDS=[...COLLECTIBLE_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...NEW_CARDS,...DRAGON_OJO_CARDS,...ANCESTRAL_CARDS,...SPECTRAL_CARDS,...REY_ESPECTRAL_CARDS,...DIOS_FANTASMA_CARDS,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
 const AS={tirano:'assets/images/img-10.webp',guardian:'assets/images/guardian-dragones.webp',bg1:'assets/images/img-12.webp',bg2:'assets/images/img-13.webp',dragonOjo:'assets/images/dragon-ojo-del-diablo.png',dragonOjoBg:'assets/images/castillo-dragon-ojo-diablo.webp',iraRa:'assets/images/ira-de-ra-jefe.png',iraRaBg:'assets/images/ruinas-piramide-ira-ra.png',caballeroAlmas:'assets/images/caballero-de-las-almas.png',caballeroAlmasBg:'assets/images/reino-espectral-cinematico.png',reyEspectral:'assets/images/rey-espectral.png',reyEspectralBg:'assets/images/reino-espectral-cinematico.png'};
 CARDS.push(...UNIQUE_CARD_DEFS);
+
+const NEMESIS_TREASURE_PRICE=1000;
+const NEMESIS_TREASURE_CARDS=[
+ {id:'TN-MAG-001',name:'Eclipse de la Eternidad',atk:0,def:0,type:'magic',family:'universal',rarity:'nemesis-unique',elements:['OSCURIDAD','TIEMPO'],treasure:true,shopExclusive:true,priceStars:1000,img:'assets/images/treasures/tn-mag-001.svg',effect:'treasureEclipse',description:'Anula efectos enemigos este turno, destruye una Magica/Trampa rival y protege tu campo de destruccion por efectos hasta tu proximo turno.'},
+ {id:'TN-MAG-002',name:'Renacimiento del Nexo',atk:0,def:0,type:'magic',family:'universal',rarity:'nemesis-unique',elements:['LUZ','DIMENSIONAL'],treasure:true,shopExclusive:true,priceStars:1000,img:'assets/images/treasures/tn-mag-002.svg',effect:'treasureNexus',description:'Recupera hasta 2 cartas del Cementerio al Deck, roba 2 cartas y cura 2000 HP.'},
+ {id:'TN-ARM-001',name:'Excalibur NEMESIS - Filo del Destino',atk:0,def:0,type:'magic',family:'universal',rarity:'nemesis-unique',elements:['LUZ','DIVINA'],treasure:true,shopExclusive:true,priceStars:1000,img:'assets/images/treasures/tn-arm-001.svg',effect:'treasureExcalibur',description:'Arma universal: +3000 ATK, penetracion y una proteccion de destruccion por duelo.'},
+ {id:'TN-ARM-002',name:'Guadana del Vacio Absoluto',atk:0,def:0,type:'magic',family:'universal',rarity:'nemesis-unique',elements:['VACIO','OSCURIDAD'],treasure:true,shopExclusive:true,priceStars:1000,img:'assets/images/treasures/tn-arm-002.svg',effect:'treasureScythe',description:'Arma universal: +2200 ATK/+1200 DEF. Al destruir una criatura inflige 1000 HP adicionales.'},
+ {id:'TN-TRP-001',name:'Juicio Final NEMESIS',atk:0,def:0,type:'trap',family:'universal',rarity:'nemesis-unique',elements:['CAOS','DIVINA'],treasure:true,shopExclusive:true,priceStars:1000,img:'assets/images/treasures/tn-trp-001.svg',effect:'treasureJudgement',description:'Trampa de respuesta: anula una accion decisiva, destruye la carta rival de mayor ATK y termina su turno.'}
+];
+CARDS.push(...NEMESIS_TREASURE_CARDS);
+function nemesisTreasureOwned(id){return Array.isArray(state.owned)&&state.owned.includes(id)}
+function nemesisTreasureRedeem(id){const c=NEMESIS_TREASURE_CARDS.find(x=>x.id===id);if(!c||nemesisTreasureOwned(id))return false;if((state.stars||0)<1000){alert('Necesitas 1000 estrellas.');return false}state.stars-=1000;state.owned.push(id);save();return true}
+window.NEMESIS_TREASURE_AUDIT=()=>({count:NEMESIS_TREASURE_CARDS.length,price:1000,unique:new Set(NEMESIS_TREASURE_CARDS.map(c=>c.id)).size===5});
+
 const INITIAL_OWNED=SHOP_CARDS.slice(0,20).map(c=>c.id);
 let state={name:'',dialog:0,fear:null,stars:0,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'OLIMPO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,11)};
 
