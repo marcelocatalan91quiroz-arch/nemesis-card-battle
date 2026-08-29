@@ -1,0 +1,17 @@
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..');
+const data=JSON.parse(fs.readFileSync(path.join(root,'data','nemesis_collection_33_cards.json'),'utf8'));
+const schema=JSON.parse(fs.readFileSync(path.join(root,'data','nemesis_card_schema_v1.json'),'utf8'));
+const game=fs.readFileSync(path.join(root,'js','game.js'),'utf8');
+const A=(x,m)=>{if(!x){console.error('FAIL',m);process.exit(1)}console.log('PASS',m)};
+A(data.cards.length===33,'33 cartas conservadas');
+A(data.cards.every(c=>c.schema_version==='NEMESIS_CARD_V1'),'schema aplicado a las 33');
+const an=data.cards.find(c=>c.id==='ML-005');
+A(an.elementos.includes('TIERRA'),'Anubis incluye elemento TIERRA');
+const m6=data.cards.find(c=>c.id==='ML-006'),m10=data.cards.find(c=>c.id==='ML-010');
+A(m6.grupo_equipamiento==='MJOLNIR'&&m10.grupo_equipamiento==='MJOLNIR','Mjolnir agrupados como variantes');
+A(m6.variante!==m10.variante,'variantes Mjolnir diferenciadas');
+A(m6.exclusividad_equipamiento==='UN_MJOLNIR_POR_CRIATURA'&&m10.exclusividad_equipamiento==='UN_MJOLNIR_POR_CRIATURA','exclusividad Mjolnir declarada');
+A(schema.elementos_actuales.includes('TIERRA'),'TIERRA normalizado en schema');
+A(game.includes("Esta criatura ya tiene una variante de Mjölnir equipada."),'motor impide doble Mjolnir');
+console.log('NEMESIS CARD SCHEMA V1: PASS');
