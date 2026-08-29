@@ -1,0 +1,215 @@
+{
+  "catalogo": "NEMESIS_MASTER_CARD_CATALOG_V1",
+  "version": "19.4.0",
+  "principio": "Catálogo incremental. No sustituye motores, mazos ni campañas existentes.",
+  "tipos": [
+    {
+      "id": "CRIATURA",
+      "funcion": "Monstruo estándar de combate"
+    },
+    {
+      "id": "GUERRERO_PERSONAJE",
+      "funcion": "Héroe, villano, caballero o humanoide"
+    },
+    {
+      "id": "DIVINIDAD",
+      "funcion": "Dios o entidad suprema"
+    },
+    {
+      "id": "JEFE",
+      "funcion": "Carta especial PvE/campaña"
+    },
+    {
+      "id": "FUSION",
+      "funcion": "Resultado de combinar materiales compatibles"
+    },
+    {
+      "id": "TRANSFORMACION",
+      "funcion": "Evolución de una carta durante el duelo"
+    },
+    {
+      "id": "INVOCACION",
+      "funcion": "Ser especial con condiciones/materiales"
+    },
+    {
+      "id": "MAGICA",
+      "funcion": "Efecto inmediato"
+    },
+    {
+      "id": "MAGICA_RAPIDA",
+      "funcion": "Mágica utilizable como respuesta"
+    },
+    {
+      "id": "MAGICA_CONTINUA",
+      "funcion": "Efecto persistente"
+    },
+    {
+      "id": "MAGICA_CAMPO",
+      "funcion": "Modifica arena o reglas globales"
+    },
+    {
+      "id": "TRAMPA",
+      "funcion": "Respuesta preparada"
+    },
+    {
+      "id": "TRAMPA_RESPUESTA",
+      "funcion": "Anulación/contraacción de alta prioridad"
+    },
+    {
+      "id": "TRAMPA_CONTINUA",
+      "funcion": "Condición persistente"
+    },
+    {
+      "id": "ARMA",
+      "funcion": "Equipamiento ofensivo"
+    },
+    {
+      "id": "ARMADURA",
+      "funcion": "Equipamiento defensivo"
+    },
+    {
+      "id": "RELIQUIA",
+      "funcion": "Artefacto místico estratégico"
+    },
+    {
+      "id": "ARTEFACTO",
+      "funcion": "Objeto tecnológico o místico con mecánica propia"
+    },
+    {
+      "id": "RITUAL",
+      "funcion": "Habilita invocación/transformación mediante requisitos"
+    },
+    {
+      "id": "TERRENO_ESCENARIO",
+      "funcion": "Modifica condiciones globales del duelo"
+    }
+  ],
+  "afinidades": [
+    "AGUA",
+    "CAOS",
+    "DIMENSIONAL",
+    "DIVINA",
+    "DRAGON",
+    "FUEGO",
+    "HIELO",
+    "LUZ",
+    "MULTIELEMENTAL",
+    "OSCURIDAD",
+    "PACTO_OSCURO",
+    "RAGNAROK",
+    "RAYO",
+    "SABIDURIA",
+    "TIEMPO",
+    "TIERRA",
+    "UNIVERSAL",
+    "VACIO",
+    "VIENTO"
+  ],
+  "arquetipos": [
+    {
+      "id": "IMPERIO_DRAGON",
+      "estrategia": "Dragones, evolución, alientos y fusiones"
+    },
+    {
+      "id": "LEGION_GUERREROS",
+      "estrategia": "Guerreros, armas, armaduras y combos físicos"
+    },
+    {
+      "id": "PANTEON_DIVINO",
+      "estrategia": "Dioses, reliquias, sacrificios e invocaciones supremas"
+    },
+    {
+      "id": "REINO_MUERTOS",
+      "estrategia": "Cementerio, resurrección y sacrificio"
+    },
+    {
+      "id": "PACTO_DEMONIACO",
+      "estrategia": "HP/cartas como coste por gran poder"
+    },
+    {
+      "id": "ABISMO_VACIO",
+      "estrategia": "Destierro, destrucción y corrupción"
+    },
+    {
+      "id": "ORDEN_CELESTIAL",
+      "estrategia": "Luz, curación, escudos y protección"
+    },
+    {
+      "id": "CIRCULO_ARCANO",
+      "estrategia": "Magos, mágicas, respuestas y cadenas"
+    },
+    {
+      "id": "FORJA_MECANICA",
+      "estrategia": "Máquinas, piezas, armas y transformación"
+    },
+    {
+      "id": "BESTIAS_PRIMIGENIAS",
+      "estrategia": "Bestias míticas, evolución y agresión"
+    },
+    {
+      "id": "DINASTIA_VAMPIRICA",
+      "estrategia": "Drenaje de HP, cementerio y resurrección"
+    },
+    {
+      "id": "IMPERIO_ANCESTRAL",
+      "estrategia": "Guardianes, dioses antiguos, maldiciones y reliquias"
+    },
+    {
+      "id": "ENTIDADES_COSMICAS",
+      "estrategia": "Dimensiones, campo y manipulación temporal"
+    },
+    {
+      "id": "FURIA_ELEMENTAL",
+      "estrategia": "Sinergia Fuego/Agua/Hielo/Rayo/Tierra/Viento"
+    },
+    {
+      "id": "SENORES_TIEMPO",
+      "estrategia": "Retrasar, acelerar o alterar acciones/turnos"
+    },
+    {
+      "id": "CAOS_NEMESIS",
+      "estrategia": "Riesgo/recompensa y destrucción"
+    },
+    {
+      "id": "FORTALEZA_ETERNA",
+      "estrategia": "DEF, armaduras, contraataque y desgaste"
+    },
+    {
+      "id": "ARSENAL_LEGENDARIO",
+      "estrategia": "Portadores de armas y reliquias extraordinarias"
+    },
+    {
+      "id": "FUSION_NEMESIS",
+      "estrategia": "Materiales compatibles para nuevas entidades"
+    },
+    {
+      "id": "CONTROL_ABSOLUTO",
+      "estrategia": "Trampas, anulaciones, respuestas y manipulación rival"
+    }
+  ],
+  "categoria_prestigio": {
+    "id": "NEMESIS_UNICA",
+    "regla": "Transversal a arquetipos. Límite de 1 copia cuando la carta lo declare; método de obtención definido por cada set."
+  },
+  "campos_maestros": [
+    "tipo",
+    "subtipo",
+    "afinidades",
+    "arquetipos",
+    "rareza",
+    "estadisticas_aplicables",
+    "habilidades",
+    "activacion",
+    "estrategias",
+    "compatibilidad_equipamiento",
+    "compatibilidad_fusion",
+    "transformacion",
+    "metodo_obtencion"
+  ],
+  "reglas": [
+    "Una carta puede pertenecer a varios arquetipos.",
+    "Una carta puede tener varias afinidades.",
+    "Fusión y equipamiento validan campos estructurados, no el nombre visible.",
+    "Las cartas existentes conservan su funcionamiento; el catálogo normaliza y guía cartas nuevas y migraciones futuras."
+  ]
+}
