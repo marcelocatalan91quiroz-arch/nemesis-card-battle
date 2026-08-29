@@ -1,0 +1,56 @@
+{
+  "schema": "NEMESIS_CARD_V1",
+  "descripcion": "Contrato oficial incremental para cartas nuevas y existentes. No sustituye motores; normaliza datos y compatibilidad futura.",
+  "campos_obligatorios": [
+    "id",
+    "slug",
+    "nombre",
+    "familia",
+    "clase",
+    "subtipo",
+    "elementos",
+    "rareza",
+    "nivel",
+    "compatibilidad",
+    "habilidades",
+    "estrategias",
+    "img",
+    "schema_version",
+    "compatibilidad_futura"
+  ],
+  "estadisticas_segun_clase": [
+    "atk",
+    "def",
+    "hp",
+    "energia",
+    "velocidad",
+    "atk_bonus",
+    "def_bonus",
+    "resistencia_bonus",
+    "bonos"
+  ],
+  "efectos_segun_carta": [
+    "efecto",
+    "efectos",
+    "pasivo",
+    "pasivos",
+    "ultimate",
+    "definitivo",
+    "activacion"
+  ],
+  "compatibilidad_futura": {
+    "fusion": [
+      "habilitada",
+      "familias",
+      "elementos",
+      "tipos"
+    ],
+    "equipamiento": [
+      "arma",
+      "armadura",
+      "reliquia",
+      "restricciones"
+    ]
+  },
+  "regla": "Toda carta nueva debe declarar identidad, clase, afinidades, estadísticas aplicables, habilidades/efectos y compatibilidad. Las fusiones y equipamientos validarán estos campos sin depender del nombre visible."
+}
