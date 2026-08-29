@@ -12,8 +12,11 @@ must('heartbeat y reconexion',api.includes("action==='heartbeat'")&&client.inclu
 must('estado versionado',api.includes('room.version=(room.version||0)+1'));
 must('event log acotado',api.includes('room.events.length>120'));
 must('countdown sincronizado',api.includes("room.status='COUNTDOWN'")&&api.includes("room.status='ACTIVE'"));
-must('storage cloud preparado',api.includes('KV_REST_API_URL')&&api.includes('UPSTASH_REDIS_REST_URL'));
-must('fallback fluid memory',api.includes('FLUID_MEMORY'));
+must('Redis Cloud oficial soportado',api.includes('REDIS_URL')&&api.includes("require('redis')"));
+must('compatibilidad REST KV conservada',api.includes('KV_REST_API_URL')&&api.includes('UPSTASH_REDIS_REST_URL'));
+must('produccion exige persistencia',api.includes('PERSISTENCE_REQUIRED')&&api.includes('storageReady'));
+must('memoria solo desarrollo',api.includes('FLUID_MEMORY_DEV'));
+must('tokens no se almacenan en claro',api.includes('tokenHash')&&!api.includes('token,seat'));
 must('cliente aislado del motor',client.includes('NEMESIS_ONLINE_1V1')&&!client.includes('function battle('));
 must('entrada online cargada',html.includes('js/online1v1.js'));
 if(process.exitCode)process.exit(process.exitCode);

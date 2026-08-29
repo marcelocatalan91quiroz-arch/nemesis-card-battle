@@ -1,0 +1,62 @@
+const assert=require('assert');
+delete process.env.VERCEL_ENV;
+delete process.env.NODE_ENV;
+delete process.env.REDIS_URL;
+delete process.env.KV_REST_API_URL;
+delete process.env.KV_REST_API_TOKEN;
+delete process.env.UPSTASH_REDIS_REST_URL;
+delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+const handler=require('../api/online1v1.js');
+
+function invoke({method='POST',query={},body={}}={}){
+ return new Promise((resolve,reject)=>{
+  const req={method,query,body};
+  const headers={};
+  const res={
+   statusCode:200,
+   setHeader(k,v){headers[k]=v},
+   status(n){this.statusCode=n;return this},
+   json(payload){resolve({status:this.statusCode,headers,payload});return this},
+   end(){resolve({status:this.statusCode,headers,payload:null});return this}
+  };
+  Promise.resolve(handler(req,res)).catch(reject);
+ });
+}
+(async()=>{
+ const health=await invoke({method:'GET',query:{action:'health'}});
+ assert.equal(health.status,200);
+ assert.equal(health.payload.storage,'FLUID_MEMORY_DEV');
+
+ const a=await invoke({body:{action:'create',name:'Alpha'}});
+ assert.equal(a.status,201);
+ assert.ok(a.payload.token);
+ const code=a.payload.room.code;
+ assert.equal(a.payload.room.players.length,1);
+
+ const b=await invoke({body:{action:'join',code,name:'Beta'}});
+ assert.equal(b.status,200);
+ assert.ok(b.payload.token);
+ assert.equal(b.payload.room.players.length,2);
+ assert.equal(b.payload.room.status,'READY');
+
+ const ar=await invoke({body:{action:'ready',code,token:a.payload.token,ready:true}});
+ assert.equal(ar.status,200);
+ const br=await invoke({body:{action:'ready',code,token:b.payload.token,ready:true}});
+ assert.equal(br.status,200);
+ assert.equal(br.payload.room.status,'COUNTDOWN');
+
+ await new Promise(r=>setTimeout(r,3050));
+ const sync=await invoke({body:{action:'sync',code,token:a.payload.token}});
+ assert.equal(sync.status,200);
+ assert.equal(sync.payload.room.status,'ACTIVE');
+
+ const evt=await invoke({body:{action:'event',code,token:b.payload.token,type:'CLIENT_READY_FOR_DUELMASTER',payload:{deck:'DUEL_MASTER'}}});
+ assert.equal(evt.status,200);
+ assert.ok(evt.payload.room.events.some(e=>e.type==='CLIENT_READY_FOR_DUELMASTER'));
+
+ const bad=await invoke({body:{action:'sync',code,token:'token-invalido'}});
+ assert.equal(bad.status,403);
+
+ console.log('NÉMESIS ONLINE 1V1 RUNTIME 2 PLAYERS: PASS');
+})().catch(err=>{console.error(err);process.exit(1)});
