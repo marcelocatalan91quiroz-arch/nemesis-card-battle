@@ -835,7 +835,7 @@ function iraRaScene(){story('IRA DE RA',`Mataste al jefe de los dragones. Muy bi
 // No duplica el motor de duelo: conserva la misma colección, mazo, estrellas, Memory Card y sistemas existentes.
 function campaign2Intro(){
  state.campaign2Started=true;state.campaign2Unlocked=true;state.campaign2Stage='intro';state.campaignStage='campaign2-intro';save();
- story('CAMPAÑA II',`La primera campaña terminó con la derrota de IRA DE RA.<br><br><b>${esc(state.name||'Viajero')}, tus cartas ganadas, estrellas y mazo permanecen contigo.</b><br><br>Un nuevo camino se abre. Esta campaña continuará sobre la misma partida, sin reiniciar tu progreso.`,`<button class="btn" id="enterCampaign2">ENTRAR A CAMPAÑA II</button><button class="btn" id="campaign2Back">VOLVER AL INICIO</button>`,'assets/images/arena-abismo-premium.webp','assets/images/nemesis-celestial.png');
+ story('CAMPAÑA II',`La primera campaña terminó con la derrota de IRA DE RA.<br><br><b>${esc(state.name)}, tus cartas ganadas, estrellas y mazo permanecen contigo.</b><br><br>Un nuevo camino se abre. Esta campaña continuará sobre la misma partida, sin reiniciar tu progreso.`,`<button class="btn" id="enterCampaign2">ENTRAR A CAMPAÑA II</button><button class="btn" id="campaign2Back">VOLVER AL INICIO</button>`,'assets/images/arena-abismo-premium.webp','assets/images/nemesis-celestial.png');
  enterCampaign2.onclick=()=>{state.campaign2Stage='hub';state.campaignStage='campaign2-hub';save();campaign2Hub()};
  campaign2Back.onclick=menuScene;
 }
