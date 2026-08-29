@@ -2718,6 +2718,17 @@ async function applyExternalAbility(side,i,c,text,isUltimate=false){
 async function applyExternalMagic(side,c){
  if(pub23Is(c)&&await pub23UseMagic(side,c))return true;
  if(dmIs(c)&&(c.id==='DM-005'||c.id==='DM-006'))return await dmSpecialMagic(side,c);
+ if(dmIs(c)&&c.id==='DM-019'){
+  c._dmTitanTrap=true;c._trapArmed=true;toast('EL JUICIO DE LOS TITANES preparado: contrahechizo listo.');return true;
+ }
+ if(dmIs(c)&&c.id==='DM-020'){
+  const own=side==='p'?playerCards:enemyCards,rival=side==='p'?enemyCards:playerCards;
+  own.filter(Boolean).forEach(x=>{if(dmIs(x)){x.atk=(x.atk||0)+3000;x.def=(x.def||0)+3000;x._dmEclipseUntil=turnNo;x._directAttack=true}});
+  const gy=side==='p'?playerGrave:enemyGrave;let revived=0;
+  for(let i=gy.length-1;i>=0&&revived<3;i--){const x=gy[i];if(x&&dmIs(x)&&(x.atk||0)<=2000){const slot=own.findIndex(v=>!v);if(slot<0)break;own[slot]=x;gy.splice(i,1);revived++;}}
+  if(side==='p')phpv=Math.min(playerMaxHp,phpv+3000);else ehpv=Math.min(enemyMaxHp,ehpv+3000);
+  toast('ECLIPSE DE LOS REINOS: Duel Master entra en Dominio Total.');render();return true;
+ }
  if(dmIs(c)&&['DM-013','DM-014','DM-015','DM-016','DM-017'].includes(c.id)){
   const idx=await magicAllyIndex(side,'ELIGE PORTADOR PARA '+c.name);if(idx<0)return false;
   const own=side==='p'?playerCards:enemyCards,target=own[idx],d=c.externalData||{};
