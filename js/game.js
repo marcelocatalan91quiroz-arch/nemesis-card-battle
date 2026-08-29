@@ -510,7 +510,7 @@ state.savedDecks=state.savedDecks||{};
 if(!Array.isArray(state.savedDecks.OLIMPO)||!state.savedDecks.OLIMPO.length)state.savedDecks.OLIMPO=OLIMPO_DECK_IDS.filter(id=>card(id)).slice(0,11);
 state.savedDecks.DUEL_MASTER=NEMESIS_DUEL_MASTER_IDS.filter(id=>card(id));
 state.owned=[...new Set([...(state.owned||[]),...MAGO_ROJO_DECK_IDS])];
-if(!Array.isArray(state.savedDecks.MAGO_ROJO)||!state.savedDecks.MAGO_ROJO.length)state.savedDecks.MAGO_ROJO=MAGO_ROJO_DECK_IDS.filter(id=>card(id));.slice(0,10);
+if(!Array.isArray(state.savedDecks.MAGO_ROJO)||!state.savedDecks.MAGO_ROJO.length)state.savedDecks.MAGO_ROJO=MAGO_ROJO_DECK_IDS.filter(id=>card(id));
 state.owned=[...new Set([...(state.owned||[]),...IMPERIO_DRAGON_DECK_IDS])];
 state.savedDecks.IMPERIO_DRAGON=IMPERIO_DRAGON_DECK_IDS.filter(id=>card(id));
 if(!state.activeDeckName)state.activeDeckName='OLIMPO';
@@ -3138,7 +3138,7 @@ async function mgrOnSummon(side,i,c,special=false){
   if(found){const gi=grave.lastIndexOf(found);grave.splice(gi,1);if(side==='p'){handState.push(found.id);renderHand()}else mgrQueue(side).unshift(found);toast('MEMORIA DE FUEGO recupera '+found.name+'.')}
  }
  if(c.id==='MGR-005')mgrAddSeal(side,2,'PACTO DE LLAMAS');
- if(c.id==='MGR-010'&&special){mgrHit(side,800);mgrSearch(side,x=>mgrIs(x)&&x.type==='monster'&&x.id!=='MGR-010','SIETE LLAMAS');own=mgrOwn(side);own.forEach(x=>{if(mgrIs(x))x._mgrProtectedUntil=turnNo})}
+ if(c.id==='MGR-010'&&special){mgrHit(side,800);mgrSearch(side,x=>mgrIs(x)&&x.type==='monster'&&x.id!=='MGR-010','SIETE LLAMAS');const own=mgrOwn(side);own.forEach(x=>{if(mgrIs(x))x._mgrProtectedUntil=turnNo})}
  if(c.id==='MGR-019'){mgrOwn(side).forEach(x=>{if(mgrIs(x)&&x!==c){x.atk+=800;x.def+=800;x._mgrFusionAuraAtk=(x._mgrFusionAuraAtk||0)+800;x._mgrFusionAuraDef=(x._mgrFusionAuraDef||0)+800}})}
  mgrSync()
 }
