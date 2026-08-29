@@ -3594,11 +3594,29 @@ nemesisBossTurnStart();endPlayerMagicTurn();v172ClosePicker();v171HideAttackConf
    if(playerDirectShieldUntil>=turnNo){await guardStep(attackAnim('e',enemySlot,'p',0,attacker,0),5000,'ataque directo bloqueado');toast(`ESCUDO SOLAR: ${attacker.name} no puede atacar directamente tus HP.`);pcLog(`Escudo Solar bloquea el ataque directo de ${attacker.name}.`,'effect')}
    else{await guardStep(attackAnim('e',enemySlot,'p',0,attacker,attacker.atk),5000,'ataque directo rival');phpv=Math.max(0,phpv-attacker.atk);damageFx(attacker.atk,'p');update();toast(`${attacker.name} causa ${attacker.atk} de daño directo a tus HP.`)}
   }
-  else if(attackers.length&&targets.length){enemySlot=aiChoice?.attacker??attackers[Math.floor(Math.random()*attackers.length)];
-  if(await mgrTryAttackTrap(enemySlot,targets[0])){clearNextEnemyShields();}
-  else {const trapIndex=playerCards.findIndex(c=>c&&c.type==='trap'&&c.effect==='destroyAttacker');
-  if(trapIndex>=0&&enemyCards[enemySlot]){setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · TRAMPA`);await v16Cam('TRAP','p',trapIndex);v188Sound('trap');v15TrapFX();toast('¡CALAVERA MUERTA SE ACTIVA! La carta atacante será destruida.');await revealPlayer(trapIndex);await wait(240);await destroyCard('e',enemySlot);await wait(180);await destroyCard('p',trapIndex);clearNextEnemyShields();toast('La carta atacante fue destruida. Calavera Muerta se consumió y fue al Cementerio.');}}
-  else {const target=aiChoice?.target??targets.slice().sort((a,b)=>{const va=(playerModes[a]==='DEFENSA'?playerCards[a].def:playerCards[a].atk),vb=(playerModes[b]==='DEFENSA'?playerCards[b].def:playerCards[b].atk);return va-vb})[0];await guardStep(revealEnemy(enemySlot),2200,'revelación rival');setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · HABILIDAD`);await guardStep(useCreatureSkill('e',enemySlot),1800,'habilidad rival');if(phpv<=0)return finish(false);setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · COMBATE`);await guardStep(resolveBattle('e',enemySlot,'p',target),6500,'ataque rival')}}
+  else if(attackers.length&&targets.length){
+   enemySlot=aiChoice?.attacker??attackers[Math.floor(Math.random()*attackers.length)];
+   if(await mgrTryAttackTrap(enemySlot,targets[0])){
+    clearNextEnemyShields();
+   }else{
+    const trapIndex=playerCards.findIndex(c=>c&&c.type==='trap'&&c.effect==='destroyAttacker');
+    if(trapIndex>=0&&enemyCards[enemySlot]){
+     setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · TRAMPA`);
+     await v16Cam('TRAP','p',trapIndex);v188Sound('trap');v15TrapFX();
+     toast('¡CALAVERA MUERTA SE ACTIVA! La carta atacante será destruida.');
+     await revealPlayer(trapIndex);await wait(240);await destroyCard('e',enemySlot);await wait(180);await destroyCard('p',trapIndex);clearNextEnemyShields();
+     toast('La carta atacante fue destruida. Calavera Muerta se consumió y fue al Cementerio.');
+    }else{
+     const target=aiChoice?.target??targets.slice().sort((a,b)=>{const va=(playerModes[a]==='DEFENSA'?playerCards[a].def:playerCards[a].atk),vb=(playerModes[b]==='DEFENSA'?playerCards[b].def:playerCards[b].atk);return va-vb})[0];
+     await guardStep(revealEnemy(enemySlot),2200,'revelación rival');
+     setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · HABILIDAD`);
+     await guardStep(useCreatureSkill('e',enemySlot),1800,'habilidad rival');
+     if(phpv<=0)return finish(false);
+     setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · COMBATE`);
+     await guardStep(resolveBattle('e',enemySlot,'p',target),6500,'ataque rival');
+    }
+   }
+  }
   if(isGhostGod&&enemySlot>=0&&enemyCards[enemySlot]?.effect==='voidBreath'&&phpv>0)await ghostSecondAttackIfPossible(enemySlot);
   if(phpv<=0)return finish(false);if(ehpv<=0){if(ghostGodFinalFormSave()){await ghostGodContinueAfterFinalForm();return}if(spectralKingCrownSave()){await spectralKingContinueAfterCrown();return}return finish(true)};if(checkNoCards())return
  }catch(err){console.error('enemyTurn',err);toast('El turno rival se recuperó automáticamente.')}finally{
