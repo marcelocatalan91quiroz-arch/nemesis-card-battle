@@ -965,7 +965,8 @@
         "BESTIA"
       ],
       "elementos": [
-        "OSCURIDAD"
+        "OSCURIDAD",
+        "TIERRA"
       ],
       "rareza": "MITICA",
       "atk": 7800,
@@ -1006,7 +1007,8 @@
             "MITOS_Y_LEYENDAS"
           ],
           "elementos": [
-            "OSCURIDAD"
+            "OSCURIDAD",
+            "TIERRA"
           ],
           "tipos": [
             "DIVINA",
@@ -1095,9 +1097,13 @@
             "RAYO",
             "ARMA",
             "UNIVERSAL"
-          ]
+          ],
+          "grupo_exclusivo": "MJOLNIR"
         }
-      }
+      },
+      "grupo_equipamiento": "MJOLNIR",
+      "variante": "MITICA",
+      "exclusividad_equipamiento": "UN_MJOLNIR_POR_CRIATURA"
     },
     {
       "id": "ML-007",
@@ -1389,9 +1395,13 @@
             "ARMA",
             "RELIQUIA",
             "UNIVERSAL"
-          ]
+          ],
+          "grupo_exclusivo": "MJOLNIR"
         }
-      }
+      },
+      "grupo_equipamiento": "MJOLNIR",
+      "variante": "LEGENDARIA_RELIQUIA",
+      "exclusividad_equipamiento": "UN_MJOLNIR_POR_CRIATURA"
     },
     {
       "id": "ML-011",
