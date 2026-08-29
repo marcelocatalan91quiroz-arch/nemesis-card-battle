@@ -62,9 +62,9 @@
         "Mientras tenga 3 Sellos Arcanos, gana 500 ATK."
       ],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-001.png",
-      "img_game": "assets/images/mago-rojo/mgr-001.png",
-      "imagen_estado": "VISUAL_APROBADO__PENDIENTE_CARGA_ASSET"
+      "img": "assets/images/mago-rojo/mgr-001.svg",
+      "img_game": "assets/images/mago-rojo/mgr-001.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-002",
@@ -91,9 +91,9 @@
         "Mientras controles a Mago Rojo, esta carta gana 300 ATK."
       ],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-002.png",
-      "img_game": "assets/images/mago-rojo/mgr-002.png",
-      "imagen_estado": "VISUAL_APROBADO__PENDIENTE_CARGA_ASSET"
+      "img": "assets/images/mago-rojo/mgr-002.svg",
+      "img_game": "assets/images/mago-rojo/mgr-002.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-003",
@@ -119,9 +119,9 @@
         "Mientras controles 1 o más Sellos Arcanos, gana 300 DEF."
       ],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-003.png",
-      "img_game": "assets/images/mago-rojo/mgr-003.png",
-      "imagen_estado": "VISUAL_APROBADO__PENDIENTE_CARGA_ASSET"
+      "img": "assets/images/mago-rojo/mgr-003.svg",
+      "img_game": "assets/images/mago-rojo/mgr-003.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-004",
@@ -148,9 +148,9 @@
         "Mientras esta carta esté en el Campo, las Trampas Mago Rojo que controles no pueden ser destruidas por efectos del adversario."
       ],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-004.png",
-      "img_game": "assets/images/mago-rojo/mgr-004.png",
-      "imagen_estado": "VISUAL_APROBADO_SEGUNDA_VERSION__PENDIENTE_CARGA_ASSET"
+      "img": "assets/images/mago-rojo/mgr-004.svg",
+      "img_game": "assets/images/mago-rojo/mgr-004.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-005",
@@ -172,9 +172,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-005.png",
-      "img_game": "assets/images/mago-rojo/mgr-005.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-005.svg",
+      "img_game": "assets/images/mago-rojo/mgr-005.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-006",
@@ -196,9 +196,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-006.png",
-      "img_game": "assets/images/mago-rojo/mgr-006.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-006.svg",
+      "img_game": "assets/images/mago-rojo/mgr-006.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-007",
@@ -220,9 +220,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-007.png",
-      "img_game": "assets/images/mago-rojo/mgr-007.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-007.svg",
+      "img_game": "assets/images/mago-rojo/mgr-007.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-008",
@@ -244,9 +244,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-008.png",
-      "img_game": "assets/images/mago-rojo/mgr-008.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-008.svg",
+      "img_game": "assets/images/mago-rojo/mgr-008.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-009",
@@ -268,9 +268,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-009.png",
-      "img_game": "assets/images/mago-rojo/mgr-009.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-009.svg",
+      "img_game": "assets/images/mago-rojo/mgr-009.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-010",
@@ -292,9 +292,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-010.png",
-      "img_game": "assets/images/mago-rojo/mgr-010.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-010.svg",
+      "img_game": "assets/images/mago-rojo/mgr-010.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-011",
@@ -316,9 +316,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-011.png",
-      "img_game": "assets/images/mago-rojo/mgr-011.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-011.svg",
+      "img_game": "assets/images/mago-rojo/mgr-011.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-012",
@@ -340,9 +340,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-012.png",
-      "img_game": "assets/images/mago-rojo/mgr-012.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-012.svg",
+      "img_game": "assets/images/mago-rojo/mgr-012.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-013",
@@ -364,9 +364,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-013.png",
-      "img_game": "assets/images/mago-rojo/mgr-013.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-013.svg",
+      "img_game": "assets/images/mago-rojo/mgr-013.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-014",
@@ -388,9 +388,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-014.png",
-      "img_game": "assets/images/mago-rojo/mgr-014.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-014.svg",
+      "img_game": "assets/images/mago-rojo/mgr-014.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-015",
@@ -412,9 +412,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-015.png",
-      "img_game": "assets/images/mago-rojo/mgr-015.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-015.svg",
+      "img_game": "assets/images/mago-rojo/mgr-015.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-016",
@@ -436,9 +436,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-016.png",
-      "img_game": "assets/images/mago-rojo/mgr-016.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-016.svg",
+      "img_game": "assets/images/mago-rojo/mgr-016.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-017",
@@ -460,9 +460,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-017.png",
-      "img_game": "assets/images/mago-rojo/mgr-017.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-017.svg",
+      "img_game": "assets/images/mago-rojo/mgr-017.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-018",
@@ -484,9 +484,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-018.png",
-      "img_game": "assets/images/mago-rojo/mgr-018.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-018.svg",
+      "img_game": "assets/images/mago-rojo/mgr-018.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-019",
@@ -508,9 +508,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-019.png",
-      "img_game": "assets/images/mago-rojo/mgr-019.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-019.svg",
+      "img_game": "assets/images/mago-rojo/mgr-019.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     },
     {
       "id": "MGR-020",
@@ -532,9 +532,9 @@
       "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
       "efectos": [],
       "transformacion": null,
-      "img": "assets/images/mago-rojo/mgr-020.png",
-      "img_game": "assets/images/mago-rojo/mgr-020.png",
-      "imagen_estado": "VISUAL_GENERADO_EN_CHAT__PENDIENTE_SUBIR_BINARIO_GITHUB"
+      "img": "assets/images/mago-rojo/mgr-020.svg",
+      "img_game": "assets/images/mago-rojo/mgr-020.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
     }
   ],
   "plan_20": [
