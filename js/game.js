@@ -2430,6 +2430,12 @@ async function pub23Destroy(side,t){if(!t?.c)return false;return await destroyCa
 async function pub23DestroyMany(side,n=1,filter=null){
  let done=0;for(let k=0;k<n;k++){let arr=pub23Targets(side).filter(x=>!filter||filter(x.c));if(!arr.length)break;arr.sort((a,b)=>(b.c.atk||0)-(a.c.atk||0));if(await pub23Destroy(side,arr[0]))done++}return done
 }
+async function pub23ResurrectSpecific(side,c){
+ const arr=pub23Own(side),grave=pub23Grave(side),modes=side==='p'?playerModes:enemyModes;
+ const free=arr.findIndex(x=>!x),gi=grave.indexOf(c);if(free<0||gi<0)return false;
+ grave.splice(gi,1);const rev={...c,_p23RevivePending:0};arr[free]=rev;modes[free]='ATAQUE';
+ await place(side,free,rev);await flip(side,free);await setMode(side,free,'ATAQUE');return true
+}
 function pub23Text(c){return extTextList(c)}
 function pub23Descriptor(c){
  const list=pub23Text(c),st=pub23State(c),u=extUltimateText(c);
@@ -2494,7 +2500,7 @@ async function pub23TurnStart(){
    if(c.id==='ML-008'&&side==='p'){await extDraw(side,1);c._p23NoEffectDamageUntil=turnNo}
   }
   const phoenix=grave.find(c=>pub23Is(c,'UNI-002')&&c._p23RevivePending&&c._p23RevivePending<=turnNo);
-  if(phoenix){const idx=own.findIndex(x=>!x);if(idx>=0){grave.splice(grave.indexOf(phoenix),1);own[idx]=phoenix;phoenix._p23RevivePending=0;toast('RENACER DE LA AURORA: Fénix regresa del Cementerio.')}} 
+  if(phoenix&&await pub23ResurrectSpecific(side,phoenix)){toast('RENACER DE LA AURORA: Fénix regresa del Cementerio.')} 
  }
  pub23Sync()
 }
