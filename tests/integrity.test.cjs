@@ -63,3 +63,8 @@ A(game.includes("m:['IDR-003','IDR-004'],r:'IDR-019'"),'Fusión IDR-019 habilita
 A(game.includes("m:['IDR-009','IDR-008'],r:'IDR-020'"),'Fusión IDR-020 habilitada');
 A(game.includes('pcFusionEvolutionCinematic'),'cinemática de Fusión PC habilitada');
 A(game.includes('pcTransformationCinematic'),'cinemática de transformación PC habilitada');
+
+// V19.5.2 — Arena/equipamiento PC
+A(game.includes('PC_BOSS_PHASE_VISUALS'),'perfiles visuales de fases de jefes');
+A(game.includes('pcBossPhaseEvolution'),'arena reactiva por fase');
+A(game.includes('pcEquipmentCinematic'),'cinemática 3D de equipamiento');
