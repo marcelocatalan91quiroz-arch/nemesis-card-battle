@@ -38,13 +38,13 @@ test('Santuario está registrado sin alterar campañas', async ({ page }) => {
 });
 
 
-test('auditoría Duel Master 10/10 y assets', async ({ page }) => {
+test('auditoría Duel Master 20/20 y assets', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => window.battle('guardian'));
   await page.waitForTimeout(1800);
   const audit=await page.evaluate(() => typeof window.NEMESIS_DUEL_MASTER_AUDIT==='function' ? window.NEMESIS_DUEL_MASTER_AUDIT() : null);
   expect(audit).not.toBeNull();
-  expect(audit.total).toBe(10);
+  expect(audit.total).toBe(20);
   expect(audit.ok).toBeTruthy();
   expect(audit.onkolxon).toEqual({hp:13000,energia:14});
   expect(audit.handlers.every(x=>x.handler)).toBeTruthy();

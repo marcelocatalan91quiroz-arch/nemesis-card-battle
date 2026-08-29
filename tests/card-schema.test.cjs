@@ -4,8 +4,8 @@ const data=JSON.parse(fs.readFileSync(path.join(root,'data','nemesis_collection_
 const schema=JSON.parse(fs.readFileSync(path.join(root,'data','nemesis_card_schema_v1.json'),'utf8'));
 const game=fs.readFileSync(path.join(root,'js','game.js'),'utf8');
 const A=(x,m)=>{if(!x){console.error('FAIL',m);process.exit(1)}console.log('PASS',m)};
-A(data.cards.length===33,'33 cartas conservadas');
-A(data.cards.every(c=>c.schema_version==='NEMESIS_CARD_V1'),'schema aplicado a las 33');
+A(data.cards.length===43,'43 cartas conservadas');
+A(data.cards.every(c=>c.schema_version==='NEMESIS_CARD_V1'),'schema aplicado a las 43');
 const an=data.cards.find(c=>c.id==='ML-005');
 A(an.elementos.includes('TIERRA'),'Anubis incluye elemento TIERRA');
 const m6=data.cards.find(c=>c.id==='ML-006'),m10=data.cards.find(c=>c.id==='ML-010');

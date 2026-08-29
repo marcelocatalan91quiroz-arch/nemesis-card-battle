@@ -2487,6 +2487,737 @@
           "restricciones": "UNIVERSAL"
         }
       }
+    },
+    {
+      "id": "DM-011",
+      "nombre": "Alma de Afrodita",
+      "clase": "PERSONAJE_ALIADO",
+      "rareza": "ANCESTRAL_UNICA",
+      "atk": 8500,
+      "def": 12000,
+      "h": [
+        [
+          "Seducción del Alma",
+          "Una vez por turno, selecciona 1 criatura rival: no puede atacar a Alma de Afrodita y pierde 1500 ATK durante ese turno."
+        ],
+        [
+          "Vínculo de Afrodita",
+          "Una vez por turno, si un efecto rival fuera a destruir otra criatura Duel Master, anula esa destrucción."
+        ],
+        [
+          "Corazón Cautivo",
+          "Si permanece 3 turnos en Campo, toma temporalmente el control de 1 criatura rival durante 1 turno."
+        ]
+      ],
+      "familia": "DUEL_MASTER",
+      "habilidades": [
+        {
+          "nombre": "Seducción del Alma",
+          "efecto": "Una vez por turno, selecciona 1 criatura rival: no puede atacar a Alma de Afrodita y pierde 1500 ATK durante ese turno."
+        },
+        {
+          "nombre": "Vínculo de Afrodita",
+          "efecto": "Una vez por turno, si un efecto rival fuera a destruir otra criatura Duel Master, anula esa destrucción."
+        },
+        {
+          "nombre": "Corazón Cautivo",
+          "efecto": "Si permanece 3 turnos en Campo, toma temporalmente el control de 1 criatura rival durante 1 turno."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER"
+      ],
+      "img": "assets/images/external33/dm-011.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "alma-de-afrodita",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-012",
+      "nombre": "Medusa",
+      "clase": "PERSONAJE_ALIADO",
+      "rareza": "MITICA",
+      "atk": 9000,
+      "def": 10500,
+      "h": [
+        [
+          "Mirada Petrificante",
+          "Una vez por turno, petrifica 1 criatura rival durante 1 turno: no puede atacar, activar habilidades ni cambiar de posición."
+        ],
+        [
+          "Reflejo de Gorgona",
+          "La primera vez por turno que un efecto enemigo seleccione a Medusa, devuelve ese efecto contra 1 criatura rival."
+        ],
+        [
+          "Galería de Piedra",
+          "Cada criatura rival petrificada concede +500 ATK y +500 DEF mientras Medusa permanezca en Campo, máximo +2000/+2000."
+        ]
+      ],
+      "familia": "DUEL_MASTER",
+      "habilidades": [
+        {
+          "nombre": "Mirada Petrificante",
+          "efecto": "Una vez por turno, petrifica 1 criatura rival durante 1 turno: no puede atacar, activar habilidades ni cambiar de posición."
+        },
+        {
+          "nombre": "Reflejo de Gorgona",
+          "efecto": "La primera vez por turno que un efecto enemigo seleccione a Medusa, devuelve ese efecto contra 1 criatura rival."
+        },
+        {
+          "nombre": "Galería de Piedra",
+          "efecto": "Cada criatura rival petrificada concede +500 ATK y +500 DEF mientras Medusa permanezca en Campo, máximo +2000/+2000."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER"
+      ],
+      "img": "assets/images/external33/dm-012.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "medusa",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-013",
+      "nombre": "Arma del Tártaro",
+      "clase": "ARMA",
+      "rareza": "ANCESTRAL",
+      "atk_bonus": 3000,
+      "def_bonus": 2000,
+      "h": [
+        [
+          "Poder del Tártaro",
+          "La criatura equipada obtiene +3000 ATK y +2000 DEF."
+        ],
+        [
+          "Condena del Abismo",
+          "Las criaturas destruidas en combate por el portador quedan desterradas."
+        ],
+        [
+          "Cadenas del Tártaro",
+          "Después de atacar, una vez por turno encadena 1 criatura rival hasta el siguiente turno."
+        ],
+        [
+          "Precio del Tártaro",
+          "Si esta arma es destruida, absorbe la destrucción y protege al portador."
+        ]
+      ],
+      "familia": "DUEL_MASTER",
+      "habilidades": [
+        {
+          "nombre": "Poder del Tártaro",
+          "efecto": "La criatura equipada obtiene +3000 ATK y +2000 DEF."
+        },
+        {
+          "nombre": "Condena del Abismo",
+          "efecto": "Las criaturas destruidas en combate por el portador quedan desterradas."
+        },
+        {
+          "nombre": "Cadenas del Tártaro",
+          "efecto": "Después de atacar, una vez por turno encadena 1 criatura rival hasta el siguiente turno."
+        },
+        {
+          "nombre": "Precio del Tártaro",
+          "efecto": "Si esta arma es destruida, absorbe la destrucción y protege al portador."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER"
+      ],
+      "img": "assets/images/external33/dm-013.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "arma-del-tartaro",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-014",
+      "nombre": "Antorcha del Olimpo",
+      "clase": "RELIQUIA",
+      "rareza": "ANCESTRAL",
+      "atk_bonus": 1000,
+      "def_bonus": 1000,
+      "h": [
+        [
+          "Llama Inmortal",
+          "Mientras esté activa, todas tus criaturas Duel Master obtienen +1000 ATK y +1000 DEF."
+        ],
+        [
+          "Fuego de los Olímpicos",
+          "Protege una vez por turno a una criatura olímpica de anulación o destrucción."
+        ],
+        [
+          "Llama del Renacimiento",
+          "Una vez por duelo revive 1 criatura Duel Master con 50% de su ATK y DEF."
+        ],
+        [
+          "Gloria del Olimpo",
+          "Con Zeus y Thor en Campo, ambos ganan +1000 ATK y no pueden ser petrificados ni encadenados."
+        ]
+      ],
+      "familia": "DUEL_MASTER",
+      "habilidades": [
+        {
+          "nombre": "Llama Inmortal",
+          "efecto": "Mientras esté activa, todas tus criaturas Duel Master obtienen +1000 ATK y +1000 DEF."
+        },
+        {
+          "nombre": "Fuego de los Olímpicos",
+          "efecto": "Protege una vez por turno a una criatura olímpica de anulación o destrucción."
+        },
+        {
+          "nombre": "Llama del Renacimiento",
+          "efecto": "Una vez por duelo revive 1 criatura Duel Master con 50% de su ATK y DEF."
+        },
+        {
+          "nombre": "Gloria del Olimpo",
+          "efecto": "Con Zeus y Thor en Campo, ambos ganan +1000 ATK y no pueden ser petrificados ni encadenados."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER"
+      ],
+      "img": "assets/images/external33/dm-014.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "antorcha-del-olimpo",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-015",
+      "nombre": "Martillo de Thor",
+      "clase": "ARMA",
+      "rareza": "ANCESTRAL",
+      "atk_bonus": 2500,
+      "def_bonus": 1500,
+      "h": [
+        [
+          "Poder de Mjölnir",
+          "El portador obtiene +2500 ATK y +1500 DEF; si es Thor recibe además +1500 ATK."
+        ],
+        [
+          "Impacto del Trueno",
+          "El primer ataque del portador cada turno inflige 1000 de daño adicional al HP rival."
+        ],
+        [
+          "Retorno de Mjölnir",
+          "Si es destruido mientras Thor sigue en Campo, vuelve a equiparse a Thor una vez por duelo."
+        ],
+        [
+          "Tormenta de Asgard",
+          "Si Thor destruye una criatura con el Martillo, puede realizar un segundo ataque contra otra criatura."
+        ],
+        [
+          "Campeón del Trueno",
+          "Thor + Martillo de Thor + Antorcha del Olimpo: +1000 DEF y la primera anulación que intente detener su ataque es ignorada."
+        ]
+      ],
+      "familia": "DUEL_MASTER",
+      "habilidades": [
+        {
+          "nombre": "Poder de Mjölnir",
+          "efecto": "El portador obtiene +2500 ATK y +1500 DEF; si es Thor recibe además +1500 ATK."
+        },
+        {
+          "nombre": "Impacto del Trueno",
+          "efecto": "El primer ataque del portador cada turno inflige 1000 de daño adicional al HP rival."
+        },
+        {
+          "nombre": "Retorno de Mjölnir",
+          "efecto": "Si es destruido mientras Thor sigue en Campo, vuelve a equiparse a Thor una vez por duelo."
+        },
+        {
+          "nombre": "Tormenta de Asgard",
+          "efecto": "Si Thor destruye una criatura con el Martillo, puede realizar un segundo ataque contra otra criatura."
+        },
+        {
+          "nombre": "Campeón del Trueno",
+          "efecto": "Thor + Martillo de Thor + Antorcha del Olimpo: +1000 DEF y la primera anulación que intente detener su ataque es ignorada."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER"
+      ],
+      "img": "assets/images/external33/dm-015.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "martillo-de-thor",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-016",
+      "nombre": "Corona del Dominio",
+      "familia": "DUEL_MASTER",
+      "clase": "RELIQUIA",
+      "subtipo": "CAMPO",
+      "rareza": "ANCESTRAL",
+      "atk_bonus": 1000,
+      "def_bonus": 1000,
+      "hp_bonus": 2000,
+      "habilidades": [
+        {
+          "nombre": "Dominio Absoluto",
+          "efecto": "Mientras esté activa, todas tus cartas Duel Master obtienen +1000 ATK, +1000 DEF, +2000 HP y sus habilidades cuestan 1 Energía menos, mínimo 1."
+        },
+        {
+          "nombre": "Unión de Orígenes",
+          "efecto": "Si controlas cartas Duel Master de 5 o más tipos diferentes, obtienen +2000 ATK adicional y protección frente a destrucción por efectos rivales."
+        },
+        {
+          "nombre": "Voluntad del Maestro",
+          "efecto": "Una vez por turno, selecciona 1 carta Duel Master: puede atacar nuevamente o activar su habilidad principal sin pagar su coste."
+        },
+        {
+          "nombre": "Legado Eterno",
+          "efecto": "Si es destruida, permanece como Reliquia recuperable; puedes sacrificar 1 carta Duel Master para reactivarla."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER"
+      ],
+      "img": "assets/images/external33/dm-016.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "corona-del-dominio",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-017",
+      "nombre": "Arma Santa",
+      "familia": "DUEL_MASTER",
+      "clase": "ARMA",
+      "subtipo": "EQUIPAMIENTO",
+      "rareza": "ANCESTRAL",
+      "atk_bonus": 2500,
+      "def_bonus": 2500,
+      "hp_bonus": 1000,
+      "habilidades": [
+        {
+          "nombre": "Luz Consagrada",
+          "efecto": "El portador obtiene +2500 ATK y +2500 DEF."
+        },
+        {
+          "nombre": "Purificación",
+          "efecto": "Cuando el portador ataca, elimina 1 efecto negativo que afecte a una carta Duel Master."
+        },
+        {
+          "nombre": "Juicio Sagrado",
+          "efecto": "Contra Oscuridad, Demonio o No Muerto, el portador obtiene +2000 ATK durante ese combate."
+        },
+        {
+          "nombre": "Bendición del Portador",
+          "efecto": "La primera vez que el portador fuera a ser destruido por un efecto rival, Arma Santa se destruye en su lugar."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER"
+      ],
+      "img": "assets/images/external33/dm-017.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "arma-santa",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-018",
+      "nombre": "Thor Shiny — Señor de la Tormenta Eterna",
+      "familia": "DUEL_MASTER",
+      "clase": "PERSONAJE_ALIADO",
+      "tipos": [
+        "DIOS",
+        "GUERRERO",
+        "SHINY"
+      ],
+      "elementos": [
+        "LUZ",
+        "RAYO"
+      ],
+      "rareza": "SHINY_ANCESTRAL",
+      "atk": 6000,
+      "def": 4500,
+      "hp": 4200,
+      "energia": 6,
+      "habilidades": [
+        {
+          "nombre": "Trueno Eterno",
+          "efecto": "Al entrar al Campo, inflige 2500 de daño a las cartas rivales y reduce su ATK en 1500 hasta el final del próximo turno."
+        },
+        {
+          "nombre": "Ira del Asgard",
+          "efecto": "Una vez por turno gana +1000 ATK por cada carta Dios propia en Campo y Cementerio hasta el final del turno."
+        },
+        {
+          "nombre": "Protector de los Nueve Reinos",
+          "efecto": "Mientras esté en Campo, tus cartas Duel Master obtienen +1000 DEF y protección frente a destrucción por efectos rivales."
+        },
+        {
+          "nombre": "Golpe del Bifröst",
+          "efecto": "Ultimate, coste 3 Energía: destruye las cartas rivales con ATK menor o igual a 4000 e inflige 4000 de daño directo."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER",
+        "THOR",
+        "SHINY",
+        "OLIMPO"
+      ],
+      "img": "assets/images/external33/dm-018.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "thor-shiny-senor-de-la-tormenta-eterna",
+      "subtipo": "",
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "LUZ",
+            "RAYO"
+          ],
+          "tipos": [
+            "DIOS",
+            "GUERRERO",
+            "SHINY"
+          ]
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-019",
+      "nombre": "El Juicio de los Titanes",
+      "familia": "DUEL_MASTER",
+      "clase": "TRAMPA",
+      "subtipo": "CONTRAHECHIZO",
+      "rareza": "ANCESTRAL",
+      "habilidades": [
+        {
+          "nombre": "Juicio Supremo",
+          "efecto": "Cuando el rival declara un ataque o activa una habilidad peligrosa, anula completamente esa acción."
+        },
+        {
+          "nombre": "Castigo Titánico",
+          "efecto": "Tras anular, inflige daño al adversario equivalente al ATK de la carta anulada, mínimo 2000."
+        },
+        {
+          "nombre": "Escudo de los Titanes",
+          "efecto": "Tus cartas Duel Master no pueden ser destruidas ni sacrificadas como resultado de esta acción."
+        },
+        {
+          "nombre": "Sentencia Eterna",
+          "efecto": "Si el ATK de la carta anulada es 6000 o más, además descarta 1 carta al azar de la mano rival."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER",
+        "TRAMPA",
+        "COUNTER"
+      ],
+      "img": "assets/images/external33/dm-019.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "el-juicio-de-los-titanes",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
+    },
+    {
+      "id": "DM-020",
+      "nombre": "Eclipse de los Reinos",
+      "familia": "DUEL_MASTER",
+      "clase": "MAGICA",
+      "subtipo": "ANCESTRAL_UNICA",
+      "rareza": "ANCESTRAL_UNICA",
+      "atk_bonus": 3000,
+      "def_bonus": 3000,
+      "hp_bonus": 3000,
+      "habilidades": [
+        {
+          "nombre": "Sinfonía de los Reinos",
+          "efecto": "Selecciona hasta 5 cartas Duel Master en tu campo; sus efectos y habilidades se activan una vez de inmediato, excepto Eclipse de los Reinos."
+        },
+        {
+          "nombre": "Poder de la Alianza",
+          "efecto": "Combina los tipos de todas tus cartas Duel Master en juego hasta el final del turno."
+        },
+        {
+          "nombre": "Eclipse Dominante",
+          "efecto": "Durante este turno tus cartas Duel Master obtienen +3000 ATK y +3000 DEF y pueden atacar directamente al HP rival."
+        },
+        {
+          "nombre": "Resurgir Legendario",
+          "efecto": "Invoca desde tu Cementerio hasta 3 cartas Duel Master con ATK 2000 o menos."
+        },
+        {
+          "nombre": "Destino Sellado",
+          "efecto": "Al final del turno, si el rival tiene 5000 HP o menos, inflige 5000 de daño directo adicional."
+        }
+      ],
+      "compatibilidad": [
+        "DUEL_MASTER",
+        "MAGICA",
+        "CIERRE"
+      ],
+      "img": "assets/images/external33/dm-020.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "eclipse-de-los-reinos",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     }
   ],
   "integration": {
@@ -2494,5 +3225,6 @@
     "global_collection_eligible": true,
     "deck_builder_eligible": true
   },
-  "schema_normalized": true
+  "schema_normalized": true,
+  "total": 43
 }
