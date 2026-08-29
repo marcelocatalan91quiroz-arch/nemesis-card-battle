@@ -2,7 +2,7 @@ name: NEMESIS Stable Gate
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ main, test-v19-5-5-stable-gate-run2 ]
 jobs:
   regression:
     runs-on: ubuntu-latest
