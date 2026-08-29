@@ -32,7 +32,7 @@ const missing=img.filter(x=>!exists(x));
 must('assets de cartas',missing.length===0);
 if(missing.length) console.error(missing);
 
-const registryIncludesExpected=/const CARDS_RAW=\[\.\.\.COLLECTIBLE_CARDS,\.\.\.IMPERIO_DRAGON_CARDS,\.\.\.APOLO_PLAYER_CARDS,\.\.\.OLIMPO_PLAYER_CARDS,\.\.\.HADES_CARDS,\.\.\.ARES_CARDS_1_5,\.\.\.DIVINE_FUSION_CARDS,\.\.\.EXTERNAL_GAME_CARDS\]/.test(game);
+const registryIncludesExpected=/const CARDS_RAW=\[\.\.\.COLLECTIBLE_CARDS,\.\.\.IMPERIO_DRAGON_CARDS,(?:\.\.\.MAGO_ROJO_CARDS,)?\.\.\.APOLO_PLAYER_CARDS,\.\.\.OLIMPO_PLAYER_CARDS,\.\.\.HADES_CARDS,\.\.\.ARES_CARDS_1_5,\.\.\.DIVINE_FUSION_CARDS,\.\.\.EXTERNAL_GAME_CARDS\]/.test(game);
 const registryExcludesDuplicatedFamilies=!/\.\.\.NEW_CARDS,\.\.\.DRAGON_OJO_CARDS,\.\.\.ANCESTRAL_CARDS,\.\.\.SPECTRAL_CARDS,\.\.\.REY_ESPECTRAL_CARDS,\.\.\.DIOS_FANTASMA_CARDS/.test(game);
 const registryDeduplicates=/new Map\(CARDS_RAW\.map\(c=>\[c\.id,c\]\)\)/.test(game);
 must('registro global de cartas no reintroduce familias duplicadas',
