@@ -1724,5 +1724,76 @@ window.NEMESIS_EXTERNAL_COLLECTION_33 = [
       "OLIMPO"
     ],
     "img": "assets/images/external33/dm-018.svg"
+  },
+  {
+    "id": "DM-019",
+    "nombre": "El Juicio de los Titanes",
+    "familia": "DUEL_MASTER",
+    "clase": "TRAMPA",
+    "subtipo": "CONTRAHECHIZO",
+    "rareza": "ANCESTRAL",
+    "habilidades": [
+      {
+        "nombre": "Juicio Supremo",
+        "efecto": "Cuando el rival declara un ataque o activa una habilidad peligrosa, anula completamente esa acción."
+      },
+      {
+        "nombre": "Castigo Titánico",
+        "efecto": "Tras anular, inflige daño al adversario equivalente al ATK de la carta anulada, mínimo 2000."
+      },
+      {
+        "nombre": "Escudo de los Titanes",
+        "efecto": "Tus cartas Duel Master no pueden ser destruidas ni sacrificadas como resultado de esta acción."
+      },
+      {
+        "nombre": "Sentencia Eterna",
+        "efecto": "Si el ATK de la carta anulada es 6000 o más, además descarta 1 carta al azar de la mano rival."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER",
+      "TRAMPA",
+      "COUNTER"
+    ],
+    "img": "assets/images/external33/dm-019.svg"
+  },
+  {
+    "id": "DM-020",
+    "nombre": "Eclipse de los Reinos",
+    "familia": "DUEL_MASTER",
+    "clase": "MAGICA",
+    "subtipo": "ANCESTRAL_UNICA",
+    "rareza": "ANCESTRAL_UNICA",
+    "atk_bonus": 3000,
+    "def_bonus": 3000,
+    "hp_bonus": 3000,
+    "habilidades": [
+      {
+        "nombre": "Sinfonía de los Reinos",
+        "efecto": "Selecciona hasta 5 cartas Duel Master en tu campo; sus efectos y habilidades se activan una vez de inmediato, excepto Eclipse de los Reinos."
+      },
+      {
+        "nombre": "Poder de la Alianza",
+        "efecto": "Combina los tipos de todas tus cartas Duel Master en juego hasta el final del turno."
+      },
+      {
+        "nombre": "Eclipse Dominante",
+        "efecto": "Durante este turno tus cartas Duel Master obtienen +3000 ATK y +3000 DEF y pueden atacar directamente al HP rival."
+      },
+      {
+        "nombre": "Resurgir Legendario",
+        "efecto": "Invoca desde tu Cementerio hasta 3 cartas Duel Master con ATK 2000 o menos."
+      },
+      {
+        "nombre": "Destino Sellado",
+        "efecto": "Al final del turno, si el rival tiene 5000 HP o menos, inflige 5000 de daño directo adicional."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER",
+      "MAGICA",
+      "CIERRE"
+    ],
+    "img": "assets/images/external33/dm-020.svg"
   }
 ];
