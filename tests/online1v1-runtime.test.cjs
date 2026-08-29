@@ -71,7 +71,7 @@ function invoke({method='POST',query={},body={}}={}){
  const end=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'end_turn'}});
  assert.equal(end.status,200);
  assert.equal(end.payload.room.duel.activeSeat,'GUEST');
- assert.equal(end.payload.room.duel.me.hand.length>=4,true);
+ assert.equal(end.payload.room.duel.opponent.handCount,6);
 
  const wrongTurn=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'end_turn'}});
  assert.equal(wrongTurn.status,409);
