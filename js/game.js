@@ -264,7 +264,15 @@ const EXTERNAL_GAME_CARDS=NEMESIS_EXTERNAL_RAW.map(nemesisExternalCard);
 const NEMESIS_PUBLIC_23_IDS=EXTERNAL_GAME_CARDS.filter(c=>!c.id.startsWith('DM-')).map(c=>c.id);
 const NEMESIS_DUEL_MASTER_IDS=EXTERNAL_GAME_CARDS.filter(c=>c.id.startsWith('DM-')).map(c=>c.id);
 
-const CARDS=[...COLLECTIBLE_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...NEW_CARDS,...DRAGON_OJO_CARDS,...ANCESTRAL_CARDS,...SPECTRAL_CARDS,...REY_ESPECTRAL_CARDS,...DIOS_FANTASMA_CARDS,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
+const IMPERIO_DRAGON_CARDS=[
+ {id:'IDR-001',name:'Dragón Carmesí Joven',atk:1800,def:1600,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'comun',effect:'idrCrimsonBlood',img:'assets/images/imperio-dragon/idr-001.png',ascensionMax:2,transformTo:'Dragón Carmesí Imperial',desc:'SANGRE IMPERIAL: gana Marcas de Ascensión al atacar; al destruir busca apoyo Imperio Dragón e inflige 300 de daño directo.'},
+ {id:'IDR-002',name:'Dragón Guerrero Escarlata',atk:2300,def:1900,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'rara',effect:'idrScarletFury',img:'assets/images/imperio-dragon/idr-002.png',ascensionMax:3,transformTo:'Dragón Guerrero Escarlata Supremo',desc:'FURIA ESCARLATA: al destruir gana +500 ATK y puede atacar otra vez; Guerrero Imperial busca una carta del arquetipo.'},
+ {id:'IDR-003',name:'Dragón Llamasangre',atk:2300,def:2000,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrIncineratingBreath',img:'assets/images/imperio-dragon/idr-003.png',ascensionMax:2,transformTo:'Dragón Llamasangre Supremo',desc:'ALIENTO INCINERADOR: destruye una Mágica/Trampa al atacar y gana +500 ATK ese ataque; Semilla de Dragón recupera al Carmesí Joven.'},
+ {id:'IDR-004',name:'Dragón Obsidiana Escamarreal',atk:2400,def:1800,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrCataclysmLance',img:'assets/images/imperio-dragon/idr-004.png',ascensionMax:3,transformTo:'Dragón Obsidiana Escamarreal Supremo',desc:'LANZA DEL CATACLISMO: causa 400 de daño por cada monstruo rival al atacar y gana Ascensión al destruir.'},
+ {id:'IDR-005',name:'Dragón Ala de Tormenta',atk:2600,def:2100,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrWeatherDominion',img:'assets/images/imperio-dragon/idr-005.png',ascensionMax:3,transformTo:'Dragón Alas de Tormenta Supremo',desc:'DOMINIO DEL CLIMA: Tormenta de Fuego potencia +300 ATK/DEF al Imperio Dragón; Invocación Especial destruye hasta 2 cartas rivales.'}
+];
+const IMPERIO_DRAGON_DECK_IDS=IMPERIO_DRAGON_CARDS.map(c=>c.id);
+const CARDS=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...NEW_CARDS,...DRAGON_OJO_CARDS,...ANCESTRAL_CARDS,...SPECTRAL_CARDS,...REY_ESPECTRAL_CARDS,...DIOS_FANTASMA_CARDS,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
 const AS={tirano:'assets/images/img-10.webp',guardian:'assets/images/guardian-dragones.webp',bg1:'assets/images/img-12.webp',bg2:'assets/images/img-13.webp',dragonOjo:'assets/images/dragon-ojo-del-diablo.png',dragonOjoBg:'assets/images/castillo-dragon-ojo-diablo.webp',iraRa:'assets/images/ira-de-ra-jefe.png',iraRaBg:'assets/images/ruinas-piramide-ira-ra.png',caballeroAlmas:'assets/images/caballero-de-las-almas.png',caballeroAlmasBg:'assets/images/reino-espectral-cinematico.png',reyEspectral:'assets/images/rey-espectral.png',reyEspectralBg:'assets/images/reino-espectral-cinematico.png'};
 CARDS.push(...UNIQUE_CARD_DEFS);
 
@@ -454,6 +462,8 @@ state.owned=[...new Set([...(state.owned||[]),...NEMESIS_PUBLIC_23_IDS,...NEMESI
 state.savedDecks=state.savedDecks||{};
 if(!Array.isArray(state.savedDecks.OLIMPO)||!state.savedDecks.OLIMPO.length)state.savedDecks.OLIMPO=OLIMPO_DECK_IDS.filter(id=>card(id)).slice(0,11);
 state.savedDecks.DUEL_MASTER=NEMESIS_DUEL_MASTER_IDS.filter(id=>card(id)).slice(0,10);
+state.owned=[...new Set([...(state.owned||[]),...IMPERIO_DRAGON_DECK_IDS])];
+state.savedDecks.IMPERIO_DRAGON=IMPERIO_DRAGON_DECK_IDS.filter(id=>card(id));
 if(!state.activeDeckName)state.activeDeckName='OLIMPO';
 
 function card(id){
@@ -2702,8 +2712,8 @@ function applyTitanDominion(){
 }
 function updateSkillButtons(){const c=playerCards?.[active],sk=skillFor(c),action=phase==='ACTION'&&!!c,used=sk?.onceDuel?c?._skillUsedDuel:c?._skillUsedTurn===turnNo;if(skillBtn){skillBtn.disabled=!action||!sk||!!used;skillBtn.textContent=sk?(used?'HABILIDAD USADA':sk.name):'HABILIDAD'}if(playerPowerBtn){const remain=Math.max(0,playerPowerReadyTurn-turnNo);playerPowerBtn.disabled=!action||remain>0;playerPowerBtn.textContent=remain?`PODER · ${remain}T`:'PODER NÉMESIS'}}
 async function useCreatureSkill(side,i){const arr=side==='p'?playerCards:enemyCards,c=arr[i],sk=skillFor(c);if(!c||!sk||(sk.onceDuel?c._skillUsedDuel:c._skillUsedTurn===turnNo))return false;if(sk.onceDuel)c._skillUsedDuel=true;else c._skillUsedTurn=turnNo;if(pcCinematicProfile(c))await pcCardCinematic('skill',side,i,c);skillFx(side,i,sk,c);if(sk.kind==='dmAbility'||sk.kind==='dmUltimate'){await dmUseAbility(side,i,c,sk)}else if(sk.kind==='public23Ability'||sk.kind==='public23Ultimate'){await pub23UseAbility(side,i,c,sk)}else if(sk.kind==='external'){await applyExternalAbility(side,i,c,sk.desc,false)}else if(sk.kind==='externalUltimate'){await applyExternalAbility(side,i,c,sk.desc,true)}else if(sk.kind==='attack'){c.atk+=sk.value;olympusNotifyAttackIncrease(side,sk.value);const key=side==='p'?'_skillAtkBonus':'_enemySkillAtkBonus';c[key]=(c[key]||0)+sk.value}else if(sk.kind==='shield'){c._shieldBonus=(c._shieldBonus||0)+sk.value;c._shieldPending=true}else if(sk.kind==='heal'){if(side==='p')phpv=Math.min(playerMaxHp,phpv+sk.value);else ehpv=Math.min(enemyMaxHp,ehpv+sk.value)}else if(sk.kind==='damage'){if(side==='p')ehpv=Math.max(0,ehpv-sk.value);else phpv=Math.max(0,phpv-sk.value);damageFx(sk.value,side==='p'?'e':'p')}else if(sk.kind==='solarShield'){if(side==='p'){playerDirectShieldUntil=Math.max(playerDirectShieldUntil,turnNo+1);toast(`${c.name}: Escudo Solar protege tus HP de ataques directos durante 2 turnos.`)}else{toast(`${c.name}: Escudo Solar activado.`)}}else if(sk.kind==='debuff'){const rivals=side==='p'?enemyCards:playerCards,target=rivals.map((x,j)=>({c:x,j})).filter(x=>x.c).sort((a,b)=>b.c.atk-a.c.atk)[0];if(target){target.c.atk=Math.max(0,target.c.atk-sk.value);target.c._skillDebuff=(target.c._skillDebuff||0)+sk.value;toast(`${target.c.name} pierde ${sk.value} ATK durante este turno.`)}}else if(sk.kind==='stopTime'){if(side==='p'){enemySkipTurns=Math.max(enemySkipTurns,1);toast('KRONOS DETIENE EL TIEMPO: el rival perderá su siguiente turno completo.')}else{playerAttackBlockedUntil=Math.max(playerAttackBlockedUntil,turnNo+1)}}else if(sk.kind==='destroyEquipment'){await destroyEnemyEquipment(side,sk.value||1,c)}update();updateSkillButtons();await wait(280);return true}
-function clearSkillTurnEffects(){playerCards.forEach(c=>{if(c?._skillDebuff){c.atk+=c._skillDebuff;delete c._skillDebuff}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}});enemyCards.forEach(c=>{if(c?._enemySkillAtkBonus){c.atk=Math.max(0,c.atk-c._enemySkillAtkBonus);delete c._enemySkillAtkBonus}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}})}
-function update(){treasureSyncEquipmentBonuses();pub23Sync();nemesisDmSync();heroicSync();const hp=document.getElementById('heroicP'),he=document.getElementById('heroicE'),hpt=document.getElementById('heroicPT'),het=document.getElementById('heroicET'),hf=document.getElementById('heroicFormation'),hi=document.getElementById('heroicIntent'),hw=document.getElementById('heroicWeather');if(hp)hp.style.width=HEROIC.climaxP+'%';if(he)he.style.width=HEROIC.climaxE+'%';if(hpt)hpt.textContent=HEROIC.climaxP+'%';if(het)het.textContent=HEROIC.climaxE+'%';if(hf)hf.textContent=heroicFormation()?.name||'SIN FORMACIÓN';if(hi)hi.textContent='IA: '+heroicIntent();if(hw)hw.textContent=HEROIC.weather;if(aresIsBoss())aresSyncPhase();if(hadesIsBoss())hadesSyncPhase();applyTitanDominion();v188UpdateHUD();applyDragonRage();applyBossPhases();olympusEvaluateSynergies();olympusUpdateZone();updatePcStrategicHud();updateSkillButtons()}
+function clearSkillTurnEffects(){playerCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._skillDebuff){c.atk+=c._skillDebuff;delete c._skillDebuff}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}});enemyCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._enemySkillAtkBonus){c.atk=Math.max(0,c.atk-c._enemySkillAtkBonus);delete c._enemySkillAtkBonus}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}})}
+function update(){idrStormSync();treasureSyncEquipmentBonuses();pub23Sync();nemesisDmSync();heroicSync();const hp=document.getElementById('heroicP'),he=document.getElementById('heroicE'),hpt=document.getElementById('heroicPT'),het=document.getElementById('heroicET'),hf=document.getElementById('heroicFormation'),hi=document.getElementById('heroicIntent'),hw=document.getElementById('heroicWeather');if(hp)hp.style.width=HEROIC.climaxP+'%';if(he)he.style.width=HEROIC.climaxE+'%';if(hpt)hpt.textContent=HEROIC.climaxP+'%';if(het)het.textContent=HEROIC.climaxE+'%';if(hf)hf.textContent=heroicFormation()?.name||'SIN FORMACIÓN';if(hi)hi.textContent='IA: '+heroicIntent();if(hw)hw.textContent=HEROIC.weather;if(aresIsBoss())aresSyncPhase();if(hadesIsBoss())hadesSyncPhase();applyTitanDominion();v188UpdateHUD();applyDragonRage();applyBossPhases();olympusEvaluateSynergies();olympusUpdateZone();updatePcStrategicHud();updateSkillButtons()}
 const NEMESIS_PHASES=Object.freeze(['DRAW','PLACE','ACTION','TARGET','ENEMY','END']);
 const NEMESIS_PHASE_TRANSITIONS=Object.freeze({
  DRAW:['PLACE','ACTION','ENEMY','END'],
@@ -2865,6 +2875,7 @@ async function resolveBattle(attSide,ai,defSide,di){
   if(_gr.length){_gr.pop();_preA.atk+=500;_preA._treasureHungerBonus=(_preA._treasureHungerBonus||0)+500;_preA._treasureHungerTurn=turnNo;toast('HAMBRE INFINITA: consume 1 carta del Cementerio · +500 ATK este turno.')}
  }
  const _heroA=attSide==='p'?playerCards[ai]:enemyCards[ai],_heroD=defSide==='p'?playerCards[di]:enemyCards[di];if(_heroA&&!heroicCanAct(_heroA)){toast(`${_heroA.name} no puede actuar por su estado heroico.`);return}heroicAttack(attSide,_heroA,_heroD);if(attSide==='p'&&!hadesCanAct(playerCards[ai])){toast('El control del Inframundo impide atacar.');return;}if(attSide==='p'){olympusOnPlayerAttack(ai);olympusSynergyAttack(attSide,ai);}aresOnCombatParticipation(attSide,ai);const A=(attSide==='p'?playerCards:enemyCards)[ai],D=(defSide==='p'?playerCards:enemyCards)[di];if(!A||!D)return;
+ await idrBeforeAttack(attSide,ai,A);
  if(D.effect==='phantomReflect'){
   const reflected=Math.max(0,Number(A.atk)||0);D.atk=reflected;
   skillFx(defSide,di,{name:'REFLEJO FANTASMAL',kind:'damage',value:reflected,desc:`Copia ${reflected} ATK y lo refleja directamente a los HP del rival.`},D);
@@ -2872,9 +2883,9 @@ async function resolveBattle(attSide,ai,defSide,di){
   damageFx(reflected,defSide==='p'?'e':'p');update();toast(`${D.name}: copia ${reflected} ATK y causa ${reflected} de daño directo al rival.`);await wait(320);
   if((defSide==='p'&&ehpv<=0)||(defSide==='e'&&phpv<=0))return;
  }
- const rewardAres=()=>{if(A.id==="anc-ares"){A.atk+=500;toast(`Furia del Conquistador: Ares gana +500 ATK (${A.atk}).`)}};const dm=(defSide==='p'?playerModes:enemyModes)[di]||'ATAQUE';await (defSide==='e'?revealEnemy(di):revealPlayer(di));const shieldBonus=D._shieldPending?(Number(D._shieldBonus)||0):0;const defenseValue=A._treasurePiercing?0:(dm==='DEFENSA'?D.def:D.atk)+shieldBonus;const diff=A.atk-defenseValue;if(shieldBonus)toast(`${D.name}: protección de habilidad aporta +${shieldBonus} DEF.`);await attackAnim(attSide,ai,defSide,di,A,Math.max(0,diff));if(attSide==='e')clearNextEnemyShields();else if(shieldBonus){delete D._shieldBonus;delete D._shieldPending}if(A.effect==='royalExecution'&&(D.def||0)<=4000){await destroyCard(defSide,di);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);toast(`EJECUCIÓN: ${D.name} es destruida por la Corona Maldita.`);update();return}if(dm==='DEFENSA'){
+ const rewardAres=()=>{if(A.id==="anc-ares"){A.atk+=500;toast(`Furia del Conquistador: Ares gana +500 ATK (${A.atk}).`)}};const dm=(defSide==='p'?playerModes:enemyModes)[di]||'ATAQUE';await (defSide==='e'?revealEnemy(di):revealPlayer(di));const shieldBonus=D._shieldPending?(Number(D._shieldBonus)||0):0;const defenseValue=A._treasurePiercing?0:(dm==='DEFENSA'?D.def:D.atk)+shieldBonus;const diff=A.atk-defenseValue;if(shieldBonus)toast(`${D.name}: protección de habilidad aporta +${shieldBonus} DEF.`);await attackAnim(attSide,ai,defSide,di,A,Math.max(0,diff));if(attSide==='e')clearNextEnemyShields();else if(shieldBonus){delete D._shieldBonus;delete D._shieldPending}if(A.effect==='royalExecution'&&(D.def||0)<=4000){await destroyCard(defSide,di);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);toast(`EJECUCIÓN: ${D.name} es destruida por la Corona Maldita.`);update();return}if(dm==='DEFENSA'){
  if(diff>0){
-  await destroyCard(defSide,di);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);rewardAres();
+  await destroyCard(defSide,di);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);rewardAres();
   toast('Defensa superada. La carta defensora fue destruida, pero no se pierden HP.');
  }else if(diff<0){
   const rebote=Math.abs(diff);
@@ -2887,7 +2898,7 @@ async function resolveBattle(attSide,ai,defSide,di){
  update();
  return
 }
- if(diff>0){await destroyCard(defSide,di);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai);await destroyCard(defSide,di)}update()}
+ if(diff>0){await destroyCard(defSide,di);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai);await destroyCard(defSide,di)}update()}
 function chooseMagicTarget(titleText,cards,side='p'){
  return new Promise(resolve=>{
   const old=document.getElementById('magicTargetPicker');if(old)old.remove();
@@ -2910,6 +2921,65 @@ function pcChainLog(text){pcEffectChain.push({turn:turnNo,text});pcEffectChain=p
 async function pcResponseWindow(side,c){
  pcChainLog(`${c.name} activada por ${side==='p'?'jugador':'rival'}.`);if(side!=='e'||pcResponseOpen)return true;pcResponseOpen=true;
  const regularCounter=playerCards.findIndex(x=>x&&x.effect==='negateMagic'),zeusCounter=playerCards.findIndex(x=>dmIs(x,'DM-001')&&x._dmZeusNegateTurn!==turnNo),counter=regularCounter>=0?regularCounter:zeusCounter,zeusResponse=regularCounter<0&&zeusCounter>=0;return await new Promise(resolve=>{let done=false,remaining=6;const d=document.createElement('div');d.className='pc-response-window';d.innerHTML=`<section><small>VENTANA DE RESPUESTA</small><h2>${c.name}</h2><div class="pc-response-timer"><i></i><b>${remaining}</b></div><div class="pc-chain-history">${pcEffectChain.slice(-5).map(x=>`<p>T${x.turn} · ${esc(x.text)}</p>`).join('')}</div><div class="pc-response-actions"><button id="pcRespond">RESPONDER <kbd>1</kbd></button><button id="pcNegate" ${counter<0?'disabled':''}>ANULAR <kbd>2</kbd></button><button id="pcPass">DEJAR PASAR <kbd>3</kbd></button></div><p class="pc-response-help">PC: 1 RESPONDER · 2 ANULAR · 3 DEJAR PASAR · ESC DEJAR PASAR</p></section>`;document.body.appendChild(d);const bar=d.querySelector('.pc-response-timer i'),num=d.querySelector('.pc-response-timer b');const keyHandler=e=>{if(e.key==='1')d.querySelector('#pcRespond')?.click();if(e.key==='2')d.querySelector('#pcNegate')?.click();if(e.key==='3'||e.key==='Escape')d.querySelector('#pcPass')?.click()};addEventListener('keydown',keyHandler);const finish=async allow=>{if(done)return;done=true;clearInterval(timer);removeEventListener('keydown',keyHandler);d.classList.add('closing');await wait(160);d.remove();pcResponseOpen=false;resolve(allow)};d.querySelector('#pcRespond').onclick=()=>{if(counter>=0){d.querySelector('#pcNegate').classList.add('ready');toast('Contrahechizo preparado. Pulsa ANULAR para encadenarlo.')}else toast('No tienes un contrahechizo disponible en el campo.')};d.querySelector('#pcNegate').onclick=async()=>{if(counter<0)return;if(zeusResponse){const z=playerCards[zeusCounter];z._dmZeusNegateTurn=turnNo;pcChainLog(z.name+' anula '+c.name+'.');dmHit('p',2000);toast('JUICIO DE ZEUS: efecto anulado · 2000 de daño directo.');finish(false)}else{pcChainLog(`${playerCards[counter].name} anula ${c.name}.`);await destroyCard('p',counter);finish(false)}};d.querySelector('#pcPass').onclick=()=>{pcChainLog(`${c.name} continúa sin respuesta.`);finish(true)};const timer=setInterval(()=>{remaining--;num.textContent=remaining;bar.style.width=`${remaining/6*100}%`;if(remaining<=0){pcChainLog(`Tiempo agotado: ${c.name} continúa.`);finish(true)}},1000)})
+}
+
+function idrIs(c){return !!c&&c.family==='imperio-dragon'}
+function idrMarks(c){return Math.max(0,Number(c?._idrAscension)||0)}
+function idrAddMark(c,n=1){
+ if(!idrIs(c))return 0;
+ c._idrAscension=Math.min(Number(c.ascensionMax)||3,idrMarks(c)+Math.max(0,n));
+ toast(c.name+' · ASCENSIÓN '+c._idrAscension+'/'+(c.ascensionMax||3));
+ return c._idrAscension
+}
+function idrStormSync(){
+ const active=window.__idrFireStorm===true;
+ for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
+  if(!idrIs(c))return;
+  const old=c._idrStormBonus||0,want=active?300:0;
+  if(old!==want){c.atk=Math.max(0,(c.atk||0)-old+want);c.def=Math.max(0,(c.def||0)-old+want);c._idrStormBonus=want}
+ })
+}
+function idrSearchSupport(side){
+ const q=side==='p'?deckQueue:enemyQueue;
+ const idx=q.findIndex(x=>idrIs(x));
+ if(idx<0)return false;
+ const c=q.splice(idx,1)[0];
+ if(side==='p'){handState.push(c.id);renderHand()}else q.unshift(c);
+ toast('IMPERIO DRAGÓN: '+c.name+' fue buscada del Deck.');
+ return true
+}
+async function idrOnSummon(side,i,c,special=false){
+ if(!idrIs(c))return;
+ if(c.id==='IDR-002'){
+  idrSearchSupport(side);
+  const own=side==='p'?playerCards:enemyCards,grave=side==='p'?playerGrave:enemyGrave;
+  if([...own,...grave].some(x=>x?.id==='IDR-001')&&!c._idrYoungBond){c.atk+=300;c._idrYoungBond=300;toast('GUERRERO IMPERIAL: +300 ATK por Dragón Carmesí Joven.')}
+ }
+ if(c.id==='IDR-005'&&!c._idrStormActivated){window.__idrFireStorm=true;c._idrStormActivated=true;idrStormSync();toast('TORMENTA DE FUEGO: Imperio Dragón obtiene +300 ATK / +300 DEF.')}
+ if(c.id==='IDR-005'&&special){
+  const rival=side==='p'?enemyCards:playerCards,rs=side==='p'?'e':'p';
+  let n=0;for(let j=0;j<rival.length&&n<2;j++)if(rival[j]){await destroyCard(rs,j);n++}
+  if(n)toast('VUELO SUPREMO: '+n+' carta(s) rival(es) destruidas.')
+ }
+}
+async function idrBeforeAttack(side,i,c){
+ if(!idrIs(c))return;
+ if(c.id==='IDR-001')idrAddMark(c,1);
+ if(c.id==='IDR-004'){
+  const rival=side==='p'?enemyCards:playerCards,n=rival.filter(x=>x&&x.type!=='magic'&&x.type!=='trap').length,dmg=n*400;
+  if(dmg){if(side==='p'){ehpv=Math.max(0,ehpv-dmg);damageFx(dmg,'e')}else{phpv=Math.max(0,phpv-dmg);damageFx(dmg,'p')}toast('LANZA DEL CATACLISMO: '+dmg+' de daño directo.')}
+ }
+ if(c.id==='IDR-003'&&c._idrBreathTurn!==turnNo){
+  const rival=side==='p'?enemyCards:playerCards,rs=side==='p'?'e':'p';
+  const j=rival.findIndex(x=>x&&(x.type==='magic'||x.type==='trap'));
+  if(j>=0){await destroyCard(rs,j);c.atk+=500;c._idrBreathBonus=(c._idrBreathBonus||0)+500;c._idrBreathTurn=turnNo;toast('ALIENTO INCINERADOR: Mágica/Trampa destruida · +500 ATK este ataque.')}
+ }
+}
+async function idrAfterKill(side,c){
+ if(!idrIs(c))return;
+ if(c.id==='IDR-001'){if(side==='p'){ehpv=Math.max(0,ehpv-300);damageFx(300,'e')}else{phpv=Math.max(0,phpv-300);damageFx(300,'p')}idrSearchSupport(side)}
+ if(c.id==='IDR-002'&&c._idrFuryTurn!==turnNo){c.atk+=500;c._idrFuryBonus=(c._idrFuryBonus||0)+500;c._idrFuryTurn=turnNo;c._dmUnlimitedAttacksTurn=turnNo;toast('FURIA ESCARLATA: +500 ATK y segundo ataque habilitado.')}
+ if(c.id==='IDR-004')idrAddMark(c,1);
 }
 
 function treasureIs(c,id=null){return !!c&&String(c.id||'').startsWith('TN-')&&(!id||c.id===id)}
@@ -3200,14 +3270,14 @@ async function enemyPlace(){const free=[0,1,2,3,4].filter(i=>!enemyCards[i]);if(
   if(ec.effect==='celestialJudgment'&&window.__nemesisGhostJudgmentUsed){enemyQueue.push(ec);return -1}
   if(ec.effect==='celestialDecree'&&(window.__nemesisGhostDecreeUsed||ehpv>=enemyMaxHp*.30)){enemyQueue.push(ec);return -1}
  }
- if(isSpectralKing&&ec.effect==='royalDecree'&&(window.__nemesisRoyalDecreeUsed||(window.__nemesisRoyalSouls||0)<6||!enemyGrave.some(x=>x&&x.family==='spectral'&&x.type==='monster'))){enemyQueue.push(ec);return -1}if(isSpectralKing&&ec.effect==='royalPortal'&&((window.__nemesisRoyalSouls||0)<1||!enemyGrave.some(x=>x&&x.family==='spectral'&&x.type==='monster'))){enemyQueue.push(ec);return -1}if(isSpectralKing&&(ec.effect==='thousandSoulCrown'||ec.effect==='undyingKingSword')&&!enemyCards.some(x=>x&&x.family==='spectral'&&x.type==='monster')){enemyQueue.push(ec);return -1}if(ec.effect==='heal'&&ehpv>=enemyMaxHp){enemyQueue.push(ec);return -1}if((ec.effect==='armorRa'||ec.effect==='ancestralEssence')&&!enemyCards.some(x=>x&&x.id==='anc-ira-ra')){enemyQueue.push(ec);return -1}if(ec.effect==='resurrect'&&!enemyGrave.some(x=>x&&x.type!=='magic'&&x.type!=='trap')){enemyQueue.push(ec);return -1}await applyMagic('e',ec);if(window.__treasureEndEnemyTurn===turnNo)return -1;return -1}if(!free.length){enemyQueue.push(ec);return -1}enemySlot=free[0];enemyCards[enemySlot]={...ec};if(isDragon&&dragonAttackBonus&&!enemyCards[enemySlot]._dragonRageBonus){enemyCards[enemySlot].atk+=dragonAttackBonus;enemyCards[enemySlot]._dragonRageBonus=dragonAttackBonus}enemyRevealed[enemySlot]=false;await place('e',enemySlot,enemyCards[enemySlot]);const mode=(isRa||isDragon||isSoulKnight||isSpectralKing||isGhostGod||isAres||isHades)?bossAiMode(enemyCards[enemySlot]):((enemyCards[enemySlot].def>enemyCards[enemySlot].atk)?'DEFENSA':'ATAQUE');enemyModes[enemySlot]=mode;if(isSoulKnight){const sc=enemyCards[enemySlot];if(sc.effect==='deadFire'){phpv=Math.max(0,phpv-700);damageFx(700,'p');toast('FUEGO DE LOS MUERTOS: 700 de daño directo.')}if(sc.effect==='soulScythe'){const n=enemyGrave.filter(x=>x&&x.family==='spectral'&&x.type==='monster').length;sc.atk+=n*300;if(n)toast(`GUADAÑA DE ALMAS: +${n*300} ATK.`)}}
+ if(isSpectralKing&&ec.effect==='royalDecree'&&(window.__nemesisRoyalDecreeUsed||(window.__nemesisRoyalSouls||0)<6||!enemyGrave.some(x=>x&&x.family==='spectral'&&x.type==='monster'))){enemyQueue.push(ec);return -1}if(isSpectralKing&&ec.effect==='royalPortal'&&((window.__nemesisRoyalSouls||0)<1||!enemyGrave.some(x=>x&&x.family==='spectral'&&x.type==='monster'))){enemyQueue.push(ec);return -1}if(isSpectralKing&&(ec.effect==='thousandSoulCrown'||ec.effect==='undyingKingSword')&&!enemyCards.some(x=>x&&x.family==='spectral'&&x.type==='monster')){enemyQueue.push(ec);return -1}if(ec.effect==='heal'&&ehpv>=enemyMaxHp){enemyQueue.push(ec);return -1}if((ec.effect==='armorRa'||ec.effect==='ancestralEssence')&&!enemyCards.some(x=>x&&x.id==='anc-ira-ra')){enemyQueue.push(ec);return -1}if(ec.effect==='resurrect'&&!enemyGrave.some(x=>x&&x.type!=='magic'&&x.type!=='trap')){enemyQueue.push(ec);return -1}await applyMagic('e',ec);if(window.__treasureEndEnemyTurn===turnNo)return -1;return -1}if(!free.length){enemyQueue.push(ec);return -1}enemySlot=free[0];enemyCards[enemySlot]={...ec};if(isDragon&&dragonAttackBonus&&!enemyCards[enemySlot]._dragonRageBonus){enemyCards[enemySlot].atk+=dragonAttackBonus;enemyCards[enemySlot]._dragonRageBonus=dragonAttackBonus}enemyRevealed[enemySlot]=false;await place('e',enemySlot,enemyCards[enemySlot]);await idrOnSummon('e',enemySlot,enemyCards[enemySlot],false);const mode=(isRa||isDragon||isSoulKnight||isSpectralKing||isGhostGod||isAres||isHades)?bossAiMode(enemyCards[enemySlot]):((enemyCards[enemySlot].def>enemyCards[enemySlot].atk)?'DEFENSA':'ATAQUE');enemyModes[enemySlot]=mode;if(isSoulKnight){const sc=enemyCards[enemySlot];if(sc.effect==='deadFire'){phpv=Math.max(0,phpv-700);damageFx(700,'p');toast('FUEGO DE LOS MUERTOS: 700 de daño directo.')}if(sc.effect==='soulScythe'){const n=enemyGrave.filter(x=>x&&x.family==='spectral'&&x.type==='monster').length;sc.atk+=n*300;if(n)toast(`GUADAÑA DE ALMAS: +${n*300} ATK.`)}}
  if(isSpectralKing)await applyRoyalEntryEffect(enemySlot,enemyCards[enemySlot]);
  if(isGhostGod)await applyGhostEntryEffect(enemySlot,enemyCards[enemySlot]);
  v1892ResetCardTransform(board.e[enemySlot],'e',enemySlot,mode);
  if(isDragon&&ec.id==='ojo-dragon-jefe')dragonRageBanner('DRAGÓN OJO DEL DIABLO','¡Ahora conocerás la verdadera ira del diablo!');
  await applyRaEntryEffect(enemySlot,enemyCards[enemySlot]);
  return enemySlot}
-async function handleSlot(side,i){if(busy||enAnimacionGSAP)return;if(side==='p'&&phase==='PLACE'&&selectedHand>=0&&!playerCards[i]){busy=true;const id=handState[selectedHand],c={...card(id)};playerCards[i]=c;await v16Cam('PLACE','p',i);await place('p',i,c);let mode;
+async function handleSlot(side,i){if(busy||enAnimacionGSAP)return;if(side==='p'&&phase==='PLACE'&&selectedHand>=0&&!playerCards[i]){busy=true;const id=handState[selectedHand],c={...card(id)};playerCards[i]=c;await v16Cam('PLACE','p',i);await place('p',i,c);await idrOnSummon('p',i,c,false);let mode;
 if(c.type==='trap'){mode='TRAMPA';playerModes[i]=mode;board.p[i].rotation.y=Math.PI;toast('Calavera Muerta colocada boca abajo. Se activará una sola vez cuando el rival ataque.')}else{await v16Cam('MODE','p',i);mode=await askMode();await setMode('p',i,mode)}handState.splice(selectedHand,1);selectedHand=-1;renderHand();active=i;setPhase('ACTION',`TU TURNO ${turnNo} · ACCIÓN`);toast(`Carta colocada en ${mode}. Tócala para actuar.`);await v16Cam('PLAYER_CARD','p',i);await v188SafeReturn();busy=false;return}
  if(side==='p'&&playerCards[i]&&phase==='ACTION'){active=i;info(playerCards[i],i,'p');battleActions.classList.remove('hidden');toast(playerModes[i]==='DEFENSA'?'Esta carta está en DEFENSA. Puedes cambiarla a ataque y atacar.':'ATACAR o FUSIÓN.');await focus('p',i);return}
  if(side==='e'&&enemyCards[i]&&phase==='TARGET'){return}}
