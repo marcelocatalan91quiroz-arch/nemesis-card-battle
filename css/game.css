@@ -676,3 +676,17 @@ body[data-heroic-weather="TORMENTA DIVINA"] .battle{filter:saturate(1.18);box-sh
 
 /* V19.1 — SANTUARIO PC ULTRA */
 .sanctuary-scene{min-height:100vh;position:relative;padding:24px;color:#fff;background:radial-gradient(circle at 50% 5%,#342250,#0b0d1b 38%,#020307 78%);isolation:isolate}.sanctuary-sky{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 18% 30%,rgba(117,67,255,.20),transparent 28%),radial-gradient(circle at 82% 32%,rgba(30,130,255,.18),transparent 26%)}.sanctuary-scene header{max-width:1550px;margin:auto;display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:22px;text-align:center}.sanctuary-scene h1{font:900 clamp(34px,5vw,72px) Georgia;margin:2px;color:#ffe27e;text-shadow:0 0 32px rgba(255,209,85,.35)}.unique-law{border:1px solid #d7b85b;padding:10px 16px;background:#080914cc;font-size:10px;letter-spacing:.18em}.unique-law b{font-size:28px;color:#ffe27e}.sanctuary-gate{max-width:850px;margin:22px auto;text-align:center;padding:13px;border-block:1px solid rgba(255,220,120,.35);display:grid;gap:4px}.sanctuary-gate span{font-size:34px;color:#ffe27e}.pedestal-grid{max-width:1550px;margin:25px auto;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.unique-pedestal{position:relative;padding:15px;background:linear-gradient(180deg,rgba(20,20,38,.92),rgba(4,5,10,.96));border:1px solid rgba(255,220,120,.28);box-shadow:0 20px 55px rgba(0,0,0,.55);overflow:hidden}.unique-pedestal img{width:100%;aspect-ratio:1/1;object-fit:cover;object-position:top;filter:brightness(.38) saturate(.6);transition:.45s}.unique-pedestal.trial-open img,.unique-pedestal.claimed img{filter:none}.unique-info{display:grid;gap:7px;padding:12px 4px}.unique-info small{color:#d7bd70;letter-spacing:.15em}.unique-info h2{font:900 28px Georgia;margin:0}.unique-info p,.unique-info em{margin:0;color:#aeb8d1}.sanctuary-entry{box-shadow:0 0 20px rgba(130,80,255,.18)}@media(max-width:1050px){.pedestal-grid{grid-template-columns:1fr}.unique-pedestal{max-width:620px;margin:auto}.sanctuary-scene header{grid-template-columns:1fr}}
+
+/* V19.5 — EVOLUCIÓN PC NÉMESIS: capa visual; no modifica reglas */
+@media (min-width:1000px){
+ .battle.pc-evolution-nemesis .panel{backdrop-filter:blur(12px) saturate(1.2);border-color:rgba(220,166,255,.72)}
+ .battle.pc-evolution-nemesis .hand{perspective:1200px}
+ .battle.pc-evolution-nemesis .hand img{width:104px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.8));image-rendering:auto}
+ .battle.pc-evolution-nemesis .hand img:hover{transform:translateY(-18px) scale(1.13)!important;z-index:50}
+ .battle.pc-evolution-nemesis .actions .btn{min-width:112px;padding:11px 15px}
+ .battle.pc-evolution-nemesis .duelzones span{backdrop-filter:blur(7px);border-color:rgba(220,174,255,.46)}
+ .battle.pc-evolution-nemesis:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:5;background:radial-gradient(circle at 50% 48%,transparent 45%,rgba(0,0,0,.22) 100%);mix-blend-mode:multiply}
+}
+.battle[data-graphics="NEMESIS"] #stage canvas{filter:saturate(1.08) contrast(1.035)}
+.battle[data-graphics="NEMESIS"] .battlecard{box-shadow:0 0 28px rgba(183,85,255,.48),0 14px 34px rgba(0,0,0,.65)}
+@media (prefers-reduced-motion:reduce){.pc-card-cinematic,.v15flash,.v15summon,.v15trapfx{animation-duration:.01ms!important}}
