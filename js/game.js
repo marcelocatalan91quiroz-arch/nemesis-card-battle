@@ -287,12 +287,37 @@ const IMPERIO_DRAGON_CARDS=[
  {id:"IDR-020",name:"NÉMESIS Dracónico — Emperador del Fin",atk:6500,def:5500,type:"fusion",family:'imperio-dragon',tags:["fuego","dragon","divina","caos"],rarity:"nemesis_unica",effect:"idr_020",img:"assets/images/imperio-dragon/idr-020.svg",desc:"APOCALIPSIS IMPERIAL: Carta final del arquetipo; recompensa haber completado la cadena de Ascensión. Materiales: 1 carta transformada Imperio Dragón + IDR-008. Al ser Invocada, coloca el Campo Cielo del Imperio Ardiente desde Deck o Cementerio. Una vez por duelo, destruye hasta 3 cartas rivales; por cada una destruida gana 500 ATK hasta el final del turno. Si fuera destruida, puedes retirar 3 Marcas de Ascensión de tu Campo para evitarlo.",materials:["TRANSFORMADA_IMPERIO_DRAGON","IDR-008"],idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-020.png",idrImageStatus:"PENDIENTE_ILUSTRACION_OFICIAL"}
 ];
 const IMPERIO_DRAGON_DECK_IDS=IMPERIO_DRAGON_CARDS.map(c=>c.id);
+// V19.4.2 — MAZO MAGO ROJO · 20 CARTAS · integración aislada
+const MAGO_ROJO_CARDS=[
+ {id:'MGR-001',name:"Mago Rojo",atk:2800,def:2400,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_001',img:'assets/images/mago-rojo/mgr-001.png',desc:"DOMINIO ESCARLATA: Cada Mágica Mago Rojo activada genera 1 Sello Arcano. Con 3 Sellos recupera 1 Mágica Mago Rojo del Cementerio y gana 500 ATK.",special:true,magoRojo:true},
+ {id:'MGR-002',name:"Aprendiz de las Brasas",atk:1700,def:1900,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'comun',effect:'mgr_002',img:'assets/images/mago-rojo/mgr-002.png',desc:"MEMORIA DE FUEGO: al ser invocado recupera 1 Mágica Mago Rojo del Cementerio. Mientras controles Mago Rojo gana 300 ATK.",special:true,magoRojo:true},
+ {id:'MGR-003',name:"Salamandra de Rubí",atk:2100,def:1800,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'rara',effect:'mgr_003',img:'assets/images/mago-rojo/mgr-003.png',desc:"PIEL INCANDESCENTE: si recibe daño y sobrevive genera 1 Sello Arcano. Con Sellos Arcanos gana 300 DEF.",special:true,magoRojo:true},
+ {id:'MGR-004',name:"Caballero de Ceniza",atk:2600,def:2600,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_004',img:'assets/images/mago-rojo/mgr-004.png',desc:"GUARDIA ARDIENTE: protege una criatura Mago Rojo de destrucción por efectos una vez por turno y refuerza su DEF en combate.",special:true,magoRojo:true},
+ {id:'MGR-005',name:"Bruja de la Llama Negra",atk:2700,def:2200,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_005',img:'assets/images/mago-rojo/mgr-005.png',desc:"PACTO DE LLAMAS: consume Sellos Arcanos para debilitar cartas rivales y alimentar la presión del arquetipo.",special:true,magoRojo:true},
+ {id:'MGR-006',name:"Guardián de la Forja Roja",atk:2500,def:3200,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_006',img:'assets/images/mago-rojo/mgr-006.png',desc:"FORJA PROTECTORA: protege Mágicas, Trampas y Reliquias Mago Rojo y actúa como muro defensivo.",special:true,magoRojo:true},
+ {id:'MGR-007',name:"Fénix Carmesí",atk:3400,def:2500,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'legendaria',effect:'mgr_007',img:'assets/images/mago-rojo/mgr-007.png',desc:"RENACER DE LAS CENIZAS: la primera vez que es destruido puede regresar desde el Cementerio y generar 1 Sello Arcano.",special:true,magoRojo:true},
+ {id:'MGR-008',name:"Hechicero del Eclipse",atk:3200,def:2600,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_008',img:'assets/images/mago-rojo/mgr-008.png',desc:"ECLIPSE ARDIENTE: una vez por turno potencia 600 ATK a Mago Rojo; con 3 Sellos gana 800 ATK y puede reducir 400 ATK/DEF a una carta rival.",special:true,magoRojo:true},
+ {id:'MGR-009',name:"Dragón Rubí Ancestral",atk:5500,def:4200,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'legendaria',effect:'mgr_009',img:'assets/images/mago-rojo/mgr-009.png',desc:"HERENCIA ANCESTRAL: potencia 500 ATK a Mago Rojo; gana 300 ATK por cada Mago Rojo aliado y puede protegerse desterrando una carta Mago Rojo del Cementerio.",special:true,magoRojo:true},
+ {id:'MGR-010',name:"Archimago de las Siete Llamas",atk:4800,def:3600,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'legendaria',effect:'mgr_010',img:'assets/images/mago-rojo/mgr-010.png',desc:"LEGADO DE LAS SIETE LLAMAS: al ser Invocado Especialmente inflige 800, busca 1 Mago Rojo y protege el arquetipo de destrucción por efectos ese turno.",special:true,magoRojo:true},
+ {id:'MGR-011',name:"Círculo de Invocación Roja",atk:0,def:0,type:'magic',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_011',img:'assets/images/mago-rojo/mgr-011.png',desc:"Busca 1 carta Mago Rojo del Deck. Con 3 Sellos Arcanos puede recuperar desde Cementerio y buscar un material de Fusión.",special:true,magoRojo:true},
+ {id:'MGR-012',name:"Ráfaga Escarlata",atk:0,def:0,type:'magic',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_012',img:'assets/images/mago-rojo/mgr-012.png',desc:"Selecciona 1 carta rival e inflige 1500 de daño; si controlas 2 Mago Rojo, añade 500 de daño.",special:true,magoRojo:true},
+ {id:'MGR-013',name:"Renacer entre Cenizas",atk:0,def:0,type:'magic',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_013',img:'assets/images/mago-rojo/mgr-013.png',desc:"Invoca Especialmente 1 Mago Rojo del Cementerio con 500 ATK/DEF; con 2 Sellos entra con 800 ATK/DEF.",special:true,magoRojo:true},
+ {id:'MGR-014',name:"Convergencia Carmesí",atk:0,def:0,type:'magic',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_014',img:'assets/images/mago-rojo/mgr-014.png',desc:"MÁGICA DE FUSIÓN: usa Hechicero del Eclipse + Dragón Rubí Ancestral para Invocar Archimago del Dragón Carmesí.",special:true,magoRojo:true},
+ {id:'MGR-015',name:"Prisión de Fuego",atk:0,def:0,type:'trap',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_015',img:'assets/images/mago-rojo/mgr-015.png',desc:"Al declarar un ataque contra Mago Rojo, niega el ataque; el atacante pierde 1000 ATK y no puede atacar hasta su liberación.",special:true,magoRojo:true},
+ {id:'MGR-016',name:"Espejo de Brasas",atk:0,def:0,type:'trap',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'epica',effect:'mgr_016',img:'assets/images/mago-rojo/mgr-016.png',desc:"TRAMPA DE RESPUESTA: niega un efecto que seleccione Mago Rojo y lo refleja; una vez por turno el reflejo inflige 800 de daño.",special:true,magoRojo:true},
+ {id:'MGR-017',name:"Última Llama",atk:0,def:0,type:'trap',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'mitica',effect:'mgr_017',img:'assets/images/mago-rojo/mgr-017.png',desc:"TRAMPA DE RESPUESTA: puede proteger o recuperar una pieza clave Mago Rojo consumiendo Sellos Arcanos. Solo una activación decisiva por turno.",special:true,magoRojo:true},
+ {id:'MGR-018',name:"Grimorio de las Siete Llamas",atk:0,def:0,type:'magic',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'ancestral',effect:'mgr_018',img:'assets/images/mago-rojo/mgr-018.png',desc:"RELIQUIA: registra Mágicas Mago Rojo diferentes; a 1/2/3/4/5/6/7 llamas desbloquea ATK, protección, robo, ATK/DEF, curación, anulación e invocación final.",special:true,magoRojo:true},
+ {id:'MGR-019',name:"Archimago del Dragón Carmesí",atk:7500,def:6500,type:'monster',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'ancestral',effect:'mgr_019',img:'assets/images/mago-rojo/mgr-019.png',desc:"FUSIÓN: requiere Hechicero del Eclipse + Dragón Rubí Ancestral mediante Convergencia Carmesí. Potencia Mago Rojo y domina con las Siete Llamas.",special:true,magoRojo:true},
+ {id:'MGR-020',name:"Bastón de Ignis",atk:0,def:0,type:'magic',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'ancestral',effect:'mgr_020',img:'assets/images/mago-rojo/mgr-020.png',desc:"ARMA: solo Mago Rojo. Otorga +1800 ATK, +1200 DEF, energía y velocidad; con Grimorio de las Siete Llamas potencia sus efectos.",special:true,magoRojo:true}
+];
+const MAGO_ROJO_DECK_IDS=MAGO_ROJO_CARDS.map(c=>c.id);
+
 // V19.4.1 — REGISTRO ÚNICO DE CARTAS.
 // Varias familias ya estaban incluidas dentro de COLLECTIBLE_CARDS y se volvían a
 // concatenar aquí. Eso generaba IDs repetidos y hacía que card(id) resolviera
 // versiones equivocadas. Se construye una sola fuente por ID, conservando la
 // primera definición oficial y agregando únicamente familias todavía no incluidas.
-const CARDS_RAW=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
+const CARDS_RAW=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...MAGO_ROJO_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
 const CARDS=[...new Map(CARDS_RAW.map(c=>[c.id,c])).values()];
 const AS={tirano:'assets/images/img-10.webp',guardian:'assets/images/guardian-dragones.webp',bg1:'assets/images/img-12.webp',bg2:'assets/images/img-13.webp',dragonOjo:'assets/images/dragon-ojo-del-diablo.png',dragonOjoBg:'assets/images/castillo-dragon-ojo-diablo.webp',iraRa:'assets/images/ira-de-ra-jefe.png',iraRaBg:'assets/images/ruinas-piramide-ira-ra.png',caballeroAlmas:'assets/images/caballero-de-las-almas.png',caballeroAlmasBg:'assets/images/reino-espectral-cinematico.png',reyEspectral:'assets/images/rey-espectral.png',reyEspectralBg:'assets/images/reino-espectral-cinematico.png'};
 // Las ÚNICAS se agregan también sin permitir colisión de ID.
@@ -3677,6 +3702,9 @@ window.NEMESIS_SPECTRAL_KING_AUDIT={
 
 
 
+
+window.NEMESIS_MAGO_ROJO_AUDIT=function(){const ids=MAGO_ROJO_DECK_IDS.slice(),cards=ids.map(id=>card(id));return{deck:'MAGO_ROJO',count:ids.length,unique:new Set(ids).size,missing:ids.filter(id=>!card(id)),types:{monster:cards.filter(c=>c?.type==='monster').length,magic:cards.filter(c=>c?.type==='magic').length,trap:cards.filter(c=>c?.type==='trap').length},fusion:!!card('MGR-019'),relic:!!card('MGR-018'),weapon:!!card('MGR-020'),ok:ids.length===20&&new Set(ids).size===20&&ids.every(id=>!!card(id))};};
+
 window.NEMESIS_GUARDIAN_AUDIT=function(){
  const ids=GUARDIAN_BOSS_CARD_IDS.slice();
  const missing=ids.filter(id=>!card(id));
@@ -3745,7 +3773,7 @@ window.NEMESIS_ARCHITECTURE_RULES=Object.freeze({
 });
 
 // V18.9.72 — REGISTRO CENTRAL Y AUTOAUDITORÍA
-window.NEMESIS_CORE_VERSION='19.2.8';
+window.NEMESIS_CORE_VERSION='19.4.2';
 window.NEMESIS_BOSS_REGISTRY={
  guardian:{hp:10000,deck:GUARDIAN_BOSS_CARD_IDS.slice()},
  dragon:{hp:12000,deck:DRAGON_OJO_DECK.slice()},
