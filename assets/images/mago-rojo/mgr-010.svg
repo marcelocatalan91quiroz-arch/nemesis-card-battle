@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="1080" viewBox="0 0 768 1080">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#09090b"/><stop offset=".55" stop-color="#4b0b0b"/><stop offset="1" stop-color="#130000"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="8" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="768" height="1080" rx="28" fill="url(#g)"/><rect x="18" y="18" width="732" height="1044" rx="22" fill="none" stroke="#ef4444" stroke-width="6"/>
+<circle cx="384" cy="460" r="180" fill="none" stroke="#ff3b30" stroke-width="10" opacity=".75" filter="url(#glow)"/>
+<path d="M384 270l48 110 120 12-92 78 28 118-104-62-104 62 28-118-92-78 120-12z" fill="none" stroke="#ff6b35" stroke-width="8" opacity=".9"/>
+<text x="384" y="90" fill="#fff" font-family="serif" font-size="42" font-weight="700" text-anchor="middle">NÉMESIS CARD BATTLE</text>
+<text x="384" y="170" fill="#fff" font-family="serif" font-size="38" font-weight="700" text-anchor="middle">Archimago de las Siete Llamas</text>
+<text x="384" y="730" fill="#ffb4a2" font-family="sans-serif" font-size="28" text-anchor="middle">ARQUETIPO · MAGO ROJO</text>
+<text x="384" y="790" fill="#fff" font-family="sans-serif" font-size="24" text-anchor="middle">VISUAL OFICIAL APROBADO EN CHAT</text>
+<text x="384" y="830" fill="#ffd7d7" font-family="sans-serif" font-size="20" text-anchor="middle">Fallback operativo temporal</text>
+<text x="384" y="970" fill="#ef4444" font-family="sans-serif" font-size="34" font-weight="700" text-anchor="middle">MGR-010</text>
+</svg>

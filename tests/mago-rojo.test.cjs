@@ -1,0 +1,20 @@
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..');
+const game=fs.readFileSync(path.join(root,'js/game.js'),'utf8');
+const deck=JSON.parse(fs.readFileSync(path.join(root,'data/mago_rojo_deck_v1.json'),'utf8'));
+const must=(n,v)=>{if(!v){console.error('FAIL',n);process.exitCode=1}else console.log('PASS',n)};
+const ids=Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0'));
+must('20 IDs planificados',deck.deck_ids.length===20&&ids.every((id,i)=>deck.deck_ids[i]===id));
+must('20 fichas catálogo',deck.cards.length===20&&new Set(deck.cards.map(c=>c.id)).size===20);
+must('runtime 20 cartas',ids.every(id=>game.includes("id:'"+id+"'")));
+must('motor Sellos Arcanos',game.includes('function mgrAddSeal(')&&game.includes('function mgrSpendSeals('));
+must('mágicas Mago Rojo',game.includes('async function mgrApplyMagic(')&&['MGR-011','MGR-012','MGR-013','MGR-014'].every(id=>game.includes(id)));
+must('trampas Mago Rojo',game.includes('mgrTryAttackTrap')&&game.includes('MGR-015')&&game.includes('MGR-016')&&game.includes('MGR-017'));
+must('reliquia Grimorio',game.includes("MGR-018")&&game.includes('_mgrGrimorio'));
+must('fusión 8+9 -> 19',game.includes("mgrIs(x,'MGR-008')")&&game.includes("mgrIs(x,'MGR-009')")&&game.includes("card('MGR-019')"));
+must('arma Bastón de Ignis',game.includes("MGR-020")&&game.includes("'weapon'"));
+must('mazo persistente',game.includes('state.savedDecks.MAGO_ROJO'));
+must('auditoría runtime',game.includes('NEMESIS_MAGO_ROJO_AUDIT'));
+for(const id of ids){const p=path.join(root,'assets/images/mago-rojo',id.toLowerCase()+'.svg');must('asset '+id,fs.existsSync(p))}
+if(process.exitCode)process.exit(process.exitCode);
+console.log('MAGO ROJO: 20/20 PASS');
