@@ -1,0 +1,164 @@
+{
+  "schema": "NEMESIS_CARD_V1",
+  "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1",
+  "set": "IMPERIO_DRAGON",
+  "version": "19.4.0",
+  "estado": "EN_CONSTRUCCION_5_DE_20",
+  "mecanica": "ASCENSION_DRACONICA",
+  "deck_ids": [
+    "IDR-001",
+    "IDR-002",
+    "IDR-003",
+    "IDR-004",
+    "IDR-005"
+  ],
+  "cards": [
+    {
+      "id": "IDR-001",
+      "nombre": "Dragón Carmesí Joven",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "COMUN",
+      "nivel": 4,
+      "atk": 1800,
+      "def": 1600,
+      "copias_max": 3,
+      "img": "assets/images/imperio-dragon/idr-001.png",
+      "habilidad": "SANGRE IMPERIAL",
+      "efectos": [
+        "Cada vez que ataca gana 1 Marca de Ascensión (máx. 2).",
+        "Si destruye un monstruo en batalla, inflige 300 de daño directo y permite buscar 1 carta Imperio Dragón del Deck."
+      ],
+      "transformacion": {
+        "marcas": 2,
+        "destino": "Dragón Carmesí Imperial"
+      }
+    },
+    {
+      "id": "IDR-002",
+      "nombre": "Dragón Guerrero Escarlata",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "RARA",
+      "nivel": 4,
+      "atk": 2300,
+      "def": 1900,
+      "copias_max": 3,
+      "img": "assets/images/imperio-dragon/idr-002.png",
+      "habilidad": "FURIA ESCARLATA",
+      "efectos": [
+        "Una vez por turno, si destruye un monstruo en batalla, gana 500 ATK y puede atacar nuevamente.",
+        "Al ser Invocada de Modo Normal, busca 1 carta Imperio Dragón del Deck.",
+        "Si Dragón Carmesí Joven está en Campo o Cementerio, gana 300 ATK."
+      ],
+      "transformacion": {
+        "marcas": 3,
+        "destino": "Dragón Guerrero Escarlata Supremo"
+      }
+    },
+    {
+      "id": "IDR-003",
+      "nombre": "Dragón Llamasangre",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 5,
+      "atk": 2300,
+      "def": 2000,
+      "copias_max": 3,
+      "img": "assets/images/imperio-dragon/idr-003.png",
+      "habilidad": "ALIENTO INCINERADOR",
+      "efectos": [
+        "Al declarar un ataque, puede destruir 1 Mágica o Trampa rival; si lo hace, ese ataque gana 500 ATK.",
+        "Si es destruida en batalla, puede Invocar de Modo Especial 1 Dragón Carmesí Joven desde mano, Deck o Cementerio."
+      ],
+      "transformacion": {
+        "marcas": 2,
+        "destino": "Dragón Llamasangre Supremo"
+      }
+    },
+    {
+      "id": "IDR-004",
+      "nombre": "Dragón Obsidiana Escamarreal",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 5,
+      "atk": 2400,
+      "def": 1800,
+      "copias_max": 3,
+      "img": "assets/images/imperio-dragon/idr-004.png",
+      "habilidad": "LANZA DEL CATACLISMO",
+      "efectos": [
+        "Al atacar, inflige 400 de daño por cada monstruo que controle el adversario.",
+        "Si ese ataque destruye una carta, gana 1 Marca de Ascensión.",
+        "Si es destruida en batalla, puede Invocar de Modo Especial 1 Dragón Carmesí Joven desde el Cementerio; el invocado gana 1 Marca de Ascensión."
+      ],
+      "transformacion": {
+        "marcas": 3,
+        "destino": "Dragón Obsidiana Escamarreal Supremo"
+      }
+    },
+    {
+      "id": "IDR-005",
+      "nombre": "Dragón Ala de Tormenta",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 6,
+      "atk": 2600,
+      "def": 2100,
+      "copias_max": 3,
+      "img": "assets/images/imperio-dragon/idr-005.png",
+      "habilidad": "DOMINIO DEL CLIMA",
+      "efectos": [
+        "Una vez por turno puede cambiar el clima a Tormenta de Fuego; mientras esté activo, todas tus cartas Imperio Dragón ganan 300 ATK y 300 DEF.",
+        "Si es Invocada de Modo Especial, puede destruir hasta 2 cartas en el Campo rival."
+      ],
+      "transformacion": {
+        "marcas": 3,
+        "destino": "Dragón Alas de Tormenta Supremo"
+      }
+    }
+  ],
+  "reglas_visuales": {
+    "ataque": "Efectos elementales, cámara e impacto diferenciados.",
+    "ascension": "Las Marcas de Ascensión deben mostrarse visualmente.",
+    "transformacion": "La transformación cambia arte/modelo, aura, estadísticas y habilidades cuando exista su carta destino."
+  }
+}
