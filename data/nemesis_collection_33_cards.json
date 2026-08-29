@@ -54,7 +54,28 @@
         "OSCURIDAD_CEMENTERIO"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-001.webp"
+      "img": "assets/images/public23/uni-001.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "OSCURIDAD"
+          ],
+          "tipos": [
+            "GUERRERO"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "UNI-002",
@@ -96,7 +117,29 @@
         "PRESION_CONSTANTE"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-002.webp"
+      "img": "assets/images/public23/uni-002.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "FUEGO",
+            "LUZ"
+          ],
+          "tipos": [
+            "AVE_FENIX"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "UNI-003",
@@ -136,7 +179,28 @@
         "TIEMPO_HECHICERO"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-003.webp"
+      "img": "assets/images/public23/uni-003.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "TIEMPO"
+          ],
+          "tipos": [
+            "HECHICERO"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "UNI-004",
@@ -176,7 +240,28 @@
         "OSCURIDAD"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-004.webp"
+      "img": "assets/images/public23/uni-004.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "OSCURIDAD"
+          ],
+          "tipos": [
+            "ESPADA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "UNI-005",
@@ -219,7 +304,31 @@
         "EQUIPAMIENTO"
       ],
       "tipos": [],
-      "img": "assets/images/public23/uni-005.webp"
+      "img": "assets/images/public23/uni-005.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "DRAGON"
+          ],
+          "tipos": [
+            "DRACONICA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": {
+            "modo": "RESTRINGIDA",
+            "requiere_tipo": "DRAGON"
+          }
+        }
+      }
     },
     {
       "id": "UNI-006",
@@ -245,7 +354,28 @@
         "Reflejo Sagrado: refleja 30% del daño recibido por ataques directos.",
         "Barrera de Luz: anula el próximo efecto mágico o trampa que intente destruir la carta equipada.",
         "Aura Divina: tus cartas de LUZ en Campo ganan +300 DEF."
-      ]
+      ],
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "DIVINA",
+            "LUZ"
+          ],
+          "tipos": []
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "DIVINA/LUZ"
+        }
+      }
     },
     {
       "id": "UNI-007",
@@ -271,7 +401,28 @@
         "Bendición Celestial: una vez por turno puedes negar y destruir el efecto de una mágica o trampa rival.",
         "Linterna de los Dioses: tus criaturas de LUZ ganan +300 ATK.",
         "Purificación: durante la End Phase destierra del Cementerio rival hasta 1 carta que no sea LUZ."
-      ]
+      ],
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "DIVINA",
+            "LUZ"
+          ],
+          "tipos": []
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "DIVINA"
+        }
+      }
     },
     {
       "id": "UNI-008",
@@ -298,7 +449,28 @@
         "Corrupción Silenciosa: durante tu Standby Phase reduce 300 ATK/DEF de todas las cartas enemigas.",
         "Portal del Abismo: si una criatura OSCURIDAD que controlas sería destruida, puedes desterrarla en su lugar y luego robas 1 carta."
       ],
-      "img": "assets/images/public23/uni-008.webp"
+      "img": "assets/images/public23/uni-008.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "VACIO",
+            "OSCURIDAD"
+          ],
+          "tipos": []
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "VACIO/OSCURIDAD"
+        }
+      }
     },
     {
       "id": "UNI-009",
@@ -323,7 +495,27 @@
         "Parada Temporal: si anuló una carta de gran poder, el rival pierde su próxima oportunidad de respuesta.",
         "Reflejo de Poder: si anulas una carta Épica, Mítica o Ancestral, roba 1 carta."
       ],
-      "img": "assets/images/public23/uni-009.webp"
+      "img": "assets/images/public23/uni-009.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "UNIVERSAL"
+          ],
+          "tipos": []
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "UNI-010",
@@ -349,7 +541,27 @@
         "Portal de Salvación: con 2000 LP o menos recupera 1500 LP y roba 1 carta.",
         "Flujo Temporal: este turno tus cartas no pueden ser desterradas ni enviadas al Cementerio por efectos rivales."
       ],
-      "img": "assets/images/public23/uni-010.webp"
+      "img": "assets/images/public23/uni-010.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "UNIVERSAL"
+          ],
+          "tipos": []
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "UNI-011",
@@ -378,7 +590,28 @@
         "Ignora DEF y Escudos: el daño principal ignora DEF y escudos.",
         "Debilitamiento Elemental: reduce 1000 ATK/DEF a las cartas rivales durante 2 turnos."
       ],
-      "img": "assets/images/public23/uni-011.webp"
+      "img": "assets/images/public23/uni-011.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "UNIVERSAL",
+            "MULTIELEMENTAL"
+          ],
+          "tipos": []
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "UNI-012",
@@ -407,7 +640,28 @@
         "Protección Fractal: esta carta no puede ser destruida por otros efectos.",
         "Caos Controlado: si es destruida, ambos jugadores barajan 2 cartas aleatorias de su mano al Deck."
       ],
-      "img": "assets/images/public23/uni-012.webp"
+      "img": "assets/images/public23/uni-012.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "UNIVERSAL"
+          ],
+          "elementos": [
+            "UNIVERSAL",
+            "DIMENSIONAL"
+          ],
+          "tipos": []
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "ML-001",
@@ -451,7 +705,37 @@
         "OSCURIDAD",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-001.webp"
+      "img": "assets/images/public23/ml-001.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "LUZ",
+            "OSCURIDAD"
+          ],
+          "tipos": [
+            "DIVINA",
+            "GUERRERO"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "GUERRERO",
+            "LUZ",
+            "OSCURIDAD",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "ML-002",
@@ -494,7 +778,36 @@
         "UNIVERSAL",
         "RAGNAROK"
       ],
-      "img": "assets/images/public23/ml-002.webp"
+      "img": "assets/images/public23/ml-002.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "OSCURIDAD",
+            "HIELO"
+          ],
+          "tipos": [
+            "BESTIA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "BESTIA",
+            "OSCURIDAD",
+            "HIELO",
+            "UNIVERSAL",
+            "RAGNAROK"
+          ]
+        }
+      }
     },
     {
       "id": "ML-003",
@@ -537,7 +850,36 @@
         "UNIVERSAL",
         "RAGNAROK"
       ],
-      "img": "assets/images/public23/ml-003.webp"
+      "img": "assets/images/public23/ml-003.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "FUEGO",
+            "CAOS"
+          ],
+          "tipos": [
+            "GIGANTE"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "FUEGO",
+            "GIGANTE",
+            "CAOS",
+            "UNIVERSAL",
+            "RAGNAROK"
+          ]
+        }
+      }
     },
     {
       "id": "ML-004",
@@ -581,7 +923,37 @@
         "OSCURIDAD",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-004.webp"
+      "img": "assets/images/public23/ml-004.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "AGUA",
+            "OSCURIDAD"
+          ],
+          "tipos": [
+            "DRAGON",
+            "BESTIA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DRAGON",
+            "BESTIA",
+            "AGUA",
+            "OSCURIDAD",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "ML-005",
@@ -624,7 +996,36 @@
         "TIERRA",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-005.webp"
+      "img": "assets/images/public23/ml-005.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "OSCURIDAD"
+          ],
+          "tipos": [
+            "DIVINA",
+            "BESTIA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "BESTIA",
+            "OSCURIDAD",
+            "TIERRA",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "ML-006",
@@ -668,7 +1069,35 @@
         "ARMA",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-006.webp"
+      "img": "assets/images/public23/ml-006.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "RAYO"
+          ],
+          "tipos": [
+            "ARMA",
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "RAYO",
+            "ARMA",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "ML-007",
@@ -712,7 +1141,35 @@
         "FENRIR"
       ],
       "elementos": [],
-      "img": "assets/images/public23/ml-007.webp"
+      "img": "assets/images/public23/ml-007.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [],
+          "tipos": [
+            "RELIQUIA",
+            "TRAMPA",
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "TRAMPA",
+            "RELIQUIA",
+            "UNIVERSAL",
+            "FENRIR"
+          ]
+        }
+      }
     },
     {
       "id": "ML-008",
@@ -757,7 +1214,36 @@
         "UNIVERSAL",
         "TIEMPO"
       ],
-      "img": "assets/images/public23/ml-008.webp"
+      "img": "assets/images/public23/ml-008.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "SABIDURIA"
+          ],
+          "tipos": [
+            "RELIQUIA",
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "SABIDURIA",
+            "RELIQUIA",
+            "UNIVERSAL",
+            "TIEMPO"
+          ]
+        }
+      }
     },
     {
       "id": "ML-009",
@@ -801,7 +1287,34 @@
         "UNIVERSAL"
       ],
       "elementos": [],
-      "img": "assets/images/public23/ml-009.webp"
+      "img": "assets/images/public23/ml-009.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [],
+          "tipos": [
+            "RELIQUIA",
+            "ARMA",
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "RELIQUIA",
+            "ARMA",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "ML-010",
@@ -848,7 +1361,37 @@
         "RELIQUIA",
         "UNIVERSAL"
       ],
-      "img": "assets/images/public23/ml-010.webp"
+      "img": "assets/images/public23/ml-010.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "RAYO"
+          ],
+          "tipos": [
+            "ARMA",
+            "DIVINA",
+            "RELIQUIA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "RAYO",
+            "ARMA",
+            "RELIQUIA",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "ML-011",
@@ -899,7 +1442,37 @@
         "FENRIR",
         "JORMUNGANDR"
       ],
-      "img": "assets/images/public23/ml-011.webp"
+      "img": "assets/images/public23/ml-011.webp",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "MITOS_Y_LEYENDAS"
+          ],
+          "elementos": [
+            "RAGNAROK"
+          ],
+          "tipos": [
+            "MAGICA_DEFINITIVA",
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "MAGICA",
+            "UNIVERSAL",
+            "RAGNAROK",
+            "FENRIR",
+            "JORMUNGANDR"
+          ]
+        }
+      }
     },
     {
       "id": "DM-001",
@@ -953,7 +1526,35 @@
         "TIEMPO",
         "GUERRERO"
       ],
-      "img": "assets/images/external33/dm-001.svg"
+      "img": "assets/images/external33/dm-001.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "RAYO"
+          ],
+          "tipos": [
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "RAYO",
+            "CONTROL",
+            "TIEMPO",
+            "GUERRERO"
+          ]
+        }
+      }
     },
     {
       "id": "DM-002",
@@ -1008,7 +1609,36 @@
         "RAYO",
         "UNIVERSAL"
       ],
-      "img": "assets/images/external33/dm-002.svg"
+      "img": "assets/images/external33/dm-002.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "LUZ"
+          ],
+          "tipos": [
+            "DRAGON",
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DRAGON",
+            "DIVINA",
+            "LUZ",
+            "RAYO",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "DM-003",
@@ -1063,7 +1693,35 @@
         "ORIGENES"
       ],
       "elementos": [],
-      "img": "assets/images/external33/dm-003.svg"
+      "img": "assets/images/external33/dm-003.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": [
+            "DIVINA",
+            "TIEMPO"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "DIVINA",
+            "TIEMPO",
+            "CONTROL",
+            "ZEUS",
+            "THOR",
+            "ORIGENES"
+          ]
+        }
+      }
     },
     {
       "id": "DM-004",
@@ -1118,7 +1776,37 @@
         "DRAGON_DORADO",
         "ORACULO_DE_DELFOS"
       ],
-      "img": "assets/images/external33/dm-004.svg"
+      "img": "assets/images/external33/dm-004.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "RAYO"
+          ],
+          "tipos": [
+            "DIVINA",
+            "GUERRERO"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "MJOLNIR",
+            "ARMAS",
+            "GUERRERO",
+            "ZEUS",
+            "DRAGON_DORADO",
+            "ORACULO_DE_DELFOS"
+          ]
+        }
+      }
     },
     {
       "id": "DM-005",
@@ -1183,7 +1871,35 @@
         "UNIVERSAL"
       ],
       "elementos": [],
-      "img": "assets/images/external33/dm-005.svg"
+      "img": "assets/images/external33/dm-005.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": [
+            "MAGICA",
+            "PRIMORDIAL",
+            "UNIVERSAL"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": [
+            "ZEUS",
+            "ORACULO_DE_DELFOS",
+            "LA_TIRANA",
+            "PRIMORDIAL",
+            "UNIVERSAL"
+          ]
+        }
+      }
     },
     {
       "id": "DM-006",
@@ -1217,7 +1933,30 @@
           "efecto": "Esta respuesta no puede ser negada si el objetivo tiene 15000 ATK o más."
         }
       ],
-      "img": "assets/images/external33/dm-006.svg"
+      "img": "assets/images/external33/dm-006.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "OSCURIDAD"
+          ],
+          "tipos": [
+            "TRAMPA",
+            "RESPUESTA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "DM-007",
@@ -1266,7 +2005,31 @@
         "Renovación Divina: al final de cada turno recupera 1000 HP por cada carta de VIENTO o LUZ en tu Cementerio, máximo 5000.",
         "Sabiduría Ancestral: puedes tener 1 carta adicional en tu mano.",
         "Gracia Quetzal: reduce a 0 el daño de efectos que no destruyan esta carta."
-      ]
+      ],
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "VIENTO",
+            "LUZ"
+          ],
+          "tipos": [
+            "DIVINA",
+            "DRAGON"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "DM-008",
@@ -1315,7 +2078,30 @@
         "Tributo del Sol: cuando una carta propia es destruida obtienes 1 Contador Solar, máximo 10; no se pierden al final del turno.",
         "Poder Imperial: puedes remover 3 Contadores Solares para invocar desde el Deck una carta de FUEGO de nivel 7 o menor, o añadir Sacrificio Azteca a la mano.",
         "Voluntad del Tlatoani: inmune a efectos que reduzcan su ATK o tomen control de esta carta."
-      ]
+      ],
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "FUEGO"
+          ],
+          "tipos": [
+            "GUERRERO",
+            "DIVINA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "DM-009",
@@ -1364,7 +2150,30 @@
         "Eco del Cementerio: puedes usar 1 carta de tu Cementerio como si estuviera en tu mano una vez por turno, sin Invocación Especial.",
         "Corrupción de Recursos: cuando una carta rival es destruida, La Tirana gana 1 carga, máximo 6; por cada carga gana 300 ATK y 300 DEF.",
         "Besos de la Reina: con 4 o más cargas, todas las cartas rivales pierden 800 ATK y 800 DEF mientras La Tirana esté en Campo."
-      ]
+      ],
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "OSCURIDAD",
+            "PACTO_OSCURO"
+          ],
+          "tipos": [
+            "HECHICERA"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     },
     {
       "id": "DM-010",
@@ -1413,7 +2222,30 @@
         "Frío Desgarrador: las cartas rivales pierden 300 ATK por cada carta propia destruida durante el duelo.",
         "Eco del Fin Austral: si Onkolxón está en tu Cementerio, al inicio de tu turno recupera 1 Contador Austral.",
         "Guardián del Último Aliento: mientras controles 1 o menos cartas en Campo, no puede ser destruido por efectos del rival."
-      ]
+      ],
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "HIELO"
+          ],
+          "tipos": [
+            "ANCESTRAL",
+            "ESPIRITU"
+          ]
+        },
+        "equipamiento": {
+          "arma": true,
+          "armadura": true,
+          "reliquia": true,
+          "restricciones": "UNIVERSAL"
+        }
+      }
     }
   ],
   "integration": {
