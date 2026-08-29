@@ -38,6 +38,11 @@ const registryDeduplicates=/new Map\(CARDS_RAW\.map\(c=>\[c\.id,c\]\)\)/.test(ga
 must('registro global de cartas no reintroduce familias duplicadas',
   registryIncludesExpected&&registryExcludesDuplicatedFamilies&&registryDeduplicates);
 
+
+must('perfil jugador obligatorio',game.includes('nemesisCreateProfileScene')&&game.includes('nemesisEnsureProfile'));
+must('nombre se guarda en Memory Card',game.includes("name:typeof state.name==='string'?state.name:''")&&game.includes("if(typeof mc.name==='string')state.name=mc.name"));
+must('autoguardado tras cada pelea',game.includes("state.lastBattleResult=win?'VICTORIA':'DERROTA'")&&game.includes('state.battlesPlayed=')&&game.includes('state.lastAutosaveAt=Date.now()'));
+must('sin nombre Viajero automático',!game.includes("||'Viajero'"));
 if(process.exitCode) process.exit(process.exitCode);
 
 const dmNew=['DM-011','DM-012','DM-013','DM-014','DM-015','DM-016','DM-017','DM-018','DM-019','DM-020'];
