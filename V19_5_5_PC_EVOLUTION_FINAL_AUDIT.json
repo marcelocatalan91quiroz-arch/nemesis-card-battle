@@ -1,0 +1,52 @@
+{
+  "version": "19.5.5-PC-EVOLUTION-AUDIT",
+  "date": "2026-08-29",
+  "branch": "development-post-v19-4-imperio-dragon",
+  "verdict": "STRUCTURAL_PASS_WITH_RUNTIME_TEST_PENDING",
+  "audited": {
+    "repository_files": 336,
+    "image_references_in_game": 152,
+    "missing_image_paths": 0,
+    "core_engine_markers": {
+      "battle": true,
+      "resolveBattle": true,
+      "enemyTurn": true,
+      "update": true
+    },
+    "historical_effects_9_of_9": true,
+    "pc_evolution": {
+      "nemesis_profile": true,
+      "transformations": true,
+      "fusions": true,
+      "boss_phase_arenas": true,
+      "ultimates": true,
+      "adaptive_vfx_budget": true,
+      "intro_instrumental": true
+    },
+    "card_literal_duplicate_ids_in_pc_evolution_scope": 0
+  },
+  "protected": [
+    "damage/resolveBattle",
+    "turn engine",
+    "enemy AI entry point",
+    "campaigns",
+    "decks",
+    "graveyard",
+    "responses",
+    "Memory Card"
+  ],
+  "tests_available": [
+    "integrity",
+    "flow regression",
+    "Duel Master",
+    "external33",
+    "public23",
+    "card schema",
+    "treasures",
+    "master catalog",
+    "Imperio Dragon",
+    "Playwright E2E"
+  ],
+  "limitation": "Esta auditoría desde GitHub valida estructura, referencias y cobertura estática. Los scripts npm/Playwright no se ejecutaron dentro del conector GitHub; por eso no se declara E2E runtime PASS hasta ejecutar la suite en un runner/browser.",
+  "release_gate": "No promover a producción ni iniciar Duel Master Online hasta obtener test:static PASS y test:e2e PASS sobre esta rama."
+}
