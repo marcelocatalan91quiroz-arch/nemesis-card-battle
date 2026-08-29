@@ -837,11 +837,12 @@ const r=new THREE.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high
 // Límite seguro para texturas de cartas. Siempre existe antes de crear el primer mesh.
 let graphicsAnisotropy=Math.min(16,r.capabilities.getMaxAnisotropy());
 const GRAPHICS_PROFILES={
- MEDIA:{label:'MEDIA',pixel:1,shadow:512,anisotropy:4,exposure:1.05,particles:.65},
- ALTA:{label:'ALTA',pixel:1.35,shadow:1024,anisotropy:8,exposure:1.15,particles:1},
- ULTRA:{label:'ULTRA',pixel:1.75,shadow:2048,anisotropy:16,exposure:1.24,particles:1.45}
+ MEDIA:{label:'MEDIA',pixel:1,shadow:512,anisotropy:4,exposure:1.05,particles:.65,cinematic:.65},
+ ALTA:{label:'ALTA',pixel:1.35,shadow:1024,anisotropy:8,exposure:1.15,particles:1,cinematic:1},
+ ULTRA:{label:'ULTRA',pixel:1.75,shadow:2048,anisotropy:16,exposure:1.24,particles:1.45,cinematic:1.35},
+ NEMESIS:{label:'NÉMESIS',pixel:2,shadow:4096,anisotropy:16,exposure:1.3,particles:1.8,cinematic:1.6}
 };
-let graphicsMode=localStorage.getItem('nemesis_pc_graphics_v2')||'ULTRA';
+let graphicsMode=localStorage.getItem('nemesis_pc_graphics_v2')||(innerWidth>=1280?'NEMESIS':'ULTRA');
 if(!GRAPHICS_PROFILES[graphicsMode])graphicsMode='ULTRA';
 let graphicsParticleMultiplier=GRAPHICS_PROFILES[graphicsMode].particles;
 let pcResolution=localStorage.getItem('nemesis_pc_resolution')||'1080',pcFpsLimit=localStorage.getItem('nemesis_pc_fps')||'60';
@@ -857,7 +858,7 @@ function applyGraphicsProfile(mode,notify=true){
  r.setPixelRatio(Math.min(devicePixelRatio,requestedPixel,bossPixelCap));r.setSize(innerWidth,innerHeight);r.toneMappingExposure=p.exposure;
  r.shadowMap.enabled=pcShadows;graphicsParticleMultiplier=pcParticles?p.particles*(isRa?.72:1):0;document.querySelector('.battle')?.classList.toggle('pc-no-reflections',!pcReflections);
  const safeShadow=isRa?Math.min(p.shadow,1024):p.shadow;key.shadow.mapSize.set(safeShadow,safeShadow);key.shadow.map?.dispose?.();graphicsAnisotropy=Math.min(p.anisotropy,r.capabilities.getMaxAnisotropy());
- document.querySelector('.battle')?.setAttribute('data-graphics',mode);document.getElementById('graphicsBtn').textContent=`◆ PC ${p.label}`;
+ document.querySelector('.battle')?.setAttribute('data-graphics',mode);document.querySelector('.battle')?.classList.toggle('pc-evolution-nemesis',mode==='NEMESIS');document.getElementById('graphicsBtn').textContent=`◆ PC ${p.label}`;
  localStorage.setItem('nemesis_pc_graphics_v2',mode);if(notify)toast(`Calidad gráfica ${p.label} activada.`)
 }
 function openGraphicsPanel(){
@@ -1084,6 +1085,24 @@ const PC_CINEMATIC_PROFILES={
  'anc-ira-ra':{label:'ANCESTRAL · DIOS SOLAR',summon:'DESPERTAR DEL SOL ANCESTRAL',attack:'JUICIO DEL SOL',skill:'EXPLOSIÓN SOLAR',tone:'solar',color:0xffb51f},
  'ojo-dragon-jefe':{label:'JEFE · DRAGÓN MALDITO',summon:'DESPERTAR DEL OJO DEL DIABLO',attack:'IRA DEL OJO DEL DIABLO',skill:'MIRADA MALDITA',tone:'fire',color:0xff321f}
 };
+
+const PC_ELEMENT_STYLE={
+ fire:{color:0xff3b12,label:'FUEGO'},lightning:{color:0x70b7ff,label:'RAYO'},ice:{color:0x7de8ff,label:'HIELO'},
+ shadow:{color:0x8c36ff,label:'OSCURIDAD'},solar:{color:0xffc62e,label:'SOLAR'},divine:{color:0xffefad,label:'DIVINO'},
+ void:{color:0xb020ff,label:'VACÍO'},wind:{color:0x91ffd8,label:'VIENTO'},dragon:{color:0xff6435,label:'DRAGÓN'}
+};
+function pcEvolutionElement(c){
+ const tags=[...(c?.tags||[]),...(c?.externalData?.elementos||[]),...(c?.externalData?.tipos||[])].map(x=>String(x).toLowerCase());
+ for(const k of Object.keys(PC_ELEMENT_STYLE))if(tags.some(t=>t.includes(k==='shadow'?'oscur':k==='lightning'?'rayo':k==='ice'?'hielo':k==='divine'?'divin':k==='void'?'vacio':k)))return k;
+ return tags.some(t=>t.includes('dragon'))?'dragon':'void'
+}
+function pcEvolutionImpact(c,pos,intensity=1){
+ if(!pcParticles||!pos)return;const style=PC_ELEMENT_STYLE[pcEvolutionElement(c)]||PC_ELEMENT_STYLE.void;
+ burst(pos,style.color,Math.round(42*graphicsParticleMultiplier*intensity));
+ const ring=new THREE.Mesh(new THREE.RingGeometry(.45,1.35,64),new THREE.MeshBasicMaterial({color:style.color,transparent:true,opacity:.82,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+ ring.rotation.x=-Math.PI/2;ring.position.copy(pos);ring.position.y+=.09;scene.add(ring);pcElementSystems.push(ring);ring.userData={kind:'CINEMATIC_RING',birth:performance.now(),life:720,spin:3.1,opacity:.82};
+}
+window.NEMESIS_PC_EVOLUTION={version:'1.0',profiles:Object.keys(GRAPHICS_PROFILES),elements:Object.keys(PC_ELEMENT_STYLE),features:['4K','120FPS','PBR_LIGHTING','ELEMENT_VFX','CINEMATIC_CAMERA','TRANSFORMATION_VFX','EQUIPMENT_3D','ADAPTIVE_QUALITY','FULLSCREEN']};
 function pcCinematicProfile(c){return c&&PC_CINEMATIC_PROFILES[c.id]||null}
 function pcCinematicLabel(c,kind,p){return kind==='summon'?p.summon:kind==='skill'?p.skill:p.attack}
 function pcCinematic3DFx(side,i,c,kind){
@@ -1107,7 +1126,7 @@ async function pcCardCinematic(kind,side,i,c){
  const d=document.createElement('div');d.className=`pc-card-cinematic ${p.tone} ${kind}`;
  d.innerHTML=`<div class="pc-cine-vignette"></div><div class="pc-cine-energy"></div><section><small>${esc(p.label)}</small><img src="${c.img}" alt="${esc(c.name)}"><div><span>${kind==='summon'?'INVOCACIÓN CINEMATOGRÁFICA':kind==='skill'?'HABILIDAD CINEMATOGRÁFICA':'ULTIMATE CINEMATOGRÁFICO'}</span><b>${esc(c.name)}</b><strong>${esc(pcCinematicLabel(c,kind,p))}</strong></div></section>`;
  document.body.appendChild(d);document.body.classList.add('pc-cinematic-active');d.offsetWidth;d.classList.add('show');
- pcCinematic3DFx(side,i,c,kind);pcLog(`${c.name}: ${pcCinematicLabel(c,kind,p)}.`,'effect');
+ pcCinematic3DFx(side,i,c,kind);if(board?.[side]?.[i])pcEvolutionImpact(c,board[side][i].position,kind==='summon'?1.25:1);pcLog(`${c.name}: ${pcCinematicLabel(c,kind,p)}.`,'effect');
  const ms=kind==='summon'?1050:kind==='skill'?900:760;await wait(ms);
  d.classList.add('out');await wait(180);d.remove();document.body.classList.remove('pc-cinematic-active');
 }
