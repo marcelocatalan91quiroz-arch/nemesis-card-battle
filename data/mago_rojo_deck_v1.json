@@ -3,7 +3,7 @@
   "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1",
   "set": "MAGO_ROJO",
   "version": "19.4.0",
-  "estado": "DISEÑO_EN_PROGRESO__CARTA_001_APROBADA",
+  "estado": "DISEÑO_EN_PROGRESO__CARTAS_001_004_APROBADAS",
   "mecanica": "SELLOS_ARCANOS",
   "composicion_objetivo": {
     "total": 20,
@@ -65,6 +65,92 @@
       "img": "assets/images/mago-rojo/mgr-001.png",
       "img_game": "assets/images/mago-rojo/mgr-001.png",
       "imagen_estado": "VISUAL_APROBADO__PENDIENTE_CARGA_ASSET"
+    },
+    {
+      "id": "MGR-002",
+      "nombre": "Aprendiz de las Brasas",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "CIRCULO_ARCANO",
+        "MAGO_ROJO"
+      ],
+      "rareza": "COMUN",
+      "nivel": 3,
+      "atk": 1700,
+      "def": 1900,
+      "copias_max": 3,
+      "habilidad": "MEMORIA DE FUEGO",
+      "estrategia": "Recuperación temprana de Mágicas y soporte directo para Mago Rojo.",
+      "efectos": [
+        "Cuando esta carta es Invocada Normalmente, puedes seleccionar 1 Mágica del arquetipo Mago Rojo en tu Cementerio y añadirla a tu mano; esa Mágica sólo puede ser activada una vez más durante este duelo.",
+        "Si esta carta en el Campo fuera a ser destruida, puedes descartar 1 carta; esta carta no es destruida.",
+        "Mientras controles a Mago Rojo, esta carta gana 300 ATK."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-002.png",
+      "img_game": "assets/images/mago-rojo/mgr-002.png",
+      "imagen_estado": "VISUAL_APROBADO__PENDIENTE_CARGA_ASSET"
+    },
+    {
+      "id": "MGR-003",
+      "nombre": "Salamandra de Rubí",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "RARA",
+      "nivel": 3,
+      "atk": 2100,
+      "def": 1800,
+      "copias_max": 3,
+      "habilidad": "PIEL INCANDESCENTE",
+      "estrategia": "Generador defensivo de Sellos Arcanos mediante supervivencia en combate.",
+      "efectos": [
+        "Cuando esta carta recibe daño de batalla y sobrevive, coloca 1 Sello Arcano en 1 carta Mago Rojo que controles. Este efecto sólo puede activarse una vez por turno.",
+        "Esta carta no puede ser seleccionada como objetivo de efectos de cartas del adversario, excepto por ataques.",
+        "Mientras controles 1 o más Sellos Arcanos, gana 300 DEF."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-003.png",
+      "img_game": "assets/images/mago-rojo/mgr-003.png",
+      "imagen_estado": "VISUAL_APROBADO__PENDIENTE_CARGA_ASSET"
+    },
+    {
+      "id": "MGR-004",
+      "nombre": "Caballero de Ceniza",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": 4,
+      "atk": 2600,
+      "def": 2600,
+      "copias_max": 3,
+      "habilidad": "GUARDIA ARDIENTE",
+      "estrategia": "Defensor del arquetipo; protege criaturas y trampas mientras aprovecha Sellos Arcanos.",
+      "efectos": [
+        "Una vez por turno, puedes seleccionar 1 criatura del arquetipo Mago Rojo que controles; esa carta no puede ser destruida por efectos de cartas hasta el final del turno.",
+        "Si esa criatura fuera a ser destruida por batalla, gana 1000 DEF durante ese cálculo de daño.",
+        "Mientras controles 2 o más Sellos Arcanos, esta carta gana 300 ATK.",
+        "Mientras esta carta esté en el Campo, las Trampas Mago Rojo que controles no pueden ser destruidas por efectos del adversario."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-004.png",
+      "img_game": "assets/images/mago-rojo/mgr-004.png",
+      "imagen_estado": "VISUAL_APROBADO_SEGUNDA_VERSION__PENDIENTE_CARGA_ASSET"
     }
   ],
   "plan_20": [
