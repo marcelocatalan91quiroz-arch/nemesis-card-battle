@@ -1,0 +1,27 @@
+const fs=require('fs'),path=require('path');
+const root=path.resolve(__dirname,'..');
+const game=fs.readFileSync(path.join(root,'js','game.js'),'utf8');
+const base=JSON.parse(fs.readFileSync(path.join(root,'data','nemesis_collection_33_cards.json'),'utf8'));
+const t=JSON.parse(fs.readFileSync(path.join(root,'data','nemesis_treasures_5_cards.json'),'utf8'));
+const A=(x,m)=>{if(!x){console.error('FAIL',m);process.exit(1)}console.log('PASS',m)};
+A(base.cards.length===33,'colección previa conserva 33 cartas');
+A(base.cards.filter(c=>/^DM-\d{3}$/.test(c.id)).length===10,'Duel Master conserva 10 cartas');
+A(t.count===5&&t.cards.length===5,'set Tesoro contiene 5 cartas');
+A(new Set(t.cards.map(c=>c.id)).size===5,'IDs Tesoro únicos');
+A(t.cards.every(c=>c.precio_estrellas===1000&&c.obtencion==='CANJE_EXCLUSIVO'),'cada Tesoro cuesta 1000 estrellas y es solo canje');
+A(t.cards.every(c=>c.rareza==='NEMESIS_UNICA'&&c.limite_copias===1),'rareza y límite únicos');
+for(const c of t.cards){A(c.schema_version==='NEMESIS_CARD_V1',c.id+' usa schema oficial');A(fs.existsSync(path.join(root,c.img)),c.id+' imagen final existe')}
+for(const id of ['TN-MAG-001','TN-MAG-002','TN-ARM-001','TN-ARM-002','TN-TRP-001'])A(game.includes(id),id+' registrado en motor');
+for(const marker of ['nemesisTreasureRedeem','nemesisTreasureScene','applyTreasureMagic','treasurePreventDestroy','treasureOnBattleKill','treasureTryJudgement','treasureSyncEquipmentBonuses'])A(game.includes(marker),marker+' implementado');
+A(game.includes("state.stars-=1000"),'canje descuenta 1000 estrellas');
+A(!game.includes("INITIAL_OWNED=INITIAL_OWNED.concat"),'Tesoro no se regala al jugador');
+A(game.includes("window.__treasureEnemyEffectLockUntil"),'Tiempo Muerto operativo');
+A(game.includes("_treasureProtectedUntil"),'Paradoja Protectora operativa');
+A(game.includes("_treasurePiercing"),'Excalibur penetración operativa');
+A(game.includes("_treasureExcaliburSaved"),'Voluntad del Rey operativa');
+A(game.includes("_treasureScytheAura"),'Marca del Vacío operativa');
+A(game.includes("COSECHA DEL VACÍO"),'Cosecha del Vacío operativa');
+A(game.includes("HAMBRE INFINITA"),'Hambre Infinita operativa');
+A(game.includes("__treasureEndEnemyTurn"),'Juicio Final termina turno');
+for(const marker of ['GUARDIAN_BOSS_CARD_IDS','DRAGON_OJO_DECK','IRA_RA_BOSS_DECK','CABALLERO_ALMAS_DECK','REY_ESPECTRAL_TEST_DECK','DIOS_FANTASMA_DECK','ARES_CARDS','HADES_DECK_IDS'])A(game.includes(marker),marker+' sigue presente');
+console.log('NÉMESIS TESOROS V19.4.0 STATIC: PASS');

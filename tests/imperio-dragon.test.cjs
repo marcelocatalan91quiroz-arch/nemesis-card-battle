@@ -1,0 +1,21 @@
+const fs=require('fs'),p=require('path'),r=p.resolve(__dirname,'..');
+const d=JSON.parse(fs.readFileSync(p.join(r,'data','imperio_dragon_deck_v1.json'),'utf8'));
+const g=fs.readFileSync(p.join(r,'js','game.js'),'utf8');
+const A=(x,m)=>{if(!x){console.error('FAIL',m);process.exit(1)}console.log('PASS',m)};
+A(d.deck_ids.length===20,'Imperio Dragón tiene 20/20 espacios oficiales');
+A(d.cards.length===20,'20 fichas maestras definidas');
+A(new Set(d.deck_ids).size===20,'IDs IDR únicos');
+for(let i=1;i<=20;i++){const id='IDR-'+String(i).padStart(3,'0');A(d.cards.some(c=>c.id===id),id+' existe en datos');A(g.includes("id:"+JSON.stringify(id)),id+' registrado en motor')}
+A(d.composicion.criaturas.length===8,'8 criaturas');
+A(d.composicion.transformaciones.length===2,'2 transformaciones');
+A(d.composicion.magicas.length===3,'3 mágicas');
+A(d.composicion.trampas.length===2,'2 trampas');
+A(d.composicion.armas.length===2,'2 armas');
+A(d.composicion.reliquias.length===1,'1 reliquia');
+A(d.composicion.fusiones.length===2,'2 fusiones');
+A(g.includes('state.savedDecks.IMPERIO_DRAGON'),'mazo IMPERIO_DRAGON registrado');
+A(g.includes('state.savedDecks.OLIMPO'),'OLIMPO intacto');
+A(g.includes('state.savedDecks.DUEL_MASTER'),'DUEL_MASTER intacto');
+A(g.includes('DRAGON_OJO_DECK'),'campaña Dragón Ojo intacta');
+A(g.includes('IRA_RA_BOSS_DECK'),'campaña Ira de Ra intacta');
+console.log('IMPERIO DRAGON MASTER 20/20 STATIC: PASS');
