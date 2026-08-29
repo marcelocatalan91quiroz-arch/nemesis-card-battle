@@ -709,3 +709,11 @@ body[data-heroic-weather="TORMENTA DIVINA"] .battle{filter:saturate(1.18);box-sh
 @keyframes pcFusionResult{0%{transform:scale(.35) rotate(-4deg);opacity:0;filter:brightness(2.2)}65%{opacity:1}100%{transform:scale(1);opacity:1;filter:brightness(1)}}
 @keyframes pcVortex{to{transform:rotate(360deg) scale(1.04)}}
 @media(max-width:700px){.pc-transform-cards img,.pc-fusion-materials img,.pc-fusion-result img{width:min(38vw,180px)}.pc-transform-cards span,.pc-fusion-materials span{font-size:34px}}
+
+/* V19.5.2 — Arena reactiva por fases de jefe */
+.battle[data-boss-visual-phase="2"] #stage canvas{filter:saturate(1.16) contrast(1.08)}
+.battle[data-boss-visual-phase="3"] #stage canvas{filter:saturate(1.3) contrast(1.13) brightness(.92)}
+.battle[data-boss-visual-phase="2"] .boss-phase-badge,.battle[data-boss-visual-phase="3"] .boss-phase-badge{border-color:var(--boss-phase-color,#b45cff);box-shadow:0 0 28px var(--boss-phase-color,#b45cff)}
+.battle[data-boss-visual-phase="3"] .boss-phase-badge{animation:pcBossPhasePulse 1.1s ease-in-out infinite alternate}
+.battle[data-boss-visual-phase="3"]:before{content:"";position:absolute;inset:0;pointer-events:none;z-index:4;box-shadow:inset 0 0 110px var(--boss-phase-color,#7b25bb);opacity:.3}
+@keyframes pcBossPhasePulse{to{transform:scale(1.025);filter:brightness(1.28)}}
