@@ -5,9 +5,9 @@ const data=JSON.parse(fs.readFileSync(path.join(root,'data','nemesis_collection_
 const A=(x,m)=>{if(!x){console.error('FAIL',m);process.exit(1)}console.log('PASS',m)};
 const pub=data.cards.filter(c=>!String(c.id).startsWith('DM-'));
 const dm=data.cards.filter(c=>String(c.id).startsWith('DM-'));
-A(data.cards.length===33,'Colección conserva 33 cartas');
+A(data.cards.length===43,'Colección conserva 43 cartas');
 A(pub.length===23,'23 cartas generales exactas');
-A(dm.length===10,'Duel Master conserva 10 cartas');
+A(dm.length===20,'Duel Master conserva 20 cartas');
 A(new Set(pub.map(c=>c.id)).size===23,'IDs generales únicos');
 A(pub.find(c=>c.id==='UNI-006')?.nombre==='Égida Astral','UNI-006 autoritativa conservada');
 A(pub.find(c=>c.id==='UNI-007')?.nombre==='Altar de los Dioses','UNI-007 autoritativa conservada');
