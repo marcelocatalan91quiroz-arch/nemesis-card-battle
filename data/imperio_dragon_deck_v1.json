@@ -538,7 +538,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-016.png",
       "img_game": "assets/images/ancestral-lanza-solar-dorada.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_00000000a2c8820ebfe7f75f5332f196"
     },
     {
       "id": "IDR-017",
@@ -573,7 +574,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-017.png",
       "img_game": "assets/images/ancestral-gran-lanza-bronce.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_00000000b1a8820e9e6d195b233a424f"
     },
     {
       "id": "IDR-018",
@@ -740,5 +742,6 @@
   "regla_operativa": "Cada carta nueva o regenerada debe actualizarse inmediatamente en esta ficha maestra y en js/game.js antes de pasar a la siguiente.",
   "nota_integracion_imagenes": "IDR-009 e IDR-010 registradas con sus imágenes generadas. IDR-011 queda marcada para regeneración porque la imagen generada no corresponde a su ficha maestra Llamado de la Sangre Imperial.",
   "nota_integracion_magicas": "IDR-011, IDR-012 e IDR-013 registradas como las tres mágicas ilustradas del mazo. La lógica jugable conserva las fichas maestras oficiales.",
-  "nota_integracion_trampas": "IDR-014 e IDR-015 registradas como las dos trampas ilustradas oficiales de Imperio Dragón."
+  "nota_integracion_trampas": "IDR-014 e IDR-015 registradas como las dos trampas ilustradas oficiales de Imperio Dragón.",
+  "nota_integracion_armas": "IDR-016 Espada Colmillo del Emperador e IDR-017 Lanza de Ala Carmesí registradas como las dos armas ilustradas oficiales de Imperio Dragón."
 }
