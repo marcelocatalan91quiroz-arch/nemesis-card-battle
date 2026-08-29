@@ -347,7 +347,7 @@ function nemesisTreasureScene(){
 window.nemesisTreasureScene=nemesisTreasureScene;
 
 const INITIAL_OWNED=SHOP_CARDS.slice(0,20).map(c=>c.id);
-let state={name:'',dialog:0,fear:null,stars:0,retryBattle:null,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'OLIMPO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,11)};
+let state={name:'',profileCreated:false,battlesPlayed:0,lastBattleResult:null,lastBattleKey:null,lastAutosaveAt:0,dialog:0,fear:null,stars:0,retryBattle:null,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'OLIMPO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,11)};
 
 
 // V18.9.18 — MEMORY CARD SEGURA
@@ -360,6 +360,12 @@ function v18918LoadMemoryCard(){
   if(!raw)return;
   const mc=JSON.parse(raw);
   if(mc&&typeof mc==='object'){
+   if(typeof mc.name==='string')state.name=mc.name;
+   if(typeof mc.profileCreated==='boolean')state.profileCreated=mc.profileCreated;
+   if(Number.isFinite(Number(mc.battlesPlayed)))state.battlesPlayed=Math.max(0,Math.floor(Number(mc.battlesPlayed)));
+   if(typeof mc.lastBattleResult==='string')state.lastBattleResult=mc.lastBattleResult;
+   if(typeof mc.lastBattleKey==='string')state.lastBattleKey=mc.lastBattleKey;
+   if(Number.isFinite(Number(mc.lastAutosaveAt)))state.lastAutosaveAt=Number(mc.lastAutosaveAt);
    if(Number.isFinite(Number(mc.stars))) state.stars=Math.max(0,Math.floor(Number(mc.stars)));
    if(Array.isArray(mc.owned)) state.owned=nemesisNormalizeCardIds(mc.owned);
    if(Array.isArray(mc.deck)) state.deck=nemesisNormalizeCardIds(mc.deck,11);
@@ -393,6 +399,12 @@ function v18918LoadMemoryCard(){
 function v18918SaveMemoryCard(){
  try{
   const payload={
+   name:typeof state.name==='string'?state.name:'',
+   profileCreated:state.profileCreated===true,
+   battlesPlayed:Math.max(0,Math.floor(Number(state.battlesPlayed)||0)),
+   lastBattleResult:state.lastBattleResult||null,
+   lastBattleKey:state.lastBattleKey||null,
+   lastAutosaveAt:Number(state.lastAutosaveAt)||0,
    stars:Math.max(0,Math.floor(Number(state.stars)||0)),
    owned:[...new Set(Array.isArray(state.owned)?state.owned:[])],
    deck:[...new Set(Array.isArray(state.deck)?state.deck:[])].slice(0,11),
@@ -728,7 +740,32 @@ function nemesisRetryScene(){
 window.nemesisRetryScene=nemesisRetryScene;
 window.NEMESIS_RETRY_AUDIT=()=>({total:NEMESIS_RETRY_ROSTER.length,unlocked:NEMESIS_RETRY_ROSTER.filter(nemesisRetryUnlocked).length,guardianReward:100,bossReward:200,active:state.retryBattle||null});
 
+
+function nemesisValidPlayerName(v){
+ const name=String(v||'').trim().replace(/\s+/g,' ');
+ return name.length>=1&&name.length<=24?name:'';
+}
+function nemesisCreateProfileScene(){
+ app.innerHTML=`<section class="profile-create"><div class="profile-create-card">
+  <div class="logo">NÉMESIS<small>CARD BATTLE</small></div>
+  <small class="profile-kicker">CREAR JUGADOR</small>
+  <h1>ELIGE TU NOMBRE</h1>
+  <p>Este nombre quedará guardado en tu partida y aparecerá en campañas, retos y duelos.</p>
+  <input id="playerCreateName" maxlength="24" autocomplete="off" placeholder="ESCRIBE TU NOMBRE">
+  <button class="btn big-start" id="playerCreateBtn">CREAR JUGADOR</button>
+  <span id="playerCreateError"></span>
+  <small class="mc-safe">MEMORY CARD · AUTO-GUARDADO ACTIVO</small>
+ </div></section>`;
+ const input=document.getElementById('playerCreateName'),btn=document.getElementById('playerCreateBtn'),err=document.getElementById('playerCreateError');
+ const commit=()=>{const name=nemesisValidPlayerName(input.value);if(!name){err.textContent='Escribe un nombre para continuar.';input.focus();return}state.name=name;state.profileCreated=true;state.lastAutosaveAt=Date.now();save();menuScene()};
+ btn.onclick=commit;input.addEventListener('keydown',e=>{if(e.key==='Enter')commit()});setTimeout(()=>input.focus(),40);
+}
+function nemesisEnsureProfile(){
+ if(nemesisValidPlayerName(state.name)){state.profileCreated=true;return true}
+ state.profileCreated=false;nemesisCreateProfileScene();return false
+}
 function menuScene(){
+ if(!nemesisEnsureProfile())return;
  const unlockedCount=unlockedShopCards().length;
  const campaignButton=state.campaign3Started?(state.hadesDefeated?'CAMPAÑA III · HADES DERROTADO':'CONTINUAR CAMPAÑA III'):state.campaign1Completed&&!state.campaign2Started?'INICIAR CAMPAÑA II':state.campaign2Started?'CONTINUAR CAMPAÑA II':state.campaignStage!=='guardian'?'CONTINUAR CAMPAÑA I':'EMPEZAR CAMPAÑA I';
  const campaignStatus=state.campaign1Completed?`<div class="campaign-progress-card complete"><small>PROGRESO DE CAMPAÑA</small><b>✓ CAMPAÑA I COMPLETADA</b><span>Guardián ✓ · Dragón Ojo del Diablo ✓ · Ira de Ra ✓</span><em>${state.campaign2Started?'CAMPAÑA II EN CURSO':'CAMPAÑA II DESBLOQUEADA'}</em></div>`:`<div class="campaign-progress-card"><small>PROGRESO DE CAMPAÑA</small><b>CAMPAÑA I</b><span>Guardián ${state.guardianDefeated?'✓':'○'} · Dragón ${state.dragonDefeated?'✓':'○'} · Ira de Ra ${state.raDefeated?'✓':'○'}</span></div>`;
@@ -737,12 +774,12 @@ function menuScene(){
  <div class="menu-panel"><h2>JUGADOR</h2><div class="name-row"><input id="nm" maxlength="24" placeholder="NOMBRE DEL JUGADOR" value="${esc(state.name||'')}"><button class="btn" id="changeName">CAMBIAR</button></div><small>Tu nombre aparecerá en la historia y en los duelos.</small></div>
  <div class="menu-actions"><button class="btn" id="shopBtn">INTERCAMBIAR CARTAS · ${unlockedCount}</button><button class="btn" id="deckBtn">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="treasureBtn">TESOROS NÉMESIS · ★1000</button><button class="btn retry-entry" id="retryBtn">RETOS · REVANCHA ★</button><button class="btn sanctuary-entry" id="sanctuaryBtn">SANTUARIO · 3 ÚNICAS</button><button class="btn" id="menuFullscreen">⛶ PANTALLA COMPLETA</button></div>
  <div class="menu-panel"><h2>MAZO DE BATALLA</h2><p>Elige hasta <b>11 cartas</b> de tu colección para usar en batalla.</p><div class="mini-deck">${state.deck.map(id=>{const c=card(id);return c?`<img src="${c.img}" alt="${esc(c.name)}" title="${esc(c.name)}">`:''}).join('')}</div><b>${state.deck.length}/11 seleccionadas</b></div>
- <div class="deckbar"><span>Tu colección, estrellas, cartas ganadas y mazo se conservan entre campañas. <small class="mc-safe">MEMORY CARD · AUTO-GUARDADO</small></span><button class="btn big-start" id="startStory">${campaignButton}</button></div></section>`;
- changeName.onclick=()=>{state.name=nm.value.trim()||'Viajero';save();changeName.textContent='GUARDADO ✓';setTimeout(()=>menuScene(),500)};
+ <div class="deckbar"><span>Tu colección, estrellas, cartas ganadas y mazo se conservan entre campañas. <small class="mc-safe">MEMORY CARD · AUTO-GUARDADO · ${state.battlesPlayed||0} PELEAS</small></span><button class="btn big-start" id="startStory">${campaignButton}</button></div></section>`;
+ changeName.onclick=()=>{const next=nemesisValidPlayerName(nm.value);if(!next){alert('Escribe un nombre válido.');return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();save();changeName.textContent='GUARDADO ✓';setTimeout(()=>menuScene(),500)};
  shopBtn.onclick=shopScene;deckBtn.onclick=collectionScene;if(typeof treasureBtn!=='undefined'&&treasureBtn)treasureBtn.onclick=nemesisTreasureScene;
 if(typeof sanctuaryBtn!=='undefined'&&sanctuaryBtn)sanctuaryBtn.onclick=sanctuaryScene;
 if(typeof retryBtn!=='undefined'&&retryBtn)retryBtn.onclick=nemesisRetryScene;
-menuFullscreen.onclick=requestNemesisFullscreen;startStory.onclick=()=>{state.name=nm.value.trim()||state.name||'Viajero';if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}if(state.campaign1Completed&&!state.campaign2Started){state.campaign2Started=true;state.campaignStage='campaign2-intro';state.campaign2Stage='intro'}save();continueCampaign()};
+menuFullscreen.onclick=requestNemesisFullscreen;startStory.onclick=()=>{const next=nemesisValidPlayerName(nm.value)||nemesisValidPlayerName(state.name);if(!next){nemesisCreateProfileScene();return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}if(state.campaign1Completed&&!state.campaign2Started){state.campaign2Started=true;state.campaignStage='campaign2-intro';state.campaign2Stage='intro'}save();continueCampaign()};
 }
 function shopPrice(c,i){return Math.max(50,Math.round((c.atk+c.def)/20/10)*10 + (i%5)*20)}
 function shopScene(){
@@ -3988,6 +4025,11 @@ function finish(win,reason=''){clearInterval(nemesisFlowSupervisorTimer);clearIn
   if(!retryReward&&isHades)nemesisUnlockCampaignDecks('campaign3');
   save();
  }
+ state.battlesPlayed=Math.max(0,Math.floor(Number(state.battlesPlayed)||0))+1;
+ state.lastBattleResult=win?'VICTORIA':'DERROTA';
+ state.lastBattleKey=String(duelKey||'guardian');
+ state.lastAutosaveAt=Date.now();
+ save();
  let d=document.createElement('div');d.className='result';
  const retryHtml=retryReward?`<div class="retry-win-reward"><b>REVANCHA GANADA</b><span>${retryReward.role} · ★ +${starsWon} ESTRELLAS</span><small>${retryReward.role==='JEFE'?'BONO JEFE · RECOMPENSA DOBLE':'RECOMPENSA GUARDIÁN'}</small></div>`:'';
  const rewardHtml=rewardCard?`<div class="boss-card-reward"><small>CARTA GANADA AL AZAR DEL MAZO RIVAL</small><img src="${rewardCard.img}" alt="${esc(rewardCard.name)}"><b>${esc(rewardCard.name)}</b><span>${cardStats(rewardCard)}</span><em>AGREGADA A MI COLECCIÓN</em></div>`:`<p class="boss-card-reward-complete">Mazo rival ya completado en tu colección.</p>`;
