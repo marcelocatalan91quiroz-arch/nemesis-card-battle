@@ -3,14 +3,29 @@
   "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1",
   "set": "IMPERIO_DRAGON",
   "version": "19.4.0",
-  "estado": "EN_CONSTRUCCION_5_DE_20",
+  "estado": "PLANTILLA_MAESTRA_20_DE_20__ILUSTRACIONES_5_DE_20",
   "mecanica": "ASCENSION_DRACONICA",
   "deck_ids": [
     "IDR-001",
     "IDR-002",
     "IDR-003",
     "IDR-004",
-    "IDR-005"
+    "IDR-005",
+    "IDR-006",
+    "IDR-007",
+    "IDR-008",
+    "IDR-009",
+    "IDR-010",
+    "IDR-011",
+    "IDR-012",
+    "IDR-013",
+    "IDR-014",
+    "IDR-015",
+    "IDR-016",
+    "IDR-017",
+    "IDR-018",
+    "IDR-019",
+    "IDR-020"
   ],
   "cards": [
     {
@@ -169,11 +184,530 @@
       "img_original_conversation_file_id": "file_00000000216c820ea2794a404622d657",
       "img_game": "assets/images/dragon-dorado.png",
       "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
+    },
+    {
+      "id": "IDR-006",
+      "nombre": "Dragón Guardián de la Forja",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON",
+        "TIERRA"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 6,
+      "atk": 2500,
+      "def": 2800,
+      "copias_max": 2,
+      "habilidad": "ESCAMAS DE LA FORJA",
+      "estrategia": "Muro defensivo y protector del motor de Ascensión.",
+      "efectos": [
+        "Mientras esté en Campo, la primera carta Imperio Dragón que fuera a ser destruida cada turno no es destruida.",
+        "Cada vez que evita una destrucción, gana 1 Marca de Ascensión."
+      ],
+      "transformacion": {
+        "marcas": 3,
+        "destino": "Dragón Bastión de la Forja"
+      },
+      "img": "assets/images/imperio-dragon/idr-006.png",
+      "img_game": "assets/images/dragon-diamante.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-007",
+      "nombre": "Dragón Cazador Celeste",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "VIENTO",
+        "DRAGON",
+        "RAYO"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 6,
+      "atk": 2700,
+      "def": 1900,
+      "copias_max": 2,
+      "habilidad": "CAZA DESDE LAS NUBES",
+      "estrategia": "Atacante veloz que elimina soportes y abre el campo.",
+      "efectos": [
+        "Al ser Invocado, puede devolver 1 Mágica o Trampa rival a la mano.",
+        "Si el rival no controla cartas de apoyo, puede atacar directamente; el daño directo se reduce a la mitad."
+      ],
+      "transformacion": {
+        "marcas": 3,
+        "destino": "Dragón Tempestad Imperial"
+      },
+      "img": "assets/images/imperio-dragon/idr-007.png",
+      "img_game": "assets/images/dragon-dorado.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-008",
+      "nombre": "Dragón Primogénito del Imperio",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON",
+        "DIVINA"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "PANTEON_DIVINO"
+      ],
+      "rareza": "MITICA",
+      "nivel": 8,
+      "atk": 3200,
+      "def": 3000,
+      "copias_max": 1,
+      "habilidad": "MANDATO DEL PRIMOGÉNITO",
+      "estrategia": "Jefe del núcleo; acelera Ascensión y coordina todo el arquetipo.",
+      "efectos": [
+        "Al entrar al Campo, coloca 1 Marca de Ascensión en hasta 2 dragones aliados.",
+        "Una vez por turno, puedes retirar 1 Marca de Ascensión de una carta aliada para negar una reducción de ATK/DEF o una destrucción."
+      ],
+      "transformacion": {
+        "marcas": 4,
+        "destino": "Emperador Dragón NÉMESIS"
+      },
+      "img": "assets/images/imperio-dragon/idr-008.png",
+      "img_game": "assets/images/carta-dragon-ojo-del-diablo.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-009",
+      "nombre": "Dragón Carmesí Imperial",
+      "tipo": "TRANSFORMACION",
+      "subtipo": "ASCENSION",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "MITICA",
+      "nivel": 7,
+      "atk": 3200,
+      "def": 2600,
+      "copias_max": 1,
+      "habilidad": "CORONA CARMESÍ",
+      "estrategia": "Primera transformación del arquetipo; presión y daño explosivo.",
+      "efectos": [
+        "Solo puede aparecer transformando a Dragón Carmesí Joven con 2 Marcas de Ascensión.",
+        "Al transformarse, inflige 800 de daño directo.",
+        "Una vez por turno, si destruye una carta en batalla, gana 500 ATK permanente."
+      ],
+      "transformacion": {
+        "origen": "IDR-001",
+        "marcas": 2,
+        "destino": null
+      },
+      "img": "assets/images/imperio-dragon/idr-009.png",
+      "img_game": "assets/images/dragon-carmesi.webp",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-010",
+      "nombre": "Emperador Dragón NÉMESIS",
+      "tipo": "TRANSFORMACION",
+      "subtipo": "ASCENSION_SUPREMA",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON",
+        "DIVINA"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "PANTEON_DIVINO"
+      ],
+      "rareza": "ANCESTRAL",
+      "nivel": 10,
+      "atk": 4800,
+      "def": 4200,
+      "copias_max": 1,
+      "habilidad": "TRONO DE LOS MIL DRAGONES",
+      "estrategia": "Transformación suprema y condición de cierre del mazo.",
+      "efectos": [
+        "Solo puede aparecer transformando a Dragón Primogénito del Imperio con 4 Marcas de Ascensión.",
+        "Al transformarse, todas tus cartas Imperio Dragón ganan 700 ATK/DEF.",
+        "Una vez por duelo, destruye hasta 2 cartas rivales y este turno puede realizar un segundo ataque."
+      ],
+      "transformacion": {
+        "origen": "IDR-008",
+        "marcas": 4,
+        "destino": null
+      },
+      "img": "assets/images/imperio-dragon/idr-010.png",
+      "img_game": "assets/images/dragon-ojo-del-diablo.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-011",
+      "nombre": "Llamado de la Sangre Imperial",
+      "tipo": "MAGICA",
+      "subtipo": "NORMAL",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 5,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 2,
+      "habilidad": "CONVOCATORIA IMPERIAL",
+      "estrategia": "Consistencia: busca la criatura necesaria para iniciar o continuar Ascensión.",
+      "efectos": [
+        "Busca 1 criatura Imperio Dragón de Nivel 6 o menor y añádela a tu mano.",
+        "Si controlas una carta transformada, puedes además colocar 1 Marca de Ascensión en un dragón aliado."
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-011.png",
+      "img_game": "assets/images/magica-furia-abismo.webp",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-012",
+      "nombre": "Rugido de Ascensión",
+      "tipo": "MAGICA_RAPIDA",
+      "subtipo": "RESPUESTA",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 6,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 2,
+      "habilidad": "ASCENSIÓN INMEDIATA",
+      "estrategia": "Acelera transformaciones en respuesta a una amenaza.",
+      "efectos": [
+        "Selecciona 1 dragón aliado; gana 1 Marca de Ascensión.",
+        "Si con esa marca alcanza el requisito de transformación, puede transformarse inmediatamente antes de resolver la acción rival."
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-012.png",
+      "img_game": "assets/images/magica-escudo-caos.webp",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-013",
+      "nombre": "Cielo del Imperio Ardiente",
+      "tipo": "MAGICA_CAMPO",
+      "subtipo": "CAMPO",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON",
+        "VIENTO"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "MITICA",
+      "nivel": 7,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 1,
+      "habilidad": "DOMINIO DRACÓNICO",
+      "estrategia": "Campo central del arquetipo y fuente constante de presión.",
+      "efectos": [
+        "Todos tus dragones ganan 400 ATK/DEF.",
+        "La primera vez por turno que un dragón tuyo ataca, gana 1 Marca de Ascensión después del combate.",
+        "Si esta carta es destruida, roba 1 carta."
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-013.png",
+      "img_game": "assets/images/castillo-dragon-ojo-diablo.webp",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-014",
+      "nombre": "Contraataque de Escamas",
+      "tipo": "TRAMPA",
+      "subtipo": "NORMAL",
+      "afinidades": [
+        "DRAGON",
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON"
+      ],
+      "rareza": "EPICA",
+      "nivel": 5,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 2,
+      "habilidad": "ESCAMAS REACTIVAS",
+      "estrategia": "Defiende una criatura clave y castiga ataques superiores.",
+      "efectos": [
+        "Cuando un dragón aliado es atacado, gana 1200 DEF hasta el final del combate.",
+        "Si sobrevive, el atacante pierde 600 ATK hasta el final de su próximo turno."
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-014.png",
+      "img_game": "assets/images/trampa-calavera-muerta.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-015",
+      "nombre": "Ira del Último Dragón",
+      "tipo": "TRAMPA_RESPUESTA",
+      "subtipo": "RESPUESTA",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON",
+        "CAOS"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "CONTROL_ABSOLUTO"
+      ],
+      "rareza": "LEGENDARIA",
+      "nivel": 8,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 1,
+      "habilidad": "ÚLTIMO RUGIDO",
+      "estrategia": "Respuesta de emergencia cuando el campo está a punto de caer.",
+      "efectos": [
+        "Cuando una carta Imperio Dragón fuera a ser destruida por un efecto rival, niega esa destrucción.",
+        "Luego destruye 1 carta rival. Si la carta protegida estaba transformada, roba 1 carta."
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-015.png",
+      "img_game": "assets/images/trampa-calavera-muerta.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-016",
+      "nombre": "Espada Colmillo del Emperador",
+      "tipo": "ARMA",
+      "subtipo": "ESPADA_DRACONICA",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "ARSENAL_LEGENDARIO"
+      ],
+      "rareza": "MITICA",
+      "nivel": 7,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 1,
+      "habilidad": "FILO DEL EMPERADOR",
+      "estrategia": "Arma ofensiva para rematar combates y acelerar Ascensión.",
+      "efectos": [
+        "La criatura equipada gana 1400 ATK.",
+        "Cuando destruye una criatura en batalla, gana 1 Marca de Ascensión.",
+        "Una vez por duelo, su ataque ignora 50% de la DEF del objetivo."
+      ],
+      "bonos": {
+        "atk": 1400,
+        "def": 0
+      },
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-016.png",
+      "img_game": "assets/images/ancestral-lanza-solar-dorada.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-017",
+      "nombre": "Lanza de Ala Carmesí",
+      "tipo": "ARMA",
+      "subtipo": "LANZA_DRACONICA",
+      "afinidades": [
+        "FUEGO",
+        "VIENTO",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "ARSENAL_LEGENDARIO"
+      ],
+      "rareza": "LEGENDARIA",
+      "nivel": 8,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 1,
+      "habilidad": "PICADO IMPERIAL",
+      "estrategia": "Arma de precisión para dragones voladores y ataques directos.",
+      "efectos": [
+        "La criatura equipada gana 1000 ATK y 400 DEF.",
+        "Si tiene afinidad Viento o está transformada, puede atacar una segunda vez una vez por duelo.",
+        "El segundo ataque inflige como máximo 1500 de daño directo."
+      ],
+      "bonos": {
+        "atk": 1000,
+        "def": 400
+      },
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-017.png",
+      "img_game": "assets/images/ancestral-gran-lanza-bronce.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-018",
+      "nombre": "Corona del Primer Dragón",
+      "tipo": "RELIQUIA",
+      "subtipo": "IMPERIAL",
+      "afinidades": [
+        "DIVINA",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "PANTEON_DIVINO"
+      ],
+      "rareza": "ANCESTRAL",
+      "nivel": 9,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 1,
+      "habilidad": "HERENCIA DEL TRONO",
+      "estrategia": "Reliquia de control y motor de recursos para formas superiores.",
+      "efectos": [
+        "Una vez por turno, cuando coloques una Marca de Ascensión, puedes colocar una segunda marca en otra criatura distinta.",
+        "Tus cartas transformadas no pueden perder Marcas de Ascensión.",
+        "Si esta reliquia deja el Campo, recupera 1 carta Imperio Dragón del Cementerio a la mano."
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-018.png",
+      "img_game": "assets/images/reliquia-cristal-del-vacio.png",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-019",
+      "nombre": "Dragón Eclipse de la Corona",
+      "tipo": "FUSION",
+      "subtipo": "DRAGON_SUPREMO",
+      "afinidades": [
+        "FUEGO",
+        "OSCURIDAD",
+        "DRAGON"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "FUSION_NEMESIS"
+      ],
+      "rareza": "ANCESTRAL",
+      "nivel": 10,
+      "atk": 5200,
+      "def": 3800,
+      "copias_max": 1,
+      "habilidad": "ECLIPSE DRACÓNICO",
+      "estrategia": "Fusión agresiva que limpia soportes y convierte Ascensión en daño.",
+      "efectos": [
+        "Materiales: IDR-003 + IDR-004.",
+        "Al ser Invocada por Fusión, destruye todas las Mágicas y Trampas rivales.",
+        "Gana 300 ATK por cada Marca de Ascensión que tenían sus materiales al fusionarse.",
+        "Una vez por duelo, puede atacar a todos los monstruos rivales una vez cada uno."
+      ],
+      "materials": [
+        "IDR-003",
+        "IDR-004"
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-019.png",
+      "img_game": "assets/images/fusion-caotico-supremo.webp",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+    },
+    {
+      "id": "IDR-020",
+      "nombre": "NÉMESIS Dracónico — Emperador del Fin",
+      "tipo": "FUSION",
+      "subtipo": "FUSION_NEMESIS",
+      "afinidades": [
+        "FUEGO",
+        "DRAGON",
+        "DIVINA",
+        "CAOS"
+      ],
+      "arquetipos": [
+        "IMPERIO_DRAGON",
+        "FUSION_NEMESIS",
+        "PANTEON_DIVINO"
+      ],
+      "rareza": "NEMESIS_UNICA",
+      "nivel": 12,
+      "atk": 6500,
+      "def": 5500,
+      "copias_max": 1,
+      "habilidad": "APOCALIPSIS IMPERIAL",
+      "estrategia": "Carta final del arquetipo; recompensa haber completado la cadena de Ascensión.",
+      "efectos": [
+        "Materiales: 1 carta transformada Imperio Dragón + IDR-008.",
+        "Al ser Invocada, coloca el Campo Cielo del Imperio Ardiente desde Deck o Cementerio.",
+        "Una vez por duelo, destruye hasta 3 cartas rivales; por cada una destruida gana 500 ATK hasta el final del turno.",
+        "Si fuera destruida, puedes retirar 3 Marcas de Ascensión de tu Campo para evitarlo."
+      ],
+      "materials": [
+        "TRANSFORMADA_IMPERIO_DRAGON",
+        "IDR-008"
+      ],
+      "transformacion": null,
+      "img": "assets/images/imperio-dragon/idr-020.png",
+      "img_game": "assets/images/fusion-dragon-caos.webp",
+      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
     }
   ],
   "reglas_visuales": {
     "ataque": "Efectos elementales, cámara e impacto diferenciados.",
     "ascension": "Las Marcas de Ascensión deben mostrarse visualmente.",
     "transformacion": "La transformación cambia arte/modelo, aura, estadísticas y habilidades cuando exista su carta destino."
-  }
+  },
+  "composicion": {
+    "criaturas": [
+      "IDR-001",
+      "IDR-002",
+      "IDR-003",
+      "IDR-004",
+      "IDR-005",
+      "IDR-006",
+      "IDR-007",
+      "IDR-008"
+    ],
+    "transformaciones": [
+      "IDR-009",
+      "IDR-010"
+    ],
+    "magicas": [
+      "IDR-011",
+      "IDR-012",
+      "IDR-013"
+    ],
+    "trampas": [
+      "IDR-014",
+      "IDR-015"
+    ],
+    "armas": [
+      "IDR-016",
+      "IDR-017"
+    ],
+    "reliquias": [
+      "IDR-018"
+    ],
+    "fusiones": [
+      "IDR-019",
+      "IDR-020"
+    ]
+  },
+  "flujo_trabajo": "Cada nueva ilustración oficial se sustituye inmediatamente en su ID reservado y se valida en GitHub antes de continuar a la siguiente carta."
 }
