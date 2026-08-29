@@ -1,0 +1,8 @@
+{
+  "version": "19.4.0",
+  "release": "IMPERIO_DRAGON_20_20",
+  "production_branch": "main",
+  "release_commit": "46c81e26eca09f57406b3223dd7a907b54877d45",
+  "purpose": "Trigger Vercel production deployment after merge.",
+  "created_at": "2026-08-29T02:06:00-04:00"
+}
