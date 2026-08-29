@@ -2,6 +2,7 @@
   "version": "19.4.1",
   "release": "CARD_REGISTRY_HOTFIX",
   "production_branch": "main",
-  "purpose": "Trigger production after global card registry/image repair.",
-  "created_at": "2026-08-29T02:31:00-04:00"
+  "purpose": "Force production deployment of repaired global card registry and 20/20 Imperio Dragon visuals.",
+  "created_at": "2026-08-29T02:35:00-04:00",
+  "nonce": "release-pr-1"
 }
