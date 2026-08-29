@@ -1376,5 +1376,242 @@ window.NEMESIS_EXTERNAL_COLLECTION_33 = [
       "Eco del Fin Austral: si Onkolxón está en tu Cementerio, al inicio de tu turno recupera 1 Contador Austral.",
       "Guardián del Último Aliento: mientras controles 1 o menos cartas en Campo, no puede ser destruido por efectos del rival."
     ]
+  },
+  {
+    "id": "DM-011",
+    "nombre": "Alma de Afrodita",
+    "clase": "PERSONAJE_ALIADO",
+    "rareza": "ANCESTRAL_UNICA",
+    "atk": 8500,
+    "def": 12000,
+    "h": [
+      [
+        "Seducción del Alma",
+        "Una vez por turno, selecciona 1 criatura rival: no puede atacar a Alma de Afrodita y pierde 1500 ATK durante ese turno."
+      ],
+      [
+        "Vínculo de Afrodita",
+        "Una vez por turno, si un efecto rival fuera a destruir otra criatura Duel Master, anula esa destrucción."
+      ],
+      [
+        "Corazón Cautivo",
+        "Si permanece 3 turnos en Campo, toma temporalmente el control de 1 criatura rival durante 1 turno."
+      ]
+    ],
+    "familia": "DUEL_MASTER",
+    "habilidades": [
+      {
+        "nombre": "Seducción del Alma",
+        "efecto": "Una vez por turno, selecciona 1 criatura rival: no puede atacar a Alma de Afrodita y pierde 1500 ATK durante ese turno."
+      },
+      {
+        "nombre": "Vínculo de Afrodita",
+        "efecto": "Una vez por turno, si un efecto rival fuera a destruir otra criatura Duel Master, anula esa destrucción."
+      },
+      {
+        "nombre": "Corazón Cautivo",
+        "efecto": "Si permanece 3 turnos en Campo, toma temporalmente el control de 1 criatura rival durante 1 turno."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER"
+    ],
+    "img": "assets/images/external33/dm-011.svg"
+  },
+  {
+    "id": "DM-012",
+    "nombre": "Medusa",
+    "clase": "PERSONAJE_ALIADO",
+    "rareza": "MITICA",
+    "atk": 9000,
+    "def": 10500,
+    "h": [
+      [
+        "Mirada Petrificante",
+        "Una vez por turno, petrifica 1 criatura rival durante 1 turno: no puede atacar, activar habilidades ni cambiar de posición."
+      ],
+      [
+        "Reflejo de Gorgona",
+        "La primera vez por turno que un efecto enemigo seleccione a Medusa, devuelve ese efecto contra 1 criatura rival."
+      ],
+      [
+        "Galería de Piedra",
+        "Cada criatura rival petrificada concede +500 ATK y +500 DEF mientras Medusa permanezca en Campo, máximo +2000/+2000."
+      ]
+    ],
+    "familia": "DUEL_MASTER",
+    "habilidades": [
+      {
+        "nombre": "Mirada Petrificante",
+        "efecto": "Una vez por turno, petrifica 1 criatura rival durante 1 turno: no puede atacar, activar habilidades ni cambiar de posición."
+      },
+      {
+        "nombre": "Reflejo de Gorgona",
+        "efecto": "La primera vez por turno que un efecto enemigo seleccione a Medusa, devuelve ese efecto contra 1 criatura rival."
+      },
+      {
+        "nombre": "Galería de Piedra",
+        "efecto": "Cada criatura rival petrificada concede +500 ATK y +500 DEF mientras Medusa permanezca en Campo, máximo +2000/+2000."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER"
+    ],
+    "img": "assets/images/external33/dm-012.svg"
+  },
+  {
+    "id": "DM-013",
+    "nombre": "Arma del Tártaro",
+    "clase": "ARMA",
+    "rareza": "ANCESTRAL",
+    "atk_bonus": 3000,
+    "def_bonus": 2000,
+    "h": [
+      [
+        "Poder del Tártaro",
+        "La criatura equipada obtiene +3000 ATK y +2000 DEF."
+      ],
+      [
+        "Condena del Abismo",
+        "Las criaturas destruidas en combate por el portador quedan desterradas."
+      ],
+      [
+        "Cadenas del Tártaro",
+        "Después de atacar, una vez por turno encadena 1 criatura rival hasta el siguiente turno."
+      ],
+      [
+        "Precio del Tártaro",
+        "Si esta arma es destruida, absorbe la destrucción y protege al portador."
+      ]
+    ],
+    "familia": "DUEL_MASTER",
+    "habilidades": [
+      {
+        "nombre": "Poder del Tártaro",
+        "efecto": "La criatura equipada obtiene +3000 ATK y +2000 DEF."
+      },
+      {
+        "nombre": "Condena del Abismo",
+        "efecto": "Las criaturas destruidas en combate por el portador quedan desterradas."
+      },
+      {
+        "nombre": "Cadenas del Tártaro",
+        "efecto": "Después de atacar, una vez por turno encadena 1 criatura rival hasta el siguiente turno."
+      },
+      {
+        "nombre": "Precio del Tártaro",
+        "efecto": "Si esta arma es destruida, absorbe la destrucción y protege al portador."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER"
+    ],
+    "img": "assets/images/external33/dm-013.svg"
+  },
+  {
+    "id": "DM-014",
+    "nombre": "Antorcha del Olimpo",
+    "clase": "RELIQUIA",
+    "rareza": "ANCESTRAL",
+    "atk_bonus": 1000,
+    "def_bonus": 1000,
+    "h": [
+      [
+        "Llama Inmortal",
+        "Mientras esté activa, todas tus criaturas Duel Master obtienen +1000 ATK y +1000 DEF."
+      ],
+      [
+        "Fuego de los Olímpicos",
+        "Protege una vez por turno a una criatura olímpica de anulación o destrucción."
+      ],
+      [
+        "Llama del Renacimiento",
+        "Una vez por duelo revive 1 criatura Duel Master con 50% de su ATK y DEF."
+      ],
+      [
+        "Gloria del Olimpo",
+        "Con Zeus y Thor en Campo, ambos ganan +1000 ATK y no pueden ser petrificados ni encadenados."
+      ]
+    ],
+    "familia": "DUEL_MASTER",
+    "habilidades": [
+      {
+        "nombre": "Llama Inmortal",
+        "efecto": "Mientras esté activa, todas tus criaturas Duel Master obtienen +1000 ATK y +1000 DEF."
+      },
+      {
+        "nombre": "Fuego de los Olímpicos",
+        "efecto": "Protege una vez por turno a una criatura olímpica de anulación o destrucción."
+      },
+      {
+        "nombre": "Llama del Renacimiento",
+        "efecto": "Una vez por duelo revive 1 criatura Duel Master con 50% de su ATK y DEF."
+      },
+      {
+        "nombre": "Gloria del Olimpo",
+        "efecto": "Con Zeus y Thor en Campo, ambos ganan +1000 ATK y no pueden ser petrificados ni encadenados."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER"
+    ],
+    "img": "assets/images/external33/dm-014.svg"
+  },
+  {
+    "id": "DM-015",
+    "nombre": "Martillo de Thor",
+    "clase": "ARMA",
+    "rareza": "ANCESTRAL",
+    "atk_bonus": 2500,
+    "def_bonus": 1500,
+    "h": [
+      [
+        "Poder de Mjölnir",
+        "El portador obtiene +2500 ATK y +1500 DEF; si es Thor recibe además +1500 ATK."
+      ],
+      [
+        "Impacto del Trueno",
+        "El primer ataque del portador cada turno inflige 1000 de daño adicional al HP rival."
+      ],
+      [
+        "Retorno de Mjölnir",
+        "Si es destruido mientras Thor sigue en Campo, vuelve a equiparse a Thor una vez por duelo."
+      ],
+      [
+        "Tormenta de Asgard",
+        "Si Thor destruye una criatura con el Martillo, puede realizar un segundo ataque contra otra criatura."
+      ],
+      [
+        "Campeón del Trueno",
+        "Thor + Martillo de Thor + Antorcha del Olimpo: +1000 DEF y la primera anulación que intente detener su ataque es ignorada."
+      ]
+    ],
+    "familia": "DUEL_MASTER",
+    "habilidades": [
+      {
+        "nombre": "Poder de Mjölnir",
+        "efecto": "El portador obtiene +2500 ATK y +1500 DEF; si es Thor recibe además +1500 ATK."
+      },
+      {
+        "nombre": "Impacto del Trueno",
+        "efecto": "El primer ataque del portador cada turno inflige 1000 de daño adicional al HP rival."
+      },
+      {
+        "nombre": "Retorno de Mjölnir",
+        "efecto": "Si es destruido mientras Thor sigue en Campo, vuelve a equiparse a Thor una vez por duelo."
+      },
+      {
+        "nombre": "Tormenta de Asgard",
+        "efecto": "Si Thor destruye una criatura con el Martillo, puede realizar un segundo ataque contra otra criatura."
+      },
+      {
+        "nombre": "Campeón del Trueno",
+        "efecto": "Thor + Martillo de Thor + Antorcha del Olimpo: +1000 DEF y la primera anulación que intente detener su ataque es ignorada."
+      }
+    ],
+    "compatibilidad": [
+      "DUEL_MASTER"
+    ],
+    "img": "assets/images/external33/dm-015.svg"
   }
 ];
