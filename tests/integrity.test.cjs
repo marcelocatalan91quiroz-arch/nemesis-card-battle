@@ -74,3 +74,9 @@ A(game.includes('pcGraveCinematic(side,victim'),'destrucción conecta viaje visu
 A(game.includes('PC_ULTIMATE_IDS'),'registro de cartas Ultimate');
 A(game.includes('pcUltimateCinematic(attSide,ai'),'Ultimate conectado al combate real');
 A(game.includes('pcAttackSignature'),'firma visual de ataque disponible');
+
+// V19.5.4 — escenario físico y rendimiento
+A(game.includes('ARENA_SCAR'),'impactos dejan huellas temporales en arena');
+A(game.includes('pcPerformanceBudget'),'presupuesto VFX adaptativo');
+A(game.includes('pcTrimTransientFx'),'limpieza automática de VFX transitorios');
+A(game.includes("graphicsMode==='NEMESIS'?180"),'perfil NÉMESIS dispone de presupuesto VFX PC alto');
