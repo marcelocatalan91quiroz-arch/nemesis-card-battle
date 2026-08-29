@@ -2720,7 +2720,12 @@ async function applyExternalMagic(side,c){
  return true
 }
 
-function skillFor(c){if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
+function skillFor(c){if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect')return null;const custom={
+ 'apolo-guardian-solar':{name:'SANTUARIO DEL SOL',kind:'solarShield',value:2,onceDuel:true,desc:'Crea Escudo Solar durante 2 turnos y protege los HP de ataques directos.'},
+ 'esp-espectro-cripta':{name:'FORMA ETÉREA',kind:'shield',value:900,desc:'Refuerza su forma espectral con +900 DEF para el próximo ataque.'},
+ 'esp-verdugo-almas':{name:'COSECHA MORTAL',kind:'attack',value:900,desc:'La cosecha de almas concede +900 ATK durante este turno.'},
+ 'esp-doncella-tumba':{name:'LLAMADO DEL MÁS ALLÁ',kind:'heal',value:700,desc:'Canaliza las almas y recupera 700 HP de su invocador.'},
+ 'esp-dragon-abismo':{name:'DOMINIO DEL ABISMO',kind:'attack',value:1000,desc:'El Dragón del Abismo obtiene +1000 ATK durante este turno.'},
  'dios-jupiter':{name:'ESCUDO SOLAR',kind:'solarShield',value:2,desc:'Durante 2 turnos, el rival no puede atacar directamente a tus HP.'},
  'zeus-emperador-rayo':{name:'CASTIGO CELESTIAL',kind:'destroyEquipment',value:1,onceDuel:true,desc:'Una vez por duelo, destruye 1 arma, armadura o reliquia enemiga. Zeus todavía puede atacar.'},
  'kronos-devorador-tiempo':{name:'DETENER EL TIEMPO',kind:'stopTime',value:1,onceDuel:true,desc:'Una vez por duelo, el rival pierde su siguiente turno completo.'},
@@ -3749,6 +3754,21 @@ const NEMESIS_EFFECT_ROUTING=Object.freeze({
  hadesThresholdWatch:'HADES_MODO_DIOS_II'
 });
 window.NEMESIS_EFFECT_ROUTING=NEMESIS_EFFECT_ROUTING;
+window.NEMESIS_EFFECT_RUNTIME_AUDIT=()=>({
+ total:9,
+ effects:{
+  etherealForm:!!skillFor(card('esp-espectro-cripta')),
+  mortalHarvest:!!skillFor(card('esp-verdugo-almas')),
+  beyondCall:!!skillFor(card('esp-doncella-tumba')),
+  abyssDragon:!!skillFor(card('esp-dragon-abismo')),
+  aresConqueror:!!skillFor(card('anc-ares')),
+  apoloSolarGuardian:!!skillFor(card('apolo-guardian-solar')),
+  hadesDeepSleep:typeof hadesControlAi==='function',
+  hadesGuiltWhip:typeof hadesControlAi==='function',
+  hadesThresholdWatch:typeof hadesThresholdAi==='function'
+ },
+ get ok(){return Object.values(this.effects).every(Boolean)}
+});
 
 
 window.NEMESIS_ARCHITECTURE_RULES=Object.freeze({
