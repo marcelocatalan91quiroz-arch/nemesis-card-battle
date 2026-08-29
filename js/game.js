@@ -287,9 +287,16 @@ const IMPERIO_DRAGON_CARDS=[
  {id:"IDR-020",name:"NÉMESIS Dracónico — Emperador del Fin",atk:6500,def:5500,type:"fusion",family:'imperio-dragon',tags:["fuego","dragon","divina","caos"],rarity:"nemesis_unica",effect:"idr_020",img:"assets/images/fusion-dragon-caos.webp",desc:"APOCALIPSIS IMPERIAL: Carta final del arquetipo; recompensa haber completado la cadena de Ascensión. Materiales: 1 carta transformada Imperio Dragón + IDR-008. Al ser Invocada, coloca el Campo Cielo del Imperio Ardiente desde Deck o Cementerio. Una vez por duelo, destruye hasta 3 cartas rivales; por cada una destruida gana 500 ATK hasta el final del turno. Si fuera destruida, puedes retirar 3 Marcas de Ascensión de tu Campo para evitarlo.",materials:["TRANSFORMADA_IMPERIO_DRAGON","IDR-008"],idrSlot:true,idrOfficialImage:"assets/images/imperio-dragon/idr-020.png",idrImageStatus:"PENDIENTE_ILUSTRACION_OFICIAL"}
 ];
 const IMPERIO_DRAGON_DECK_IDS=IMPERIO_DRAGON_CARDS.map(c=>c.id);
-const CARDS=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...NEW_CARDS,...DRAGON_OJO_CARDS,...ANCESTRAL_CARDS,...SPECTRAL_CARDS,...REY_ESPECTRAL_CARDS,...DIOS_FANTASMA_CARDS,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
+// V19.4.1 — REGISTRO ÚNICO DE CARTAS.
+// Varias familias ya estaban incluidas dentro de COLLECTIBLE_CARDS y se volvían a
+// concatenar aquí. Eso generaba IDs repetidos y hacía que card(id) resolviera
+// versiones equivocadas. Se construye una sola fuente por ID, conservando la
+// primera definición oficial y agregando únicamente familias todavía no incluidas.
+const CARDS_RAW=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
+const CARDS=[...new Map(CARDS_RAW.map(c=>[c.id,c])).values()];
 const AS={tirano:'assets/images/img-10.webp',guardian:'assets/images/guardian-dragones.webp',bg1:'assets/images/img-12.webp',bg2:'assets/images/img-13.webp',dragonOjo:'assets/images/dragon-ojo-del-diablo.png',dragonOjoBg:'assets/images/castillo-dragon-ojo-diablo.webp',iraRa:'assets/images/ira-de-ra-jefe.png',iraRaBg:'assets/images/ruinas-piramide-ira-ra.png',caballeroAlmas:'assets/images/caballero-de-las-almas.png',caballeroAlmasBg:'assets/images/reino-espectral-cinematico.png',reyEspectral:'assets/images/rey-espectral.png',reyEspectralBg:'assets/images/reino-espectral-cinematico.png'};
-CARDS.push(...UNIQUE_CARD_DEFS);
+// Las ÚNICAS se agregan también sin permitir colisión de ID.
+UNIQUE_CARD_DEFS.forEach(c=>{if(!CARDS.some(x=>x.id===c.id))CARDS.push(c)});
 
 const NEMESIS_TREASURE_PRICE=1000;
 const NEMESIS_TREASURE_CARDS=[
@@ -329,8 +336,8 @@ function v18918LoadMemoryCard(){
   const mc=JSON.parse(raw);
   if(mc&&typeof mc==='object'){
    if(Number.isFinite(Number(mc.stars))) state.stars=Math.max(0,Math.floor(Number(mc.stars)));
-   if(Array.isArray(mc.owned)) state.owned=mc.owned.filter(id=>typeof id==='string');
-   if(Array.isArray(mc.deck)) state.deck=mc.deck.filter(id=>typeof id==='string').slice(0,11);
+   if(Array.isArray(mc.owned)) state.owned=nemesisNormalizeCardIds(mc.owned);
+   if(Array.isArray(mc.deck)) state.deck=nemesisNormalizeCardIds(mc.deck,11);
    if(['guardian','dragon-ojo-diablo','ira-ra','campaign1-complete','campaign2-intro','campaign2-hub'].includes(mc.campaignStage))state.campaignStage=mc.campaignStage;
    if(typeof mc.guardianDefeated==='boolean')state.guardianDefeated=mc.guardianDefeated;
    if(typeof mc.dragonDefeated==='boolean')state.dragonDefeated=mc.dragonDefeated;
@@ -484,6 +491,24 @@ if(!state.activeDeckName)state.activeDeckName='OLIMPO';
 function card(id){
  return CARDS.find(c=>c.id===id);
 }
+
+// V19.4.1 — saneamiento de Memory Card: elimina IDs inexistentes/repetidos
+// sin borrar progreso ni cartas válidas del jugador.
+function nemesisNormalizeCardIds(ids,limit=Infinity){
+ const out=[],seen=new Set();
+ for(const id of Array.isArray(ids)?ids:[]){
+  if(seen.has(id)||!card(id))continue;
+  seen.add(id);out.push(id);
+  if(out.length>=limit)break;
+ }
+ return out;
+}
+window.NEMESIS_CARD_REGISTRY_AUDIT=()=>({
+ total:CARDS.length,
+ uniqueIds:new Set(CARDS.map(c=>c.id)).size,
+ duplicateIds:CARDS.length-new Set(CARDS.map(c=>c.id)).size,
+ missingImages:CARDS.filter(c=>!c.img).map(c=>c.id)
+});
 
 
 // V19.1 — MOTOR AISLADO DEL SANTUARIO
