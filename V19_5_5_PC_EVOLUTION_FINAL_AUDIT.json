@@ -48,5 +48,6 @@
     "Playwright E2E"
   ],
   "limitation": "Esta auditoría desde GitHub valida estructura, referencias y cobertura estática. Los scripts npm/Playwright no se ejecutaron dentro del conector GitHub; por eso no se declara E2E runtime PASS hasta ejecutar la suite en un runner/browser.",
-  "release_gate": "No promover a producción ni iniciar Duel Master Online hasta obtener test:static PASS y test:e2e PASS sobre esta rama."
+  "release_gate": "No promover a producción ni iniciar Duel Master Online hasta obtener test:static PASS y test:e2e PASS sobre esta rama.",
+  "test_gate_trigger": "2026-08-29T03:46:00-04:00"
 }
