@@ -696,10 +696,10 @@ window.sanctuaryScene=sanctuaryScene;
 const NEMESIS_RETRY_ROSTER=Object.freeze([
  {id:'guardian',name:'Guardián de los Dragones',role:'GUARDIÁN',flag:'guardianDefeated',reward:100,img:AS.guardian,battleKey:null},
  {id:'dragon-ojo',name:'Dragón Ojo del Diablo',role:'JEFE',flag:'dragonDefeated',reward:200,img:'assets/images/dragon-ojo-del-diablo.png',battleKey:'dragon-ojo'},
- {id:'ira-ra',name:'Ira de Ra',role:'JEFE',flag:'raDefeated',reward:200,img:'assets/images/ira-de-ra.png',battleKey:'ira-ra'},
+ {id:'ira-ra',name:'Ira de Ra',role:'JEFE',flag:'raDefeated',reward:200,img:'assets/images/ira-de-ra-jefe.png',battleKey:'ira-ra'},
  {id:'caballero-almas',name:'Caballero de las Almas',role:'GUARDIÁN',flag:'caballeroAlmasDefeated',reward:100,img:AS.caballeroAlmas,battleKey:'caballero-almas'},
  {id:'rey-espectral',name:'Rey Espectral',role:'JEFE',flag:'reyEspectralDefeated',reward:200,img:AS.reyEspectral,battleKey:'rey-espectral'},
- {id:'dios-fantasma',name:'Dios Fantasma',role:'JEFE',flag:'diosFantasmaDefeated',reward:200,img:'assets/images/dios-fantasma.png',battleKey:'dios-fantasma'},
+ {id:'dios-fantasma',name:'Dios Fantasma',role:'JEFE',flag:'diosFantasmaDefeated',reward:200,img:'assets/images/dios-fantasma/dios-fantasma.png',battleKey:'dios-fantasma'},
  {id:'ares',name:'Ares',role:'JEFE',flag:'aresDefeated',reward:200,img:'assets/images/campaign3/ares/ares-personaje.png',battleKey:'ares'},
  {id:'hades',name:'Hades',role:'JEFE',flag:'hadesDefeated',reward:200,img:'assets/images/campaign3/hades/hades-personaje.png',battleKey:'hades'}
 ]);
