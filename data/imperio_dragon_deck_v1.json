@@ -39,7 +39,10 @@
       "transformacion": {
         "marcas": 2,
         "destino": "Dragón Carmesí Imperial"
-      }
+      },
+      "img_original_conversation_file_id": "file_000000008548820ebec9930059105586",
+      "img_game": "assets/images/dragon-carmesi.webp",
+      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
     },
     {
       "id": "IDR-002",
@@ -68,7 +71,10 @@
       "transformacion": {
         "marcas": 3,
         "destino": "Dragón Guerrero Escarlata Supremo"
-      }
+      },
+      "img_original_conversation_file_id": "file_00000000fe90820eb480c145be6a9bc0",
+      "img_game": "assets/images/dragon-infernal-sangre.webp",
+      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
     },
     {
       "id": "IDR-003",
@@ -96,7 +102,10 @@
       "transformacion": {
         "marcas": 2,
         "destino": "Dragón Llamasangre Supremo"
-      }
+      },
+      "img_original_conversation_file_id": "file_0000000004ec820e98965bd89a62ab56",
+      "img_game": "assets/images/dragon-negro-ruinas.webp",
+      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
     },
     {
       "id": "IDR-004",
@@ -125,7 +134,10 @@
       "transformacion": {
         "marcas": 3,
         "destino": "Dragón Obsidiana Escamarreal Supremo"
-      }
+      },
+      "img_original_conversation_file_id": "file_00000000f718820e968ae0f9a270842d",
+      "img_game": "assets/images/dragon-abisal.webp",
+      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
     },
     {
       "id": "IDR-005",
@@ -153,7 +165,10 @@
       "transformacion": {
         "marcas": 3,
         "destino": "Dragón Alas de Tormenta Supremo"
-      }
+      },
+      "img_original_conversation_file_id": "file_00000000216c820ea2794a404622d657",
+      "img_game": "assets/images/dragon-dorado.png",
+      "imagen_estado": "ORIGINAL_RECUPERADA_FUENTE_CHAT__FALLBACK_REPO_ACTIVO"
     }
   ],
   "reglas_visuales": {
