@@ -2,7 +2,7 @@
 'use strict';
 const API='/api/online1v1';
 const SESSION_KEY='nemesis_online1v1_session';
-let pollTimer=null,lastPing=0,lastVersion=0,current=null;
+let pollTimer=null,lastPing=0,lastVersion=0,current=null,dmSelectedCard=null,dmSelectedAttacker=null;
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const api=async(body,method='POST')=>{
@@ -98,6 +98,84 @@ function renderRoom(room){
  document.getElementById('olLeave').onclick=async()=>{stopPoll();try{await api({action:'leave',code:current.code,token:current.token})}catch(_){}clearSession();location.reload()};
  updateRoom(room);schedulePoll();
 }
+
+function dmCardHtml(card,extra=''){
+ if(!card)return '<div class="dm-empty"></div>';
+ return `<article class="dm-card ${extra}" data-card="${esc(card.id)}"><img src="${esc(card.img||'')}" alt="${esc(card.name||card.id)}"><div><b>${esc(card.name||card.id)}</b><span>ATK ${Number(card.atk||0).toLocaleString('es-CL')} · DEF ${Number(card.def||0).toLocaleString('es-CL')}</span></div></article>`;
+}
+function dmMonsterZones(cards=[],side='me'){
+ return cards.map((card,i)=>`<button class="dm-zone monster ${card?'occupied':''}" data-zone="${i}" data-side="${side}">${card?dmCardHtml(card):'<span>MONSTRUO '+(i+1)+'</span>'}</button>`).join('');
+}
+function dmSupportZones(cards=[],side='me'){
+ return cards.map((slot,i)=>`<button class="dm-zone support ${slot?'occupied':''}" data-support-zone="${i}" data-side="${side}">${slot?(slot.faceDown?'<div class="dm-cardback">NÉMESIS</div>':dmCardHtml(slot.card)):'<span>SOPORTE '+(i+1)+'</span>'}</button>`).join('');
+}
+function dmLogHtml(log=[]){
+ return log.slice().reverse().slice(0,12).map(x=>`<div><b>${esc(x.type)}</b><span>${esc(x.seat)}</span></div>`).join('')||'<p>Duelo iniciado.</p>';
+}
+async function dmSend(payload){
+ try{
+  const j=await api({action:'duel',code:current.code,token:current.token,...payload});
+  dmSelectedCard=null;dmSelectedAttacker=null;updateRoom(j.room);
+ }catch(e){
+  const box=document.getElementById('dmNotice');
+  if(box)box.textContent=errorText(e.message)||e.message;
+ }
+}
+function renderDuelMasterBoard(room){
+ const d=room.duel;if(!d)return;
+ const me=d.me,op=d.opponent,myName=room.me.name,opName=room.players.find(p=>p.id!==room.me.id)?.name||'Rival';
+ const active=d.isMyTurn&&d.phase!=='END';
+ document.getElementById('app').innerHTML=`<section class="dm-online-board">
+  <div class="dm-board-bg"></div>
+  <header class="dm-hud">
+   <button id="dmLeave" class="dm-exit">← SALIR</button>
+   <div class="dm-player-hud rival"><small>${esc(opName)}</small><b>HP ${op.hp.toLocaleString('es-CL')}</b><span>Mano ${op.handCount} · Deck ${op.deckCount} · Cementerio ${op.graveCount}</span></div>
+   <div class="dm-center-hud"><small>DUEL MASTER ONLINE</small><b>TURNO ${d.turn}</b><span>${d.phase==='END'?'DUELO FINALIZADO':active?'TU TURNO':'TURNO RIVAL'}</span></div>
+   <div class="dm-player-hud me"><small>${esc(myName)}</small><b>HP ${me.hp.toLocaleString('es-CL')}</b><span>Deck ${me.deckCount} · Cementerio ${me.graveCount}</span></div>
+   <div class="dm-netstate"><b>${lastPing} ms</b><span>${esc(room.transport)}</span></div>
+  </header>
+  <main class="dm-arena">
+   <section class="dm-side opponent">
+    <div class="dm-zone-label">RIVAL · SOPORTES / ARMAS / TRAMPAS</div><div class="dm-zone-row supports">${dmSupportZones(op.supports,'op')}</div>
+    <div class="dm-zone-label">RIVAL · CAMPO</div><div class="dm-zone-row monsters">${dmMonsterZones(op.monsters,'op')}</div>
+   </section>
+   <div class="dm-midline"><span>◈</span><b>${active?'FASE PRINCIPAL':'ESPERANDO ACCIÓN RIVAL'}</b><span>◈</span></div>
+   <section class="dm-side player">
+    <div class="dm-zone-row monsters">${dmMonsterZones(me.monsters,'me')}</div><div class="dm-zone-label">TU CAMPO</div>
+    <div class="dm-zone-row supports">${dmSupportZones(me.supports,'me')}</div><div class="dm-zone-label">TUS SOPORTES / ARMAS / TRAMPAS</div>
+   </section>
+  </main>
+  <aside class="dm-tactical-panel">
+   <header><b>CONTROL TÁCTICO</b><span>${active?'SERVIDOR AUTORIZA ACCIONES':'BLOQUEADO · TURNO RIVAL'}</span></header>
+   <div id="dmNotice" class="dm-notice">${d.phase==='END'?(d.winnerSeat===d.mySeat?'VICTORIA':'DERROTA'):(dmSelectedCard?'Carta seleccionada: '+esc(dmSelectedCard):dmSelectedAttacker!==null?'Atacante seleccionado · elige objetivo rival':'Selecciona una carta o una criatura')}</div>
+   <button id="dmDirect" ${!active||dmSelectedAttacker===null||op.monsters.some(Boolean)?'disabled':''}>ATAQUE DIRECTO</button>
+   <button id="dmEnd" ${!active?'disabled':''}>FINALIZAR TURNO</button>
+   <div class="dm-eventlog">${dmLogHtml(d.log)}</div>
+  </aside>
+  <section class="dm-hand-wrap"><div class="dm-hand-title"><b>TU MANO · ${me.hand.length}</b><span>Haz clic y luego elige una zona válida.</span></div><div class="dm-hand">${me.hand.map(card=>dmCardHtml(card,dmSelectedCard===card.id?'selected':'')).join('')}</div></section>
+ </section>`;
+ document.getElementById('dmLeave').onclick=async()=>{stopPoll();try{await api({action:'leave',code:current.code,token:current.token})}catch(_){}clearSession();location.reload()};
+ document.querySelectorAll('.dm-hand .dm-card').forEach(el=>el.onclick=()=>{if(!active)return;dmSelectedCard=el.dataset.card;dmSelectedAttacker=null;renderDuelMasterBoard(room)});
+ document.querySelectorAll('.dm-zone[data-side="me"][data-zone]').forEach(el=>el.onclick=()=>{
+   if(!active)return;
+   const z=Number(el.dataset.zone);
+   if(dmSelectedCard){
+     const card=me.hand.find(x=>x.id===dmSelectedCard);if(card?.kind==='MONSTER')dmSend({duelAction:'play',cardId:dmSelectedCard,zone:z});
+   }else if(me.monsters[z]){dmSelectedAttacker=z;dmSelectedCard=null;renderDuelMasterBoard(room)}
+ });
+ document.querySelectorAll('.dm-zone[data-side="me"][data-support-zone]').forEach(el=>el.onclick=()=>{
+   if(!active||!dmSelectedCard)return;
+   const card=me.hand.find(x=>x.id===dmSelectedCard);if(card?.kind==='SUPPORT')dmSend({duelAction:'play',cardId:dmSelectedCard,zone:Number(el.dataset.supportZone),faceDown:true});
+ });
+ document.querySelectorAll('.dm-zone[data-side="op"][data-zone]').forEach(el=>el.onclick=()=>{
+   if(!active||dmSelectedAttacker===null||!op.monsters[Number(el.dataset.zone)])return;
+   dmSend({duelAction:'attack',from:dmSelectedAttacker,target:Number(el.dataset.zone)});
+ });
+ document.getElementById('dmDirect').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'attack',from:dmSelectedAttacker,target:null})};
+ document.getElementById('dmEnd').onclick=()=>{if(active)dmSend({duelAction:'end_turn'})};
+ current.room=room;saveSession();
+}
+
 function statusText(r){
  if(r.status==='WAITING')return 'Esperando a un segundo jugador';
  if(r.status==='READY')return 'Rival conectado · ambos deben confirmar';
@@ -108,6 +186,7 @@ function statusText(r){
 }
 function eventsHtml(events=[]){return events.slice().reverse().slice(0,10).map(e=>`<div><time>#${e.seq}</time><b>${esc(e.type)}</b><span>${esc(e.seat)}</span></div>`).join('')||'<p>Esperando eventos…</p>'}
 function updateRoom(room){
+ if((room.status==='ACTIVE'||room.status==='ENDED')&&room.duel){renderDuelMasterBoard(room);return}
  if(!document.getElementById('olSession'))return renderRoom(room);
  lastVersion=room.version||lastVersion;
  const me=room.me,op=room.players.find(p=>p.id!==me.id);
@@ -124,7 +203,7 @@ function updateRoom(room){
  const cd=document.getElementById('olCountdown');
  if(room.status==='COUNTDOWN'&&room.countdownAt){
   const sec=Math.max(0,Math.ceil((room.countdownAt-room.serverTime)/1000));cd.innerHTML=`<b>${sec||'GO'}</b><span>ENLACE DE ARENA</span>`;
- }else if(room.status==='ACTIVE'){cd.innerHTML='<b>ONLINE</b><span>BASE 1 VS 1 LISTA · DUEL MASTER PENDIENTE DE INTEGRACIÓN</span>'}
+ }else if(room.status==='ACTIVE'){cd.innerHTML='<b>ONLINE</b><span>DUEL MASTER ONLINE CONECTADO</span>'}
  else cd.innerHTML='';
  current.room=room;saveSession();
 }
@@ -141,5 +220,5 @@ function schedulePoll(){
   schedulePoll();
  },1200);
 }
-window.NEMESIS_ONLINE_1V1={open:()=>onlineHome(menuName()),resume:()=>{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');if(s)resume(s)},version:'1.0.0'};
+window.NEMESIS_ONLINE_1V1={open:()=>onlineHome(menuName()),resume:()=>{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');if(s)resume(s)},version:'2.0.0'};
 })();

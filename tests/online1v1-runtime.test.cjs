@@ -51,6 +51,32 @@ function invoke({method='POST',query={},body={}}={}){
  assert.equal(sync.status,200);
  assert.equal(sync.payload.room.status,'ACTIVE');
 
+ assert.equal(sync.payload.room.duel.mode,'DUEL_MASTER');
+ assert.equal(sync.payload.room.duel.me.hand.length,5);
+ assert.equal(sync.payload.room.duel.me.monsters.length,5);
+ assert.equal(sync.payload.room.duel.me.supports.length,5);
+
+ const firstMonster=sync.payload.room.duel.me.hand.find(c=>c.kind==='MONSTER');
+ const firstSupport=sync.payload.room.duel.me.hand.find(c=>c.kind==='SUPPORT');
+ if(firstMonster){
+  const play=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'play',cardId:firstMonster.id,zone:0}});
+  assert.equal(play.status,200);
+  assert.equal(play.payload.room.duel.me.monsters[0].id,firstMonster.id);
+ }
+ if(firstSupport){
+  const sup=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'play',cardId:firstSupport.id,zone:0,faceDown:true}});
+  assert.equal(sup.status,200);
+  assert.equal(sup.payload.room.duel.me.supports[0].faceDown,true);
+ }
+ const end=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'end_turn'}});
+ assert.equal(end.status,200);
+ assert.equal(end.payload.room.duel.activeSeat,'GUEST');
+ assert.equal(end.payload.room.duel.opponent.handCount,6);
+
+ const wrongTurn=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'end_turn'}});
+ assert.equal(wrongTurn.status,409);
+ assert.equal(wrongTurn.payload.error,'NOT_YOUR_TURN');
+
  const evt=await invoke({body:{action:'event',code,token:b.payload.token,type:'CLIENT_READY_FOR_DUELMASTER',payload:{deck:'DUEL_MASTER'}}});
  assert.equal(evt.status,200);
  assert.ok(evt.payload.room.events.some(e=>e.type==='CLIENT_READY_FOR_DUELMASTER'));
@@ -58,5 +84,5 @@ function invoke({method='POST',query={},body={}}={}){
  const bad=await invoke({body:{action:'sync',code,token:'token-invalido'}});
  assert.equal(bad.status,403);
 
- console.log('NÉMESIS ONLINE 1V1 RUNTIME 2 PLAYERS: PASS');
+ console.log('NÉMESIS DUEL MASTER ONLINE 1V1 RUNTIME 2 PLAYERS: PASS');
 })().catch(err=>{console.error(err);process.exit(1)});
