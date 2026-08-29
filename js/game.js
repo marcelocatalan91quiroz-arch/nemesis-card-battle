@@ -1100,7 +1100,7 @@ function pcEvolutionImpact(c,pos,intensity=1){
  if(!pcParticles||!pos)return;const style=PC_ELEMENT_STYLE[pcEvolutionElement(c)]||PC_ELEMENT_STYLE.void;
  burst(pos,style.color,Math.round(42*graphicsParticleMultiplier*intensity));
  const ring=new THREE.Mesh(new THREE.RingGeometry(.45,1.35,64),new THREE.MeshBasicMaterial({color:style.color,transparent:true,opacity:.82,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
- ring.rotation.x=-Math.PI/2;ring.position.copy(pos);ring.position.y+=.09;scene.add(ring);pcElementSystems.push(ring);ring.userData={kind:'CINEMATIC_RING',birth:performance.now(),life:720,spin:3.1,opacity:.82};
+ ring.rotation.x=-Math.PI/2;ring.position.copy(pos);ring.position.y+=.09;scene.add(ring);pcElementSystems.push(ring);pcTrimTransientFx();ring.userData={kind:'CINEMATIC_RING',birth:performance.now(),life:720,spin:3.1,opacity:.82};
 }
 window.NEMESIS_PC_EVOLUTION={version:'1.0',profiles:Object.keys(GRAPHICS_PROFILES),elements:Object.keys(PC_ELEMENT_STYLE),features:['4K','120FPS','PBR_LIGHTING','ELEMENT_VFX','CINEMATIC_CAMERA','TRANSFORMATION_VFX','EQUIPMENT_3D','ADAPTIVE_QUALITY','FULLSCREEN']};
 function pcCinematicProfile(c){return c&&PC_CINEMATIC_PROFILES[c.id]||null}
@@ -1579,6 +1579,15 @@ function pcBuildElementProjectile(element,color){
  else core=new THREE.Mesh(new THREE.SphereGeometry(.27,14,10),mat);
  group.add(core);const light=new THREE.PointLight(color,element==='LIGHT'?15:10,4.5,2);group.add(light);group.userData.spin=element==='LIGHTNING'?8:4;return group;
 }
+
+function pcPerformanceBudget(){
+ const p=GRAPHICS_PROFILES[graphicsMode]||GRAPHICS_PROFILES.ALTA;
+ const mobile=innerWidth<900||/Android|iPhone|iPad/i.test(navigator.userAgent);
+ return {maxFx:mobile?45:graphicsMode==='NEMESIS'?180:graphicsMode==='ULTRA'?130:90,particle:p.particles,mobile};
+}
+function pcTrimTransientFx(){
+ const b=pcPerformanceBudget();while(pcElementSystems.length>b.maxFx){const o=pcElementSystems.shift();pcDisposeObject3D(o)}
+}
 async function pcLaunchElementProjectile(from,to,element,color,duration=260){
  if(!pcParticles||graphicsParticleMultiplier<=0)return;
  const q=pcBuildElementProjectile(element,color);q.position.copy(from);scene.add(q);
@@ -1590,11 +1599,21 @@ async function pcLaunchElementProjectile(from,to,element,color,duration=260){
 }
 function pcElementImpactFx(element,point,color,destruction=false){
  color=pcElementColor(element,color);v1892Shockwave(point.x,point.z,color);
+ // Huella física breve sobre la arena: cada elemento deja una marca distinta.
+ if(point&&graphicsMode!=='MEDIA'){
+  let geo;
+  if(element==='ICE')geo=new THREE.CircleGeometry(destruction?.72:.48,6);
+  else if(element==='LIGHTNING')geo=new THREE.RingGeometry(.12,destruction?.72:.52,10);
+  else if(element==='FIRE'||element==='BLOOD')geo=new THREE.CircleGeometry(destruction?.68:.46,18);
+  else geo=new THREE.RingGeometry(.20,destruction?.70:.50,28);
+  const decal=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.26,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
+  decal.rotation.x=-Math.PI/2;decal.position.copy(point);decal.position.y=.035;scene.add(decal);pcElementSystems.push(decal);pcTrimTransientFx();decal.userData={kind:'ARENA_SCAR',birth:performance.now(),life:graphicsMode==='NEMESIS'?2600:1500,spin:.12,opacity:.26};
+ }
  const n=isRa?(destruction?10:8):(destruction?22:14);v184CrearChispas(point,color,n);burst(point,color,n);
  if(element==='FIRE'||element==='BLOOD')sfx('fire');else if(element==='LIGHTNING')sfx('thunder');else sfx('impact');
  // Forma secundaria exclusiva por elemento, breve y de bajo coste.
  let geo;if(element==='ICE')geo=new THREE.RingGeometry(.18,.52,6);else if(element==='LIGHTNING')geo=new THREE.RingGeometry(.12,.68,12);else if(element==='DARK'||element==='COSMIC')geo=new THREE.TorusGeometry(.42,.055,8,24);else geo=new THREE.RingGeometry(.22,.60,24);
- const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.82,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));m.position.copy(point);m.rotation.x=-Math.PI/2;scene.add(m);pcElementSystems.push(m);m.userData={birth:performance.now(),life:destruction?720:480,spin:element==='COSMIC'?3:1.2,opacity:.82};
+ const m=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color,transparent:true,opacity:.82,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));m.position.copy(point);m.rotation.x=-Math.PI/2;scene.add(m);pcElementSystems.push(m);pcTrimTransientFx();m.userData={birth:performance.now(),life:destruction?720:480,spin:element==='COSMIC'?3:1.2,opacity:.82};
 }
 
 async function attackAnim(side,i,targetSide,targetI,c,damage){
@@ -3689,7 +3708,7 @@ function pcEquipmentCinematic(side,i,kind,meta){
 function pcGraveCinematic(side,c,point){
  if(!point||!c)return;pcDestructionFx(pcEvolutionElement(c),point);
  const beam=new THREE.Mesh(new THREE.CylinderGeometry(.035,.18,2.8,16,1,true),new THREE.MeshBasicMaterial({color:0x9b55ff,transparent:true,opacity:.55,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));
- beam.position.copy(point);beam.position.y+=1.1;scene.add(beam);pcElementSystems.push(beam);beam.userData={kind:'GRAVE_BEAM',birth:performance.now(),life:720,spin:1.2,opacity:.55};
+ beam.position.copy(point);beam.position.y+=1.1;scene.add(beam);pcElementSystems.push(beam);pcTrimTransientFx();beam.userData={kind:'GRAVE_BEAM',birth:performance.now(),life:720,spin:1.2,opacity:.55};
 }
 
 const PC_ULTIMATE_IDS=new Set(['titan-del-olimpo','anc-ares','df-serafin-muerte','hades-soberano','IDR-020','dm-001','dm-002','dm-003','dm-004','dm-005','dm-006','dm-007','dm-008','dm-009','dm-010']);
