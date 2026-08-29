@@ -1,0 +1,10 @@
+{
+  "release": "NEMESIS ONLINE 1V1 REDIS",
+  "baseMain": "717d289b2853da4d5e61f68d7c51df03235fd07e",
+  "duelMaster": "20/20",
+  "redis": "Redis Cloud via REDIS_URL",
+  "runtimeTwoPlayers": "PASS",
+  "staticGate": "PASS",
+  "e2e": "4/4 PASS",
+  "gameJsModified": false
+}
