@@ -46,11 +46,33 @@
       "tipos"
     ],
     "equipamiento": [
-      "arma",
-      "armadura",
-      "reliquia",
-      "restricciones"
+      "puede_equipar",
+      "es_equipamiento",
+      "restricciones",
+      "grupo_exclusivo"
     ]
   },
-  "regla": "Toda carta nueva debe declarar identidad, clase, afinidades, estadísticas aplicables, habilidades/efectos y compatibilidad. Las fusiones y equipamientos validarán estos campos sin depender del nombre visible."
+  "regla": "Toda carta nueva debe declarar identidad, clase, afinidades, estadísticas aplicables, habilidades/efectos y compatibilidad. Las fusiones y equipamientos validarán estos campos sin depender del nombre visible.",
+  "elementos_actuales": [
+    "AGUA",
+    "CAOS",
+    "DIMENSIONAL",
+    "DIVINA",
+    "DRAGON",
+    "FUEGO",
+    "HIELO",
+    "LUZ",
+    "MULTIELEMENTAL",
+    "OSCURIDAD",
+    "PACTO_OSCURO",
+    "RAGNAROK",
+    "RAYO",
+    "SABIDURIA",
+    "TIEMPO",
+    "TIERRA",
+    "UNIVERSAL",
+    "VACIO",
+    "VIENTO"
+  ],
+  "regla_equipamiento": "Solo CRIATURA, PERSONAJE y PERSONAJE_ALIADO declaran puede_equipar. ARMA/ARMADURA/RELIQUIA declaran es_equipamiento. Los grupos exclusivos impiden equipar dos variantes del mismo artefacto a una criatura."
 }
