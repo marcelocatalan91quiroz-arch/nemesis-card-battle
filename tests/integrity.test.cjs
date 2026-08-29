@@ -43,3 +43,13 @@ test('registro global de cartas no reintroduce familias duplicadas',()=>{
  assert.doesNotMatch(game,/\.\.\.NEW_CARDS,\.\.\.DRAGON_OJO_CARDS,\.\.\.ANCESTRAL_CARDS,\.\.\.SPECTRAL_CARDS,\.\.\.REY_ESPECTRAL_CARDS,\.\.\.DIOS_FANTASMA_CARDS/);
  assert.match(game,/new Map\(CARDS_RAW\.map\(c=>\[c\.id,c\]\)\)/);
 });
+
+// V19.4.3 — cierre de los 9 efectos históricos pendientes
+const pending=['etherealForm','mortalHarvest','beyondCall','abyssDragon','aresConqueror','apoloSolarGuardian','hadesDeepSleep','hadesGuiltWhip','hadesThresholdWatch'];
+for(const effect of pending) A(game.includes(effect),'efecto '+effect+' registrado');
+A(game.includes('NEMESIS_EFFECT_RUNTIME_AUDIT'),'auditoría runtime de 9 efectos disponible');
+A(game.includes("'esp-espectro-cripta':{name:'FORMA ETÉREA'"),'Forma Etérea conectada a habilidad ejecutable');
+A(game.includes("'esp-verdugo-almas':{name:'COSECHA MORTAL'"),'Cosecha Mortal conectada a habilidad ejecutable');
+A(game.includes("'esp-doncella-tumba':{name:'LLAMADO DEL MÁS ALLÁ'"),'Llamado del Más Allá conectado a habilidad ejecutable');
+A(game.includes("'esp-dragon-abismo':{name:'DOMINIO DEL ABISMO'"),'Dragón del Abismo conectado a habilidad ejecutable');
+A(game.includes("'apolo-guardian-solar':{name:'SANTUARIO DEL SOL'"),'Apolo conectado a habilidad ejecutable');
