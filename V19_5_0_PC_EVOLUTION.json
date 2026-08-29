@@ -1,0 +1,30 @@
+{
+  "version": "19.5.0-PC-EVOLUTION",
+  "status": "INTEGRATED_DEVELOPMENT",
+  "principle": "Capa PC aditiva sobre el motor existente; no reemplaza reglas, daño, turnos, IA, campañas ni mazos.",
+  "integrated": [
+    "Perfil gráfico NÉMESIS adicional a MEDIA/ALTA/ULTRA",
+    "Resolución interna PC elevada y sombras hasta 4096 en perfil NÉMESIS",
+    "Anisotropía 16x y exposición/partículas escalables",
+    "VFX elementales 3D: fuego, rayo, hielo, oscuridad, solar, divino, vacío, viento y dragón",
+    "Impactos/anillos 3D sincronizados con cinemáticas e invocaciones",
+    "Cámara cinematográfica, fullscreen, FPS configurables y equipamiento 3D existentes preservados",
+    "HUD/mano optimizados para escritorio con zoom y legibilidad superior",
+    "Selector de calidad mantiene compatibilidad con equipos menos potentes",
+    "Respeto a prefers-reduced-motion",
+    "Pruebas de integridad que protegen el motor battle"
+  ],
+  "preserved": [
+    "battle/damage",
+    "turnos",
+    "IA",
+    "campañas",
+    "mazos",
+    "efectos",
+    "cementerio",
+    "respuestas",
+    "Memory Card"
+  ],
+  "next_visual_asset_layer": "Transformaciones/fusiones con arte/modelos dedicados se conectarán cuando sus assets definitivos existan; no se falsifican reemplazando imágenes de cartas.",
+  "online_ready": "La separación capa visual/motor deja preparada la arquitectura para Duel Master Online sin reescribir combate."
+}
