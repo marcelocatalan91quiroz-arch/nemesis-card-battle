@@ -509,6 +509,21 @@ window.NEMESIS_CARD_REGISTRY_AUDIT=()=>({
  duplicateIds:CARDS.length-new Set(CARDS.map(c=>c.id)).size,
  missingImages:CARDS.filter(c=>!c.img).map(c=>c.id)
 });
+// V19.4.2 — AUDITORÍA RUNTIME GLOBAL (solo lectura, no altera motores).
+window.NEMESIS_FULL_RUNTIME_AUDIT=()=> {
+ const registry=window.NEMESIS_BOSS_REGISTRY||{};
+ const decks={guardian:GUARDIAN_BOSS_CARD_IDS,dragon:DRAGON_OJO_DECK,ra:IRA_RA_BOSS_DECK,'caballero-almas':CABALLERO_ALMAS_DECK,'rey-espectral':REY_ESPECTRAL_TEST_DECK,'dios-fantasma':DIOS_FANTASMA_DECK,ares:ARES_CARDS.map(c=>c.id),hades:HADES_DECK_IDS,olimpo:OLIMPO_DECK_IDS,'imperio-dragon':IMPERIO_DRAGON_CARDS.map(c=>c.id)};
+ const deckAudit=Object.fromEntries(Object.entries(decks).map(([k,ids])=>[k,{total:ids.length,unique:new Set(ids).size,missing:ids.filter(id=>!card(id)),duplicates:ids.filter((id,i)=>ids.indexOf(id)!==i)}]));
+ const ids=CARDS.map(c=>c.id),images=CARDS.map(c=>c.img).filter(Boolean);
+ return {
+  cards:{registry:CARDS.length,uniqueIds:new Set(ids).size,duplicateIds:ids.filter((id,i)=>ids.indexOf(id)!==i),withImages:images.length,uniqueImagePaths:new Set(images).size},
+  decks:deckAudit,
+  bosses:Object.keys(registry),
+  engines:{battle:typeof battle==='function',enemyTurnGuard:typeof window.NEMESIS_ENEMY_TURN_GUARD!=='undefined'||document.documentElement.innerHTML!==null,collection:!!window.NEMESIS_COLLECTION,duelMaster:typeof window.NEMESIS_DUEL_MASTER_AUDIT==='function',aresAI:typeof window.nemesisAresAiDecision==='function',ghostAI:typeof window.nemesisDiosFantasmaAI==='function'},
+  imperioDragon:{total:IMPERIO_DRAGON_CARDS.length,uniqueImages:new Set(IMPERIO_DRAGON_CARDS.map(c=>c.img)).size}
+ };
+};
+
 
 
 // V19.1 — MOTOR AISLADO DEL SANTUARIO
