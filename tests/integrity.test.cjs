@@ -53,3 +53,13 @@ A(game.includes("'esp-verdugo-almas':{name:'COSECHA MORTAL'"),'Cosecha Mortal co
 A(game.includes("'esp-doncella-tumba':{name:'LLAMADO DEL MÁS ALLÁ'"),'Llamado del Más Allá conectado a habilidad ejecutable');
 A(game.includes("'esp-dragon-abismo':{name:'DOMINIO DEL ABISMO'"),'Dragón del Abismo conectado a habilidad ejecutable');
 A(game.includes("'apolo-guardian-solar':{name:'SANTUARIO DEL SOL'"),'Apolo conectado a habilidad ejecutable');
+
+
+// V19.5.1 — transformación/fusión PC
+A(game.includes('IDR_TRANSFORM_RULES'),'reglas de transformación Imperio Dragón');
+A(game.includes("IDR-001':{to:'IDR-009',marks:2"),'IDR-001 transforma a IDR-009');
+A(game.includes("IDR-008':{to:'IDR-010',marks:4"),'IDR-008 transforma a IDR-010');
+A(game.includes("m:['IDR-003','IDR-004'],r:'IDR-019'"),'Fusión IDR-019 habilitada');
+A(game.includes("m:['IDR-009','IDR-008'],r:'IDR-020'"),'Fusión IDR-020 habilitada');
+A(game.includes('pcFusionEvolutionCinematic'),'cinemática de Fusión PC habilitada');
+A(game.includes('pcTransformationCinematic'),'cinemática de transformación PC habilitada');
