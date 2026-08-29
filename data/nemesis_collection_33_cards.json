@@ -70,9 +70,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -134,9 +141,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -195,9 +209,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -256,9 +277,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -320,9 +348,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": true,
+            "reliquia": false
+          },
           "restricciones": {
             "modo": "RESTRINGIDA",
             "requiere_tipo": "DRAGON"
@@ -370,9 +405,16 @@
           "tipos": []
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": true,
+            "reliquia": false
+          },
           "restricciones": "DIVINA/LUZ"
         }
       }
@@ -417,9 +459,16 @@
           "tipos": []
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
           "restricciones": "DIVINA"
         }
       }
@@ -465,9 +514,16 @@
           "tipos": []
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
           "restricciones": "VACIO/OSCURIDAD"
         }
       }
@@ -510,9 +566,16 @@
           "tipos": []
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -556,9 +619,16 @@
           "tipos": []
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -606,9 +676,16 @@
           "tipos": []
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -656,9 +733,16 @@
           "tipos": []
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -724,9 +808,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DIVINA",
             "GUERRERO",
@@ -796,9 +887,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "BESTIA",
             "OSCURIDAD",
@@ -868,9 +966,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "FUEGO",
             "GIGANTE",
@@ -942,9 +1047,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DRAGON",
             "BESTIA",
@@ -1016,9 +1128,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DIVINA",
             "BESTIA",
@@ -1089,9 +1208,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DIVINA",
             "RAYO",
@@ -1164,9 +1290,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
           "restricciones": [
             "DIVINA",
             "TRAMPA",
@@ -1238,9 +1371,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
           "restricciones": [
             "DIVINA",
             "SABIDURIA",
@@ -1310,9 +1450,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": true
+          },
           "restricciones": [
             "DIVINA",
             "RELIQUIA",
@@ -1386,9 +1533,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": true
+          },
           "restricciones": [
             "DIVINA",
             "RAYO",
@@ -1470,9 +1624,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DIVINA",
             "MAGICA",
@@ -1553,9 +1714,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DIVINA",
             "RAYO",
@@ -1637,9 +1805,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DRAGON",
             "DIVINA",
@@ -1719,9 +1894,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "DIVINA",
             "TIEMPO",
@@ -1804,9 +1986,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "MJOLNIR",
             "ARMAS",
@@ -1898,9 +2087,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": [
             "ZEUS",
             "ORACULO_DE_DELFOS",
@@ -1961,9 +2157,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -2034,9 +2237,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -2106,9 +2316,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -2178,9 +2395,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
@@ -2250,9 +2474,16 @@
           ]
         },
         "equipamiento": {
-          "arma": true,
-          "armadura": true,
-          "reliquia": true,
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
           "restricciones": "UNIVERSAL"
         }
       }
