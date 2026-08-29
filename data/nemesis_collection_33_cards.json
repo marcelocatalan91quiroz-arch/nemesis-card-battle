@@ -2527,7 +2527,38 @@
       "compatibilidad": [
         "DUEL_MASTER"
       ],
-      "img": "assets/images/external33/dm-011.svg"
+      "img": "assets/images/external33/dm-011.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "alma-de-afrodita",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-012",
@@ -2568,7 +2599,38 @@
       "compatibilidad": [
         "DUEL_MASTER"
       ],
-      "img": "assets/images/external33/dm-012.svg"
+      "img": "assets/images/external33/dm-012.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "medusa",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-013",
@@ -2617,7 +2679,38 @@
       "compatibilidad": [
         "DUEL_MASTER"
       ],
-      "img": "assets/images/external33/dm-013.svg"
+      "img": "assets/images/external33/dm-013.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "arma-del-tartaro",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-014",
@@ -2666,7 +2759,38 @@
       "compatibilidad": [
         "DUEL_MASTER"
       ],
-      "img": "assets/images/external33/dm-014.svg"
+      "img": "assets/images/external33/dm-014.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "antorcha-del-olimpo",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-015",
@@ -2723,7 +2847,38 @@
       "compatibilidad": [
         "DUEL_MASTER"
       ],
-      "img": "assets/images/external33/dm-015.svg"
+      "img": "assets/images/external33/dm-015.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "martillo-de-thor",
+      "subtipo": "",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-016",
@@ -2756,7 +2911,37 @@
       "compatibilidad": [
         "DUEL_MASTER"
       ],
-      "img": "assets/images/external33/dm-016.svg"
+      "img": "assets/images/external33/dm-016.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "corona-del-dominio",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": true
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-017",
@@ -2789,7 +2974,37 @@
       "compatibilidad": [
         "DUEL_MASTER"
       ],
-      "img": "assets/images/external33/dm-017.svg"
+      "img": "assets/images/external33/dm-017.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "arma-santa",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "es_equipamiento": {
+            "arma": true,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-018",
@@ -2834,7 +3049,44 @@
         "SHINY",
         "OLIMPO"
       ],
-      "img": "assets/images/external33/dm-018.svg"
+      "img": "assets/images/external33/dm-018.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "thor-shiny-senor-de-la-tormenta-eterna",
+      "subtipo": "",
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [
+            "LUZ",
+            "RAYO"
+          ],
+          "tipos": [
+            "DIOS",
+            "GUERRERO",
+            "SHINY"
+          ]
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-019",
@@ -2866,7 +3118,37 @@
         "TRAMPA",
         "COUNTER"
       ],
-      "img": "assets/images/external33/dm-019.svg"
+      "img": "assets/images/external33/dm-019.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "el-juicio-de-los-titanes",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     },
     {
       "id": "DM-020",
@@ -2905,7 +3187,37 @@
         "MAGICA",
         "CIERRE"
       ],
-      "img": "assets/images/external33/dm-020.svg"
+      "img": "assets/images/external33/dm-020.svg",
+      "schema_version": "NEMESIS_CARD_V1",
+      "estrategias": [],
+      "slug": "eclipse-de-los-reinos",
+      "elementos": [],
+      "nivel": 0,
+      "compatibilidad_futura": {
+        "fusion": {
+          "habilitada": true,
+          "familias": [
+            "DUEL_MASTER"
+          ],
+          "elementos": [],
+          "tipos": []
+        },
+        "equipamiento": {
+          "puede_equipar": {
+            "arma": true,
+            "armadura": true,
+            "reliquia": true
+          },
+          "es_equipamiento": {
+            "arma": false,
+            "armadura": false,
+            "reliquia": false
+          },
+          "restricciones": [
+            "DUEL_MASTER"
+          ]
+        }
+      }
     }
   ],
   "integration": {
