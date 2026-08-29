@@ -1,0 +1,10 @@
+const fs=require('fs'),p=require('path');const r=p.resolve(__dirname,'..');
+const c=JSON.parse(fs.readFileSync(p.join(r,'data/nemesis_master_card_catalog_v1.json'),'utf8'));
+const s=JSON.parse(fs.readFileSync(p.join(r,'data/nemesis_card_schema_v1.json'),'utf8'));
+const t=JSON.parse(fs.readFileSync(p.join(r,'data/nemesis_treasures_5_cards.json'),'utf8'));
+const A=(x,m)=>{if(!x){console.error('FAIL',m);process.exit(1)}console.log('PASS',m)};
+A(c.tipos.length===20,'20 tipos oficiales');A(c.arquetipos.length===20,'20 arquetipos oficiales');
+A(new Set(c.tipos.map(x=>x.id)).size===20,'tipos únicos');A(new Set(c.arquetipos.map(x=>x.id)).size===20,'arquetipos únicos');
+A(c.afinidades.length===19,'19 afinidades actuales conservadas');A(s.catalogo_maestro===c.catalogo,'schema enlazado al catálogo');
+A(t.cards.every(x=>x.catalogo_maestro===c.catalogo&&x.arquetipos.length>0&&x.afinidades.length>0),'Tesoro migrado al catálogo');
+console.log('NÉMESIS MASTER CATALOG: PASS');
