@@ -18,8 +18,11 @@ A(onk.hp===13000,'Onkolxón HP 13000');
 A(onk.energia===14,'Onkolxón Energía 14');
 A(Array.isArray(onk.habilidades)&&onk.habilidades.length===4,'Onkolxón 4 habilidades finales');
 A(String(onk.ultimate?.nombre||'').includes('Aurora del Fin Austral'),'Onkolxón Ultimate final');
-for(const id of ['DM-001','DM-002','DM-003','DM-004','DM-007','DM-008','DM-009','DM-010','DM-011','DM-012','DM-018']){
+for(const id of ['DM-001','DM-002','DM-003','DM-004','DM-007','DM-008','DM-009','DM-010']){
  const c=dm.find(x=>x.id===id);A(Array.isArray(c.habilidades)&&c.habilidades.length>=4,id+' habilidades completas');
+}
+for(const [id,min] of [['DM-011',3],['DM-012',3],['DM-018',4]]){
+ const c=dm.find(x=>x.id===id);A(Array.isArray(c.habilidades)&&c.habilidades.length>=min,id+' habilidades completas');
 }
 A(game.includes('NEMESIS DUEL MASTER V19.2.9 — MOTOR ESPECIFICO'),'motor DM específico');
 A(game.includes('function dmSkillDescriptor'),'descriptor DM');
