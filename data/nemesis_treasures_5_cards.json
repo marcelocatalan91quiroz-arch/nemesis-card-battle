@@ -65,7 +65,23 @@
           },
           "restricciones": "UNIVERSAL"
         }
-      }
+      },
+      "tipo": "MAGICA",
+      "afinidades": [
+        "OSCURIDAD",
+        "TIEMPO"
+      ],
+      "arquetipos": [
+        "CONTROL_ABSOLUTO",
+        "SENORES_TIEMPO",
+        "ABISMO_VACIO"
+      ],
+      "activacion": "ACTIVA",
+      "transformacion": {
+        "habilitada": false
+      },
+      "metodo_obtencion": "CANJE_EXCLUSIVO",
+      "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1"
     },
     {
       "id": "TN-MAG-002",
@@ -128,7 +144,23 @@
           },
           "restricciones": "UNIVERSAL"
         }
-      }
+      },
+      "tipo": "MAGICA",
+      "afinidades": [
+        "LUZ",
+        "DIMENSIONAL"
+      ],
+      "arquetipos": [
+        "ENTIDADES_COSMICAS",
+        "ORDEN_CELESTIAL",
+        "REINO_MUERTOS"
+      ],
+      "activacion": "ACTIVA",
+      "transformacion": {
+        "habilitada": false
+      },
+      "metodo_obtencion": "CANJE_EXCLUSIVO",
+      "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1"
     },
     {
       "id": "TN-ARM-001",
@@ -190,7 +222,23 @@
           },
           "restricciones": "CRIATURA/PERSONAJE"
         }
-      }
+      },
+      "tipo": "ARMA",
+      "afinidades": [
+        "LUZ",
+        "DIVINA"
+      ],
+      "arquetipos": [
+        "ARSENAL_LEGENDARIO",
+        "PANTEON_DIVINO",
+        "LEGION_GUERREROS"
+      ],
+      "activacion": "EQUIPAR",
+      "transformacion": {
+        "habilitada": false
+      },
+      "metodo_obtencion": "CANJE_EXCLUSIVO",
+      "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1"
     },
     {
       "id": "TN-ARM-002",
@@ -252,7 +300,23 @@
           },
           "restricciones": "CRIATURA/PERSONAJE"
         }
-      }
+      },
+      "tipo": "ARMA",
+      "afinidades": [
+        "VACIO",
+        "OSCURIDAD"
+      ],
+      "arquetipos": [
+        "ARSENAL_LEGENDARIO",
+        "ABISMO_VACIO",
+        "REINO_MUERTOS"
+      ],
+      "activacion": "EQUIPAR",
+      "transformacion": {
+        "habilitada": false
+      },
+      "metodo_obtencion": "CANJE_EXCLUSIVO",
+      "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1"
     },
     {
       "id": "TN-TRP-001",
@@ -316,7 +380,23 @@
           },
           "restricciones": "UNIVERSAL"
         }
-      }
+      },
+      "tipo": "TRAMPA_RESPUESTA",
+      "afinidades": [
+        "CAOS",
+        "DIVINA"
+      ],
+      "arquetipos": [
+        "CONTROL_ABSOLUTO",
+        "CAOS_NEMESIS",
+        "PANTEON_DIVINO"
+      ],
+      "activacion": "RESPUESTA",
+      "transformacion": {
+        "habilitada": false
+      },
+      "metodo_obtencion": "CANJE_EXCLUSIVO",
+      "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1"
     }
   ]
 }
