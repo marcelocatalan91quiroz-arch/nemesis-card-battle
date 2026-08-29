@@ -265,11 +265,11 @@ const NEMESIS_PUBLIC_23_IDS=EXTERNAL_GAME_CARDS.filter(c=>!c.id.startsWith('DM-'
 const NEMESIS_DUEL_MASTER_IDS=EXTERNAL_GAME_CARDS.filter(c=>c.id.startsWith('DM-')).map(c=>c.id);
 
 const IMPERIO_DRAGON_CARDS=[
- {id:'IDR-001',name:'Dragón Carmesí Joven',atk:1800,def:1600,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'comun',effect:'idrCrimsonBlood',img:'assets/images/imperio-dragon/idr-001.png',ascensionMax:2,transformTo:'Dragón Carmesí Imperial',desc:'SANGRE IMPERIAL: gana Marcas de Ascensión al atacar; al destruir busca apoyo Imperio Dragón e inflige 300 de daño directo.'},
- {id:'IDR-002',name:'Dragón Guerrero Escarlata',atk:2300,def:1900,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'rara',effect:'idrScarletFury',img:'assets/images/imperio-dragon/idr-002.png',ascensionMax:3,transformTo:'Dragón Guerrero Escarlata Supremo',desc:'FURIA ESCARLATA: al destruir gana +500 ATK y puede atacar otra vez; Guerrero Imperial busca una carta del arquetipo.'},
- {id:'IDR-003',name:'Dragón Llamasangre',atk:2300,def:2000,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrIncineratingBreath',img:'assets/images/imperio-dragon/idr-003.png',ascensionMax:2,transformTo:'Dragón Llamasangre Supremo',desc:'ALIENTO INCINERADOR: destruye una Mágica/Trampa al atacar y gana +500 ATK ese ataque; Semilla de Dragón recupera al Carmesí Joven.'},
- {id:'IDR-004',name:'Dragón Obsidiana Escamarreal',atk:2400,def:1800,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrCataclysmLance',img:'assets/images/imperio-dragon/idr-004.png',ascensionMax:3,transformTo:'Dragón Obsidiana Escamarreal Supremo',desc:'LANZA DEL CATACLISMO: causa 400 de daño por cada monstruo rival al atacar y gana Ascensión al destruir.'},
- {id:'IDR-005',name:'Dragón Ala de Tormenta',atk:2600,def:2100,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrWeatherDominion',img:'assets/images/imperio-dragon/idr-005.png',ascensionMax:3,transformTo:'Dragón Alas de Tormenta Supremo',desc:'DOMINIO DEL CLIMA: Tormenta de Fuego potencia +300 ATK/DEF al Imperio Dragón; Invocación Especial destruye hasta 2 cartas rivales.'}
+ {id:'IDR-001',name:'Dragón Carmesí Joven',atk:1800,def:1600,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'comun',effect:'idrCrimsonBlood',img:'assets/images/dragon-carmesi.webp',ascensionMax:2,transformTo:'Dragón Carmesí Imperial',desc:'SANGRE IMPERIAL: gana Marcas de Ascensión al atacar; al destruir busca apoyo Imperio Dragón e inflige 300 de daño directo.'},
+ {id:'IDR-002',name:'Dragón Guerrero Escarlata',atk:2300,def:1900,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'rara',effect:'idrScarletFury',img:'assets/images/dragon-infernal-sangre.webp',ascensionMax:3,transformTo:'Dragón Guerrero Escarlata Supremo',desc:'FURIA ESCARLATA: al destruir gana +500 ATK y puede atacar otra vez; Guerrero Imperial busca una carta del arquetipo.'},
+ {id:'IDR-003',name:'Dragón Llamasangre',atk:2300,def:2000,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrIncineratingBreath',img:'assets/images/dragon-negro-ruinas.webp',ascensionMax:2,transformTo:'Dragón Llamasangre Supremo',desc:'ALIENTO INCINERADOR: destruye una Mágica/Trampa al atacar y gana +500 ATK ese ataque; Semilla de Dragón recupera al Carmesí Joven.'},
+ {id:'IDR-004',name:'Dragón Obsidiana Escamarreal',atk:2400,def:1800,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrCataclysmLance',img:'assets/images/dragon-abisal.webp',ascensionMax:3,transformTo:'Dragón Obsidiana Escamarreal Supremo',desc:'LANZA DEL CATACLISMO: causa 400 de daño por cada monstruo rival al atacar y gana Ascensión al destruir.'},
+ {id:'IDR-005',name:'Dragón Ala de Tormenta',atk:2600,def:2100,type:'monster',family:'imperio-dragon',tags:['fuego','dragon'],rarity:'epica',effect:'idrWeatherDominion',img:'assets/images/dragon-dorado.png',ascensionMax:3,transformTo:'Dragón Alas de Tormenta Supremo',desc:'DOMINIO DEL CLIMA: Tormenta de Fuego potencia +300 ATK/DEF al Imperio Dragón; Invocación Especial destruye hasta 2 cartas rivales.'}
 ];
 const IMPERIO_DRAGON_DECK_IDS=IMPERIO_DRAGON_CARDS.map(c=>c.id);
 const CARDS=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...NEW_CARDS,...DRAGON_OJO_CARDS,...ANCESTRAL_CARDS,...SPECTRAL_CARDS,...REY_ESPECTRAL_CARDS,...DIOS_FANTASMA_CARDS,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
@@ -2941,12 +2941,13 @@ function idrStormSync(){
 }
 function idrSearchSupport(side){
  const q=side==='p'?deckQueue:enemyQueue;
- const idx=q.findIndex(x=>idrIs(x));
+ const idx=q.findIndex(x=>idrIs(side==='p'?card(x):x));
  if(idx<0)return false;
- const c=q.splice(idx,1)[0];
- if(side==='p'){handState.push(c.id);renderHand()}else q.unshift(c);
- toast('IMPERIO DRAGÓN: '+c.name+' fue buscada del Deck.');
- return true
+ if(side==='p'){
+  const id=q.splice(idx,1)[0],c=card(id);handState.push(id);renderHand();
+  toast('IMPERIO DRAGÓN: '+c.name+' fue buscada del Deck.');return true
+ }
+ const c=q.splice(idx,1)[0];q.unshift(c);toast('IMPERIO DRAGÓN: '+c.name+' fue priorizada en el Deck rival.');return true
 }
 async function idrOnSummon(side,i,c,special=false){
  if(!idrIs(c))return;
