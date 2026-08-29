@@ -1,0 +1,173 @@
+{
+  "schema": "NEMESIS_CARD_V1",
+  "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1",
+  "set": "MAGO_ROJO",
+  "version": "19.4.0",
+  "estado": "DISEÑO_EN_PROGRESO__CARTA_001_APROBADA",
+  "mecanica": "SELLOS_ARCANOS",
+  "composicion_objetivo": {
+    "total": 20,
+    "criaturas": 10,
+    "magicas": 4,
+    "trampas": 3,
+    "reliquias": 1,
+    "fusiones": 1,
+    "armas": 1
+  },
+  "deck_ids": [
+    "MGR-001",
+    "MGR-002",
+    "MGR-003",
+    "MGR-004",
+    "MGR-005",
+    "MGR-006",
+    "MGR-007",
+    "MGR-008",
+    "MGR-009",
+    "MGR-010",
+    "MGR-011",
+    "MGR-012",
+    "MGR-013",
+    "MGR-014",
+    "MGR-015",
+    "MGR-016",
+    "MGR-017",
+    "MGR-018",
+    "MGR-019",
+    "MGR-020"
+  ],
+  "cards": [
+    {
+      "id": "MGR-001",
+      "nombre": "Mago Rojo",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "CIRCULO_ARCANO",
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": 5,
+      "atk": 2800,
+      "def": 2400,
+      "copias_max": 3,
+      "habilidad": "DOMINIO ESCARLATA",
+      "estrategia": "Motor central del arquetipo; convierte la activación de Mágicas en Sellos Arcanos y reutiliza hechizos.",
+      "efectos": [
+        "Cada vez que activas una Mágica del arquetipo Mago Rojo, coloca 1 Sello Arcano en esta carta (máx. 3).",
+        "Una vez por turno, puedes consumir 3 Sellos Arcanos; recupera 1 Mágica del arquetipo desde tu Cementerio a tu mano.",
+        "Mientras tenga 3 Sellos Arcanos, gana 500 ATK."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-001.png",
+      "img_game": "assets/images/mago-rojo/mgr-001.png",
+      "imagen_estado": "VISUAL_APROBADO__PENDIENTE_CARGA_ASSET"
+    }
+  ],
+  "plan_20": [
+    [
+      "MGR-001",
+      "Mago Rojo",
+      "CRIATURA"
+    ],
+    [
+      "MGR-002",
+      "Aprendiz de las Brasas",
+      "CRIATURA"
+    ],
+    [
+      "MGR-003",
+      "Salamandra de Rubí",
+      "CRIATURA"
+    ],
+    [
+      "MGR-004",
+      "Caballero de Ceniza",
+      "CRIATURA"
+    ],
+    [
+      "MGR-005",
+      "Bruja de la Llama Negra",
+      "CRIATURA"
+    ],
+    [
+      "MGR-006",
+      "Guardián de la Forja Roja",
+      "CRIATURA"
+    ],
+    [
+      "MGR-007",
+      "Fénix Carmesí",
+      "CRIATURA"
+    ],
+    [
+      "MGR-008",
+      "Hechicero del Eclipse",
+      "CRIATURA"
+    ],
+    [
+      "MGR-009",
+      "Dragón Rubí Ancestral",
+      "CRIATURA"
+    ],
+    [
+      "MGR-010",
+      "Archimago de las Siete Llamas",
+      "CRIATURA"
+    ],
+    [
+      "MGR-011",
+      "Círculo de Invocación Roja",
+      "MAGICA"
+    ],
+    [
+      "MGR-012",
+      "Ráfaga Escarlata",
+      "MAGICA_RAPIDA"
+    ],
+    [
+      "MGR-013",
+      "Renacer entre Cenizas",
+      "MAGICA"
+    ],
+    [
+      "MGR-014",
+      "Convergencia Carmesí",
+      "MAGICA"
+    ],
+    [
+      "MGR-015",
+      "Prisión de Fuego",
+      "TRAMPA"
+    ],
+    [
+      "MGR-016",
+      "Espejo de Brasas",
+      "TRAMPA_RESPUESTA"
+    ],
+    [
+      "MGR-017",
+      "Última Llama",
+      "TRAMPA_RESPUESTA"
+    ],
+    [
+      "MGR-018",
+      "Grimorio de las Siete Llamas",
+      "RELIQUIA"
+    ],
+    [
+      "MGR-019",
+      "Archimago del Dragón Carmesí",
+      "FUSION"
+    ],
+    [
+      "MGR-020",
+      "Bastón de Ignis",
+      "ARMA"
+    ]
+  ],
+  "regla_operativa": "Las cartas se completan una por una. No modificar sistemas existentes ni integrar lógica al motor hasta validar cada ficha."
+}
