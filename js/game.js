@@ -2949,6 +2949,7 @@ function endPlayerMagicTurn(){pcClearTemporaryEquipment();playerCards.forEach(c=
 function royalAfterKill(attSide,ai,defender){if(!isSpectralKing||attSide!=='e')return;const a=enemyCards[ai];if(!a)return;if(a._undyingSword){window.__nemesisRoyalSouls=(window.__nemesisRoyalSouls||0)+1;toast('ESPADA DEL REY SIN MUERTE: +1 Alma Real por la criatura destruida.');refreshRoyalSoulPower();}if(a.effect==='royalExecution'&&defender&&(defender.def||0)<=4000){window.__nemesisRoyalSouls=(window.__nemesisRoyalSouls||0)+1;toast('CORTE MALDITO: +1 Alma Real adicional.');refreshRoyalSoulPower();}}
 async function resolveBattle(attSide,ai,defSide,di){
  const _preA=(attSide==='p'?playerCards:enemyCards)[ai];
+ const _pcSignature=pcAttackSignature(_preA,META?.[_preA?.id]||{});if(_pcSignature.ultimate&&!_preA?._pcUltimateTurn){_preA._pcUltimateTurn=turnNo;await pcUltimateCinematic(attSide,ai,_preA,_pcSignature.name)}
  if(_preA?._treasureScythe&&_preA._treasureHungerTurn!==turnNo){
   const _gr=attSide==='p'?playerGrave:enemyGrave;
   if(_gr.length){_gr.pop();_preA.atk+=500;_preA._treasureHungerBonus=(_preA._treasureHungerBonus||0)+500;_preA._treasureHungerTurn=turnNo;toast('HAMBRE INFINITA: consume 1 carta del Cementerio · +500 ATK este turno.')}
