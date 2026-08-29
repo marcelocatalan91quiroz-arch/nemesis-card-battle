@@ -26,5 +26,13 @@ must('estado rival oculta mano',api.includes("handCount:p.hand.length")&&!api.in
 must('ataques autoritativos',api.includes("duelAction==='attack'")&&api.includes("NOT_YOUR_TURN"));
 must('cliente renderiza arena avanzada',client.includes('renderDuelMasterBoard')&&client.includes('DUEL MASTER ONLINE'));
 must('zonas soporte y monstruo cliente',client.includes('dmSupportZones')&&client.includes('dmMonsterZones'));
+must('20/20 efectos autoritativos declarados',api.includes('DM_EFFECT_HANDLERS')&&api.includes("Object.fromEntries(DM_DECK.map(id=>[id,true]))"));
+must('habilidades Duel Master en servidor',api.includes('resolveDmAbility')&&api.includes("duelAction==='ability'")&&api.includes("duelAction==='ultimate'"));
+must('equipamiento Duel Master en servidor',api.includes('equipSupport')&&api.includes("'DM-013','DM-014','DM-015','DM-016','DM-017'"));
+must('trampas respuesta servidor',api.includes('tryHunterTrap')&&api.includes('tryTitanTrap'));
+must('transformación Thor Shiny servidor',api.includes('tryShinyAwakening')&&api.includes("p.monsters[thor]='DM-018'"));
+must('Zeus negate autoritativo',api.includes('tryZeusNegate')&&api.includes('ZEUS_NEGATE'));
+must('Eclipse de los Reinos servidor',api.includes('ECLIPSE_REALMS')&&api.includes("id==='DM-020'"));
+must('cliente controla habilidad ultimate soporte',client.includes('dmAbility')&&client.includes('dmUltimate')&&client.includes('dmSupportActivate'));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('NÉMESIS ONLINE 1V1 BASE: PASS');
