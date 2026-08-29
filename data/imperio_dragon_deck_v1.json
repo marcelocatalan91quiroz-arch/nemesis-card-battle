@@ -3,7 +3,7 @@
   "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1",
   "set": "IMPERIO_DRAGON",
   "version": "19.4.0",
-  "estado": "PLANTILLA_MAESTRA_20_DE_20__FICHAS_RECUPERADAS__ILUSTRACIONES_8_DE_20",
+  "estado": "MAZO_COMPLETO_20_DE_20__TODAS_LAS_ILUSTRACIONES_GENERADAS_Y_REGISTRADAS",
   "mecanica": "ASCENSION_DRACONICA",
   "deck_ids": [
     "IDR-001",
@@ -642,7 +642,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-019.png",
       "img_game": "assets/images/fusion-caotico-supremo.webp",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_000000005d58820e980721528ec684e6"
     },
     {
       "id": "IDR-020",
@@ -680,7 +681,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-020.png",
       "img_game": "assets/images/fusion-dragon-caos.webp",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_00000000e4e8820e822300d79b71bdfd"
     }
   ],
   "reglas_visuales": {
@@ -745,5 +747,6 @@
   "nota_integracion_magicas": "IDR-011, IDR-012 e IDR-013 registradas como las tres mágicas ilustradas del mazo. La lógica jugable conserva las fichas maestras oficiales.",
   "nota_integracion_trampas": "IDR-014 e IDR-015 registradas como las dos trampas ilustradas oficiales de Imperio Dragón.",
   "nota_integracion_armas": "IDR-016 Espada Colmillo del Emperador e IDR-017 Lanza de Ala Carmesí registradas como las dos armas ilustradas oficiales de Imperio Dragón.",
-  "nota_integracion_reliquia": "IDR-018 Corona del Primer Dragón registrada como Reliquia Ancestral ilustrada oficial de Imperio Dragón."
+  "nota_integracion_reliquia": "IDR-018 Corona del Primer Dragón registrada como Reliquia Ancestral ilustrada oficial de Imperio Dragón.",
+  "nota_integracion_final": "IDR-019 Dragón Eclipse de la Corona e IDR-020 NÉMESIS Dracónico — Emperador del Fin registradas. Plantilla maestra Imperio Dragón completa 20/20."
 }
