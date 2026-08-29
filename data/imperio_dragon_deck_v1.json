@@ -472,7 +472,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-014.png",
       "img_game": "assets/images/trampa-calavera-muerta.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_00000000c9a0820ea50bb5292881f499"
     },
     {
       "id": "IDR-015",
@@ -502,7 +503,8 @@
       "transformacion": null,
       "img": "assets/images/imperio-dragon/idr-015.png",
       "img_game": "assets/images/trampa-calavera-muerta.png",
-      "imagen_estado": "PENDIENTE_ILUSTRACION_OFICIAL"
+      "imagen_estado": "ORIGINAL_GENERADA_EN_CHAT__REGISTRADA_EN_FICHA_MAESTRA",
+      "img_original_conversation_file_id": "file_00000000f460820e9a4c76e9fe39ff4e"
     },
     {
       "id": "IDR-016",
@@ -737,5 +739,6 @@
   "ultima_actualizacion": "2026-08-29",
   "regla_operativa": "Cada carta nueva o regenerada debe actualizarse inmediatamente en esta ficha maestra y en js/game.js antes de pasar a la siguiente.",
   "nota_integracion_imagenes": "IDR-009 e IDR-010 registradas con sus imágenes generadas. IDR-011 queda marcada para regeneración porque la imagen generada no corresponde a su ficha maestra Llamado de la Sangre Imperial.",
-  "nota_integracion_magicas": "IDR-011, IDR-012 e IDR-013 registradas como las tres mágicas ilustradas del mazo. La lógica jugable conserva las fichas maestras oficiales."
+  "nota_integracion_magicas": "IDR-011, IDR-012 e IDR-013 registradas como las tres mágicas ilustradas del mazo. La lógica jugable conserva las fichas maestras oficiales.",
+  "nota_integracion_trampas": "IDR-014 e IDR-015 registradas como las dos trampas ilustradas oficiales de Imperio Dragón."
 }
