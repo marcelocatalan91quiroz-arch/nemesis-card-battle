@@ -43,3 +43,10 @@ A(game.includes("dmEq(c,'weapon','DM-017')"),'Arma Santa conectada');
 A(game.includes("dmActiveEquipment(side,'DM-016')"),'Corona del Dominio global');
 A(game.includes("dmActiveEquipment(side,'DM-014')"),'Antorcha del Olimpo global');
 console.log('NÉMESIS DUEL MASTER 20/20 DEEP STATIC: PASS');
+
+must('Retos roster permanente',game.includes('NEMESIS_RETRY_ROSTER')&&game.includes('nemesisRetryScene'));
+must('Retos solo derrotados',game.includes("flag:'guardianDefeated'")&&game.includes("flag:'hadesDefeated'")&&game.includes('nemesisRetryUnlocked'));
+must('Guardianes dan 100 estrellas',game.includes("role:'GUARDIÁN'")&&game.includes('reward:100'));
+must('Jefes dan doble 200 estrellas',game.includes("role:'JEFE'")&&game.includes('reward:200'));
+must('Revancha reutiliza battle',game.includes("state.retryBattle=id;save();battle(r.battleKey||undefined)"));
+must('Revancha no altera progreso campaña',game.includes('if(retryReward){')&&game.includes('state.retryBattle=null'));
