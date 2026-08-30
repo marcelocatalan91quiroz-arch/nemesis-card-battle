@@ -1,0 +1,12 @@
+{
+  "release": "PRODUCTION",
+  "main": "5d1d12ec831da4fdf1cd53e2388238a41b6d5b1d",
+  "includes": [
+    "Online 1v1 Redis",
+    "Duel Master avanzado",
+    "Efectos Duel Master 20/20",
+    "Retos/Revancha",
+    "Perfil jugador y autoguardado"
+  ],
+  "requestedAt": "2026-08-29"
+}
