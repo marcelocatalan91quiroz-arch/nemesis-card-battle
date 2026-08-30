@@ -21,11 +21,23 @@ must('colección/biblioteca reutilizada',game.includes('...CABALLEROS_SUBMUNDO_D
 must('CS-002 registrado',game.includes("id:'CS-002',name:'Caballero de Alas de Oro'"));
 must('CS-002 stats supremos 10000/8500',game.includes("name:'Caballero de Alas de Oro',atk:10000,def:8500"));
 must('CS-002 conserva familia del mazo',game.includes("id:'CS-002'")&&game.includes("family:'caballeros-submundo'"));
-must('CS-002 crecimiento dorado por Cementerio',game.includes("wantA=gold?fallen*700:fallen*500")&&game.includes("wantD=gold?fallen*500:fallen*300"));
+must('CS-002 crecimiento dorado por Cementerio',game.includes("gold?fallen*700:fallen*500")&&game.includes("gold?fallen*500:fallen*300"));
 must('CS-002 Sentencia conectada',game.includes("action:'goldenSentence'")&&game.includes("_csUnstoppableSecondTurn=turnNo"));
 must('CS-002 Resurrección Dorada conectada',game.includes("if(csIs(victim,'CS-002'))")&&game.includes("_csGoldenResUsedDuel=true")&&game.includes("victim.atk+=2000;victim.def+=2000"));
 must('CS-002 Último Juicio implementado',game.includes('function csGoldenPiercingDamage(')&&game.includes('length<5')&&game.includes("toast('ÚLTIMO JUICIO: '+csPierce+' de daño perforante directo.')")&&game.includes("toast('ÚLTIMO JUICIO: el daño perforante aumenta el impacto a '+hpDiff+'.')"));
 must('CS-002 ruta estable reservada',game.includes("img:'assets/images/caballeros-submundo/caballero-alas-oro.png'"));
+must('CS-003 registrado',game.includes("id:'CS-003',name:'Caballero de Alas de Oro Shiny'"));
+must('CS-003 stats 12500/10500',game.includes("name:'Caballero de Alas de Oro Shiny',atk:12500,def:10500"));
+must('CS-003 familia correcta',game.includes("id:'CS-003'")&&game.includes("family:'caballeros-submundo'"));
+must('CS-003 Shiny Suprema',game.includes("rarity:'shiny-suprema'")&&game.includes("shiny:true"));
+must('CS-003 crecimiento Cementerio',game.includes("shiny?fallen*1000")&&game.includes("shiny?fallen*700"));
+must('CS-003 Sentencia Suprema',game.includes("action:'shinySentence'")&&game.includes("c.atk+=2000"));
+must('CS-003 Resurrección Emperador',game.includes("_csEmperorResUsedDuel=true")&&game.includes("n<3")&&game.includes("victim.atk+=3000;victim.def+=3000"));
+must('CS-003 perforación desde 4 caídos',game.includes("(csIs(c,'CS-003')?4:5)"));
+must('CS-003 Estado Emperador conectado',game.includes("_csEmperorUsedDuel=true")&&game.includes("_csEmperorUntil=turnNo+1")&&game.includes("c.atk+=3000;c.def+=2000")&&game.includes("_csEmperorFloorAtk")&&game.includes("ESTADO EMPERADOR: la primera destrucción rival queda NEGADA"));
+must('CS-003 anti-anulación conectado',game.includes("ESTADO EMPERADOR: la anulación rival queda NEGADA")&&game.includes("delete c._strategicSkillNegatedUntil"));
+must('CS-003 Estado Emperador expira',game.includes("turnNo>c._csEmperorUntil")&&game.includes("delete c._csEmperorUntil"));
+must('CS-003 ruta estable',game.includes("assets/images/caballeros-submundo/caballero-alas-oro-shiny.webp"));
 must('auditoría runtime disponible',game.includes('NEMESIS_CABALLEROS_SUBMUNDO_AUDIT'));
 
 if(process.exitCode)process.exit(process.exitCode);

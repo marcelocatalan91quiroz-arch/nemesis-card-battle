@@ -326,7 +326,8 @@ window.nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS);
 // CABALLEROS DEL SUBMUNDO · mazo en construcción (20 cartas previstas)
 const CABALLEROS_SUBMUNDO_CARDS=[
  {id:'CS-001',name:'Caballero Demonio',atk:7000,def:6000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','demonio','caballero','submundo'],rarity:'ancestral',level:10,effect:'csDemonKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-demonio.webp',desc:'PODER DE LOS CAÍDOS: +500 ATK/+300 DEF por cada Caballero del Submundo en tu Cementerio. SACRIFICIO DEMONÍACO: una vez por turno envía 1 Caballero aliado al Cementerio; +1500 ATK este turno y habilita un segundo ataque. HERALDO DEL SUBMUNDO: una vez por duelo devuelve 1 Caballero del Submundo de tu Cementerio al Deck para evitar su destrucción.'},
- {id:'CS-002',name:'Caballero de Alas de Oro',atk:10000,def:8500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','supremo'],rarity:'mitica-suprema',level:12,effect:'csGoldenWingKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-alas-oro.png',desc:'ALAS DEL JUICIO DORADO: +700 ATK/+500 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DEL REY CAÍDO: una vez por turno sacrifica 1 Caballero aliado; habilita un segundo ataque que no puede ser impedido por efectos. RESURRECCIÓN DORADA: una vez por duelo evita su destrucción, resucita hasta 2 Caballeros del Submundo y obtiene +2000 ATK/+2000 DEF permanentes. ÚLTIMO JUICIO: con 5 o más Caballeros del Submundo en el Cementerio obtiene Perforación.'}
+ {id:'CS-002',name:'Caballero de Alas de Oro',atk:10000,def:8500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','supremo'],rarity:'mitica-suprema',level:12,effect:'csGoldenWingKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-alas-oro.png',desc:'ALAS DEL JUICIO DORADO: +700 ATK/+500 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DEL REY CAÍDO: una vez por turno sacrifica 1 Caballero aliado; habilita un segundo ataque que no puede ser impedido por efectos. RESURRECCIÓN DORADA: una vez por duelo evita su destrucción, resucita hasta 2 Caballeros del Submundo y obtiene +2000 ATK/+2000 DEF permanentes. ÚLTIMO JUICIO: con 5 o más Caballeros del Submundo en el Cementerio obtiene Perforación.'},
+ {id:'CS-003',name:'Caballero de Alas de Oro Shiny',atk:12500,def:10500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','shiny','supremo'],rarity:'shiny-suprema',level:10,effect:'csGoldenWingShiny',caballerosSubmundo:true,shiny:true,img:'assets/images/caballeros-submundo/caballero-alas-oro-shiny.webp',desc:'ALAS DEL EMPERADOR DORADO: +1000 ATK/+700 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DORADA SUPREMA: sacrifica 1 Caballero aliado; +2000 ATK este turno y segundo ataque. RESURRECCIÓN DEL EMPERADOR: una vez por duelo evita su destrucción, resucita hasta 3 Caballeros y obtiene +3000 ATK/+3000 DEF permanentes. JUICIO DEL SUBMUNDO: con 4 o más Caballeros caídos obtiene Perforación. SEÑOR DE LAS ALAS ETERNAS: una vez por duelo entra 2 turnos en Estado Emperador, +3000 ATK/+2000 DEF, protección de reducción y niega la primera habilidad rival que intente destruirla o anularla.'}
 ];
 const CABALLEROS_SUBMUNDO_DECK_IDS=CABALLEROS_SUBMUNDO_CARDS.map(c=>c.id);
 
@@ -3190,20 +3191,33 @@ function csSync(){
  for(const side of ['p','e']){
   const fallen=csGrave(side).filter(x=>csIs(x)).length;
   csOwn(side).forEach(c=>{
-   if(!csIs(c,'CS-001')&&!csIs(c,'CS-002'))return;
-   const gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=gold?fallen*700:fallen*500,wantD=gold?fallen*500:fallen*300;
+   if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003'))return;
+   const shiny=csIs(c,'CS-003'),gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=shiny?fallen*1000:(gold?fallen*700:fallen*500),wantD=shiny?fallen*700:(gold?fallen*500:fallen*300);
    if(oldA!==wantA){c.atk=Math.max(0,(c.atk||0)-oldA+wantA);c._csFallenAtk=wantA}
    if(oldD!==wantD){c.def=Math.max(0,(c.def||0)-oldD+wantD);c._csFallenDef=wantD}
+   if(csIs(c,'CS-003')&&(c._csEmperorUntil||-1)>=turnNo){
+    if(c._csEmperorFloorAtk!=null)c.atk=Math.max(c.atk||0,c._csEmperorFloorAtk);
+    if(c._csEmperorFloorDef!=null)c.def=Math.max(c.def||0,c._csEmperorFloorDef);
+   }
   });
  }
 }
 function csSkillDescriptor(c){
  if(csIs(c,'CS-001'))return{name:'SACRIFICIO DEMONÍACO',kind:'caballerosSubmundo',action:'demonSacrifice',desc:'Envía 1 Caballero aliado al Cementerio: +1500 ATK este turno y habilita un segundo ataque.'};
+ if(csIs(c,'CS-003'))return{name:'SENTENCIA / ESTADO EMPERADOR',kind:'caballerosSubmundo',action:'shinySentence',desc:'Sacrifica 1 Caballero aliado para +2000 ATK y segundo ataque; una vez por duelo puede activar Estado Emperador durante 2 turnos.'};
  if(csIs(c,'CS-002'))return{name:'SENTENCIA DEL REY CAÍDO',kind:'caballerosSubmundo',action:'goldenSentence',desc:'Sacrifica 1 Caballero aliado y habilita un segundo ataque imparable este turno.'};
  return null
 }
 async function csUseSkill(side,i,c,sk){
- if(sk.action!=='demonSacrifice'&&sk.action!=='goldenSentence')return false;
+ if(sk.action!=='demonSacrifice'&&sk.action!=='goldenSentence'&&sk.action!=='shinySentence')return false;
+ if(sk.action==='shinySentence'&&!c._csEmperorUsedDuel){
+  const activate=side==='p'?confirm('SEÑOR DE LAS ALAS ETERNAS: ¿activar ESTADO EMPERADOR ahora?\nAceptar = Estado Emperador · Cancelar = Sentencia Dorada Suprema'):true;
+  if(activate){
+   c._csEmperorUsedDuel=true;c._csEmperorUntil=turnNo+1;c.atk+=3000;c.def+=2000;c._csEmperorAtk=3000;c._csEmperorDef=2000;c._csEmperorNegateUsed=false;
+   c._csEmperorFloorAtk=c.atk;c._csEmperorFloorDef=c.def;
+   toast('ESTADO EMPERADOR: +3000 ATK/+2000 DEF durante 2 turnos; protege reducciones y niega la primera destrucción/anulación rival.');csSync();return true
+  }
+ }
  const own=csOwn(side),opts=own.map((x,j)=>({c:x,i:j})).filter(x=>x.c&&x.i!==i&&csIs(x.c));
  if(!opts.length){toast('SACRIFICIO DEMONÍACO: no hay otro Caballero aliado para sacrificar.');return false}
  const pick=side==='p'?await chooseMagicTarget('SACRIFICIO DEMONÍACO · ELIGE CABALLERO',opts,side):opts.sort((a,b)=>((a.c.atk||0)+(a.c.def||0))-((b.c.atk||0)+(b.c.def||0)))[0];
@@ -3211,12 +3225,21 @@ async function csUseSkill(side,i,c,sk){
  const victim=own[pick.i];
  await destroyCard(side,pick.i);
  if(own[pick.i]){toast('SACRIFICIO DEMONÍACO no pudo completarse.');return false}
- if(sk.action==='demonSacrifice'){c.atk+=1500;c._csSacrificeAtk=(c._csSacrificeAtk||0)+1500}
- c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence')c._csUnstoppableSecondTurn=turnNo;
+ if(sk.action==='demonSacrifice'){c.atk+=1500;c._csSacrificeAtk=(c._csSacrificeAtk||0)+1500}else if(sk.action==='shinySentence'){c.atk+=2000;c._csSacrificeAtk=(c._csSacrificeAtk||0)+2000}
+ c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence'||sk.action==='shinySentence')c._csUnstoppableSecondTurn=turnNo;
  csSync();toast(victim.name+' es sacrificado · '+c.name+' habilita su segundo ataque.');return true
 }
 async function csPreventDestroy(side,i,victim){
  const grave=csGrave(side);
+ if(csIs(victim,'CS-003')&&(victim._csEmperorUntil||-1)>=turnNo&&!victim._csEmperorNegateUsed){
+  victim._csEmperorNegateUsed=true;toast('ESTADO EMPERADOR: la primera destrucción rival queda NEGADA.');return true
+ }
+ if(csIs(victim,'CS-003')){
+  if(victim._csEmperorResUsedDuel)return false;victim._csEmperorResUsedDuel=true;
+  const own=csOwn(side),free=[];for(let j=0;j<own.length;j++)if(!own[j])free.push(j);const revived=[];
+  for(let n=0;n<3&&free.length;n++){const gi=grave.findIndex(x=>csIs(x));if(gi<0)break;const rc=grave.splice(gi,1)[0],slot=free.shift();own[slot]=rc;revived.push(rc.name)}
+  victim.atk+=3000;victim.def+=3000;csSync();toast('RESURRECCIÓN DEL EMPERADOR: evita la destrucción'+(revived.length?' · resucita '+revived.join(', '):'')+' · +3000 ATK/+3000 DEF permanentes.');return true
+ }
  if(csIs(victim,'CS-002')){
   if(victim._csGoldenResUsedDuel)return false;
   victim._csGoldenResUsedDuel=true;
@@ -3233,15 +3256,22 @@ async function csPreventDestroy(side,i,victim){
  csSync();toast('HERALDO DEL SUBMUNDO: '+returned.name+' vuelve al mazo y evita la destrucción.');return true
 }
 function csClearTurn(){
- for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(c?._csSacrificeAtk){c.atk=Math.max(0,c.atk-c._csSacrificeAtk);delete c._csSacrificeAtk}});
+ for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
+  if(c?._csSacrificeAtk){c.atk=Math.max(0,c.atk-c._csSacrificeAtk);delete c._csSacrificeAtk}
+  if(csIs(c,'CS-003')&&c._csEmperorUntil!=null&&turnNo>c._csEmperorUntil){
+   if(c._csEmperorAtk){c.atk=Math.max(0,c.atk-c._csEmperorAtk);delete c._csEmperorAtk}
+   if(c._csEmperorDef){c.def=Math.max(0,c.def-c._csEmperorDef);delete c._csEmperorDef}
+   delete c._csEmperorUntil;delete c._csEmperorFloorAtk;delete c._csEmperorFloorDef;delete c._csEmperorNegateUsed;
+  }
+ });
 }
 function csKeepTurnAfterAttack(c){
- if(!csIs(c,'CS-001')&&!csIs(c,'CS-002'))return false;
+ if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003'))return false;
  if(c._csSecondAttackTurn===turnNo&&c._csSecondAttackUsedTurn!==turnNo){c._csSecondAttackUsedTurn=turnNo;return true}
  return false
 }
 function csGoldenPiercingDamage(side,c,target){
- if(!csIs(c,'CS-002')||csGrave(side).filter(x=>csIs(x)).length<5||!target)return 0;
+ if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
 window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const a=card('CS-001'),g=card('CS-002');return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:[a,g].filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function'},cardOk:!!a&&!!g&&g.atk>=10000&&g.def>=8500&&g.family==='caballeros-submundo'}};
@@ -3299,7 +3329,7 @@ function applyTitanDominion(){
 function updateSkillButtons(){const c=playerCards?.[active],sk=skillFor(c),orb=orbPowerEquipment(c),orbReady=!!orb&&!orb.orbDischargeUsed,action=phase==='ACTION'&&!!c,used=sk?.onceDuel?c?._skillUsedDuel:c?._skillUsedTurn===turnNo;if(skillBtn){skillBtn.disabled=!action||(!sk&&!orbReady)||(!!used&&!orbReady);skillBtn.textContent=orbReady&&!sk?'DESCARGA DEL ORBE':sk?(used&&!orbReady?'HABILIDAD USADA':sk.name):'HABILIDAD'}if(playerPowerBtn){const remain=Math.max(0,playerPowerReadyTurn-turnNo);playerPowerBtn.disabled=!action||remain>0;playerPowerBtn.textContent=remain?`PODER · ${remain}T`:'PODER NÉMESIS'}}
 async function useCreatureSkill(side,i){const arr=side==='p'?playerCards:enemyCards,c=arr[i],sk=skillFor(c);
  const orb=orbPowerEquipment(c);if(orb&&!orb.orbDischargeUsed){const wants=side==='p'?confirm('DESCARGA DEL ORBE: ¿activar ahora?\nAceptar = Orbe · Cancelar = habilidad de la criatura'):true;if(wants&&await orbPowerDischarge(side,i,c))return true}
- orbPowerAbsorbOnOffense(side,sk);if(c?._strategicSkillNegatedUntil>=turnNo){toast(c.name+' tiene su habilidad anulada por DISTORSIÓN DEL VACÍO.');return false;}if(c?._strategicBlockedUntil>=turnNo){toast(c.name+' está bloqueado por ÚLTIMA BROMA.');return false;}if(side==='e'&&c&&sk&&await dmTitanJudgement('p',c,'habilidad'))return false;eternalVoidGodDomain(side);if(!c||!sk||(sk.onceDuel?c._skillUsedDuel:c._skillUsedTurn===turnNo))return false;if(sk.onceDuel)c._skillUsedDuel=true;else c._skillUsedTurn=turnNo;if(pcCinematicProfile(c))await pcCardCinematic('skill',side,i,c);skillFx(side,i,sk,c);if(sk.kind==='dmAbility'||sk.kind==='dmUltimate'){await dmUseAbility(side,i,c,sk)}else if(sk.kind==='public23Ability'||sk.kind==='public23Ultimate'){await pub23UseAbility(side,i,c,sk)}else if(sk.kind==='external'){await applyExternalAbility(side,i,c,sk.desc,false)}else if(sk.kind==='externalUltimate'){await applyExternalAbility(side,i,c,sk.desc,true)}else if(sk.kind==='magoRojo'){await mgrUseSkill(side,i,c,sk)}else if(sk.kind==='imperioDragon'){await idrUseSkill(side,i,c,sk)}else if(sk.kind==='caballerosSubmundo'){await csUseSkill(side,i,c,sk)}
+ orbPowerAbsorbOnOffense(side,sk);if(c?._strategicSkillNegatedUntil>=turnNo){if(csIs(c,'CS-003')&&(c._csEmperorUntil||-1)>=turnNo&&!c._csEmperorNegateUsed){c._csEmperorNegateUsed=true;delete c._strategicSkillNegatedUntil;toast('ESTADO EMPERADOR: la anulación rival queda NEGADA.')}else{toast(c.name+' tiene su habilidad anulada por DISTORSIÓN DEL VACÍO.');return false;}}if(c?._strategicBlockedUntil>=turnNo){toast(c.name+' está bloqueado por ÚLTIMA BROMA.');return false;}if(side==='e'&&c&&sk&&await dmTitanJudgement('p',c,'habilidad'))return false;eternalVoidGodDomain(side);if(!c||!sk||(sk.onceDuel?c._skillUsedDuel:c._skillUsedTurn===turnNo))return false;if(sk.onceDuel)c._skillUsedDuel=true;else c._skillUsedTurn=turnNo;if(pcCinematicProfile(c))await pcCardCinematic('skill',side,i,c);skillFx(side,i,sk,c);if(sk.kind==='dmAbility'||sk.kind==='dmUltimate'){await dmUseAbility(side,i,c,sk)}else if(sk.kind==='public23Ability'||sk.kind==='public23Ultimate'){await pub23UseAbility(side,i,c,sk)}else if(sk.kind==='external'){await applyExternalAbility(side,i,c,sk.desc,false)}else if(sk.kind==='externalUltimate'){await applyExternalAbility(side,i,c,sk.desc,true)}else if(sk.kind==='magoRojo'){await mgrUseSkill(side,i,c,sk)}else if(sk.kind==='imperioDragon'){await idrUseSkill(side,i,c,sk)}else if(sk.kind==='caballerosSubmundo'){await csUseSkill(side,i,c,sk)}
  else if(sk.kind==='dmAphrodite'){const rival=side==='p'?enemyCards:playerCards,t=rival.filter(Boolean).sort((a,b)=>(b.atk||0)-(a.atk||0))[0];if(t){t.atk=Math.max(0,t.atk-1500);t._dmAphroditeLockedUntil=turnNo;toast('SEDUCCIÓN DEL ALMA: '+t.name+' queda sometida este turno.')}c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+1)}
  else if(sk.kind==='dmThorShiny'){const rival=side==='p'?enemyCards:playerCards;rival.filter(Boolean).forEach(t=>{t.atk=Math.max(0,t.atk-1500)});if(side==='p'){ehpv=Math.max(0,ehpv-2500);damageFx(2500,'e')}else{phpv=Math.max(0,phpv-2500);damageFx(2500,'p')}c.atk+=1000;toast('THOR SHINY: TRUENO ETERNO desatado.');}
  else if(sk.kind==='dmMedusa'){const rival=side==='p'?enemyCards:playerCards,t=rival.filter(Boolean).sort((a,b)=>(b.atk||0)-(a.atk||0))[0];if(t){t._dmPetrifiedUntil=turnNo+1;t._attackDisabledUntil=turnNo+1;c.atk+=500;c.def+=500;c._dmStoneBonus=Math.min(2000,(c._dmStoneBonus||0)+500);toast('MIRADA PETRIFICANTE: '+t.name+' queda petrificada.')}}else if(sk.kind==='attack'){c.atk+=sk.value;olympusNotifyAttackIncrease(side,sk.value);const key=side==='p'?'_skillAtkBonus':'_enemySkillAtkBonus';c[key]=(c[key]||0)+sk.value}else if(sk.kind==='shield'){c._shieldBonus=(c._shieldBonus||0)+sk.value;c._shieldPending=true}else if(sk.kind==='heal'){if(side==='p')phpv=Math.min(playerMaxHp,phpv+sk.value);else ehpv=Math.min(enemyMaxHp,ehpv+sk.value)}else if(sk.kind==='damage'){if(side==='p')ehpv=Math.max(0,ehpv-sk.value);else phpv=Math.max(0,phpv-sk.value);damageFx(sk.value,side==='p'?'e':'p')}else if(sk.kind==='solarShield'){if(side==='p'){playerDirectShieldUntil=Math.max(playerDirectShieldUntil,turnNo+1);toast(`${c.name}: Escudo Solar protege tus HP de ataques directos durante 2 turnos.`)}else{toast(`${c.name}: Escudo Solar activado.`)}}else if(sk.kind==='debuff'){const rivals=side==='p'?enemyCards:playerCards,target=rivals.map((x,j)=>({c:x,j})).filter(x=>x.c).sort((a,b)=>b.c.atk-a.c.atk)[0];if(target){if(!orbPowerDominion(target.c)){target.c.atk=Math.max(0,target.c.atk-sk.value);target.c._skillDebuff=(target.c._skillDebuff||0)+sk.value;}toast(`${target.c.name} pierde ${sk.value} ATK durante este turno.`)}}else if(sk.kind==='stopTime'){if(side==='p'){enemySkipTurns=Math.max(enemySkipTurns,1);toast('KRONOS DETIENE EL TIEMPO: el rival perderá su siguiente turno completo.')}else{playerAttackBlockedUntil=Math.max(playerAttackBlockedUntil,turnNo+1)}}else if(sk.kind==='destroyEquipment'){await destroyEnemyEquipment(side,sk.value||1,c)}else if(sk.kind==='strategicBlacksmith'){await strategicBlacksmithUse(side,i,c)}else if(sk.kind==='strategicDarkClown'){await strategicDarkClownUse(side,i,c)}else if(sk.kind==='strategicDeathGolem'){await strategicDeathGolemUse(side,i,c)}else if(sk.kind==='strategicVoidMage'){await strategicVoidMageUse(side,i,c)}else if(sk.kind==='eternalVoidGod'){await eternalVoidGodUse(side,i,c)}update();updateSkillButtons();await wait(280);return true}
