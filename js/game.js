@@ -3191,7 +3191,7 @@ function csSync(){
   const fallen=csGrave(side).filter(x=>csIs(x)).length;
   csOwn(side).forEach(c=>{
    if(!csIs(c,'CS-001')&&!csIs(c,'CS-002'))return;
-   const gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=fallen*(gold?700:500),wantD=fallen*(gold?500:300);
+   const gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=gold?fallen*700:fallen*500,wantD=gold?fallen*500:fallen*300;
    if(oldA!==wantA){c.atk=Math.max(0,(c.atk||0)-oldA+wantA);c._csFallenAtk=wantA}
    if(oldD!==wantD){c.def=Math.max(0,(c.def||0)-oldD+wantD);c._csFallenDef=wantD}
   });
