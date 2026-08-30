@@ -24,7 +24,7 @@ must('CS-002 conserva familia del mazo',game.includes("id:'CS-002'")&&game.inclu
 must('CS-002 crecimiento dorado por Cementerio',game.includes("wantA=fallen*(gold?700:500)")&&game.includes("wantD=fallen*(gold?500:300)"));
 must('CS-002 Sentencia conectada',game.includes("action:'goldenSentence'")&&game.includes("_csUnstoppableSecondTurn=turnNo"));
 must('CS-002 Resurrección Dorada conectada',game.includes("if(csIs(victim,'CS-002'))")&&game.includes("_csGoldenResUsedDuel=true")&&game.includes("victim.atk+=2000;victim.def+=2000"));
-must('CS-002 Último Juicio implementado',game.includes('function csGoldenPiercingDamage(')&&game.includes('length<5'));
+must('CS-002 Último Juicio implementado',game.includes('function csGoldenPiercingDamage(')&&game.includes('length<5')&&game.includes("toast('ÚLTIMO JUICIO: '+csPierce+' de daño perforante directo.')")&&game.includes("toast('ÚLTIMO JUICIO: el daño perforante aumenta el impacto a '+hpDiff+'.')"));
 must('CS-002 ruta estable reservada',game.includes("img:'assets/images/caballeros-submundo/caballero-alas-oro.png'"));
 must('auditoría runtime disponible',game.includes('NEMESIS_CABALLEROS_SUBMUNDO_AUDIT'));
 
