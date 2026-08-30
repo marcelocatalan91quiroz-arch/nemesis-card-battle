@@ -17,5 +17,13 @@ A(g.includes('state.savedDecks.IMPERIO_DRAGON'),'mazo IMPERIO_DRAGON registrado'
 A(g.includes('state.savedDecks.OLIMPO'),'OLIMPO intacto');
 A(g.includes('state.savedDecks.DUEL_MASTER'),'DUEL_MASTER intacto');
 A(g.includes('DRAGON_OJO_DECK'),'campaña Dragón Ojo intacta');
+A(g.includes('NEMESIS_IMPERIO_DRAGON_AUDIT'),'auditoría runtime Imperio Dragón');
+A(g.includes('function idrTransform(')&&g.includes("idrTransform(side,i,'IDR-009')")&&g.includes("idrTransform(side,i,'IDR-010')"),'transformaciones IDR-009/010 operativas');
+A(g.includes('async function idrFusion(')&&g.includes("idrFusion(side,'IDR-019')")&&g.includes("idrFusion(side,'IDR-020')"),'fusiones IDR-019/020 operativas');
+A(g.includes('async function idrApplyMagic(')&&['IDR-011','IDR-012','IDR-013','IDR-016','IDR-017','IDR-018'].every(id=>g.includes("c.id==='"+id+"'")),'mágicas/reliquias/armas IDR operativas');
+A(g.includes('async function idrTryAttackTrap(')&&g.includes("IDR-014"),'trampa Contraataque de Escamas operativa');
+A(g.includes('async function idrPreventDestroy(')&&g.includes("IDR-015"),'trampa Ira del Último Dragón operativa');
+A(g.includes('function idrSkillDescriptor(')&&g.includes('async function idrUseSkill('),'estrategia/skills Imperio Dragón operativa');
+A(g.includes("c?.family==='imperio-dragon'&&c.type==='magic'")&&g.includes("sk.kind==='imperioDragon'"),'ruteo central Imperio Dragón conectado');
 A(g.includes('IRA_RA_BOSS_DECK'),'campaña Ira de Ra intacta');
 console.log('IMPERIO DRAGON MASTER 20/20 STATIC: PASS');
