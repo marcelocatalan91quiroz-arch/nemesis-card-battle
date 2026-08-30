@@ -123,3 +123,26 @@ test('arte autoritativo 65/65 y colección de mazos recientes', async ({ page })
   expect(audit.treasures.count).toBe(5);
   expect(audit.treasures.unique).toBeTruthy();
 });
+
+
+test('runtime de mecánicas 20/20', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => window.battle('guardian'));
+  await page.waitForTimeout(1600);
+  const audit=await page.evaluate(()=>window.NEMESIS_RUNTIME_MECHANICS_AUDIT?.());
+  expect(audit).toBeTruthy();
+  expect(audit.ok).toBeTruthy();
+  expect(audit.dm.total).toBe(20);
+  expect(audit.dm.handlers.every(x=>x.handler)).toBeTruthy();
+  expect(audit.mgr.count).toBe(20);
+  expect(audit.mgr.ok).toBeTruthy();
+  expect(audit.idr.count).toBe(20);
+  expect(audit.idr.ok).toBeTruthy();
+  expect(audit.idr.handlers.every(x=>x.handler)).toBeTruthy();
+  expect(audit.idr.systems.transform).toBeTruthy();
+  expect(audit.idr.systems.fusion).toBeTruthy();
+  expect(audit.idr.systems.magic).toBeTruthy();
+  expect(audit.idr.systems.traps).toBeTruthy();
+  expect(audit.treasures.count).toBe(5);
+  expect(audit.phases.valid).toBeTruthy();
+});
