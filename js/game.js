@@ -325,7 +325,8 @@ window.nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS);
 
 // CABALLEROS DEL SUBMUNDO · mazo en construcción (20 cartas previstas)
 const CABALLEROS_SUBMUNDO_CARDS=[
- {id:'CS-001',name:'Caballero Demonio',atk:7000,def:6000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','demonio','caballero','submundo'],rarity:'ancestral',level:10,effect:'csDemonKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-demonio.webp',desc:'PODER DE LOS CAÍDOS: +500 ATK/+300 DEF por cada Caballero del Submundo en tu Cementerio. SACRIFICIO DEMONÍACO: una vez por turno envía 1 Caballero aliado al Cementerio; +1500 ATK este turno y habilita un segundo ataque. HERALDO DEL SUBMUNDO: una vez por duelo devuelve 1 Caballero del Submundo de tu Cementerio al Deck para evitar su destrucción.'}
+ {id:'CS-001',name:'Caballero Demonio',atk:7000,def:6000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','demonio','caballero','submundo'],rarity:'ancestral',level:10,effect:'csDemonKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-demonio.webp',desc:'PODER DE LOS CAÍDOS: +500 ATK/+300 DEF por cada Caballero del Submundo en tu Cementerio. SACRIFICIO DEMONÍACO: una vez por turno envía 1 Caballero aliado al Cementerio; +1500 ATK este turno y habilita un segundo ataque. HERALDO DEL SUBMUNDO: una vez por duelo devuelve 1 Caballero del Submundo de tu Cementerio al Deck para evitar su destrucción.'},
+ {id:'CS-002',name:'Caballero de Alas de Oro',atk:10000,def:8500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','supremo'],rarity:'mitica-suprema',level:12,effect:'csGoldenWingKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-alas-oro.png',desc:'ALAS DEL JUICIO DORADO: +700 ATK/+500 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DEL REY CAÍDO: una vez por turno sacrifica 1 Caballero aliado; habilita un segundo ataque que no puede ser impedido por efectos. RESURRECCIÓN DORADA: una vez por duelo evita su destrucción, resucita hasta 2 Caballeros del Submundo y obtiene +2000 ATK/+2000 DEF permanentes. ÚLTIMO JUICIO: con 5 o más Caballeros del Submundo en el Cementerio obtiene Perforación.'}
 ];
 const CABALLEROS_SUBMUNDO_DECK_IDS=CABALLEROS_SUBMUNDO_CARDS.map(c=>c.id);
 
@@ -3189,8 +3190,8 @@ function csSync(){
  for(const side of ['p','e']){
   const fallen=csGrave(side).filter(x=>csIs(x)).length;
   csOwn(side).forEach(c=>{
-   if(!csIs(c,'CS-001'))return;
-   const oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=fallen*500,wantD=fallen*300;
+   if(!csIs(c,'CS-001')&&!csIs(c,'CS-002'))return;
+   const gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=gold?fallen*700:fallen*500,wantD=gold?fallen*500:fallen*300;
    if(oldA!==wantA){c.atk=Math.max(0,(c.atk||0)-oldA+wantA);c._csFallenAtk=wantA}
    if(oldD!==wantD){c.def=Math.max(0,(c.def||0)-oldD+wantD);c._csFallenDef=wantD}
   });
@@ -3198,10 +3199,11 @@ function csSync(){
 }
 function csSkillDescriptor(c){
  if(csIs(c,'CS-001'))return{name:'SACRIFICIO DEMONÍACO',kind:'caballerosSubmundo',action:'demonSacrifice',desc:'Envía 1 Caballero aliado al Cementerio: +1500 ATK este turno y habilita un segundo ataque.'};
+ if(csIs(c,'CS-002'))return{name:'SENTENCIA DEL REY CAÍDO',kind:'caballerosSubmundo',action:'goldenSentence',desc:'Sacrifica 1 Caballero aliado y habilita un segundo ataque imparable este turno.'};
  return null
 }
 async function csUseSkill(side,i,c,sk){
- if(sk.action!=='demonSacrifice')return false;
+ if(sk.action!=='demonSacrifice'&&sk.action!=='goldenSentence')return false;
  const own=csOwn(side),opts=own.map((x,j)=>({c:x,i:j})).filter(x=>x.c&&x.i!==i&&csIs(x.c));
  if(!opts.length){toast('SACRIFICIO DEMONÍACO: no hay otro Caballero aliado para sacrificar.');return false}
  const pick=side==='p'?await chooseMagicTarget('SACRIFICIO DEMONÍACO · ELIGE CABALLERO',opts,side):opts.sort((a,b)=>((a.c.atk||0)+(a.c.def||0))-((b.c.atk||0)+(b.c.def||0)))[0];
@@ -3209,15 +3211,24 @@ async function csUseSkill(side,i,c,sk){
  const victim=own[pick.i];
  await destroyCard(side,pick.i);
  if(own[pick.i]){toast('SACRIFICIO DEMONÍACO no pudo completarse.');return false}
- c.atk+=1500;c._csSacrificeAtk=(c._csSacrificeAtk||0)+1500;c._csSecondAttackTurn=turnNo;
- csSync();toast(victim.name+' es sacrificado · Caballero Demonio +1500 ATK y segundo ataque.');return true
+ if(sk.action==='demonSacrifice'){c.atk+=1500;c._csSacrificeAtk=(c._csSacrificeAtk||0)+1500}
+ c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence')c._csUnstoppableSecondTurn=turnNo;
+ csSync();toast(victim.name+' es sacrificado · '+c.name+' habilita su segundo ataque.');return true
 }
 async function csPreventDestroy(side,i,victim){
+ const grave=csGrave(side);
+ if(csIs(victim,'CS-002')){
+  if(victim._csGoldenResUsedDuel)return false;
+  victim._csGoldenResUsedDuel=true;
+  const own=csOwn(side),free=[];for(let j=0;j<own.length;j++)if(!own[j])free.push(j);
+  const revived=[];
+  for(let n=0;n<2&&free.length;n++){const gi=grave.findIndex(x=>csIs(x));if(gi<0)break;const card=grave.splice(gi,1)[0],slot=free.shift();own[slot]=card;revived.push(card.name)}
+  victim.atk+=2000;victim.def+=2000;victim._csGoldenPermanent=true;csSync();
+  toast('RESURRECCIÓN DORADA: evita la destrucción'+(revived.length?' · resucita '+revived.join(' y '):'')+' · +2000 ATK/+2000 DEF permanentes.');return true
+ }
  if(!csIs(victim,'CS-001')||victim._csHeraldUsedDuel)return false;
- const grave=csGrave(side),gi=grave.findIndex(x=>csIs(x));
- if(gi<0)return false;
- const returned=grave.splice(gi,1)[0];
- victim._csHeraldUsedDuel=true;
+ const gi=grave.findIndex(x=>csIs(x));if(gi<0)return false;
+ const returned=grave.splice(gi,1)[0];victim._csHeraldUsedDuel=true;
  if(side==='p')csQueue(side).push(returned.id);else csQueue(side).push({...returned});
  csSync();toast('HERALDO DEL SUBMUNDO: '+returned.name+' vuelve al mazo y evita la destrucción.');return true
 }
@@ -3225,11 +3236,15 @@ function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(c?._csSacrificeAtk){c.atk=Math.max(0,c.atk-c._csSacrificeAtk);delete c._csSacrificeAtk}});
 }
 function csKeepTurnAfterAttack(c){
- if(!csIs(c,'CS-001'))return false;
+ if(!csIs(c,'CS-001')&&!csIs(c,'CS-002'))return false;
  if(c._csSecondAttackTurn===turnNo&&c._csSecondAttackUsedTurn!==turnNo){c._csSecondAttackUsedTurn=turnNo;return true}
  return false
 }
-window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const x=card('CS-001');return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,card:x?{id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img}:null,systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function'},cardOk:!!x&&x.atk>=7000&&x.def>=6000&&x.family==='caballeros-submundo'}};
+function csGoldenPiercingDamage(side,c,target){
+ if(!csIs(c,'CS-002')||csGrave(side).filter(x=>csIs(x)).length<5||!target)return 0;
+ return Math.max(0,(c.atk||0)-(target.def||0))
+}
+window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const a=card('CS-001'),g=card('CS-002');return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:[a,g].filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function'},cardOk:!!a&&!!g&&g.atk>=10000&&g.def>=8500&&g.family==='caballeros-submundo'}};
 
 function skillFor(c){if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
  'strategic-herrero':{name:'FORJA DE COMBATE',kind:'strategicBlacksmith',value:1,desc:'Recupera 1 arma o armadura del Cementerio y la equipa a un aliado.'},
@@ -3463,7 +3478,8 @@ async function resolveBattle(attSide,ai,defSide,di){
  const rewardAres=()=>{if(A.id==="anc-ares"){A.atk+=500;toast(`Furia del Conquistador: Ares gana +500 ATK (${A.atk}).`)}};const dm=(defSide==='p'?playerModes:enemyModes)[di]||'ATAQUE';await (defSide==='e'?revealEnemy(di):revealPlayer(di));const shieldBonus=D._shieldPending?(Number(D._shieldBonus)||0):0;const defenseValue=A._treasurePiercing?0:(dm==='DEFENSA'?D.def:D.atk)+shieldBonus;const diff=A.atk-defenseValue;if(shieldBonus)toast(`${D.name}: protección de habilidad aporta +${shieldBonus} DEF.`);await attackAnim(attSide,ai,defSide,di,A,Math.max(0,diff));if(attSide==='e')clearNextEnemyShields();else if(shieldBonus){delete D._shieldBonus;delete D._shieldPending}if(A.effect==='royalExecution'&&(D.def||0)<=4000){await destroyCard(defSide,di);strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);toast(`EJECUCIÓN: ${D.name} es destruida por la Corona Maldita.`);update();return}if(dm==='DEFENSA'){
  if(diff>0){
   await destroyCard(defSide,di);strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();
-  toast('Defensa superada. La carta defensora fue destruida, pero no se pierden HP.');
+  const csPierce=csGoldenPiercingDamage(attSide,A,D);if(csPierce>0){if(defSide==='e')ehpv=Math.max(0,ehpv-csPierce);else phpv=Math.max(0,phpv-csPierce);damageFx(csPierce,defSide);toast('ÚLTIMO JUICIO: '+csPierce+' de daño perforante directo.')}
+  toast('Defensa superada. La carta defensora fue destruida'+(csPierce>0?' y Último Juicio atraviesa la defensa.':', pero no se pierden HP.'));
  }else if(diff<0){
   const rebote=Math.abs(diff);
   if(attSide==='p')phpv=Math.max(0,phpv-rebote);else ehpv=Math.max(0,ehpv-rebote);
@@ -3475,7 +3491,7 @@ async function resolveBattle(attSide,ai,defSide,di){
  update();
  return
 }
- if(diff>0){await destroyCard(defSide,di);strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai);strategicClownLastJoke(A,D);mgrAfterSurvive(defSide,D);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai);strategicClownLastJoke(A,D);await destroyCard(defSide,di);strategicClownLastJoke(D,A)}update()}
+ if(diff>0){await destroyCard(defSide,di);strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);const csPierce=csGoldenPiercingDamage(attSide,A,D);if(csPierce>hpDiff){hpDiff=csPierce;toast('ÚLTIMO JUICIO: el daño perforante aumenta el impacto a '+hpDiff+'.')}if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai);strategicClownLastJoke(A,D);mgrAfterSurvive(defSide,D);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai);strategicClownLastJoke(A,D);await destroyCard(defSide,di);strategicClownLastJoke(D,A)}update()}
 function chooseMagicTarget(titleText,cards,side='p'){
  return new Promise(resolve=>{
   const old=document.getElementById('magicTargetPicker');if(old)old.remove();
