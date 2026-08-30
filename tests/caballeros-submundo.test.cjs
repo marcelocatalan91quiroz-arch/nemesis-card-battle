@@ -14,7 +14,7 @@ must('registro sin duplicar core',game.includes('CABALLEROS_SUBMUNDO_CARDS.forEa
 must('Poder de los Caídos conectado al Cementerio',game.includes('function csSync()')&&game.includes('fallen*500')&&game.includes('fallen*300'));
 must('Sacrificio Demoníaco operativo',game.includes("action:'demonSacrifice'")&&game.includes('await destroyCard(side,pick.i)')&&game.includes('_csSecondAttackTurn=turnNo'));
 must('Heraldo evita destrucción una vez por duelo',game.includes('async function csPreventDestroy(')&&game.includes('_csHeraldUsedDuel=true')&&game.includes("if(side==='p')csQueue(side).push(returned.id)"));
-must('protección conectada a destroyCard',game.includes('if(await csPreventDestroy(side,i,victim))return false'));
+must('protección conectada a destroyCard',game.includes("if(await csPreventDestroy(side,i,victim,cause))return false"));
 must('segundo ataque conectado a ambos flujos',game.includes('csKeepTurnAfterAttack(dmAttacker)')&&game.includes('csKeepTurnAfterAttack(c)'));
 must('buff temporal se limpia',game.includes('function csClearTurn()')&&game.includes('c._csSacrificeAtk'));
 must('colección/biblioteca reutilizada',game.includes('...CABALLEROS_SUBMUNDO_DECK_IDS]'));
@@ -68,3 +68,16 @@ if(process.exitCode)process.exit(process.exitCode);
 console.log('CABALLEROS DEL SUBMUNDO · CS-001: PASS');
 
 // CS-002 final art gate trigger
+
+must('CS-007 Caballero Sombra de Venuz Shiny registrado',game.includes("id:'CS-007',name:'Caballero Sombra de Venuz Shiny'"));
+must('CS-007 stats 18000/16000',game.includes("name:'Caballero Sombra de Venuz Shiny',atk:18000,def:16000"));
+must('CS-007 no reemplaza CS-006',game.includes("id:'CS-006',name:'Caballero Sombra de Venuz'")&&game.includes("id:'CS-007',name:'Caballero Sombra de Venuz Shiny'"));
+must('CS-007 ruta completa estable',game.includes("img:'assets/images/caballeros-submundo/caballero-sombra-de-venuz-shiny.webp'"));
+must('CS-007 Sombra Absoluta Shiny',game.includes("_csVenuzShinyAbsorbedFallen")&&game.includes("venuzShiny.atk+=1500*d;venuzShiny.def+=1000*d"));
+must('CS-007 Eclipse Supremo',game.includes("action:'venuzShinyEclipse'")&&game.includes("c.atk+=2500"));
+must('CS-007 protecciones separadas combate/efecto',game.includes("cause==='combat'?'_csShinyCombatGuardTurn':'_csShinyEffectGuardTurn'")&&game.includes("PROTECCIÓN SUPREMA SHINY"));
+must('CS-007 Renacer del Vacío',game.includes("_csShinyRenacerUsedDuel=true")&&game.includes("victim.atk+=4000;victim.def+=4000")&&game.includes("n<2"));
+must('CS-007 Eclipse Eternidad',game.includes("_csVenuzShinyFinalUsedDuel=true")&&game.includes("_csShinyEclipseUntil=turnNo+1")&&game.includes("c.atk+=6000;c.def+=4000"));
+must('CS-007 Cuerpo Eclipse 70%',game.includes("_csShinyFloorAtk=Math.ceil(c.atk*.7)")&&game.includes("_csShinyFloorDef=Math.ceil(c.def*.7)"));
+must('CS-007 perforación conectada',game.includes("function csVenuzShinyPiercingDamage")&&game.includes("if(csIs(c,'CS-007'))return csVenuzShinyPiercingDamage"));
+must('CS-007 anti-anulación',game.includes("_csShinyNegateTurn!==turnNo")&&game.includes("la primera anulación dirigida del turno queda NEGADA"));
