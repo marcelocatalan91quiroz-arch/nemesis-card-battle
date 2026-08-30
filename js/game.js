@@ -342,10 +342,10 @@ function nemesisTreasureRedeem(id){const c=NEMESIS_TREASURE_CARDS.find(x=>x.id==
 window.NEMESIS_TREASURE_AUDIT=()=>({count:NEMESIS_TREASURE_CARDS.length,price:1000,unique:new Set(NEMESIS_TREASURE_CARDS.map(c=>c.id)).size===5});
 function nemesisTreasureScene(){
  const cards=NEMESIS_TREASURE_CARDS;
- app.innerHTML=`<section class="deck"><div class="deckbar"><div><h2>TESOROS NÉMESIS</h2><small>EDICIÓN NÉMESIS · 5 CARTAS ÚNICAS · SOLO CANJE</small></div><b>★ ${state.stars||0}</b></div>
- <p style="max-width:1100px;margin:0 auto 14px">Estas cartas no se obtienen en campañas ni se añaden automáticamente a ningún mazo. Cada una cuesta <b>★ 1000</b> y solo puede canjearse una vez.</p>
- <div class="grid shop-grid">${cards.map(c=>{const owned=nemesisTreasureOwned(c.id);return `<article class="card shop-card ${owned?'owned':''}"><img src="${c.img}" alt="${esc(c.name)}"><b>${c.name}</b><small>${c.description}</small><button class="btn treasure-buy" data-id="${c.id}" ${owned?'disabled':''}>${owned?'YA LA TIENES':'★ 1000 · CANJEAR'}</button></article>`}).join('')}</div>
- <div class="deckbar"><button class="btn" id="treasureBack">VOLVER</button></div></section>`;
+ app.innerHTML=`<section class="deck treasure-vault"><div class="treasure-hero"><div class="treasure-emblem">✦</div><small>CÁMARA SECRETA</small><h1>TESOROS NÉMESIS</h1><p>5 reliquias únicas para fortalecer cualquier mazo</p><div class="treasure-balance">TU SALDO <b>★ ${state.stars||0}</b></div></div>
+ <div class="treasure-rule"><b>★ 1000 POR TESORO</b><span>Solo canje · una vez por carta · compatible con todos los mazos</span></div>
+ <div class="treasure-grid">${cards.map((c,i)=>{const owned=nemesisTreasureOwned(c.id),can=(state.stars||0)>=NEMESIS_TREASURE_PRICE;return `<article class="treasure-card ${owned?'owned':can?'available':'locked'}"><div class="treasure-number">TESORO ${String(i+1).padStart(2,'0')}</div><div class="treasure-art"><img src="${c.img}" alt="${esc(c.name)}"><div class="treasure-shine"></div></div><div class="treasure-info"><small>NÉMESIS · ÚNICA</small><h3>${esc(c.name)}</h3><p>${esc(c.description)}</p><div class="treasure-price">★ 1000</div><button class="btn treasure-buy" data-id="${c.id}" ${owned||!can?'disabled':''}>${owned?'✓ OBTENIDA':can?'CANJEAR TESORO':'🔒 FALTAN ESTRELLAS'}</button></div></article>`}).join('')}</div>
+ <div class="treasure-footer"><button class="btn" id="treasureBack">VOLVER AL MENÚ</button><small>Las cartas obtenidas quedan guardadas permanentemente en tu colección.</small></div></section>`;
  document.querySelectorAll('.treasure-buy:not([disabled])').forEach(b=>b.onclick=()=>{if(nemesisTreasureRedeem(b.dataset.id))nemesisTreasureScene()});
  treasureBack.onclick=menuScene
 }
