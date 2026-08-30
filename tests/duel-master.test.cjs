@@ -21,6 +21,10 @@ A(String(onk.ultimate?.nombre||'').includes('Aurora del Fin Austral'),'Onkolxón
 for(const id of ['DM-001','DM-002','DM-003','DM-004','DM-007','DM-008','DM-009','DM-010']){
  const c=dm.find(x=>x.id===id);A(Array.isArray(c.habilidades)&&c.habilidades.length>=4,id+' habilidades completas');
 }
+const thor=dm.find(c=>c.id==='DM-004'),thorShiny=dm.find(c=>c.id==='DM-018');
+A(thorShiny.atk===20000,'Thor Shiny ATK 20000');
+A(thorShiny.def===17000,'Thor Shiny DEF 17000');
+A(thorShiny.atk>thor.atk&&thorShiny.def>thor.def,'Thor Shiny supera a Thor normal en ATK/DEF');
 for(const [id,min] of [['DM-011',3],['DM-012',3],['DM-018',4]]){
  const c=dm.find(x=>x.id===id);A(Array.isArray(c.habilidades)&&c.habilidades.length>=min,id+' habilidades completas');
 }
