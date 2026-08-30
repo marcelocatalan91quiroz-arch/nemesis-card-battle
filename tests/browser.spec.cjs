@@ -68,7 +68,7 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
       ...Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0')),
       ...Array.from({length:10},(_,i)=>'DM-'+String(i+11).padStart(3,'0'))
     ];
-    const map=window.NEMESIS_REAL_CARD_ART_INDEX||{};
+    const map=window.NEMESIS_CARD_ART||{};
     const sources=ids.map(id=>window.nemesisRealCardArt?.(id,'')||'');
     const loaded=await Promise.all(sources.map(src=>new Promise(resolve=>{
       if(!/^data:image\//i.test(src))return resolve(false);
@@ -79,10 +79,47 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
     })));
     return {
       expected:ids.length,
-      mapped:ids.filter(id=>Number.isInteger(map[id])).length,
+      mapped:ids.filter(id=>typeof map[id]==='string'&&map[id].startsWith('data:image/')).length,
       dataImages:sources.filter(src=>/^data:image\//i.test(src)).length,
       decoded:loaded.filter(Boolean).length
     };
   });
   expect(audit).toEqual({expected:50,mapped:50,dataImages:50,decoded:50});
+});
+
+
+test('arte autoritativo 65/65 y colección de mazos recientes', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForTimeout(700);
+  const audit=await page.evaluate(async()=>{
+    const ids=[
+      ...Array.from({length:20},(_,i)=>'IDR-'+String(i+1).padStart(3,'0')),
+      ...Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0')),
+      ...Array.from({length:20},(_,i)=>'DM-'+String(i+1).padStart(3,'0')),
+      'TN-MAG-001','TN-MAG-002','TN-ARM-001','TN-ARM-002','TN-TRP-001'
+    ];
+    const artAudit=window.NEMESIS_CARD_ART_AUDIT?.();
+    const decoded=await Promise.all(ids.map(id=>new Promise(resolve=>{
+      const src=window.nemesisRealCardArt?.(id,'')||'';
+      const img=new Image();
+      img.onload=()=>resolve({id,ok:img.naturalWidth>=300&&img.naturalHeight>=440,w:img.naturalWidth,h:img.naturalHeight});
+      img.onerror=()=>resolve({id,ok:false,w:0,h:0});
+      img.src=src;
+    })));
+    const owned=window.NEMESIS_COLLECTION?.owned||[];
+    const recentIds=ids.filter(id=>!id.startsWith('TN-'));
+    return {
+      artAudit,
+      badImages:decoded.filter(x=>!x.ok),
+      missingOwned:recentIds.filter(id=>!owned.includes(id)),
+      treasures:window.NEMESIS_TREASURE_AUDIT?.()
+    };
+  });
+  expect(audit.artAudit.required).toBe(65);
+  expect(audit.artAudit.count).toBeGreaterThanOrEqual(65);
+  expect(audit.artAudit.missing).toEqual([]);
+  expect(audit.badImages).toEqual([]);
+  expect(audit.missingOwned).toEqual([]);
+  expect(audit.treasures.count).toBe(5);
+  expect(audit.treasures.unique).toBeTruthy();
 });
