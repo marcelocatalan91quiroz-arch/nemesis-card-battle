@@ -48,7 +48,7 @@ must('sin nombre Viajero automático',!game.includes("||'Viajero'"));
 const artFiles=[
  'js/card-art/art-idr-01-10.js','js/card-art/art-idr-11-20.js',
  'js/card-art/art-mgr-01-10.js','js/card-art/art-mgr-11-20.js',
- 'js/card-art/art-dm-11-20.js','js/card-art/art-treasures.js'
+ 'js/card-art/art-dm-01-10.js','js/card-art/art-dm-11-20.js','js/card-art/art-treasures.js'
 ];
 const art=artFiles.map(p=>fs.readFileSync(path.join(root,p),'utf8')).join('\n');
 const registry=fs.readFileSync(path.join(root,'js/card-art/card-art-registry.js'),'utf8');
@@ -56,7 +56,7 @@ must('fuente única de arte cargada',
  artFiles.every(p=>html.includes(p))&&html.includes('js/card-art/card-art-registry.js')&&!html.includes('js/card-art-real-sprite.js'));
 must('arte real Imperio Dragón 20/20',Array.from({length:20},(_,i)=>'IDR-'+String(i+1).padStart(3,'0')).every(id=>art.includes('"'+id+'"')));
 must('arte real Mago Rojo 20/20',Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0')).every(id=>art.includes('"'+id+'"')));
-must('arte real Duel Master 11-20',Array.from({length:10},(_,i)=>'DM-'+String(i+11).padStart(3,'0')).every(id=>art.includes('"'+id+'"')));
+must('arte real Duel Master 01-20',Array.from({length:20},(_,i)=>'DM-'+String(i+1).padStart(3,'0')).every(id=>art.includes('"'+id+'"')));
 must('arte real Tesoro NÉMESIS 5/5',['TN-MAG-001','TN-MAG-002','TN-ARM-001','TN-ARM-002','TN-TRP-001'].every(id=>art.includes('"'+id+'"')));
 must('registro de arte autoritativo',registry.includes('NEMESIS_CARD_ART_AUDIT')&&registry.includes('nemesisRealCardArt')&&registry.includes('nemesisApplyRealCardArt'));
 must('game aplica arte real a todos los grupos',game.includes('nemesisApplyRealCardArt?.(IMPERIO_DRAGON_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(MAGO_ROJO_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(NEMESIS_TREASURE_CARDS)'));
