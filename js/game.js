@@ -328,11 +328,13 @@ const STRATEGIC_REDEEM_CARDS=[
  {id:'strategic-payaso-oscuro',name:'Payaso Oscuro',atk:2800,def:2800,type:'monster',family:'caos-nemesis',tags:['oscuridad','demonio','estrategico'],rarity:'epica',effect:'strategicDarkClown',strategicRedeem:true,priceStars:350,img:'assets/images/strategic/payaso-oscuro.webp',desc:'JUEGO MACABRO: una vez por turno intercambia ATK y DEF de 1 monstruo enemigo hasta el final del turno. ULTIMA BROMA: si es destruido por un monstruo enemigo, ese monstruo no puede atacar ni activar su habilidad principal durante 1 turno.'},
  {id:'strategic-golem-muerte',name:'Gólem de la Muerte',atk:5500,def:6500,type:'monster',family:'universal',tags:['oscuridad','golem','mitica','universal'],rarity:'mitica',effect:'strategicDeathGolem',strategicRedeem:true,priceStars:800,img:'assets/images/strategic/golem-de-la-muerte.jpg',desc:'COSECHA DE ALMAS: +500 ATK por cada monstruo enviado a cualquier Cementerio, máximo +3000. CUERPO DE LOS MUERTOS: la primera destrucción en combate se evita y pierde 1500 DEF. SENTENCIA MORTAL: al máximo, desde el siguiente turno, una vez por duelo destruye 1 monstruo rival con menor ATK.'},
  {id:'strategic-mago-vacio',name:'Mago del Vacío',atk:4800,def:5200,type:'monster',family:'universal',tags:['vacio','mago','mitica','universal'],rarity:'mitica',effect:'strategicVoidMage',strategicRedeem:true,priceStars:700,img:'assets/images/strategic/mago-del-vacio.jpg',desc:'DISTORSIÓN DEL VACÍO: una vez por turno anula la habilidad principal de 1 monstruo rival hasta el final de su siguiente turno. ABSORCIÓN ARCANA: la primera Mágica rival de cada turno otorga +500 ATK/+500 DEF hasta el final del siguiente turno propio. PORTAL DEL VACÍO: una vez por duelo devuelve 1 monstruo de cualquier Cementerio a la mano de su propietario.'},
- {id:'limited-dios-vacio-eterno',name:'Dios del Vacío Eterno',atk:15000,def:13000,type:'monster',family:'universal',tags:['vacio-eterno','dios','universal','borde-negro','limitada'],rarity:'limitada-suprema',effect:'eternalVoidGod',strategicRedeem:true,limitedBlackEdition:true,priceStars:3000,img:'assets/images/strategic/dios-vacio-eterno.jpg',desc:'DOMINIO DEL VACÍO: primera habilidad especial rival por turno: -3000 ATK/DEF y sin segundo ataque. DEVORADOR DE PODER: absorbe 2000 ATK de un rival con más de 8000 ATK. COLAPSO DIMENSIONAL: una vez por duelo anula hasta 2 habilidades rivales. EXISTENCIA ETERNA: evita su primera destrucción y queda 7500/6500. FIN DEL UNIVERSO: tras 3 turnos destruye 1 monstruo, causa 2000 HP y no vuelve a atacar ese turno.'}
+ {id:'limited-dios-vacio-eterno',name:'Dios del Vacío Eterno',atk:15000,def:13000,type:'monster',family:'universal',tags:['vacio-eterno','dios','universal','borde-negro','limitada'],rarity:'limitada-suprema',effect:'eternalVoidGod',strategicRedeem:true,limitedBlackEdition:true,priceStars:3000,img:'assets/images/strategic/dios-vacio-eterno.jpg',desc:'DOMINIO DEL VACÍO: primera habilidad especial rival por turno: -3000 ATK/DEF y sin segundo ataque. DEVORADOR DE PODER: absorbe 2000 ATK de un rival con más de 8000 ATK. COLAPSO DIMENSIONAL: una vez por duelo anula hasta 2 habilidades rivales. EXISTENCIA ETERNA: evita su primera destrucción y queda 7500/6500. FIN DEL UNIVERSO: tras 3 turnos destruye 1 monstruo, causa 2000 HP y no vuelve a atacar ese turno.'},
+ {id:'MGR-SHINY-001',name:'Mago Rojo Shiny',atk:8500,def:7000,type:'monster',family:'strategic',tags:['fuego','mago-rojo','shiny','mitica','exclusiva'],rarity:'shiny-mitica',effect:'magoRojoShiny',strategicRedeem:true,shinyEdition:true,priceStars:1800,img:'assets/images/mago-rojo/mago-rojo-shiny.jpg',desc:'DOMINIO ESCARLATA SUPREMO: cada Mágica Mago Rojo genera 2 Sellos. 3 Sellos recuperan una Mágica; 5 Sellos infligen 2000 HP y dan +1000 ATK este turno; 7 Sellos infligen 3000 HP y bloquean efectos rivales este turno. MAESTRO DE LAS SIETE LLAMAS: con 3+ Sellos, tus monstruos Mago Rojo ganan +1000 ATK/+800 DEF. INFERNO ARCANO: una vez por turno destruye 1 carta rival e inflige 2000 HP por cada Sello Arcano controlado. PROTECCIÓN ESCARLATA: consume 3 Sellos para evitar su destrucción.'}
 ];
 
-const CARDS_RAW=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...MAGO_ROJO_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS,...STRATEGIC_REDEEM_CARDS];
+const CARDS_RAW=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...MAGO_ROJO_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
 const CARDS=[...new Map(CARDS_RAW.map(c=>[c.id,c])).values()];
+STRATEGIC_REDEEM_CARDS.forEach(c=>{if(!CARDS.some(x=>x.id===c.id))CARDS.push(c)});
 const AS={tirano:'assets/images/img-10.webp',guardian:'assets/images/guardian-dragones.webp',bg1:'assets/images/img-12.webp',bg2:'assets/images/img-13.webp',dragonOjo:'assets/images/dragon-ojo-del-diablo.png',dragonOjoBg:'assets/images/castillo-dragon-ojo-diablo.webp',iraRa:'assets/images/ira-de-ra-jefe.png',iraRaBg:'assets/images/ruinas-piramide-ira-ra.png',caballeroAlmas:'assets/images/caballero-de-las-almas.png',caballeroAlmasBg:'assets/images/reino-espectral-cinematico.png',reyEspectral:'assets/images/rey-espectral.png',reyEspectralBg:'assets/images/reino-espectral-cinematico.png'};
 // Las ÚNICAS se agregan también sin permitir colisión de ID.
 UNIQUE_CARD_DEFS.forEach(c=>{if(!CARDS.some(x=>x.id===c.id))CARDS.push(c)});
@@ -3604,7 +3606,7 @@ window.NEMESIS_RUNTIME_MECHANICS_AUDIT=()=>{const dm=window.NEMESIS_DUEL_MASTER_
 
 
 // V19.4.3 — MOTOR AISLADO MAGO ROJO
-function mgrIs(c,id=null){return !!c&&c.family==='mago-rojo'&&(!id||c.id===id)}
+function mgrIs(c,id=null){return !!c&&(c.family==='mago-rojo'||c.id==='MGR-SHINY-001')&&(!id||c.id===id)}
 function mgrOwn(side){return side==='p'?playerCards:enemyCards}
 function mgrGrave(side){return side==='p'?playerGrave:enemyGrave}
 function mgrQueue(side){return side==='p'?deckQueue:enemyQueue}
@@ -3634,7 +3636,7 @@ function mgrSearch(side,predicate,label='MAGO ROJO'){
 }
 function mgrMagicActivated(side,c){
  if(!mgrIs(c))return;
- const st=mgrState(side);st.magicUses++;if(c.id!=='MGR-018')mgrAddSeal(side,1,'MAGIA CARMESÍ');
+ const st=mgrState(side);st.magicUses++;if(c.id!=='MGR-018'){const shiny=mgrOwn(side).some(x=>mgrIs(x,'MGR-SHINY-001'));mgrAddSeal(side,shiny?2:1,shiny?'DOMINIO ESCARLATA SUPREMO':'MAGIA CARMESÍ');}
  const own=mgrOwn(side),grim=own.some(x=>mgrIs(x)&&x._mgrGrimorio)||own.some(x=>x?._mgrGrimorio);
  if(grim){st.flames=Math.min(7,st.flames+1);toast('GRIMORIO · LLAMA '+st.flames+'/7')}
 }
@@ -3649,6 +3651,8 @@ function mgrSync(){
    let ga=0,gd=0;if(grimCarrier){if(st.flames>=1)ga+=300;if(st.flames>=4){ga+=500;gd+=500}}
    if(oldGrimAtk!==ga){c.atk=Math.max(0,(c.atk||0)-oldGrimAtk+ga);c._mgrGrimAtk=ga}
    if(oldGrimDef!==gd){c.def=Math.max(0,(c.def||0)-oldGrimDef+gd);c._mgrGrimDef=gd}
+   const shiny=own.some(x=>mgrIs(x,'MGR-SHINY-001')),oldSA=c._mgrShinyAuraAtk||0,oldSD=c._mgrShinyAuraDef||0,wSA=shiny&&st.seals>=3?1000:0,wSD=shiny&&st.seals>=3?800:0;
+   if(oldSA!==wSA){c.atk=Math.max(0,(c.atk||0)-oldSA+wSA);c._mgrShinyAuraAtk=wSA}if(oldSD!==wSD){c.def=Math.max(0,(c.def||0)-oldSD+wSD);c._mgrShinyAuraDef=wSD}
   });
   const anc=own.find(x=>mgrIs(x,'MGR-009'));if(anc){const count=own.filter(x=>mgrIs(x)&&x.type==='monster'&&x!==anc).length,want=count*300,old=anc._mgrKinBonus||0;if(want!==old){anc.atk=Math.max(0,anc.atk-old+want);anc._mgrKinBonus=want}}
  }
@@ -3656,6 +3660,7 @@ function mgrSync(){
 function mgrSkillDescriptor(c){
  const map={
   'MGR-001':{name:'DOMINIO ESCARLATA',kind:'magoRojo',action:'recoverMagic',desc:'Consume 3 Sellos Arcanos para recuperar 1 Mágica Mago Rojo del Cementerio.'},
+  'MGR-SHINY-001':{name:'DOMINIO ESCARLATA SUPREMO',kind:'magoRojo',action:'shinySupreme',desc:'Consume Sellos para recuperar Mágicas o desatar daño escarlata. Con 3+ Sellos potencia todo Mago Rojo.'},
   'MGR-004':{name:'GUARDIA ARDIENTE',kind:'magoRojo',action:'guard',desc:'Protege una criatura Mago Rojo y le concede +1000 DEF para el próximo combate.'},
   'MGR-005':{name:'PACTO DE LLAMAS',kind:'magoRojo',action:'witch',desc:'Consume 1 Sello Arcano para reducir 1500 ATK a la criatura rival más fuerte este turno.'},
   'MGR-006':{name:'FORJA PROTECTORA',kind:'magoRojo',action:'forge',desc:'Refuerza +700 DEF a una criatura Mago Rojo y protege soportes del arquetipo este turno.'},
@@ -3668,6 +3673,18 @@ function mgrSkillDescriptor(c){
 }
 async function mgrUseSkill(side,i,c,sk){
  const own=mgrOwn(side),rival=side==='p'?enemyCards:playerCards,rs=side==='p'?'e':'p';
+ if(sk.action==='shinySupreme'){
+  const seals=mgrSealCount(side);
+  const infernoTargets=rival.map((x,j)=>({c:x,i:j})).filter(x=>x.c);
+  if(c._mgrInfernoTurn!==turnNo&&seals>0&&infernoTargets.length){
+   const useInferno=side==='p'?confirm('INFERNO ARCANO: ¿destruir 1 carta rival y causar '+(seals*2000)+' HP por tus '+seals+' Sello(s)?'):seals>=3;
+   if(useInferno){const pick=side==='p'?await chooseMagicTarget('INFERNO ARCANO · ELIGE OBJETIVO',infernoTargets,rs):infernoTargets.sort((a,b)=>(b.c.atk||0)-(a.c.atk||0))[0];if(pick){c._mgrInfernoTurn=turnNo;await destroyCard(rs,pick.i);mgrHit(side,seals*2000);toast('INFERNO ARCANO: '+(seals*2000)+' de daño directo.');return true}}
+  }
+  if(seals>=7){mgrSpendSeals(side,7);mgrHit(side,3000);for(const x of rival)if(x)x._strategicSkillNegatedUntil=turnNo;toast('7 SELLOS: 3000 HP y efectos rivales anulados este turno.');return true}
+  if(seals>=5){mgrSpendSeals(side,5);mgrHit(side,2000);c.atk+=1000;c._mgrTempAtk=(c._mgrTempAtk||0)+1000;toast('5 SELLOS: 2000 HP y +1000 ATK.');return true}
+  if(seals>=3){mgrSpendSeals(side,3);const grave=mgrGrave(side),idx=[...grave].map((x,j)=>({x,j})).reverse().find(o=>mgrIs(o.x)&&o.x.type==='magic');if(!idx){mgrAddSeal(side,3,'SELLOS DEVUELTOS');return false}const gi=grave.lastIndexOf(idx.x);if(side==='p'){grave.splice(gi,1);handState.push(idx.x.id);renderHand()}else{grave.splice(gi,1);mgrQueue(side).unshift(idx.x)}toast('DOMINIO ESCARLATA SUPREMO recupera '+idx.x.name+'.');return true}
+  toast('DOMINIO ESCARLATA SUPREMO requiere al menos 3 Sellos.');return false
+ }
  if(sk.action==='recoverMagic'){
   if(!mgrSpendSeals(side,3))return false;const grave=mgrGrave(side),idx=[...grave].map((x,j)=>({x,j})).reverse().find(o=>mgrIs(o.x)&&o.x.type==='magic');
   if(!idx){mgrAddSeal(side,3,'SELLOS DEVUELTOS');toast('No hay Mágicas Mago Rojo en el Cementerio.');return false}
@@ -3702,6 +3719,7 @@ async function mgrPhoenixReturn(side,victim){
 }
 async function mgrPreventDestroy(side,i,victim){
  if(!victim)return false;const own=mgrOwn(side);
+ if(mgrIs(victim,'MGR-SHINY-001')&&mgrSealCount(side)>=3&&!victim._mgrShinySaveTurn){victim._mgrShinySaveTurn=turnNo;if(mgrSpendSeals(side,3)){toast('PROTECCIÓN ESCARLATA: 3 Sellos evitan la destrucción.');return true}}
  if(mgrIs(victim)&&((victim._mgrGuardUntil||-1)>=turnNo||(victim._mgrProtectedUntil||-1)>=turnNo||(victim._mgrFusionGuardUntil||-1)>=turnNo)){toast('PROTECCIÓN CARMESÍ evita la destrucción.');return true}
  if(mgrIs(victim,'MGR-009')&&!victim._mgrAncestorSave){const grave=mgrGrave(side),j=grave.findIndex(x=>mgrIs(x));if(j>=0){victim._mgrAncestorSave=true;grave.splice(j,1);victim.def+=1000;toast('HERENCIA ANCESTRAL evita la destrucción.');return true}}
  const last=own.findIndex(x=>mgrIs(x,'MGR-017')&&!x._mgrConsuming);
