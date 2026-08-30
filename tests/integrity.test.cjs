@@ -66,6 +66,10 @@ must('migración de mazos no destructiva',game.includes('nemesisMergeDeckIds')&&
 must('Duel Master no se sobreescribe destructivamente',!game.includes('state.savedDecks.DUEL_MASTER=NEMESIS_DUEL_MASTER_IDS.filter'));
 must('Imperio Dragón no se sobreescribe destructivamente',!game.includes('state.savedDecks.IMPERIO_DRAGON=IMPERIO_DRAGON_DECK_IDS.filter'));
 must('auditoría de migración disponible',game.includes('NEMESIS_DECK_MIGRATION_AUDIT'));
+must('motor definitivo de mazo activo',game.includes('nemesisDeckForMode')&&game.includes('NEMESIS_ACTIVE_DECK'));
+must('mazos privados propietario declarados',game.includes("OLIMPO:{ownerOnly:true")&&game.includes("DUEL_MASTER:{ownerOnly:true"));
+must('mazos públicos seleccionables declarados',game.includes("MAGO_ROJO:{ownerOnly:false")&&game.includes("IMPERIO_DRAGON:{ownerOnly:false"));
+must('campaña sincroniza mazo activo',game.includes("nemesisSyncActiveDeck();const activePlayerDeck=nemesisDeckForMode('campaign')"));
 if(process.exitCode) process.exit(process.exitCode);
 
 const dmNew=['DM-011','DM-012','DM-013','DM-014','DM-015','DM-016','DM-017','DM-018','DM-019','DM-020'];

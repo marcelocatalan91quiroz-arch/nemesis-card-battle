@@ -34,5 +34,8 @@ must('transformación Thor Shiny servidor',api.includes('tryShinyAwakening')&&ap
 must('Zeus negate autoritativo',api.includes('tryZeusNegate')&&api.includes('ZEUS_NEGATE'));
 must('Eclipse de los Reinos servidor',api.includes('ECLIPSE_REALMS')&&api.includes("id==='DM-020'"));
 must('cliente controla habilidad ultimate soporte',client.includes('dmAbility')&&client.includes('dmUltimate')&&client.includes('dmSupportActivate'));
+must('cliente envía mazo activo',client.includes('activeDeckPayload')&&client.includes('deckName')&&client.includes('deckIds'));
+must('servidor registra mazo por jugador',api.includes('playerDeckMeta')&&api.includes('deckClass'));
+must('online reconoce Mago Rojo e Imperio Dragón',api.includes("'MAGO_ROJO'")&&api.includes("'IMPERIO_DRAGON'"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('NÉMESIS ONLINE 1V1 BASE: PASS');

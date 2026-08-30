@@ -43,6 +43,15 @@ const DM_CATALOG={
 };
 const DM_DECK=Object.keys(DM_CATALOG);
 const DM_START_HP=30000;
+// El núcleo conserva el motor Duel Master existente. El mazo elegido se registra de forma
+// autoritativa por jugador para que los motores Mago Rojo / Imperio Dragón puedan enchufarse
+// sin cambiar salas, Redis, sincronización ni protocolo.
+const PUBLIC_DECKS=new Set(['MAGO_ROJO','IMPERIO_DRAGON']);
+const OWNER_DECKS=new Set(['OLIMPO','DUEL_MASTER']);
+function cleanDeckName(v){return String(v||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON').slice(0,40)}
+function cleanDeckIds(v){return [...new Set((Array.isArray(v)?v:[]).map(x=>String(x||'').trim()).filter(Boolean))].slice(0,40)}
+function playerDeckMeta(b){const deckName=cleanDeckName(b.deckName),deckIds=cleanDeckIds(b.deckIds);return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':PUBLIC_DECKS.has(deckName)?'PUBLIC':'CUSTOM'}}
+
 const DM_EFFECT_HANDLERS=Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,true])));
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=crypto.randomInt(0,i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 function initDmPlayer(seat){
@@ -401,8 +410,8 @@ function publicRoom(room,token){
  return {
   code:room.code,status:room.status,version:room.version,createdAt:room.createdAt,updatedAt:room.updatedAt,
   serverTime:t,transport:storageMode(),persistent:hasPersistentStorage(),tickMs:1200,
-  me:{id:me.id,seat:me.seat,name:me.name,ready:me.ready,connected:t-me.lastSeen<10000},
-  players:room.players.map(p=>({id:p.id,seat:p.seat,name:p.name,ready:p.ready,connected:t-p.lastSeen<10000})),
+  me:{id:me.id,seat:me.seat,name:me.name,ready:me.ready,connected:t-me.lastSeen<10000,deckName:me.deckName||'DUEL_MASTER',deckClass:me.deckClass||'LEGACY'},
+  players:room.players.map(p=>({id:p.id,seat:p.seat,name:p.name,ready:p.ready,connected:t-p.lastSeen<10000,deckName:p.deckName||'DUEL_MASTER',deckClass:p.deckClass||'LEGACY'})),
   countdownAt:room.countdownAt||null,result:room.result||null,
   events:(room.events||[]).slice(-40).map(e=>({seq:e.seq,type:e.type,seat:e.seat,at:e.at,payload:e.payload})),
   duel:sanitizeDuel(room,me.seat)
@@ -445,7 +454,7 @@ module.exports=async function handler(req,res){
   if(b.action==='create'){
    let c;do{c=code()}while(await readRoom(c));
    const token=id(),pid=id(10),t=now();
-   const room={code:c,status:'WAITING',createdAt:t,updatedAt:t,expiresAt:t+ROOM_TTL_MS,version:0,seq:0,players:[{id:pid,tokenHash:tokenHash(token),seat:'HOST',name:cleanName(b.name),ready:false,lastSeen:t}],events:[]};
+   const room={code:c,status:'WAITING',createdAt:t,updatedAt:t,expiresAt:t+ROOM_TTL_MS,version:0,seq:0,players:[{id:pid,tokenHash:tokenHash(token),seat:'HOST',name:cleanName(b.name),ready:false,lastSeen:t,...playerDeckMeta(b)}],events:[]};
    pushEvent(room,'ROOM_CREATED','SYSTEM');
    await writeRoom(room);
    return res.status(201).json({ok:true,token,room:publicRoom(room,token)});
@@ -455,7 +464,7 @@ module.exports=async function handler(req,res){
    if(!room)return res.status(404).json({ok:false,error:'ROOM_NOT_FOUND'});
    if(room.players.length>=2)return res.status(409).json({ok:false,error:'ROOM_FULL'});
    const token=id(),t=now();
-   room.players.push({id:id(10),tokenHash:tokenHash(token),seat:'GUEST',name:cleanName(b.name),ready:false,lastSeen:t});
+   room.players.push({id:id(10),tokenHash:tokenHash(token),seat:'GUEST',name:cleanName(b.name),ready:false,lastSeen:t,...playerDeckMeta(b)});
    room.status='READY';
    pushEvent(room,'PLAYER_JOINED','GUEST');
    await writeRoom(room);
