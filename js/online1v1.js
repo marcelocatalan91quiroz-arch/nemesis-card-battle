@@ -102,7 +102,8 @@ function renderRoom(room){
 function dmCardHtml(card,extra=''){
  if(!card)return '<div class="dm-empty"></div>';
  const st=card.state||{},eq=st.equipment||{},eqTxt=[eq.weapon,eq.relic].filter(Boolean).join(' · ');
- return `<article class="dm-card ${extra}" data-card="${esc(card.id)}"><img src="${esc(card.img||'')}" alt="${esc(card.name||card.id)}"><div><b>${esc(card.name||card.id)}</b><span>ATK ${Number(card.atk||0).toLocaleString('es-CL')} · DEF ${Number(card.def||0).toLocaleString('es-CL')}</span>${card.kind==='MONSTER'?'<small>ENERGÍA '+Number(st.energy??card.energy??0)+' · USOS '+Number(st.uses||0)+'</small>':''}${eqTxt?'<em>'+esc(eqTxt)+'</em>':''}</div></article>`;
+ const realArt=window.nemesisRealCardArt?.(card.id,card.img||'')||card.img||'';
+ return `<article class="dm-card ${extra}" data-card="${esc(card.id)}"><img src="${esc(realArt)}" alt="${esc(card.name||card.id)}"><div><b>${esc(card.name||card.id)}</b><span>ATK ${Number(card.atk||0).toLocaleString('es-CL')} · DEF ${Number(card.def||0).toLocaleString('es-CL')}</span>${card.kind==='MONSTER'?'<small>ENERGÍA '+Number(st.energy??card.energy??0)+' · USOS '+Number(st.uses||0)+'</small>':''}${eqTxt?'<em>'+esc(eqTxt)+'</em>':''}</div></article>`;
 }
 function dmMonsterZones(cards=[],side='me'){
  return cards.map((card,i)=>`<button class="dm-zone monster ${card?'occupied':''}" data-zone="${i}" data-side="${side}">${card?dmCardHtml(card):'<span>MONSTRUO '+(i+1)+'</span>'}</button>`).join('');

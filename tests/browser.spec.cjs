@@ -49,7 +49,40 @@ test('auditoría Duel Master 20/20 y assets', async ({ page }) => {
   expect(audit.onkolxon).toEqual({hp:13000,energia:14});
   expect(audit.handlers.every(x=>x.handler)).toBeTruthy();
   for(const src of audit.images){
+    if(/^data:image\//i.test(src)){
+      expect(src.length).toBeGreaterThan(100);
+      continue;
+    }
     const res=await page.request.get(new URL(src,page.url()).href);
     expect(res.ok()).toBeTruthy();
   }
+});
+
+
+test('colección usa arte real en los mazos recientes', async ({ page }) => {
+  await page.goto('/');
+  await page.waitForTimeout(500);
+  const audit=await page.evaluate(async () => {
+    const ids=[
+      ...Array.from({length:20},(_,i)=>'IDR-'+String(i+1).padStart(3,'0')),
+      ...Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0')),
+      ...Array.from({length:10},(_,i)=>'DM-'+String(i+11).padStart(3,'0'))
+    ];
+    const map=window.NEMESIS_REAL_CARD_ART_INDEX||{};
+    const sources=ids.map(id=>window.nemesisRealCardArt?.(id,'')||'');
+    const loaded=await Promise.all(sources.map(src=>new Promise(resolve=>{
+      if(!/^data:image\//i.test(src))return resolve(false);
+      const img=new Image();
+      img.onload=()=>resolve(img.naturalWidth>0&&img.naturalHeight>0);
+      img.onerror=()=>resolve(false);
+      img.src=src;
+    })));
+    return {
+      expected:ids.length,
+      mapped:ids.filter(id=>Number.isInteger(map[id])).length,
+      dataImages:sources.filter(src=>/^data:image\//i.test(src)).length,
+      decoded:loaded.filter(Boolean).length
+    };
+  });
+  expect(audit).toEqual({expected:50,mapped:50,dataImages:50,decoded:50});
 });

@@ -311,6 +311,11 @@ const MAGO_ROJO_CARDS=[
  {id:'MGR-020',name:"Bastón de Ignis",atk:0,def:0,type:'magic',family:'mago-rojo',tags:['fuego','mago-rojo'],rarity:'ancestral',effect:'mgr_020',img:'assets/images/mago-rojo/mgr-020.svg',desc:"ARMA: solo Mago Rojo. Otorga +1800 ATK, +1200 DEF, energía y velocidad; con Grimorio de las Siete Llamas potencia sus efectos.",special:true,magoRojo:true}
 ];
 const MAGO_ROJO_DECK_IDS=MAGO_ROJO_CARDS.map(c=>c.id);
+// V19.5.1 — ARTE REAL RECUPERADO PARA LOS MAZOS RECIENTES
+window.nemesisApplyRealCardArt?.(IMPERIO_DRAGON_CARDS);
+window.nemesisApplyRealCardArt?.(MAGO_ROJO_CARDS);
+window.nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS);
+
 
 // V19.4.1 — REGISTRO ÚNICO DE CARTAS.
 // Varias familias ya estaban incluidas dentro de COLLECTIBLE_CARDS y se volvían a
