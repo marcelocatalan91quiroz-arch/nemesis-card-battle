@@ -95,7 +95,7 @@ test('arte autoritativo 55/55 y colección de mazos recientes', async ({ page })
     const ids=[
       ...Array.from({length:20},(_,i)=>'IDR-'+String(i+1).padStart(3,'0')),
       ...Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0')),
-      ...Array.from({length:10},(_,i)=>'DM-'+String(i+11).padStart(3,'0')),
+      ...Array.from({length:20},(_,i)=>'DM-'+String(i+1).padStart(3,'0')),
       'TN-MAG-001','TN-MAG-002','TN-ARM-001','TN-ARM-002','TN-TRP-001'
     ];
     const artAudit=window.NEMESIS_CARD_ART_AUDIT?.();
@@ -115,8 +115,8 @@ test('arte autoritativo 55/55 y colección de mazos recientes', async ({ page })
       treasures:window.NEMESIS_TREASURE_AUDIT?.()
     };
   });
-  expect(audit.artAudit.required).toBe(55);
-  expect(audit.artAudit.count).toBeGreaterThanOrEqual(55);
+  expect(audit.artAudit.required).toBe(65);
+  expect(audit.artAudit.count).toBeGreaterThanOrEqual(65);
   expect(audit.artAudit.missing).toEqual([]);
   expect(audit.badImages).toEqual([]);
   expect(audit.missingOwned).toEqual([]);
