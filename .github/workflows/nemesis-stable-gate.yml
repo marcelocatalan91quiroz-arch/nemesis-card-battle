@@ -1,5 +1,6 @@
 name: NEMESIS Stable Gate
 on:
+  workflow_dispatch:
   pull_request:
   push:
     branches: [ main ]
