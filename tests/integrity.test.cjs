@@ -60,6 +60,12 @@ must('arte real Duel Master 01-20',Array.from({length:20},(_,i)=>'DM-'+String(i+
 must('arte real Tesoro NÉMESIS 5/5',['TN-MAG-001','TN-MAG-002','TN-ARM-001','TN-ARM-002','TN-TRP-001'].every(id=>art.includes('"'+id+'"')));
 must('registro de arte autoritativo',registry.includes('NEMESIS_CARD_ART_AUDIT')&&registry.includes('nemesisRealCardArt')&&registry.includes('nemesisApplyRealCardArt'));
 must('game aplica arte real a todos los grupos',game.includes('nemesisApplyRealCardArt?.(IMPERIO_DRAGON_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(MAGO_ROJO_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(NEMESIS_TREASURE_CARDS)'));
+
+must('registro oficial de mazos',game.includes('NEMESIS_OFFICIAL_DECK_REGISTRY')&&game.includes('NEMESIS_DECK_REGISTRY'));
+must('migración de mazos no destructiva',game.includes('nemesisMergeDeckIds')&&game.includes('nemesisSyncOfficialDecks'));
+must('Duel Master no se sobreescribe destructivamente',!game.includes('state.savedDecks.DUEL_MASTER=NEMESIS_DUEL_MASTER_IDS.filter'));
+must('Imperio Dragón no se sobreescribe destructivamente',!game.includes('state.savedDecks.IMPERIO_DRAGON=IMPERIO_DRAGON_DECK_IDS.filter'));
+must('auditoría de migración disponible',game.includes('NEMESIS_DECK_MIGRATION_AUDIT'));
 if(process.exitCode) process.exit(process.exitCode);
 
 const dmNew=['DM-011','DM-012','DM-013','DM-014','DM-015','DM-016','DM-017','DM-018','DM-019','DM-020'];
