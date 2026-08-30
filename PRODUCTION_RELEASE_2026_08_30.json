@@ -1,0 +1,18 @@
+{
+  "release": "PRODUCTION",
+  "source_main": "be042b11bc41455d9b8e92820f7644450c9addf2",
+  "version": "19.5.8-runtime-20x20",
+  "includes": [
+    "Duel Master 20/20 runtime",
+    "Mago Rojo 20/20 runtime",
+    "Imperio Dragon 20/20 runtime",
+    "Tesoro NEMESIS 5/5",
+    "transformaciones",
+    "fusiones",
+    "fases",
+    "estrategias",
+    "arte autoritativo"
+  ],
+  "ci": "PASS",
+  "requestedAt": "2026-08-30"
+}
