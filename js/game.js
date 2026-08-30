@@ -534,6 +534,22 @@ const NEMESIS_OFFICIAL_DECK_REGISTRY=Object.freeze({
  MAGO_ROJO:MAGO_ROJO_DECK_IDS,
  IMPERIO_DRAGON:IMPERIO_DRAGON_DECK_IDS
 });
+// Acceso definitivo: OLIMPO y DUEL_MASTER son mazos privados del propietario.
+// Los jugadores públicos pueden elegir MAGO_ROJO / IMPERIO_DRAGON y sus mazos personalizados.
+const NEMESIS_DECK_ACCESS=Object.freeze({
+ OLIMPO:{ownerOnly:true,campaign:true,online:true},
+ DUEL_MASTER:{ownerOnly:true,campaign:true,online:true},
+ MAGO_ROJO:{ownerOnly:false,campaign:true,online:true},
+ IMPERIO_DRAGON:{ownerOnly:false,campaign:true,online:true}
+});
+function nemesisCanonicalDeckName(name){
+ const k=String(name||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON');
+ if(k==='IMPERIO_DRAGON')return 'IMPERIO_DRAGON';
+ if(k==='MAGO_ROJO')return 'MAGO_ROJO';
+ if(k==='DUEL_MASTER')return 'DUEL_MASTER';
+ if(k==='OLIMPO')return 'OLIMPO';
+ return String(name||'').trim()
+}
 function nemesisMergeDeckIds(saved,official){
  const out=[],seen=new Set();
  for(const id of [...(Array.isArray(saved)?saved:[]),...(Array.isArray(official)?official:[])]){
@@ -544,6 +560,12 @@ function nemesisMergeDeckIds(saved,official){
 }
 function nemesisSyncOfficialDecks(){
  state.savedDecks=state.savedDecks&&typeof state.savedDecks==='object'?state.savedDecks:{};
+ // Migra alias históricos a nombres canónicos sin perder personalizaciones.
+ for(const [oldName,newName] of [['IMPERIO DRAGÓN','IMPERIO_DRAGON'],['MAGO ROJO','MAGO_ROJO'],['DUEL MASTER','DUEL_MASTER']]){
+  if(Array.isArray(state.savedDecks[oldName]))state.savedDecks[newName]=nemesisMergeDeckIds(state.savedDecks[newName],state.savedDecks[oldName]);
+  if(oldName!==newName)delete state.savedDecks[oldName];
+ }
+ state.activeDeckName=nemesisCanonicalDeckName(state.activeDeckName);
  for(const [name,ids] of Object.entries(NEMESIS_OFFICIAL_DECK_REGISTRY)){
   const valid=ids.filter(id=>card(id));
   state.owned=[...new Set([...(state.owned||[]),...valid])];
@@ -554,6 +576,7 @@ function nemesisSyncOfficialDecks(){
 }
 nemesisSyncOfficialDecks();
 window.NEMESIS_DECK_REGISTRY=NEMESIS_OFFICIAL_DECK_REGISTRY;
+window.NEMESIS_DECK_ACCESS=NEMESIS_DECK_ACCESS;
 window.NEMESIS_DECK_MIGRATION_AUDIT=()=>({
  decks:Object.fromEntries(Object.entries(NEMESIS_OFFICIAL_DECK_REGISTRY).map(([name,ids])=>[name,{
   official:ids.length,
@@ -627,12 +650,7 @@ function nemesisEnsureDeckLibrary(){
  const permanentUserCards=[...IMPERIO_DRAGON_DECK_IDS,...MAGO_ROJO_DECK_IDS,...NEMESIS_DUEL_MASTER_IDS,...NEMESIS_PUBLIC_23_IDS]
    .filter(id=>card(id));
  state.owned=[...new Set([...(Array.isArray(state.owned)?state.owned:[]),...permanentUserCards])].filter(id=>card(id));
- const presets={
-   'OLIMPO':OLIMPO_DECK_IDS,
-   'IMPERIO DRAGÓN':IMPERIO_DRAGON_DECK_IDS,
-   'MAGO ROJO':MAGO_ROJO_DECK_IDS,
-   'DUEL MASTER':NEMESIS_DUEL_MASTER_IDS
- };
+ const presets=NEMESIS_OFFICIAL_DECK_REGISTRY;
  for(const [name,ids] of Object.entries(presets)){
    if(!Array.isArray(state.savedDecks[name])||!state.savedDecks[name].length)
      state.savedDecks[name]=[...new Set(ids.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,11);
@@ -651,10 +669,16 @@ function nemesisSaveCurrentDeck(){
  save();return state.savedDecks[state.activeDeckName];
 }
 function nemesisSelectDeck(name){
- nemesisEnsureDeckLibrary();
+ nemesisEnsureDeckLibrary();name=nemesisCanonicalDeckName(name);
  if(!Array.isArray(state.savedDecks[name]))return false;
  state.activeDeckName=name;nemesisSyncActiveDeck();save();return true;
 }
+function nemesisDeckForMode(mode='campaign'){
+ nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();
+ const name=nemesisCanonicalDeckName(state.activeDeckName),ids=[...new Set(state.deck.filter(id=>state.owned.includes(id)&&card(id)))];
+ return {name,ids,mode,access:NEMESIS_DECK_ACCESS[name]||{ownerOnly:false,campaign:true,online:true}};
+}
+window.NEMESIS_ACTIVE_DECK=()=>nemesisDeckForMode('campaign');
 function nemesisCreateDeck(){
  nemesisEnsureDeckLibrary();
  let n=Object.keys(state.savedDecks).length+1,name=`MAZO ${n}`;
@@ -693,6 +717,7 @@ window.NEMESIS_COLLECTION=Object.freeze({
  saveDeck:nemesisSaveCurrentDeck,
  createDeck:nemesisCreateDeck,
  get activeDeck(){return state.activeDeckName},
+ get activeDeckData(){return nemesisDeckForMode('campaign')},
  get decks(){return JSON.parse(JSON.stringify(state.savedDecks||{}))},
  get owned(){return state.owned.slice()}
 });
@@ -949,6 +974,8 @@ function aresCampaign3Scene(){
 window.nemesisCampaign3Ares=aresCampaign3Scene;
 
 async function battle(opponent='guardian'){
+nemesisSyncActiveDeck();const activePlayerDeck=nemesisDeckForMode('campaign');
+window.__NEMESIS_LAST_CAMPAIGN_DECK={name:activePlayerDeck.name,ids:activePlayerDeck.ids.slice()};
 window.__mgrP={seals:0,flames:0,magicUses:0,mirrorDamageTurn:-1,_battle:Date.now(),_resetPending:false};
 window.__mgrE={seals:0,flames:0,magicUses:0,mirrorDamageTurn:-1,_battle:Date.now(),_resetPending:false};
 const duelKey=['ra','dragon','caballero-almas','rey-espectral','dios-fantasma','ares','hades'].includes(opponent)?opponent:'guardian';
