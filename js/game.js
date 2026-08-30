@@ -524,15 +524,46 @@ const app=document.getElementById('app');
 function v1894PhaseLabel(){}
 
 
-// V19.2.8 — Colección externa y segundo mazo Duel Master
-state.owned=[...new Set([...(state.owned||[]),...NEMESIS_PUBLIC_23_IDS,...NEMESIS_DUEL_MASTER_IDS])];
-state.savedDecks=state.savedDecks||{};
-if(!Array.isArray(state.savedDecks.OLIMPO)||!state.savedDecks.OLIMPO.length)state.savedDecks.OLIMPO=OLIMPO_DECK_IDS.filter(id=>card(id)).slice(0,11);
-state.savedDecks.DUEL_MASTER=NEMESIS_DUEL_MASTER_IDS.filter(id=>card(id));
-state.owned=[...new Set([...(state.owned||[]),...MAGO_ROJO_DECK_IDS])];
-if(!Array.isArray(state.savedDecks.MAGO_ROJO)||!state.savedDecks.MAGO_ROJO.length)state.savedDecks.MAGO_ROJO=MAGO_ROJO_DECK_IDS.filter(id=>card(id));
-state.owned=[...new Set([...(state.owned||[]),...IMPERIO_DRAGON_DECK_IDS])];
-state.savedDecks.IMPERIO_DRAGON=IMPERIO_DRAGON_DECK_IDS.filter(id=>card(id));
+// V19.5.9 — REGISTRO OFICIAL DE MAZOS + MIGRACIÓN NO DESTRUCTIVA
+// Regla: una actualización NUNCA reemplaza el mazo guardado del jugador.
+// Conserva IDs válidos existentes, agrega cartas nuevas del mazo oficial y elimina solo
+// duplicados o IDs que ya no existen en el registro maestro.
+const NEMESIS_OFFICIAL_DECK_REGISTRY=Object.freeze({
+ OLIMPO:OLIMPO_DECK_IDS,
+ DUEL_MASTER:NEMESIS_DUEL_MASTER_IDS,
+ MAGO_ROJO:MAGO_ROJO_DECK_IDS,
+ IMPERIO_DRAGON:IMPERIO_DRAGON_DECK_IDS
+});
+function nemesisMergeDeckIds(saved,official){
+ const out=[],seen=new Set();
+ for(const id of [...(Array.isArray(saved)?saved:[]),...(Array.isArray(official)?official:[])]){
+  if(seen.has(id)||!card(id))continue;
+  seen.add(id);out.push(id);
+ }
+ return out
+}
+function nemesisSyncOfficialDecks(){
+ state.savedDecks=state.savedDecks&&typeof state.savedDecks==='object'?state.savedDecks:{};
+ for(const [name,ids] of Object.entries(NEMESIS_OFFICIAL_DECK_REGISTRY)){
+  const valid=ids.filter(id=>card(id));
+  state.owned=[...new Set([...(state.owned||[]),...valid])];
+  state.savedDecks[name]=nemesisMergeDeckIds(state.savedDecks[name],valid);
+ }
+ state.owned=[...new Set([...(state.owned||[]),...NEMESIS_PUBLIC_23_IDS.filter(id=>card(id))])];
+ if(!state.activeDeckName||!state.savedDecks[state.activeDeckName])state.activeDeckName='OLIMPO';
+}
+nemesisSyncOfficialDecks();
+window.NEMESIS_DECK_REGISTRY=NEMESIS_OFFICIAL_DECK_REGISTRY;
+window.NEMESIS_DECK_MIGRATION_AUDIT=()=>({
+ decks:Object.fromEntries(Object.entries(NEMESIS_OFFICIAL_DECK_REGISTRY).map(([name,ids])=>[name,{
+  official:ids.length,
+  saved:(state.savedDecks[name]||[]).length,
+  missing:ids.filter(id=>!(state.savedDecks[name]||[]).includes(id)),
+  invalid:(state.savedDecks[name]||[]).filter(id=>!card(id))
+ }])),
+ ok:Object.entries(NEMESIS_OFFICIAL_DECK_REGISTRY).every(([name,ids])=>
+  ids.every(id=>(state.savedDecks[name]||[]).includes(id)&&!!card(id)))
+});
 if(!state.activeDeckName)state.activeDeckName='OLIMPO';
 
 function card(id){
@@ -554,7 +585,9 @@ window.NEMESIS_CARD_REGISTRY_AUDIT=()=>({
  total:CARDS.length,
  uniqueIds:new Set(CARDS.map(c=>c.id)).size,
  duplicateIds:CARDS.length-new Set(CARDS.map(c=>c.id)).size,
- missingImages:CARDS.filter(c=>!c.img).map(c=>c.id)
+ missingImages:CARDS.filter(c=>!window.nemesisRealCardArt?.(c.id,c.img||'')).map(c=>c.id),
+ invalidIds:CARDS.filter(c=>!c.id||typeof c.id!=='string').map(c=>c.name||'?'),
+ ok:new Set(CARDS.map(c=>c.id)).size===CARDS.length&&CARDS.every(c=>c.id&&window.nemesisRealCardArt?.(c.id,c.img||''))
 });
 
 

@@ -13,7 +13,7 @@ must('trampas Mago Rojo',game.includes('mgrTryAttackTrap')&&game.includes('MGR-0
 must('reliquia Grimorio',game.includes("MGR-018")&&game.includes('_mgrGrimorio'));
 must('fusión 8+9 -> 19',game.includes("mgrIs(x,'MGR-008')")&&game.includes("mgrIs(x,'MGR-009')")&&game.includes("card('MGR-019')"));
 must('arma Bastón de Ignis',game.includes("MGR-020")&&game.includes("'weapon'"));
-must('mazo persistente',game.includes('state.savedDecks.MAGO_ROJO'));
+must('mazo persistente',game.includes('NEMESIS_OFFICIAL_DECK_REGISTRY')&&game.includes('MAGO_ROJO:MAGO_ROJO_DECK_IDS')&&game.includes('nemesisSyncOfficialDecks'));
 must('auditoría runtime',game.includes('NEMESIS_MAGO_ROJO_AUDIT'));
 for(const id of ids){const p=path.join(root,'assets/images/mago-rojo',id.toLowerCase()+'.svg');must('asset '+id,fs.existsSync(p))}
 if(process.exitCode)process.exit(process.exitCode);
