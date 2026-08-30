@@ -1695,8 +1695,8 @@ window.NEMESIS_EXTERNAL_COLLECTION_33 = [
       "RAYO"
     ],
     "rareza": "SHINY_ANCESTRAL",
-    "atk": 6000,
-    "def": 4500,
+    "atk": 20000,
+    "def": 17000,
     "hp": 4200,
     "energia": 6,
     "habilidades": [
