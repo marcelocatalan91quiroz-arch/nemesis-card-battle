@@ -70,6 +70,7 @@ must('motor definitivo de mazo activo',game.includes('nemesisDeckForMode')&&game
 must('mazos privados propietario declarados',game.includes("OLIMPO:{ownerOnly:true")&&game.includes("DUEL_MASTER:{ownerOnly:true"));
 must('mazos públicos seleccionables declarados',game.includes("MAGO_ROJO:{ownerOnly:false")&&game.includes("IMPERIO_DRAGON:{ownerOnly:false"));
 must('campaña sincroniza mazo activo',game.includes("nemesisSyncActiveDeck();const activePlayerDeck=nemesisDeckForMode('campaign')"));
+must('economía progresiva de estrellas integrada',game.includes("id:'guardian',name:'Guardián de los Dragones'")&&game.includes("reward:100")&&game.includes("id:'dragon-ojo'")&&game.includes("reward:150")&&game.includes("id:'rey-espectral'")&&game.includes("reward:250")&&game.includes("id:'dios-fantasma'")&&game.includes("reward:350")&&game.includes("id:'ares'")&&game.includes("reward:400")&&game.includes("id:'hades'")&&game.includes("reward:500"));
 if(process.exitCode) process.exit(process.exitCode);
 
 const dmNew=['DM-011','DM-012','DM-013','DM-014','DM-015','DM-016','DM-017','DM-018','DM-019','DM-020'];
