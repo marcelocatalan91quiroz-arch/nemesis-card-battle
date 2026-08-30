@@ -47,6 +47,14 @@ must('CS-004 Ojo de Horus',game.includes('function csHorusEye(')&&game.includes(
 must('CS-004 Luz Funeraria',game.includes("_csHorusFuneralTurn!==turnNo")&&game.includes("horusCard.atk+=1000;horusCard.def+=1000"));
 must('CS-004 Juicio Sol Negro',game.includes("action:'horusJudgement'")&&game.includes("_csHorusProtectedUntil=turnNo")&&game.includes("JUICIO DEL SOL NEGRO"));
 must('CS-004 Guardián Rey Caído',game.includes('function csHorusBlessResurrection(')&&game.includes("card.atk+=1500;card.def+=1500")&&game.includes("csHorusBlessResurrection(side,rev)"));
+must('CS-005 registrado',game.includes("id:'CS-005',name:'Caballero Rose'"));
+must('CS-005 stats y familia',game.includes("name:'Caballero Rose',atk:10000,def:8500")&&game.includes("family:'caballeros-submundo'"));
+must('CS-005 ruta estable',game.includes("assets/images/caballeros-submundo/caballero-rose.webp")&&fs.existsSync(path.join(root,'assets/images/caballeros-submundo/caballero-rose.webp')));
+must('CS-005 Marcas de Rosa',game.includes('function csRoseApplyMark(')&&game.includes("700*d")&&game.includes("500*d"));
+must('CS-005 Pétalo',game.includes('function csRoseUseSkill(')&&game.includes("2000 HP directo"));
+must('CS-005 Rosa del Caído',game.includes("_csFuneralRoses")&&game.includes("roseCard.atk+=500;roseCard.def+=500"));
+must('CS-005 Jardín',game.includes("_csRoseGardenUntil=turnNo+1")&&game.includes("JARDÍN DE LA MUERTE activo durante 2 turnos"));
+must('CS-004 sync corregido',game.includes("!csIs(c,'CS-004'))return;"));
 must('auditoría runtime disponible',game.includes('NEMESIS_CABALLEROS_SUBMUNDO_AUDIT'));
 
 if(process.exitCode)process.exit(process.exitCode);
