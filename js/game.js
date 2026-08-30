@@ -3240,6 +3240,10 @@ function csKeepTurnAfterAttack(c){
  if(c._csSecondAttackTurn===turnNo&&c._csSecondAttackUsedTurn!==turnNo){c._csSecondAttackUsedTurn=turnNo;return true}
  return false
 }
+function csGoldenPiercingDamage(side,c,target){
+ if(!csIs(c,'CS-002')||csGrave(side).filter(x=>csIs(x)).length<5||!target)return 0;
+ return Math.max(0,(c.atk||0)-(target.def||0))
+}
 window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const a=card('CS-001'),g=card('CS-002');return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:[a,g].filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function'},cardOk:!!a&&!!g&&g.atk>=10000&&g.def>=8500&&g.family==='caballeros-submundo'}};
 
 function skillFor(c){if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
