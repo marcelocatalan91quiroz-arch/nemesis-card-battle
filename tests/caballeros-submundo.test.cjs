@@ -55,6 +55,13 @@ must('CS-005 Pétalo',game.includes('function csRoseUseSkill(')&&game.includes("
 must('CS-005 Rosa del Caído',game.includes("_csFuneralRoses")&&game.includes("roseCard.atk+=500;roseCard.def+=500"));
 must('CS-005 Jardín',game.includes("_csRoseGardenUntil=turnNo+1")&&game.includes("JARDÍN DE LA MUERTE activo durante 2 turnos"));
 must('CS-004 sync corregido',game.includes("!csIs(c,'CS-004'))return;"));
+must('CS-006 registrado',game.includes("id:'CS-006',name:'Caballero Sombra de Venuz'"));
+must('CS-006 stats y familia',game.includes("name:'Caballero Sombra de Venuz',atk:15000,def:13000")&&game.includes("family:'caballeros-submundo'"));
+must('CS-006 ruta oficial',game.includes("assets/images/caballeros-submundo/caballero-sombra-de-venuz.webp"));
+must('CS-006 Sombra Absoluta',game.includes("_csVenuzAbsorbedFallen")&&game.includes("venuz.atk+=1200*d;venuz.def+=800*d"));
+must('CS-006 Eclipse',game.includes("function csVenuzUseSkill(")&&game.includes("pierde 50% ATK/DEF"));
+must('CS-006 Retorno',game.includes("_csVenuzReturnUsedDuel")&&game.includes("RETORNO DEL SOBERANO"));
+must('CS-006 Eclipse Final',game.includes("_csVenuzFinalUntil=turnNo+1")&&game.includes("csVenuzPiercingDamage"));
 must('auditoría runtime disponible',game.includes('NEMESIS_CABALLEROS_SUBMUNDO_AUDIT'));
 
 if(process.exitCode)process.exit(process.exitCode);
