@@ -30,3 +30,5 @@ must('auditoría runtime disponible',game.includes('NEMESIS_CABALLEROS_SUBMUNDO_
 
 if(process.exitCode)process.exit(process.exitCode);
 console.log('CABALLEROS DEL SUBMUNDO · CS-001: PASS');
+
+// CS-002 final art gate trigger
