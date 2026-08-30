@@ -15,6 +15,9 @@ must('fusión 8+9 -> 19',game.includes("mgrIs(x,'MGR-008')")&&game.includes("mgr
 must('arma Bastón de Ignis',game.includes("MGR-020")&&game.includes("'weapon'"));
 must('mazo persistente',game.includes('NEMESIS_OFFICIAL_DECK_REGISTRY')&&game.includes('MAGO_ROJO:MAGO_ROJO_DECK_IDS')&&game.includes('nemesisSyncOfficialDecks'));
 must('auditoría runtime',game.includes('NEMESIS_MAGO_ROJO_AUDIT'));
+must('Mago Rojo Shiny pertenece naturalmente al arquetipo',game.includes("id:'MGR-SHINY-001',name:'Mago Rojo Shiny',atk:8500,def:7000,type:'monster',family:'mago-rojo'")&&game.includes("function mgrIs(c,id=null){return !!c&&c.family==='mago-rojo'&&(!id||c.id===id)}"));
+must('Mago Rojo Shiny conectado al motor de habilidades',game.includes("'MGR-SHINY-001':{name:'DOMINIO ESCARLATA SUPREMO'")&&game.includes("sk.action==='shinySupreme'"));
+must('Mago Rojo Shiny conserva canje y arte',game.includes("priceStars:1800")&&game.includes("assets/images/mago-rojo/mago-rojo-shiny.jpg"));
 for(const id of ids){const p=path.join(root,'assets/images/mago-rojo',id.toLowerCase()+'.svg');must('asset '+id,fs.existsSync(p))}
 if(process.exitCode)process.exit(process.exitCode);
 console.log('MAGO ROJO: 20/20 PASS');
