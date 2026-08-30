@@ -127,7 +127,8 @@ test('arte autoritativo 65/65 y colección de mazos recientes', async ({ page })
 
 test('runtime de mecánicas 20/20', async ({ page }) => {
   await page.goto('/');
-  await page.waitForTimeout(700);
+  await page.evaluate(() => window.battle('guardian'));
+  await page.waitForTimeout(1600);
   const audit=await page.evaluate(()=>window.NEMESIS_RUNTIME_MECHANICS_AUDIT?.());
   expect(audit).toBeTruthy();
   expect(audit.ok).toBeTruthy();
