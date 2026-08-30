@@ -327,7 +327,8 @@ window.nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS);
 const CABALLEROS_SUBMUNDO_CARDS=[
  {id:'CS-001',name:'Caballero Demonio',atk:7000,def:6000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','demonio','caballero','submundo'],rarity:'ancestral',level:10,effect:'csDemonKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-demonio.webp',desc:'PODER DE LOS CAÍDOS: +500 ATK/+300 DEF por cada Caballero del Submundo en tu Cementerio. SACRIFICIO DEMONÍACO: una vez por turno envía 1 Caballero aliado al Cementerio; +1500 ATK este turno y habilita un segundo ataque. HERALDO DEL SUBMUNDO: una vez por duelo devuelve 1 Caballero del Submundo de tu Cementerio al Deck para evitar su destrucción.'},
  {id:'CS-002',name:'Caballero de Alas de Oro',atk:10000,def:8500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','supremo'],rarity:'mitica-suprema',level:12,effect:'csGoldenWingKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-alas-oro.png',desc:'ALAS DEL JUICIO DORADO: +700 ATK/+500 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DEL REY CAÍDO: una vez por turno sacrifica 1 Caballero aliado; habilita un segundo ataque que no puede ser impedido por efectos. RESURRECCIÓN DORADA: una vez por duelo evita su destrucción, resucita hasta 2 Caballeros del Submundo y obtiene +2000 ATK/+2000 DEF permanentes. ÚLTIMO JUICIO: con 5 o más Caballeros del Submundo en el Cementerio obtiene Perforación.'},
- {id:'CS-003',name:'Caballero de Alas de Oro Shiny',atk:12500,def:10500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','shiny','supremo'],rarity:'shiny-suprema',level:10,effect:'csGoldenWingShiny',caballerosSubmundo:true,shiny:true,img:'assets/images/caballeros-submundo/caballero-alas-oro-shiny.webp',desc:'ALAS DEL EMPERADOR DORADO: +1000 ATK/+700 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DORADA SUPREMA: sacrifica 1 Caballero aliado; +2000 ATK este turno y segundo ataque. RESURRECCIÓN DEL EMPERADOR: una vez por duelo evita su destrucción, resucita hasta 3 Caballeros y obtiene +3000 ATK/+3000 DEF permanentes. JUICIO DEL SUBMUNDO: con 4 o más Caballeros caídos obtiene Perforación. SEÑOR DE LAS ALAS ETERNAS: una vez por duelo entra 2 turnos en Estado Emperador, +3000 ATK/+2000 DEF, protección de reducción y niega la primera habilidad rival que intente destruirla o anularla.'}
+ {id:'CS-003',name:'Caballero de Alas de Oro Shiny',atk:12500,def:10500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','shiny','supremo'],rarity:'shiny-suprema',level:10,effect:'csGoldenWingShiny',caballerosSubmundo:true,shiny:true,img:'assets/images/caballeros-submundo/caballero-alas-oro-shiny.webp',desc:'ALAS DEL EMPERADOR DORADO: +1000 ATK/+700 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DORADA SUPREMA: sacrifica 1 Caballero aliado; +2000 ATK este turno y segundo ataque. RESURRECCIÓN DEL EMPERADOR: una vez por duelo evita su destrucción, resucita hasta 3 Caballeros y obtiene +3000 ATK/+3000 DEF permanentes. JUICIO DEL SUBMUNDO: con 4 o más Caballeros caídos obtiene Perforación. SEÑOR DE LAS ALAS ETERNAS: una vez por duelo entra 2 turnos en Estado Emperador, +3000 ATK/+2000 DEF, protección de reducción y niega la primera habilidad rival que intente destruirla o anularla.'},
+ {id:'CS-004',name:'Caballero Luz de Horus',atk:9500,def:11000,type:'monster',family:'caballeros-submundo',tags:['luz','caballero','submundo','protector','resurreccion'],rarity:'mitica-suprema',level:10,effect:'csHorusLight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-luz-horus.webp',desc:'LUZ DE LOS CAÍDOS: +500 ATK/+800 DEF por cada Caballero del Submundo en tu Cementerio. OJO DE HORUS: una vez por turno intercepta una habilidad dirigida a otro Caballero y reduce su daño o reducción en 50%. ALAS DE LA LUZ FUNERARIA: la primera vez por turno que un Caballero aliado es destruido, obtiene +1000 ATK/+1000 DEF permanentes. JUICIO DEL SOL NEGRO: una vez por duelo con 4 Caballeros caídos, durante 1 turno protege a tus Caballeros de destrucción por efectos, impide anular sus resurrecciones y Horus obtiene +3000 ATK. GUARDIÁN DEL REY CAÍDO: el primer Caballero que resucites cada turno recibe +1500 ATK/+1500 DEF.'}
 ];
 const CABALLEROS_SUBMUNDO_DECK_IDS=CABALLEROS_SUBMUNDO_CARDS.map(c=>c.id);
 
@@ -3189,10 +3190,13 @@ function csGrave(side){return side==='p'?playerGrave:enemyGrave}
 function csQueue(side){return side==='p'?deckQueue:enemyQueue}
 function csSync(){
  for(const side of ['p','e']){
+  const graveNow=csGrave(side).filter(x=>csIs(x)).length,horusCard=csOwn(side).find(x=>csIs(x,'CS-004'));
+  if(horusCard&&graveNow>(horusCard._csHorusGraveSeen||0)&&horusCard._csHorusFuneralTurn!==turnNo){horusCard._csHorusFuneralTurn=turnNo;horusCard.atk+=1000;horusCard.def+=1000;horusCard._csHorusPermanentAtk=(horusCard._csHorusPermanentAtk||0)+1000;horusCard._csHorusPermanentDef=(horusCard._csHorusPermanentDef||0)+1000;toast('ALAS DE LA LUZ FUNERARIA: Horus obtiene +1000 ATK/+1000 DEF permanente.')}
+  if(horusCard)horusCard._csHorusGraveSeen=graveNow;
   const fallen=csGrave(side).filter(x=>csIs(x)).length;
   csOwn(side).forEach(c=>{
    if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003'))return;
-   const shiny=csIs(c,'CS-003'),gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=shiny?fallen*1000:(gold?fallen*700:fallen*500),wantD=shiny?fallen*700:(gold?fallen*500:fallen*300);
+   const shiny=csIs(c,'CS-003'),gold=csIs(c,'CS-002'),horus=csIs(c,'CS-004'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=horus?fallen*500:(shiny?fallen*1000:(gold?fallen*700:fallen*500)),wantD=horus?fallen*800:(shiny?fallen*700:(gold?fallen*500:fallen*300));
    if(oldA!==wantA){c.atk=Math.max(0,(c.atk||0)-oldA+wantA);c._csFallenAtk=wantA}
    if(oldD!==wantD){c.def=Math.max(0,(c.def||0)-oldD+wantD);c._csFallenDef=wantD}
    if(csIs(c,'CS-003')&&(c._csEmperorUntil||-1)>=turnNo){
@@ -3204,11 +3208,13 @@ function csSync(){
 }
 function csSkillDescriptor(c){
  if(csIs(c,'CS-001'))return{name:'SACRIFICIO DEMONÍACO',kind:'caballerosSubmundo',action:'demonSacrifice',desc:'Envía 1 Caballero aliado al Cementerio: +1500 ATK este turno y habilita un segundo ataque.'};
+ if(csIs(c,'CS-004'))return{name:'JUICIO DEL SOL NEGRO',kind:'caballerosSubmundo',action:'horusJudgement',onceDuel:true,desc:'Con 4 Caballeros caídos: protege a tus Caballeros 1 turno y Horus obtiene +3000 ATK.'};
  if(csIs(c,'CS-003'))return{name:'SENTENCIA / ESTADO EMPERADOR',kind:'caballerosSubmundo',action:'shinySentence',desc:'Sacrifica 1 Caballero aliado para +2000 ATK y segundo ataque; una vez por duelo puede activar Estado Emperador durante 2 turnos.'};
  if(csIs(c,'CS-002'))return{name:'SENTENCIA DEL REY CAÍDO',kind:'caballerosSubmundo',action:'goldenSentence',desc:'Sacrifica 1 Caballero aliado y habilita un segundo ataque imparable este turno.'};
  return null
 }
 async function csUseSkill(side,i,c,sk){
+ if(sk.action==='horusJudgement'){if(c._csHorusJudgementUsedDuel||csGrave(side).filter(x=>csIs(x)).length<4){toast('JUICIO DEL SOL NEGRO requiere 4 Caballeros del Submundo en el Cementerio.');return false}c._csHorusJudgementUsedDuel=true;c._csHorusJudgementUntil=turnNo;c.atk+=3000;c._csHorusJudgementAtk=3000;csOwn(side).forEach(x=>{if(x)x._csHorusProtectedUntil=turnNo});toast('JUICIO DEL SOL NEGRO: tus Caballeros quedan protegidos este turno.');csSync();return true}
  if(sk.action!=='demonSacrifice'&&sk.action!=='goldenSentence'&&sk.action!=='shinySentence')return false;
  if(sk.action==='shinySentence'&&!c._csEmperorUsedDuel){
   const activate=side==='p'?confirm('SEÑOR DE LAS ALAS ETERNAS: ¿activar ESTADO EMPERADOR ahora?\nAceptar = Estado Emperador · Cancelar = Sentencia Dorada Suprema'):true;
@@ -3231,13 +3237,14 @@ async function csUseSkill(side,i,c,sk){
 }
 async function csPreventDestroy(side,i,victim){
  const grave=csGrave(side);
+ if(csIs(victim)&&victim._csHorusProtectedUntil===turnNo){toast('JUICIO DEL SOL NEGRO: destrucción por efecto NEGADA.');return true}
  if(csIs(victim,'CS-003')&&(victim._csEmperorUntil||-1)>=turnNo&&!victim._csEmperorNegateUsed){
   victim._csEmperorNegateUsed=true;toast('ESTADO EMPERADOR: la primera destrucción rival queda NEGADA.');return true
  }
  if(csIs(victim,'CS-003')){
   if(victim._csEmperorResUsedDuel)return false;victim._csEmperorResUsedDuel=true;
   const own=csOwn(side),free=[];for(let j=0;j<own.length;j++)if(!own[j])free.push(j);const revived=[];
-  for(let n=0;n<3&&free.length;n++){const gi=grave.findIndex(x=>csIs(x));if(gi<0)break;const rc=grave.splice(gi,1)[0],slot=free.shift();own[slot]=rc;revived.push(rc.name)}
+  for(let n=0;n<3&&free.length;n++){const gi=grave.findIndex(x=>csIs(x));if(gi<0)break;const rc=grave.splice(gi,1)[0],slot=free.shift();own[slot]=rc;csHorusBlessResurrection(side,rc);revived.push(rc.name)}
   victim.atk+=3000;victim.def+=3000;csSync();toast('RESURRECCIÓN DEL EMPERADOR: evita la destrucción'+(revived.length?' · resucita '+revived.join(', '):'')+' · +3000 ATK/+3000 DEF permanentes.');return true
  }
  if(csIs(victim,'CS-002')){
@@ -3255,9 +3262,11 @@ async function csPreventDestroy(side,i,victim){
  if(side==='p')csQueue(side).push(returned.id);else csQueue(side).push({...returned});
  csSync();toast('HERALDO DEL SUBMUNDO: '+returned.name+' vuelve al mazo y evita la destrucción.');return true
 }
+function csHorusBlessResurrection(side,card){const h=csOwn(side).find(x=>csIs(x,'CS-004'));if(!h||h._csHorusBlessTurn===turnNo||!card)return;h._csHorusBlessTurn=turnNo;card.atk+=1500;card.def+=1500;toast('GUARDIÁN DEL REY CAÍDO: '+card.name+' recibe +1500 ATK/+1500 DEF.')}
 function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
   if(c?._csSacrificeAtk){c.atk=Math.max(0,c.atk-c._csSacrificeAtk);delete c._csSacrificeAtk}
+  if(csIs(c,'CS-004')&&c._csHorusJudgementAtk&&c._csHorusJudgementUntil<turnNo){c.atk=Math.max(0,c.atk-c._csHorusJudgementAtk);delete c._csHorusJudgementAtk;delete c._csHorusJudgementUntil}
   if(csIs(c,'CS-003')&&c._csEmperorUntil!=null&&turnNo>c._csEmperorUntil){
    if(c._csEmperorAtk){c.atk=Math.max(0,c.atk-c._csEmperorAtk);delete c._csEmperorAtk}
    if(c._csEmperorDef){c.def=Math.max(0,c.def-c._csEmperorDef);delete c._csEmperorDef}
@@ -3266,7 +3275,7 @@ function csClearTurn(){
  });
 }
 function csKeepTurnAfterAttack(c){
- if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003'))return false;
+ if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003')&&!csIs(c,'CS-004'))return false;
  if(c._csSecondAttackTurn===turnNo&&c._csSecondAttackUsedTurn!==turnNo){c._csSecondAttackUsedTurn=turnNo;return true}
  return false
 }
