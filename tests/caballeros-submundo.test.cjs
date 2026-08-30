@@ -38,6 +38,15 @@ must('CS-003 Estado Emperador conectado',game.includes("_csEmperorUsedDuel=true"
 must('CS-003 anti-anulación conectado',game.includes("ESTADO EMPERADOR: la anulación rival queda NEGADA")&&game.includes("delete c._strategicSkillNegatedUntil"));
 must('CS-003 Estado Emperador expira',game.includes("turnNo>c._csEmperorUntil")&&game.includes("delete c._csEmperorUntil"));
 must('CS-003 ruta estable',game.includes("assets/images/caballeros-submundo/caballero-alas-oro-shiny.webp"));
+must('CS-004 registrado',game.includes("id:'CS-004',name:'Caballero Luz de Horus'"));
+must('CS-004 stats 9500/11000',game.includes("name:'Caballero Luz de Horus',atk:9500,def:11000"));
+must('CS-004 familia correcta',game.includes("id:'CS-004'")&&game.includes("family:'caballeros-submundo'"));
+must('CS-004 ruta estable',game.includes("img:'assets/images/caballeros-submundo/caballero-luz-horus.webp'")&&fs.existsSync(path.join(root,'assets/images/caballeros-submundo/caballero-luz-horus.webp')));
+must('CS-004 Luz de los Caídos',game.includes("horus?fallen*500")&&game.includes("horus?fallen*800"));
+must('CS-004 Ojo de Horus',game.includes('function csHorusEye(')&&game.includes("reduce su efecto en 50%")&&game.includes("csHorusEye(defendedSide,target.c,sk.value)"));
+must('CS-004 Luz Funeraria',game.includes("_csHorusFuneralTurn!==turnNo")&&game.includes("horusCard.atk+=1000;horusCard.def+=1000"));
+must('CS-004 Juicio Sol Negro',game.includes("action:'horusJudgement'")&&game.includes("_csHorusProtectedUntil=turnNo")&&game.includes("JUICIO DEL SOL NEGRO"));
+must('CS-004 Guardián Rey Caído',game.includes('function csHorusBlessResurrection(')&&game.includes("card.atk+=1500;card.def+=1500")&&game.includes("csHorusBlessResurrection(side,rev)"));
 must('auditoría runtime disponible',game.includes('NEMESIS_CABALLEROS_SUBMUNDO_AUDIT'));
 
 if(process.exitCode)process.exit(process.exitCode);
