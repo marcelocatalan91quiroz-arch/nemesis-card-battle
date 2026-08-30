@@ -332,8 +332,9 @@ const STRATEGIC_REDEEM_CARDS=[
  {id:'MGR-SHINY-001',name:'Mago Rojo Shiny',atk:8500,def:7000,type:'monster',family:'strategic',tags:['fuego','mago-rojo','shiny','mitica','exclusiva'],rarity:'shiny-mitica',effect:'magoRojoShiny',strategicRedeem:true,shinyEdition:true,priceStars:1800,img:'assets/images/mago-rojo/mago-rojo-shiny.jpg',desc:'DOMINIO ESCARLATA SUPREMO: cada Mágica Mago Rojo genera 2 Sellos. 3 Sellos recuperan una Mágica; 5 Sellos infligen 2000 HP y dan +1000 ATK este turno; 7 Sellos infligen 3000 HP y bloquean efectos rivales este turno. MAESTRO DE LAS SIETE LLAMAS: con 3+ Sellos, tus monstruos Mago Rojo ganan +1000 ATK/+800 DEF. INFERNO ARCANO: una vez por turno destruye 1 carta rival e inflige 2000 HP por cada Sello Arcano controlado. PROTECCIÓN ESCARLATA: consume 3 Sellos para evitar su destrucción.'}
 ];
 
-const CARDS_RAW=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...MAGO_ROJO_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS,...STRATEGIC_REDEEM_CARDS];
+const CARDS_RAW=[...COLLECTIBLE_CARDS,...IMPERIO_DRAGON_CARDS,...MAGO_ROJO_CARDS,...APOLO_PLAYER_CARDS,...OLIMPO_PLAYER_CARDS,...HADES_CARDS,...ARES_CARDS_1_5,...DIVINE_FUSION_CARDS,...EXTERNAL_GAME_CARDS];
 const CARDS=[...new Map(CARDS_RAW.map(c=>[c.id,c])).values()];
+STRATEGIC_REDEEM_CARDS.forEach(c=>{if(!CARDS.some(x=>x.id===c.id))CARDS.push(c)});
 const AS={tirano:'assets/images/img-10.webp',guardian:'assets/images/guardian-dragones.webp',bg1:'assets/images/img-12.webp',bg2:'assets/images/img-13.webp',dragonOjo:'assets/images/dragon-ojo-del-diablo.png',dragonOjoBg:'assets/images/castillo-dragon-ojo-diablo.webp',iraRa:'assets/images/ira-de-ra-jefe.png',iraRaBg:'assets/images/ruinas-piramide-ira-ra.png',caballeroAlmas:'assets/images/caballero-de-las-almas.png',caballeroAlmasBg:'assets/images/reino-espectral-cinematico.png',reyEspectral:'assets/images/rey-espectral.png',reyEspectralBg:'assets/images/reino-espectral-cinematico.png'};
 // Las ÚNICAS se agregan también sin permitir colisión de ID.
 UNIQUE_CARD_DEFS.forEach(c=>{if(!CARDS.some(x=>x.id===c.id))CARDS.push(c)});
