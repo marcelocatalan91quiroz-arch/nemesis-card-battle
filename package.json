@@ -5,7 +5,7 @@
   "scripts": {
     "test:integrity": "node tests/integrity.test.cjs",
     "test:flow": "node tests/flow-regression.test.cjs",
-    "test:static": "npm run test:integrity && npm run test:flow && npm run test:duel-master && node tests/external33-engine.test.cjs && npm run test:public23 && npm run test:card-schema && npm run test:treasures && npm run test:catalog && npm run test:imperio-dragon && npm run test:mago-rojo && npm run test:online && npm run test:online-runtime && npm run test:balance && npm run test:strategic",
+    "test:static": "npm run test:integrity && npm run test:flow && npm run test:duel-master && node tests/external33-engine.test.cjs && npm run test:public23 && npm run test:card-schema && npm run test:treasures && npm run test:catalog && npm run test:imperio-dragon && npm run test:mago-rojo && npm run test:online && npm run test:online-runtime && npm run test:balance && npm run test:strategic && npm run test:strategic-power",
     "test:e2e": "playwright test",
     "test:all": "npm run test:static && npm run test:e2e",
     "test:duel-master": "node tests/duel-master.test.cjs",
@@ -18,7 +18,8 @@
     "test:mago-rojo": "node tests/mago-rojo.test.cjs",
     "test:online-runtime": "node tests/online1v1-runtime.test.cjs",
     "test:balance": "node tests/nemesis-balance-simulator.cjs 1000",
-    "test:strategic": "node tests/strategic-cards.test.cjs"
+    "test:strategic": "node tests/strategic-cards.test.cjs",
+    "test:strategic-power": "node tests/strategic-power-cards.test.cjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
