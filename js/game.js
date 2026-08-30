@@ -326,7 +326,8 @@ window.nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS);
 // CABALLEROS DEL SUBMUNDO · mazo en construcción (20 cartas previstas)
 const CABALLEROS_SUBMUNDO_CARDS=[
  {id:'CS-001',name:'Caballero Demonio',atk:7000,def:6000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','demonio','caballero','submundo'],rarity:'ancestral',level:10,effect:'csDemonKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-demonio.webp',desc:'PODER DE LOS CAÍDOS: +500 ATK/+300 DEF por cada Caballero del Submundo en tu Cementerio. SACRIFICIO DEMONÍACO: una vez por turno envía 1 Caballero aliado al Cementerio; +1500 ATK este turno y habilita un segundo ataque. HERALDO DEL SUBMUNDO: una vez por duelo devuelve 1 Caballero del Submundo de tu Cementerio al Deck para evitar su destrucción.'},
- {id:'CS-002',name:'Caballero de Alas de Oro',atk:10000,def:8500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','supremo'],rarity:'mitica-suprema',level:12,effect:'csGoldenWingKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-alas-oro.png',desc:'ALAS DEL JUICIO DORADO: +700 ATK/+500 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DEL REY CAÍDO: una vez por turno sacrifica 1 Caballero aliado; habilita un segundo ataque que no puede ser impedido por efectos. RESURRECCIÓN DORADA: una vez por duelo evita su destrucción, resucita hasta 2 Caballeros del Submundo y obtiene +2000 ATK/+2000 DEF permanentes. ÚLTIMO JUICIO: con 5 o más Caballeros del Submundo en el Cementerio obtiene Perforación.'}
+ {id:'CS-002',name:'Caballero de Alas de Oro',atk:10000,def:8500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','supremo'],rarity:'mitica-suprema',level:12,effect:'csGoldenWingKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-alas-oro.png',desc:'ALAS DEL JUICIO DORADO: +700 ATK/+500 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DEL REY CAÍDO: una vez por turno sacrifica 1 Caballero aliado; habilita un segundo ataque que no puede ser impedido por efectos. RESURRECCIÓN DORADA: una vez por duelo evita su destrucción, resucita hasta 2 Caballeros del Submundo y obtiene +2000 ATK/+2000 DEF permanentes. ÚLTIMO JUICIO: con 5 o más Caballeros del Submundo en el Cementerio obtiene Perforación.'},
+ {id:'CS-003',name:'Caballero de Alas de Oro Shiny',atk:12500,def:10500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','divino','caballero','submundo','shiny','supremo'],rarity:'shiny-suprema',level:10,effect:'csGoldenWingShiny',caballerosSubmundo:true,shiny:true,img:'assets/images/caballeros-submundo/caballero-alas-oro-shiny.png',desc:'ALAS DEL EMPERADOR DORADO: +1000 ATK/+700 DEF por cada Caballero del Submundo en tu Cementerio. SENTENCIA DORADA SUPREMA: sacrifica 1 Caballero aliado; +2000 ATK este turno y segundo ataque. RESURRECCIÓN DEL EMPERADOR: una vez por duelo evita su destrucción, resucita hasta 3 Caballeros y obtiene +3000 ATK/+3000 DEF permanentes. JUICIO DEL SUBMUNDO: con 4 o más Caballeros caídos obtiene Perforación. SEÑOR DE LAS ALAS ETERNAS: una vez por duelo entra 2 turnos en Estado Emperador, +3000 ATK/+2000 DEF, protección de reducción y niega la primera habilidad rival que intente destruirla o anularla.'}
 ];
 const CABALLEROS_SUBMUNDO_DECK_IDS=CABALLEROS_SUBMUNDO_CARDS.map(c=>c.id);
 
@@ -3190,8 +3191,8 @@ function csSync(){
  for(const side of ['p','e']){
   const fallen=csGrave(side).filter(x=>csIs(x)).length;
   csOwn(side).forEach(c=>{
-   if(!csIs(c,'CS-001')&&!csIs(c,'CS-002'))return;
-   const gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=gold?fallen*700:fallen*500,wantD=gold?fallen*500:fallen*300;
+   if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003'))return;
+   const shiny=csIs(c,'CS-003'),gold=csIs(c,'CS-002'),oldA=c._csFallenAtk||0,oldD=c._csFallenDef||0,wantA=shiny?fallen*1000:(gold?fallen*700:fallen*500),wantD=shiny?fallen*700:(gold?fallen*500:fallen*300);
    if(oldA!==wantA){c.atk=Math.max(0,(c.atk||0)-oldA+wantA);c._csFallenAtk=wantA}
    if(oldD!==wantD){c.def=Math.max(0,(c.def||0)-oldD+wantD);c._csFallenDef=wantD}
   });
@@ -3199,11 +3200,12 @@ function csSync(){
 }
 function csSkillDescriptor(c){
  if(csIs(c,'CS-001'))return{name:'SACRIFICIO DEMONÍACO',kind:'caballerosSubmundo',action:'demonSacrifice',desc:'Envía 1 Caballero aliado al Cementerio: +1500 ATK este turno y habilita un segundo ataque.'};
+ if(csIs(c,'CS-003'))return{name:'SENTENCIA DORADA SUPREMA',kind:'caballerosSubmundo',action:'shinySentence',desc:'Sacrifica 1 Caballero aliado: +2000 ATK este turno y segundo ataque.'};
  if(csIs(c,'CS-002'))return{name:'SENTENCIA DEL REY CAÍDO',kind:'caballerosSubmundo',action:'goldenSentence',desc:'Sacrifica 1 Caballero aliado y habilita un segundo ataque imparable este turno.'};
  return null
 }
 async function csUseSkill(side,i,c,sk){
- if(sk.action!=='demonSacrifice'&&sk.action!=='goldenSentence')return false;
+ if(sk.action!=='demonSacrifice'&&sk.action!=='goldenSentence'&&sk.action!=='shinySentence')return false;
  const own=csOwn(side),opts=own.map((x,j)=>({c:x,i:j})).filter(x=>x.c&&x.i!==i&&csIs(x.c));
  if(!opts.length){toast('SACRIFICIO DEMONÍACO: no hay otro Caballero aliado para sacrificar.');return false}
  const pick=side==='p'?await chooseMagicTarget('SACRIFICIO DEMONÍACO · ELIGE CABALLERO',opts,side):opts.sort((a,b)=>((a.c.atk||0)+(a.c.def||0))-((b.c.atk||0)+(b.c.def||0)))[0];
@@ -3211,12 +3213,18 @@ async function csUseSkill(side,i,c,sk){
  const victim=own[pick.i];
  await destroyCard(side,pick.i);
  if(own[pick.i]){toast('SACRIFICIO DEMONÍACO no pudo completarse.');return false}
- if(sk.action==='demonSacrifice'){c.atk+=1500;c._csSacrificeAtk=(c._csSacrificeAtk||0)+1500}
- c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence')c._csUnstoppableSecondTurn=turnNo;
+ if(sk.action==='demonSacrifice'){c.atk+=1500;c._csSacrificeAtk=(c._csSacrificeAtk||0)+1500}else if(sk.action==='shinySentence'){c.atk+=2000;c._csSacrificeAtk=(c._csSacrificeAtk||0)+2000}
+ c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence'||sk.action==='shinySentence')c._csUnstoppableSecondTurn=turnNo;
  csSync();toast(victim.name+' es sacrificado · '+c.name+' habilita su segundo ataque.');return true
 }
 async function csPreventDestroy(side,i,victim){
  const grave=csGrave(side);
+ if(csIs(victim,'CS-003')){
+  if(victim._csEmperorResUsedDuel)return false;victim._csEmperorResUsedDuel=true;
+  const own=csOwn(side),free=[];for(let j=0;j<own.length;j++)if(!own[j])free.push(j);const revived=[];
+  for(let n=0;n<3&&free.length;n++){const gi=grave.findIndex(x=>csIs(x));if(gi<0)break;const rc=grave.splice(gi,1)[0],slot=free.shift();own[slot]=rc;revived.push(rc.name)}
+  victim.atk+=3000;victim.def+=3000;csSync();toast('RESURRECCIÓN DEL EMPERADOR: evita la destrucción'+(revived.length?' · resucita '+revived.join(', '):'')+' · +3000 ATK/+3000 DEF permanentes.');return true
+ }
  if(csIs(victim,'CS-002')){
   if(victim._csGoldenResUsedDuel)return false;
   victim._csGoldenResUsedDuel=true;
@@ -3236,12 +3244,12 @@ function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(c?._csSacrificeAtk){c.atk=Math.max(0,c.atk-c._csSacrificeAtk);delete c._csSacrificeAtk}});
 }
 function csKeepTurnAfterAttack(c){
- if(!csIs(c,'CS-001')&&!csIs(c,'CS-002'))return false;
+ if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003'))return false;
  if(c._csSecondAttackTurn===turnNo&&c._csSecondAttackUsedTurn!==turnNo){c._csSecondAttackUsedTurn=turnNo;return true}
  return false
 }
 function csGoldenPiercingDamage(side,c,target){
- if(!csIs(c,'CS-002')||csGrave(side).filter(x=>csIs(x)).length<5||!target)return 0;
+ if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
 window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const a=card('CS-001'),g=card('CS-002');return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:[a,g].filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function'},cardOk:!!a&&!!g&&g.atk>=10000&&g.def>=8500&&g.family==='caballeros-submundo'}};
