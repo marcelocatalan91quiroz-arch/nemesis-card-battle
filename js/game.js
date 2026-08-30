@@ -3254,8 +3254,14 @@ function idrIs(c){return !!c&&c.family==='imperio-dragon'}
 function idrMarks(c){return Math.max(0,Number(c?._idrAscension)||0)}
 function idrAddMark(c,n=1){
  if(!idrIs(c))return 0;
- c._idrAscension=Math.min(Number(c.ascensionMax)||3,idrMarks(c)+Math.max(0,n));
- toast(c.name+' · ASCENSIÓN '+c._idrAscension+'/'+(c.ascensionMax||3));
+ c._idrAscension=Math.min(Number(c.ascensionMax)||4,idrMarks(c)+Math.max(0,n));
+ const side=playerCards?.includes(c)?'p':enemyCards?.includes(c)?'e':null;
+ if(side&&idrHasCrown(side)){
+  const key=side==='p'?'__idrCrownExtraP':'__idrCrownExtraE';
+  if(window[key]!==turnNo){const other=idrOwn(side).find(x=>idrIs(x)&&x!==c&&idrMarks(x)<(Number(x.ascensionMax)||4));if(other){other._idrAscension=Math.min(Number(other.ascensionMax)||4,idrMarks(other)+1);window[key]=turnNo;toast('CORONA DEL PRIMER DRAGÓN: '+other.name+' gana 1 Marca extra.')}}
+ }
+ try{idrSync()}catch(e){}
+ toast(c.name+' · ASCENSIÓN '+c._idrAscension+'/'+(c.ascensionMax||4));
  return c._idrAscension
 }
 function idrStormSync(){
@@ -3360,10 +3366,11 @@ function idrRemoveMaterial(side,i){
  own[i]=null;modes[i]=null;grave.push(c);return c
 }
 async function idrFusion(side,fusionId){
- const own=idrOwn(side),modes=idrModes(side),fusion=card(fusionId);if(!fusion||!idrConsumeReserve(side,fusionId))return false;
+ const own=idrOwn(side),modes=idrModes(side),fusion=card(fusionId);if(!fusion)return false;
  let idx=[];
- if(fusionId==='IDR-019'){const a=own.findIndex(c=>c?.id==='IDR-003'),b=own.findIndex(c=>c?.id==='IDR-004');if(a<0||b<0){return false}idx=[a,b]}
- else{const a=own.findIndex(c=>idrIs(c)&&idrTransformed(c)),b=own.findIndex(c=>c?.id==='IDR-008');if(a<0||b<0||a===b){return false}idx=[a,b]}
+ if(fusionId==='IDR-019'){const a=own.findIndex(c=>c?.id==='IDR-003'),b=own.findIndex(c=>c?.id==='IDR-004');if(a<0||b<0)return false;idx=[a,b]}
+ else{const a=own.findIndex(c=>idrIs(c)&&idrTransformed(c)),b=own.findIndex(c=>c?.id==='IDR-008');if(a<0||b<0||a===b)return false;idx=[a,b]}
+ if(!idrConsumeReserve(side,fusionId)){toast('La carta de Fusión '+fusion.name+' debe estar en mano o Deck.');return false}
  const mats=idx.map(i=>idrRemoveMaterial(side,i));const slot=own.findIndex(x=>!x),n={...fusion,_idrFusionSummoned:true,_idrFusionMarks:mats.reduce((z,c)=>z+idrMarks(c),0)};
  own[slot]=n;modes[slot]='ATAQUE';await place(side,slot,n);await flip(side,slot);await setMode(side,slot,'ATAQUE');
  if(fusionId==='IDR-019'){n.atk+=n._idrFusionMarks*300;const riv=idrRival(side),rs=side==='p'?'e':'p';for(let j=riv.length-1;j>=0;j--)if(riv[j]&&(riv[j].type==='magic'||riv[j].type==='trap'))await destroyCard(rs,j);n._idrMultiAttackTurn=turnNo}
@@ -3428,10 +3435,10 @@ async function idrPreventDestroy(side,i,victim){
  return false
 }
 function idrKeepTurnAfterAttack(c){
- if(!idrIs(c))return false;
+ if(!idrIs(c))return false;const side=playerCards.includes(c)?'p':'e';
  if(c._idrWingSpear&&((c.tags||[]).includes('viento')||idrTransformed(c))&&c._idrWingSecondUsedTurn!==turnNo){c._idrWingSecondUsedTurn=turnNo;return true}
  if(c._idrSecondAttackTurn===turnNo&&c._idrSecondAttackUsedTurn!==turnNo){c._idrSecondAttackUsedTurn=turnNo;return true}
- if(c._idrMultiAttackTurn===turnNo){const n=(c._idrMultiAttackUsed||0)+1;c._idrMultiAttackUsed=n;if(n<Math.max(1,idrRival('p').filter(Boolean).length))return true}
+ if(c._idrMultiAttackTurn===turnNo){const n=(c._idrMultiAttackUsed||0)+1;c._idrMultiAttackUsed=n;if(n<Math.max(1,idrRival(side).filter(Boolean).length))return true}
  return false
 }
 window.NEMESIS_IMPERIO_DRAGON_AUDIT=()=>{const ids=IMPERIO_DRAGON_DECK_IDS.slice(),cards=ids.map(id=>card(id)),handlers=cards.map(c=>({id:c?.id,type:c?.type,handler:!!c&&(
