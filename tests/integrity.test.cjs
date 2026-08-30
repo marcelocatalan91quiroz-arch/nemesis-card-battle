@@ -43,6 +43,14 @@ must('perfil jugador obligatorio',game.includes('nemesisCreateProfileScene')&&ga
 must('nombre se guarda en Memory Card',game.includes("name:typeof state.name==='string'?state.name:''")&&game.includes("if(typeof mc.name==='string')state.name=mc.name"));
 must('autoguardado tras cada pelea',game.includes("state.lastBattleResult=win?'VICTORIA':'DERROTA'")&&game.includes('state.battlesPlayed=')&&game.includes('state.lastAutosaveAt=Date.now()'));
 must('sin nombre Viajero automático',!game.includes("||'Viajero'"));
+
+const artPath=path.join(root,'js/card-art-real-sprite.js');
+const art=fs.existsSync(artPath)?fs.readFileSync(artPath,'utf8'):'';
+must('sprite de arte real cargado',html.includes('js/card-art-real-sprite.js')&&art.includes('NEMESIS_REAL_CARD_ART_INDEX'));
+must('arte real Imperio Dragón 20/20',Array.from({length:20},(_,i)=>'IDR-'+String(i+1).padStart(3,'0')).every(id=>art.includes(id)));
+must('arte real Mago Rojo 20/20',Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0')).every(id=>art.includes(id)));
+must('arte real Duel Master 11-20',Array.from({length:10},(_,i)=>'DM-'+String(i+11).padStart(3,'0')).every(id=>art.includes(id)));
+must('game aplica arte real a mazos nuevos',game.includes('nemesisApplyRealCardArt?.(IMPERIO_DRAGON_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(MAGO_ROJO_CARDS)')&&game.includes('nemesisApplyRealCardArt?.(EXTERNAL_GAME_CARDS)'));
 if(process.exitCode) process.exit(process.exitCode);
 
 const dmNew=['DM-011','DM-012','DM-013','DM-014','DM-015','DM-016','DM-017','DM-018','DM-019','DM-020'];
