@@ -783,13 +783,13 @@ window.sanctuaryScene=sanctuaryScene;
    Reutiliza battle() y los mazos/jefes oficiales; no duplica el motor. */
 const NEMESIS_RETRY_ROSTER=Object.freeze([
  {id:'guardian',name:'Guardián de los Dragones',role:'GUARDIÁN',flag:'guardianDefeated',reward:100,img:AS.guardian,battleKey:null},
- {id:'dragon-ojo',name:'Dragón Ojo del Diablo',role:'JEFE',flag:'dragonDefeated',reward:200,img:'assets/images/dragon-ojo-del-diablo.png',battleKey:'dragon-ojo'},
+ {id:'dragon-ojo',name:'Dragón Ojo del Diablo',role:'JEFE',flag:'dragonDefeated',reward:150,img:'assets/images/dragon-ojo-del-diablo.png',battleKey:'dragon-ojo'},
  {id:'ira-ra',name:'Ira de Ra',role:'JEFE',flag:'raDefeated',reward:200,img:'assets/images/ira-de-ra-jefe.png',battleKey:'ira-ra'},
- {id:'caballero-almas',name:'Caballero de las Almas',role:'GUARDIÁN',flag:'caballeroAlmasDefeated',reward:100,img:AS.caballeroAlmas,battleKey:'caballero-almas'},
- {id:'rey-espectral',name:'Rey Espectral',role:'JEFE',flag:'reyEspectralDefeated',reward:200,img:AS.reyEspectral,battleKey:'rey-espectral'},
- {id:'dios-fantasma',name:'Dios Fantasma',role:'JEFE',flag:'diosFantasmaDefeated',reward:200,img:'assets/images/dios-fantasma/dios-fantasma.png',battleKey:'dios-fantasma'},
- {id:'ares',name:'Ares',role:'JEFE',flag:'aresDefeated',reward:200,img:'assets/images/campaign3/ares/ares-personaje.png',battleKey:'ares'},
- {id:'hades',name:'Hades',role:'JEFE',flag:'hadesDefeated',reward:200,img:'assets/images/campaign3/hades/hades-personaje.png',battleKey:'hades'}
+ {id:'caballero-almas',name:'Caballero de las Almas',role:'GUARDIÁN AVANZADO',flag:'caballeroAlmasDefeated',reward:150,img:AS.caballeroAlmas,battleKey:'caballero-almas'},
+ {id:'rey-espectral',name:'Rey Espectral',role:'JEFE',flag:'reyEspectralDefeated',reward:250,img:AS.reyEspectral,battleKey:'rey-espectral'},
+ {id:'dios-fantasma',name:'Dios Fantasma',role:'JEFE FINAL',flag:'diosFantasmaDefeated',reward:350,img:'assets/images/dios-fantasma/dios-fantasma.png',battleKey:'dios-fantasma'},
+ {id:'ares',name:'Ares',role:'DIOS · MODO DIOS',flag:'aresDefeated',reward:400,img:'assets/images/campaign3/ares/ares-personaje.png',battleKey:'ares'},
+ {id:'hades',name:'Hades',role:'DIOS · MODO DIOS',flag:'hadesDefeated',reward:500,img:'assets/images/campaign3/hades/hades-personaje.png',battleKey:'hades'}
 ]);
 function nemesisRetryUnlocked(r){return state[r.flag]===true}
 function nemesisRetryActive(){return state.retryBattle&&NEMESIS_RETRY_ROSTER.some(r=>r.id===state.retryBattle)}
@@ -807,14 +807,14 @@ function nemesisStartRetry(id){
 function nemesisRetryScene(){
  const unlocked=NEMESIS_RETRY_ROSTER.filter(nemesisRetryUnlocked);
  app.innerHTML=`<section class="deck retry-hall"><div class="deckbar"><div><h2>RETOS · REVANCHA</h2><small>Rivales derrotados en Campaña · puedes retarlos todas las veces que quieras</small></div><b>★ ${state.stars||0}</b></div>
- <div class="retry-rules"><b>GANA ESTRELLAS EN CADA VICTORIA</b><span>GUARDIÁN ★100 · JEFE ★200 · LOS JEFES DAN EL DOBLE</span><small>Las revanchas reutilizan el rival, mazo, IA, fases y efectos oficiales.</small></div>
+ <div class="retry-rules"><b>GANA ESTRELLAS EN CADA VICTORIA</b><span>RECOMPENSA SEGÚN DIFICULTAD · ★100 A ★500</span><small>Las revanchas reutilizan el rival, mazo, IA, fases y efectos oficiales.</small></div>
  <div class="retry-grid">${NEMESIS_RETRY_ROSTER.map(r=>{const open=nemesisRetryUnlocked(r);return `<article class="retry-card ${open?'open':'locked'}"><div class="retry-portrait">${open?`<img src="${r.img}" alt="${esc(r.name)}">`:'<div class="retry-lock">🔒</div>'}</div><small>${r.role}</small><h3>${open?esc(r.name):'RIVAL BLOQUEADO'}</h3><b>VICTORIA · ★${r.reward}</b><button class="btn retry-fight" data-retry="${r.id}" ${open?'':'disabled'}>${open?'RETAR OTRA VEZ':'DERROTAR EN CAMPAÑA'}</button></article>`}).join('')}</div>
  <div class="deckbar"><span>Desbloqueados ${unlocked.length}/${NEMESIS_RETRY_ROSTER.length}</span><button class="btn" id="retryBack">VOLVER AL MENÚ</button></div></section>`;
  document.querySelectorAll('.retry-fight:not([disabled])').forEach(b=>b.onclick=()=>nemesisStartRetry(b.dataset.retry));
  retryBack.onclick=menuScene;
 }
 window.nemesisRetryScene=nemesisRetryScene;
-window.NEMESIS_RETRY_AUDIT=()=>({total:NEMESIS_RETRY_ROSTER.length,unlocked:NEMESIS_RETRY_ROSTER.filter(nemesisRetryUnlocked).length,guardianReward:100,bossReward:200,active:state.retryBattle||null});
+window.NEMESIS_RETRY_AUDIT=()=>({total:NEMESIS_RETRY_ROSTER.length,unlocked:NEMESIS_RETRY_ROSTER.filter(nemesisRetryUnlocked).length,rewards:Object.fromEntries(NEMESIS_RETRY_ROSTER.map(r=>[r.id,r.reward])),minReward:Math.min(...NEMESIS_RETRY_ROSTER.map(r=>r.reward)),maxReward:Math.max(...NEMESIS_RETRY_ROSTER.map(r=>r.reward)),active:state.retryBattle||null});
 
 
 function nemesisValidPlayerName(v){
