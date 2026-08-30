@@ -336,6 +336,7 @@ const NEMESIS_TREASURE_CARDS=[
  {id:'TN-ARM-002',name:'Guadana del Vacio Absoluto',atk:0,def:0,type:'magic',family:'universal',rarity:'nemesis-unique',elements:['VACIO','OSCURIDAD'],treasure:true,shopExclusive:true,priceStars:1000,img:'assets/images/treasures/tn-arm-002.webp',effect:'treasureScythe',treasureKind:'weapon',atkBonus:2200,defBonus:1200,description:'Arma universal: +2200 ATK/+1200 DEF. Al destruir una criatura inflige 1000 HP adicionales.'},
  {id:'TN-TRP-001',name:'Juicio Final NEMESIS',atk:0,def:0,type:'trap',family:'universal',rarity:'nemesis-unique',elements:['CAOS','DIVINA'],treasure:true,shopExclusive:true,priceStars:1000,img:'assets/images/treasures/tn-trp-001.webp',effect:'treasureJudgement',treasureKind:'trap-response',unnegatable:true,description:'Trampa de respuesta: anula una accion decisiva, destruye la carta rival de mayor ATK y termina su turno.'}
 ];
+window.nemesisApplyRealCardArt?.(NEMESIS_TREASURE_CARDS);
 CARDS.push(...NEMESIS_TREASURE_CARDS);
 function nemesisTreasureOwned(id){return Array.isArray(state.owned)&&state.owned.includes(id)}
 function nemesisTreasureRedeem(id){const c=NEMESIS_TREASURE_CARDS.find(x=>x.id===id);if(!c||nemesisTreasureOwned(id))return false;if((state.stars||0)<1000){alert('Necesitas 1000 estrellas.');return false}state.stars-=1000;state.owned.push(id);save();return true}
@@ -589,8 +590,20 @@ window.NEMESIS_SANCTUARY=Object.freeze({cards:NEMESIS_UNIQUE_CARDS,claim:nemesis
 // V18.12.00 — COLECCIÓN GLOBAL NÉMESIS
 function nemesisEnsureDeckLibrary(){
  if(!state.savedDecks||typeof state.savedDecks!=='object')state.savedDecks={};
- if(!Array.isArray(state.savedDecks.OLIMPO)||!state.savedDecks.OLIMPO.length)
-   state.savedDecks.OLIMPO=OLIMPO_DECK_IDS.filter(id=>card(id)).slice(0,11);
+ // Mazos creados por el jugador son biblioteca permanente, no recompensas de campaña.
+ const permanentUserCards=[...IMPERIO_DRAGON_DECK_IDS,...MAGO_ROJO_DECK_IDS,...NEMESIS_DUEL_MASTER_IDS,...NEMESIS_PUBLIC_23_IDS]
+   .filter(id=>card(id));
+ state.owned=[...new Set([...(Array.isArray(state.owned)?state.owned:[]),...permanentUserCards])].filter(id=>card(id));
+ const presets={
+   'OLIMPO':OLIMPO_DECK_IDS,
+   'IMPERIO DRAGÓN':IMPERIO_DRAGON_DECK_IDS,
+   'MAGO ROJO':MAGO_ROJO_DECK_IDS,
+   'DUEL MASTER':NEMESIS_DUEL_MASTER_IDS
+ };
+ for(const [name,ids] of Object.entries(presets)){
+   if(!Array.isArray(state.savedDecks[name])||!state.savedDecks[name].length)
+     state.savedDecks[name]=[...new Set(ids.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,11);
+ }
  if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName]))
    state.activeDeckName='OLIMPO';
 }
@@ -795,15 +808,24 @@ function shopScene(){
 }
 function collectionScene(){
  nemesisEnsureDeckLibrary();
- const ownedCards=state.owned.map(id=>card(id)).filter(Boolean),emptyCount=Math.max(0,INVENTORY_CAPACITY-ownedCards.length);
- const emptySlots=Array.from({length:emptyCount},(_,i)=>`<div class="card empty-card" aria-label="Espacio vacío ${ownedCards.length+i+1}"><div class="empty-card-mark">${ownedCards.length+i+1}</div><b>ESPACIO VACÍO</b><small>PRÓXIMA CARTA</small></div>`).join('');
+ const registeredIds=[...new Set([
+   ...state.owned,
+   ...IMPERIO_DRAGON_DECK_IDS,
+   ...MAGO_ROJO_DECK_IDS,
+   ...NEMESIS_DUEL_MASTER_IDS,
+   ...NEMESIS_PUBLIC_23_IDS,
+   ...NEMESIS_TREASURE_CARDS.map(c=>c.id)
+ ])].filter(id=>card(id));
+ const catalogCards=registeredIds.map(id=>card(id)).filter(Boolean);
+ const emptyCount=Math.max(0,Math.min(24,INVENTORY_CAPACITY-catalogCards.length));
+ const emptySlots=Array.from({length:emptyCount},(_,i)=>`<div class="card empty-card" aria-label="Espacio vacío ${catalogCards.length+i+1}"><div class="empty-card-mark">${catalogCards.length+i+1}</div><b>ESPACIO VACÍO</b><small>PRÓXIMA CARTA</small></div>`).join('');
  const deckNames=Object.keys(state.savedDecks);
- app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${ownedCards.length}/${INVENTORY_CAPACITY} cartas · Campañas I–III comparten inventario</small></div><b>MAZO ${state.deck.length}/11</b></div>
+ app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${state.owned.length}/${INVENTORY_CAPACITY} obtenidas · ${catalogCards.length} cartas registradas · fuente única de arte</small></div><b>MAZO ${state.deck.length}/11</b></div>
  <div class="saved-deck-console"><div><small>MAZO ACTIVO</small><select id="savedDeckSelect">${deckNames.map(n=>`<option ${n===state.activeDeckName?'selected':''}>${n}</option>`).join('')}</select></div><div><button class="btn" id="createSavedDeck">NUEVO MAZO</button><button class="btn" id="saveCurrentDeck">GUARDAR MAZO</button></div></div>
- <p style="max-width:1100px;margin:0 auto 14px">Las cartas obtenidas de cualquier campaña permanecen en tu inventario. Toca una carta para <b>CANJEARLA</b> entre la Colección y el mazo activo. La carta nunca se borra del inventario.</p>
- <div class="grid inventory-grid">${ownedCards.map(c=>`<button class="card ${state.deck.includes(c.id)?'sel':''}" data-id="${c.id}"><img src="${c.img}"><b>${c.name}</b><small>${cardStats(c)}</small><small>${state.deck.includes(c.id)?'EN MAZO · TOCA PARA QUITAR':'CANJEAR AL MAZO'}</small></button>`).join('')}${emptySlots}</div>
+ <p style="max-width:1100px;margin:0 auto 14px">Imperio Dragón, Mago Rojo, Duel Master y las cartas universales quedan disponibles en la misma colección. Los <b>Tesoros NÉMESIS</b> se muestran aquí, pero solo pasan al mazo después de canjearlos.</p>
+ <div class="grid inventory-grid">${catalogCards.map(c=>{const owned=state.owned.includes(c.id),inDeck=state.deck.includes(c.id),treasure=c.treasure===true;const status=inDeck?'EN MAZO · TOCA PARA QUITAR':owned?'CANJEAR AL MAZO':treasure?'TESORO · ★1000 EN TESOROS':'BLOQUEADA';return `<button class="card ${inDeck?'sel':''} ${owned?'owned-card':'locked-card'}" ${owned?`data-id="${c.id}" data-owned="1"`:'disabled'}><img src="${c.img}" alt="${esc(c.name)}" loading="lazy"><b>${c.name}</b><small>${cardStats(c)}</small><small>${status}</small></button>`}).join('')}${emptySlots}</div>
  <div class="deckbar"><button class="btn" id="backMenu">VOLVER</button><button class="btn" id="startFromDeck">EMPEZAR · ${state.deck.length}/11</button></div></section>`;
- document.querySelectorAll('.card[data-id]').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('.card[data-owned="1"][data-id]').forEach(b=>b.onclick=()=>{
    const id=b.dataset.id;
    if(state.deck.includes(id))state.deck=state.deck.filter(x=>x!==id);
    else if(state.deck.length<11)state.deck.push(id);
