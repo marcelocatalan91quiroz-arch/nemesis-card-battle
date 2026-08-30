@@ -9,7 +9,7 @@ A(new Set(ids).size===43,'unique ids');
 A(s.includes('EXTERNAL_GAME_CARDS'),'adapter');
 A(s.includes('NEMESIS_PUBLIC_23_IDS'),'public 23');
 A(s.includes('NEMESIS_DUEL_MASTER_IDS'),'DM 20');
-A(s.includes('state.savedDecks.DUEL_MASTER'),'second deck');
+A(s.includes('NEMESIS_OFFICIAL_DECK_REGISTRY')&&s.includes('DUEL_MASTER:NEMESIS_DUEL_MASTER_IDS'),'second deck en fuente oficial');
 A(s.includes('MOTOR REAL PARA 33 CARTAS EXTERNAS'),'engine');
 A(s.includes('applyExternalAbility'),'ability handler');
 A(s.includes('applyExternalMagic'),'magic handler');
