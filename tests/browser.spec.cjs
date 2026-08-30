@@ -68,7 +68,7 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
       ...Array.from({length:20},(_,i)=>'MGR-'+String(i+1).padStart(3,'0')),
       ...Array.from({length:10},(_,i)=>'DM-'+String(i+11).padStart(3,'0'))
     ];
-    const map=window.NEMESIS_REAL_CARD_ART_INDEX||{};
+    const map=window.NEMESIS_CARD_ART||{};
     const sources=ids.map(id=>window.nemesisRealCardArt?.(id,'')||'');
     const loaded=await Promise.all(sources.map(src=>new Promise(resolve=>{
       if(!/^data:image\//i.test(src))return resolve(false);
@@ -79,7 +79,7 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
     })));
     return {
       expected:ids.length,
-      mapped:ids.filter(id=>Number.isInteger(map[id])).length,
+      mapped:ids.filter(id=>typeof map[id]==='string'&&map[id].startsWith('data:image/')).length,
       dataImages:sources.filter(src=>/^data:image\//i.test(src)).length,
       decoded:loaded.filter(Boolean).length
     };
@@ -88,7 +88,7 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
 });
 
 
-test('arte autoritativo 55/55 y colección de mazos recientes', async ({ page }) => {
+test('arte autoritativo 65/65 y colección de mazos recientes', async ({ page }) => {
   await page.goto('/');
   await page.waitForTimeout(700);
   const audit=await page.evaluate(async()=>{
