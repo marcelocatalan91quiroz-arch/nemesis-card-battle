@@ -1,4 +1,21 @@
 const crypto=require('crypto');
+const OWNER_KEY=String(process.env.NEMESIS_OWNER_KEY||'');
+const OWNER_SIGNING_SECRET=String(process.env.NEMESIS_OWNER_SIGNING_SECRET||'');
+const OWNER_TOKEN_TTL_MS=12*60*60*1000;
+function safeEqualText(a,b){const x=Buffer.from(String(a||'')),y=Buffer.from(String(b||''));return x.length===y.length&&crypto.timingSafeEqual(x,y)}
+function ownerAuthReady(){return OWNER_KEY.length>=12&&OWNER_SIGNING_SECRET.length>=24}
+function ownerSign(payload){return crypto.createHmac('sha256',OWNER_SIGNING_SECRET).update(payload).digest('base64url')}
+function issueOwnerToken(){
+ if(!ownerAuthReady())return null;
+ const payload=Buffer.from(JSON.stringify({role:'OWNER',iat:now(),exp:now()+OWNER_TOKEN_TTL_MS,nonce:id(10)})).toString('base64url');
+ return payload+'.'+ownerSign(payload)
+}
+function verifyOwnerToken(token){
+ if(!ownerAuthReady()||typeof token!=='string'||!token.includes('.'))return false;
+ const [payload,sig]=token.split('.',2);if(!payload||!sig||!safeEqualText(ownerSign(payload),sig))return false;
+ try{const d=JSON.parse(Buffer.from(payload,'base64url').toString('utf8'));return d.role==='OWNER'&&Number(d.exp)>now()}catch{return false}
+}
+
 
 const ROOM_TTL_MS=1000*60*60*2;
 const MEMORY=globalThis.__NEMESIS_ONLINE_ROOMS||(globalThis.__NEMESIS_ONLINE_ROOMS=new Map());
@@ -50,7 +67,7 @@ const PUBLIC_DECKS=new Set(['MAGO_ROJO','IMPERIO_DRAGON']);
 const OWNER_DECKS=new Set(['OLIMPO','DUEL_MASTER','CABALLEROS_SUBMUNDO']);
 function cleanDeckName(v){return String(v||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON').slice(0,40)}
 function cleanDeckIds(v){return [...new Set((Array.isArray(v)?v:[]).map(x=>String(x||'').trim()).filter(Boolean))].slice(0,40)}
-function playerDeckMeta(b){const deckName=cleanDeckName(b.deckName),deckIds=cleanDeckIds(b.deckIds);return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':PUBLIC_DECKS.has(deckName)?'PUBLIC':'CUSTOM'}}
+function playerDeckMeta(b){const deckName=cleanDeckName(b.deckName),deckIds=cleanDeckIds(b.deckIds),owner=verifyOwnerToken(b.ownerToken);if(OWNER_DECKS.has(deckName)&&!owner)return {error:'OWNER_AUTH_REQUIRED',deckName,deckIds:[],deckClass:'OWNER'};return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':PUBLIC_DECKS.has(deckName)?'PUBLIC':'CUSTOM',ownerAuthenticated:owner}}
 
 const DM_EFFECT_HANDLERS=Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,true])));
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=crypto.randomInt(0,i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
@@ -437,7 +454,19 @@ module.exports=async function handler(req,res){
    if(hasRedisCloud()){
     try{const c=await redisClient();await c.ping()}catch(err){return res.status(503).json({ok:false,service:'NEMESIS ONLINE 1V1',authority:'server',storage:'REDIS_CLOUD_ERROR',persistent:false,error:'REDIS_UNAVAILABLE',time:now()})}
    }
-   return res.status(storageReady()?200:503).json({ok:storageReady(),service:'NEMESIS ONLINE 1V1',authority:'server',storage:storageMode(),persistent:hasPersistentStorage(),production:isProduction(),time:now()});
+   return res.status(storageReady()?200:503).json({ok:storageReady(),service:'NEMESIS ONLINE 1V1',authority:'server',storage:storageMode(),persistent:hasPersistentStorage(),production:isProduction(),ownerAuthReady:ownerAuthReady(),time:now()});
+  }
+
+  if(req.method==='POST'){
+   const authBody=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{});
+   if(authBody.action==='owner_login'){
+    if(!ownerAuthReady())return res.status(503).json({ok:false,error:'OWNER_AUTH_NOT_CONFIGURED'});
+    if(!safeEqualText(authBody.ownerKey,OWNER_KEY))return res.status(403).json({ok:false,error:'OWNER_AUTH_INVALID'});
+    const ownerToken=issueOwnerToken();return res.status(200).json({ok:true,owner:true,ownerToken,expiresInMs:OWNER_TOKEN_TTL_MS});
+   }
+   if(authBody.action==='owner_verify'){
+    const owner=verifyOwnerToken(authBody.ownerToken);return res.status(owner?200:403).json({ok:owner,owner,error:owner?undefined:'OWNER_AUTH_INVALID'});
+   }
   }
   if(!storageReady())return res.status(503).json({ok:false,error:'PERSISTENCE_REQUIRED'});
   if(req.method==='GET'){
@@ -453,8 +482,8 @@ module.exports=async function handler(req,res){
   const b=typeof req.body==='string'?JSON.parse(req.body||'{}'):(req.body||{});
   if(b.action==='create'){
    let c;do{c=code()}while(await readRoom(c));
-   const token=id(),pid=id(10),t=now();
-   const room={code:c,status:'WAITING',createdAt:t,updatedAt:t,expiresAt:t+ROOM_TTL_MS,version:0,seq:0,players:[{id:pid,tokenHash:tokenHash(token),seat:'HOST',name:cleanName(b.name),ready:false,lastSeen:t,...playerDeckMeta(b)}],events:[]};
+   const token=id(),pid=id(10),t=now(),meta=playerDeckMeta(b);if(meta.error)return res.status(403).json({ok:false,error:meta.error});
+   const room={code:c,status:'WAITING',createdAt:t,updatedAt:t,expiresAt:t+ROOM_TTL_MS,version:0,seq:0,players:[{id:pid,tokenHash:tokenHash(token),seat:'HOST',name:cleanName(b.name),ready:false,lastSeen:t,...meta}],events:[]};
    pushEvent(room,'ROOM_CREATED','SYSTEM');
    await writeRoom(room);
    return res.status(201).json({ok:true,token,room:publicRoom(room,token)});
@@ -463,8 +492,8 @@ module.exports=async function handler(req,res){
    const c=String(b.code||'').toUpperCase().trim(),room=await readRoom(c);
    if(!room)return res.status(404).json({ok:false,error:'ROOM_NOT_FOUND'});
    if(room.players.length>=2)return res.status(409).json({ok:false,error:'ROOM_FULL'});
-   const token=id(),t=now();
-   room.players.push({id:id(10),tokenHash:tokenHash(token),seat:'GUEST',name:cleanName(b.name),ready:false,lastSeen:t,...playerDeckMeta(b)});
+   const token=id(),t=now(),meta=playerDeckMeta(b);if(meta.error)return res.status(403).json({ok:false,error:meta.error});
+   room.players.push({id:id(10),tokenHash:tokenHash(token),seat:'GUEST',name:cleanName(b.name),ready:false,lastSeen:t,...meta});
    room.status='READY';
    pushEvent(room,'PLAYER_JOINED','GUEST');
    await writeRoom(room);
