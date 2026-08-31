@@ -776,3 +776,42 @@ linear-gradient(90deg,rgba(75,231,255,.035) 1px,transparent 1px);background-size
 .dm-cinematic-online .dm-tactical-panel{border-color:rgba(137,219,240,.31);background:linear-gradient(180deg,rgba(5,18,28,.94),rgba(8,7,20,.94));box-shadow:0 22px 65px rgba(0,0,0,.52),0 0 30px rgba(101,54,171,.1)}.dm-cinematic-online .dm-tactical-panel button:not(:disabled){border-color:#4fa4b4;background:linear-gradient(180deg,#0c7180,#092d45);box-shadow:inset 0 1px rgba(255,255,255,.06),0 7px 18px rgba(0,0,0,.3);transition:.16s}.dm-cinematic-online .dm-tactical-panel button:not(:disabled):hover{transform:translateY(-2px);border-color:#a27aff;box-shadow:0 9px 24px rgba(0,0,0,.38),0 0 18px rgba(152,83,255,.2)}
 .dm-cinematic-online .dm-hand-wrap{border-color:rgba(118,218,240,.32);background:linear-gradient(180deg,rgba(4,15,24,.95),rgba(5,6,15,.97));box-shadow:0 -22px 65px rgba(0,0,0,.58),0 0 28px rgba(81,44,143,.08)}.dm-cinematic-online .dm-hand{align-items:flex-end;min-height:158px}.dm-cinematic-online .dm-hand .dm-card{transform-origin:50% 100%;width:116px;min-width:116px;height:156px}.dm-cinematic-online .dm-hand .dm-card:nth-child(odd){transform:rotate(-1.4deg) translateY(3px)}.dm-cinematic-online .dm-hand .dm-card:nth-child(even){transform:rotate(1.4deg)}.dm-cinematic-online .dm-hand .dm-card:hover{transform:translateY(-17px) scale(1.07)!important;z-index:8}.dm-cinematic-online .dm-hand .dm-card.selected{transform:translateY(-22px) scale(1.08)!important;z-index:9}
 @media(max-width:980px){.dm-arena-core{width:130px;height:130px}.dm-cinematic-online .dm-hand{min-height:124px}.dm-cinematic-online .dm-hand .dm-card{width:88px;min-width:88px;height:120px}}@media(max-width:620px){.dm-arena-core{width:90px;height:90px}.dm-cinematic-online .dm-hand{min-height:104px}.dm-cinematic-online .dm-hand .dm-card{width:72px;min-width:72px;height:100px}.dm-cinematic-online:after{width:105vw;height:65vw}.dm-atmosphere{opacity:.55}}
+
+
+/* V19.7.1 · CARTAS ONLINE CON PRESENCIA DE CAMPAÑA */
+@media(min-width:981px){
+ .dm-cinematic-online .dm-arena{padding:16px 20px 22px;min-height:650px}
+ .dm-cinematic-online .dm-field{gap:14px;min-height:210px;align-items:center}
+ .dm-cinematic-online .dm-zone{height:198px;min-height:198px;border-radius:12px;overflow:visible}
+ .dm-cinematic-online .dm-zone.monster{background:radial-gradient(ellipse at center,rgba(90,42,153,.16),transparent 72%),linear-gradient(145deg,rgba(9,34,47,.76),rgba(7,8,20,.82))}
+ .dm-cinematic-online .dm-zone.support{height:170px;min-height:170px;background:radial-gradient(ellipse at center,rgba(37,143,166,.11),transparent 72%),linear-gradient(145deg,rgba(7,28,39,.72),rgba(5,8,18,.82))}
+ .dm-cinematic-online .dm-zone .dm-card{position:absolute;inset:5px;width:calc(100% - 10px);height:calc(100% - 10px);max-width:none;overflow:visible;border-radius:10px;background:#03050a}
+ .dm-cinematic-online .dm-zone .dm-card img{height:132px;min-height:132px;object-fit:contain;border-radius:8px 8px 4px 4px;background:radial-gradient(circle at 50% 42%,#1a1630,#030509 74%)}
+ .dm-cinematic-online .dm-zone.support .dm-card img{height:108px;min-height:108px}
+ .dm-cinematic-online .dm-zone .dm-card b{font-size:11px;line-height:1.08;padding:3px 4px 0}
+ .dm-cinematic-online .dm-zone .dm-card small{font-size:9px;line-height:1.05;padding:0 4px}
+ .dm-cinematic-online .dm-zone.occupied{transform:perspective(1100px) rotateX(2deg) translateZ(0)}
+ .dm-cinematic-online .dm-zone.occupied:hover{z-index:12;transform:perspective(1100px) rotateX(0) translateY(-14px) scale(1.09)}
+ .dm-cinematic-online .dm-zone.occupied:hover .dm-card{box-shadow:0 24px 52px rgba(0,0,0,.72),0 0 38px rgba(150,82,255,.28)}
+ .dm-cinematic-online .dm-side.opponent .dm-zone.occupied{transform:perspective(1100px) rotateX(-2deg)}
+ .dm-cinematic-online .dm-side.opponent .dm-zone.occupied:hover{transform:perspective(1100px) rotateX(0) translateY(10px) scale(1.09)}
+ .dm-cinematic-online .dm-equip{position:absolute;right:-8px;bottom:-8px;z-index:5;max-width:86%;padding:3px 6px;border:1px solid rgba(224,188,92,.58);border-radius:7px;background:rgba(24,15,4,.94);box-shadow:0 5px 15px rgba(0,0,0,.55),0 0 14px rgba(238,187,71,.13);font-size:8px}
+ .dm-cinematic-online .dm-hand-wrap{padding:10px 16px 14px}
+ .dm-cinematic-online .dm-hand{min-height:190px;gap:10px;padding-top:17px}
+ .dm-cinematic-online .dm-hand .dm-card{width:132px;min-width:132px;height:178px}
+ .dm-cinematic-online .dm-hand .dm-card img{height:112px;min-height:112px;object-fit:contain}
+ .dm-cinematic-online .dm-hand .dm-card b{font-size:11px}
+ .dm-cinematic-online .dm-hand .dm-card small{font-size:9px}
+ .dm-cinematic-online .dm-hand .dm-card:hover{transform:translateY(-27px) scale(1.12)!important}
+ .dm-cinematic-online .dm-hand .dm-card.selected{transform:translateY(-32px) scale(1.13)!important}
+ .dm-cinematic-online .dm-midline{margin:9px 0;padding:7px 0}
+}
+@media(min-width:1400px){
+ .dm-cinematic-online .dm-arena{max-width:1480px;margin-left:auto;margin-right:auto}
+ .dm-cinematic-online .dm-zone{height:218px;min-height:218px}
+ .dm-cinematic-online .dm-zone.support{height:184px;min-height:184px}
+ .dm-cinematic-online .dm-zone .dm-card img{height:148px;min-height:148px}
+ .dm-cinematic-online .dm-zone.support .dm-card img{height:120px;min-height:120px}
+ .dm-cinematic-online .dm-hand .dm-card{width:142px;min-width:142px;height:190px}
+ .dm-cinematic-online .dm-hand .dm-card img{height:122px;min-height:122px}
+}
