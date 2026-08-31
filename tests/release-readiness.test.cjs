@@ -69,6 +69,7 @@ A('online Duel Master 20 efectos',api.includes('DM_EFFECT_HANDLERS')&&api.includ
 A('online Olimpo 11/11 autoritativo',api.includes('OLIMPO_CATALOG')&&api.includes('OLIMPO:OLIMPO_DECK')&&api.includes('resolveOlimpoAbility')&&api.includes('resolveOlimpoSupport'));
 A('online Caballeros 20/20 autoritativo',api.includes('CS_CATALOG')&&api.includes('CABALLEROS_SUBMUNDO:CABALLEROS_SUBMUNDO_DECK')&&api.includes('resolveCsAbility')&&api.includes('resolveCsSupport'));
 A('online Eclipse MS-001 motor preparado y propiedad protegida',api.includes('resolveAbsoluteEclipseSupport')&&api.includes('NEMESIS_ECLIPSE_POWERS')&&api.includes('ONLINE_REDEEM_PROOF_REQUIRED'));
+A('online visualiza fusión transformación ataque y destrucción',online.includes('function dmServerCinematic')&&online.includes("type.includes('FUSION')")&&online.includes("type.includes('TRANSFORM')")&&online.includes("type==='DESTROY'||type==='BANISH'"));
 A('online soporta armaduras reales',api.includes("equipment:{weapon:null,armor:null,relic:null}")&&api.includes("['weapon','armor','relic']"));
 
 if(process.exitCode)process.exit(process.exitCode);
