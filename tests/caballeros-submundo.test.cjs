@@ -96,3 +96,18 @@ must('CS-008 bloqueo primer ataque',game.includes("function csMeteorRainBlocksAt
 must('CS-008 conectado a combate',game.includes("di=await csMeteorIntercept(defSide,di,A)")&&game.includes("if(csMeteorRainBlocksAttack(defSide))"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('CABALLERO METEORO · CS-008: PASS');
+
+must('CS-009 registrado',game.includes("id:'CS-009',name:'Cerberus Oscuro'"));
+must('CS-009 stats',game.includes("name:'Cerberus Oscuro',atk:14500,def:11500"));
+must('CS-009 arte físico',game.includes("img:'assets/images/caballeros-submundo/cerberus-oscuro.webp'")&&fs.existsSync(path.join(root,'assets/images/caballeros-submundo/cerberus-oscuro.webp')));
+must('CS-009 ultimate',game.includes("function csCerberusUseSkill(")&&game.includes("_csCerberusAttackCap=3"));
+must('CS-009 escalado',game.includes("csCerberusBeforeAttack")&&game.includes("Math.min(4000,Math.floor(csSubCount(side)/2)*500)"));
+must('CS-010 registrado',game.includes("id:'CS-010',name:'Pegasus Negro'"));
+must('CS-010 stats',game.includes("name:'Pegasus Negro',atk:15000,def:12500"));
+must('CS-010 arte físico',game.includes("img:'assets/images/caballeros-submundo/pegasus-negro.webp'")&&fs.existsSync(path.join(root,'assets/images/caballeros-submundo/pegasus-negro.webp')));
+must('CS-010 eclipse',game.includes("function csPegasusUseSkill(")&&game.includes("_csPegasusEclipseUntil=turnNo+1"));
+must('CS-010 evasión',game.includes("function csPegasusEvade(")&&game.includes("VUELO DEL ECLIPSE"));
+must('CS-010 perforación',game.includes("csIs(c,'CS-010')")&&game.includes("_csPegasusEclipseUntil"));
+must('CS-009/010 auditoría',game.includes("'CS-009','CS-010'")&&game.includes("cerberus:typeof csCerberusUseSkill==='function'")&&game.includes("pegasus:typeof csPegasusUseSkill==='function'"));
+if(process.exitCode)process.exit(process.exitCode);
+console.log('MONSTRUOS DEL SUBMUNDO · CS-009/CS-010: PASS');
