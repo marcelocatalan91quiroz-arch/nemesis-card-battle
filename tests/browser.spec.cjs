@@ -71,7 +71,7 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
     const map=window.NEMESIS_CARD_ART||{};
     const sources=ids.map(id=>window.nemesisRealCardArt?.(id,'')||'');
     const loaded=await Promise.all(sources.map(src=>new Promise(resolve=>{
-      if(!/^data:image\//i.test(src))return resolve(false);
+      if(!src)return resolve(false);
       const img=new Image();
       img.onload=()=>resolve(img.naturalWidth>0&&img.naturalHeight>0);
       img.onerror=()=>resolve(false);
@@ -79,12 +79,12 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
     })));
     return {
       expected:ids.length,
-      mapped:ids.filter(id=>typeof map[id]==='string'&&map[id].startsWith('data:image/')).length,
-      dataImages:sources.filter(src=>/^data:image\//i.test(src)).length,
+      mapped:ids.filter(id=>typeof map[id]==='string'&&map[id].endsWith('.avif')).length,
+      pathImages:sources.filter(src=>/\.avif(?:$|\?)/i.test(src)).length,
       decoded:loaded.filter(Boolean).length
     };
   });
-  expect(audit).toEqual({expected:50,mapped:50,dataImages:50,decoded:50});
+  expect(audit).toEqual({expected:50,mapped:50,pathImages:50,decoded:50});
 });
 
 
@@ -148,4 +148,41 @@ test('runtime de mecánicas 20/20', async ({ page }) => {
   expect(audit.idr.systems.traps).toBeTruthy();
   expect(audit.treasures.count).toBe(5);
   expect(audit.phases.valid).toBeTruthy();
+});
+
+
+test('auditoría total del registro de cartas e imágenes', async ({ page }) => {
+  const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
+  await page.goto('/');
+  const audit=await page.evaluate(()=>({
+    cards:window.NEMESIS_FULL_CARD_AUDIT?.()||[],
+    registry:window.NEMESIS_CARD_REGISTRY_AUDIT?.()||null
+  }));
+  expect(audit.registry?.ok).toBe(true);
+  expect(audit.cards.length).toBe(audit.registry.total);
+  expect(new Set(audit.cards.map(c=>c.id)).size).toBe(audit.cards.length);
+  expect(audit.cards.filter(c=>!c.img).map(c=>c.id)).toEqual([]);
+  expect(errors).toEqual([]);
+});
+
+test('colección, tesoros y santuario están cableados al catálogo real', async ({ page }) => {
+  await page.goto('/');
+  const audit=await page.evaluate(()=>({
+    cards:window.NEMESIS_FULL_CARD_AUDIT?.()||[],
+    collection:!!window.NEMESIS_COLLECTION,
+    treasure:!!window.NEMESIS_TREASURE_AUDIT?.(),
+    sanctuary:!!window.NEMESIS_SANCTUARY&&Array.isArray(window.NEMESIS_SANCTUARY.cards)&&window.NEMESIS_SANCTUARY.cards.length===3
+  }));
+  expect(audit.cards.length).toBeGreaterThan(0);
+  expect(audit.cards.filter(c=>!c.img)).toEqual([]);
+  expect(audit.collection).toBe(true);
+  expect(audit.treasure).toBe(true);
+  expect(audit.sanctuary).toBe(true);
+});
+
+test('revancha registra los 8 rivales y recompensas correctas', async ({ page }) => {
+  await page.goto('/');
+  const audit=await page.evaluate(()=>window.NEMESIS_RETRY_AUDIT?.());
+  expect(audit.total).toBe(8);
+  expect(audit.rewards).toEqual({guardian:100,'dragon-ojo':150,'ira-ra':200,'caballero-almas':150,'rey-espectral':250,'dios-fantasma':350,ares:400,hades:500});
 });

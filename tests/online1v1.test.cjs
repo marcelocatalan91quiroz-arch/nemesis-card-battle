@@ -18,7 +18,7 @@ must('produccion exige persistencia',api.includes('PERSISTENCE_REQUIRED')&&api.i
 must('memoria solo desarrollo',api.includes('FLUID_MEMORY_DEV'));
 must('tokens no se almacenan en claro',api.includes('tokenHash')&&!api.includes('token,seat'));
 must('cliente aislado del motor',client.includes('NEMESIS_ONLINE_1V1')&&!client.includes('function battle('));
-must('entrada online cargada',html.includes('js/online1v1.js'));
+must('entrada online diferida fuera del camino crítico',!html.includes('<script src="js/online1v1.js"')&&fs.readFileSync(path.join(root,'js/game.js'),'utf8').includes("nemesisLoadOptionalScript('js/online1v1.js','online1v1')"));
 must('tablero Duel Master 5+5',api.includes("monsters:Array(5)")&&api.includes("supports:Array(5)"));
 must('mazo Duel Master 20/20 online',api.includes("const DM_DECK=Object.keys(DM_CATALOG)")&&api.includes("'DM-020'"));
 must('mano inicial 5',api.includes("hand=deck.splice(0,5)"));
