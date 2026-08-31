@@ -4187,7 +4187,7 @@ function csSubworldWeaponUltimate(side,c){
 }
 function csSubworldWeaponTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(!c)return;
-  if(c._csPoisonStacks&&c._csPoisonUntil>=turnNo){c.atk=Math.max(0,c.atk-1000);c.def=Math.max(0,c.def-1000)}
+  if(c._csPoisonStacks&&c._csPoisonUntil>=turnNo&&c._csPoisonTickTurn!==turnNo){c._csPoisonTickTurn=turnNo;c.atk=Math.max(0,c.atk-1000);c.def=Math.max(0,c.def-1000)}
   for(const k of ['_csAresDefLoss','_csVenuzDefLoss'])if(c[k]&&c[k+'Until']<turnNo){c.def+=c[k];delete c[k];delete c[k+'Until']}
   if(c._csGravityLoss&&c._csGravityLoss.until<turnNo){c.atk+=c._csGravityLoss.atk;c.def+=c._csGravityLoss.def;delete c._csGravityLoss}
   if(c._csSingularityLoss&&c._csSingularityLoss.until<turnNo){c.atk+=c._csSingularityLoss.atk;c.def+=c._csSingularityLoss.def;delete c._csSingularityLoss}
