@@ -160,10 +160,18 @@ test('auditoría total de cartas, imágenes y pantallas de colección', async ({
   const cards=await page.evaluate(()=>window.NEMESIS_FULL_CARD_AUDIT?.()||[]);
   expect(cards.length).toBeGreaterThan(0);
   expect(new Set(cards.map(c=>c.id)).size).toBe(cards.length);
-  const decoded=await page.evaluate(async()=>Promise.all((window.NEMESIS_FULL_CARD_AUDIT?.()||[]).map(c=>new Promise(resolve=>{
-    const img=new Image(); img.onload=()=>resolve({id:c.id,ok:img.naturalWidth>0&&img.naturalHeight>0,w:img.naturalWidth,h:img.naturalHeight,src:c.img});
-    img.onerror=()=>resolve({id:c.id,ok:false,w:0,h:0,src:c.img}); img.src=c.img;
-  }))));
+  const decoded=await page.evaluate(async()=>{
+    const all=window.NEMESIS_FULL_CARD_AUDIT?.()||[], out=[];
+    for(let p=0;p<all.length;p+=12){
+      const batch=all.slice(p,p+12);
+      out.push(...await Promise.all(batch.map(c=>new Promise(resolve=>{
+        const img=new Image(),done=ok=>resolve({id:c.id,ok:ok&&img.naturalWidth>0&&img.naturalHeight>0,w:img.naturalWidth,h:img.naturalHeight,src:c.img});
+        const timer=setTimeout(()=>done(false),5000);
+        img.onload=()=>{clearTimeout(timer);done(true)};img.onerror=()=>{clearTimeout(timer);done(false)};img.src=c.img;
+      }))));
+    }
+    return out;
+  });
   expect(decoded.filter(x=>!x.ok)).toEqual([]);
 
   await page.locator('#deckBtn').click(); await expect(page.locator('.collection-global')).toBeVisible();
