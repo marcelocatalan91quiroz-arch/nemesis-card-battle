@@ -964,7 +964,7 @@ function nemesisCreateProfileScene(){
   <small class="mc-safe">MEMORY CARD · AUTO-GUARDADO ACTIVO</small>
  </div></section>`;
  const input=document.getElementById('playerCreateName'),btn=document.getElementById('playerCreateBtn'),err=document.getElementById('playerCreateError');
- const commit=()=>{const name=nemesisValidPlayerName(input.value);if(!name){err.textContent='Escribe un nombre para continuar.';input.focus();return}state.name=name;state.profileCreated=true;state.lastAutosaveAt=Date.now();save();menuScene()};
+ const commit=()=>{const name=nemesisValidPlayerName(input.value);if(!name){err.textContent='Escribe un nombre para continuar.';input.focus();return}state.name=name;state.profileCreated=true;state.lastAutosaveAt=Date.now();v18918SaveMemoryCard();menuScene()};
  btn.onclick=commit;input.addEventListener('keydown',e=>{if(e.key==='Enter')commit()});setTimeout(()=>input.focus(),40);
 }
 function nemesisEnsureProfile(){
