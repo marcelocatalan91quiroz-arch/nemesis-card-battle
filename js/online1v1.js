@@ -131,8 +131,8 @@ function renderDuelMasterBoard(room){
  const d=room.duel;if(!d)return;
  const me=d.me,op=d.opponent,myName=room.me.name,opName=room.players.find(p=>p.id!==room.me.id)?.name||'Rival';
  const active=d.isMyTurn&&d.phase!=='END';
- document.getElementById('app').innerHTML=`<section class="dm-online-board">
-  <div class="dm-board-bg"></div>
+ document.getElementById('app').innerHTML=`<section class="dm-online-board dm-cinematic-online">
+  <div class="dm-board-bg"></div>\n  <div class="dm-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <header class="dm-hud">
    <button id="dmLeave" class="dm-exit">← SALIR</button>
    <div class="dm-player-hud rival"><small>${esc(opName)}</small><b>HP ${op.hp.toLocaleString('es-CL')}</b><span>Mano ${op.handCount} · Deck ${op.deckCount} · Cementerio ${op.graveCount}</span></div>
@@ -140,12 +140,12 @@ function renderDuelMasterBoard(room){
    <div class="dm-player-hud me"><small>${esc(myName)}</small><b>HP ${me.hp.toLocaleString('es-CL')}</b><span>Deck ${me.deckCount} · Cementerio ${me.graveCount}</span></div>
    <div class="dm-netstate"><b>${lastPing} ms</b><span>${esc(room.transport)}</span></div>
   </header>
-  <main class="dm-arena">
+  <main class="dm-arena">\n   <div class="dm-arena-core" aria-hidden="true"><span>Ν</span></div>
    <section class="dm-side opponent">
     <div class="dm-zone-label">RIVAL · SOPORTES / ARMAS / TRAMPAS</div><div class="dm-zone-row supports">${dmSupportZones(op.supports,'op')}</div>
     <div class="dm-zone-label">RIVAL · CAMPO</div><div class="dm-zone-row monsters">${dmMonsterZones(op.monsters,'op')}</div>
    </section>
-   <div class="dm-midline"><span>◈</span><b>${active?'FASE PRINCIPAL':'ESPERANDO ACCIÓN RIVAL'}</b><span>◈</span></div>
+   <div class="dm-midline"><span>◈</span><b>${active?'FASE PRINCIPAL · TU DOMINIO':'ESPERANDO ACCIÓN RIVAL'}</b><span>◈</span></div>
    <section class="dm-side player">
     <div class="dm-zone-row monsters">${dmMonsterZones(me.monsters,'me')}</div><div class="dm-zone-label">TU CAMPO</div>
     <div class="dm-zone-row supports">${dmSupportZones(me.supports,'me')}</div><div class="dm-zone-label">TUS SOPORTES / ARMAS / TRAMPAS</div>
