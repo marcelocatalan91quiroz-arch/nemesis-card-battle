@@ -2,7 +2,7 @@
 'use strict';
 const API='/api/online1v1';
 const SESSION_KEY='nemesis_online1v1_session';
-let pollTimer=null,lastPing=0,lastVersion=0,current=null,dmSelectedCard=null,dmSelectedAttacker=null,dmSelectedSupport=null;
+let pollTimer=null,lastPing=0,lastVersion=0,current=null,dmSelectedCard=null,dmSelectedAttacker=null,dmSelectedSupport=null,dmLastFxKey='';
 
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const api=async(body,method='POST')=>{
@@ -124,6 +124,35 @@ function dmDeckTheme(name){
  if(n.includes('OLIMPO'))return 'theme-olimpo';
  return 'theme-nemesis'
 }
+function dmFindVisibleCard(room,id){
+ if(!id||!room?.duel)return null;
+ const pools=[...(room.duel.me?.monsters||[]),...(room.duel.opponent?.monsters||[]),...(room.duel.me?.hand||[])];
+ for(const c of pools)if(c?.id===id)return c;
+ return null
+}
+function dmServerCinematic(room){
+ const log=room?.duel?.log||[];const e=log[log.length-1];if(!e)return;
+ const key=[e.at,e.type,e.seat,JSON.stringify(e.payload||{})].join('|');if(key===dmLastFxKey)return;dmLastFxKey=key;
+ const root=document.querySelector('.dm-online-board');if(!root)return;
+ const p=e.payload||{},type=String(e.type||'').toUpperCase();
+ let title='',sub='',cardId=p.to||p.cardId||p.attackerId||p.id||p.defenderId||null,cls='fx-action';
+ if(type==='PLAY'){title=p.kind==='MONSTER'?'INVOCACIÓN':'CARTA ACTIVADA';sub=cardId||'';cls=p.kind==='MONSTER'?'fx-summon':'fx-support'}
+ else if(type.includes('FUSION')){title='FUSIÓN';sub=cardId||type;cls='fx-ultimate'}
+ else if(type.includes('TRANSFORM')||type==='SHINY_AWAKENING'){title='TRANSFORMACIÓN';sub=(p.from?String(p.from)+' → ':'')+(p.to||'');cls='fx-ultimate'}
+ else if(type==='DIRECT_ATTACK'||type.startsWith('BATTLE_')){title='ATAQUE';sub=p.damage?'-'+Number(p.damage).toLocaleString('es-CL')+' HP':(p.attackerId||'');cls='fx-attack'}
+ else if(type==='DAMAGE'){title='DAÑO';sub='-'+Number(p.amount||0).toLocaleString('es-CL')+' HP';cls='fx-attack'}
+ else if(type==='DESTROY'||type==='BANISH'){title=type==='BANISH'?'DESTIERRO':'DESTRUCCIÓN';sub=p.id||'';cls='fx-ultimate'}
+ else if(type.includes('ABILITY')||type.includes('ULTIMATE')){title=type.includes('ULTIMATE')?'ULTIMATE':'HABILIDAD';sub=p.id||'';cls=type.includes('ULTIMATE')?'fx-ultimate':'fx-ability'}
+ else if(type.includes('ECLIPSE')){title='ECLIPSE ABSOLUTO';sub='NÉMESIS';cls='fx-ultimate'}
+ else return;
+ root.classList.remove('fx-ultimate','fx-attack','fx-ability','fx-support','fx-summon','fx-action');void root.offsetWidth;root.classList.add(cls);
+ const c=dmFindVisibleCard(room,cardId),art=c?(window.nemesisRealCardArt?.(c.id,c.img||'')||c.img||''):'';
+ let layer=root.querySelector('.dm-server-cinematic');if(layer)layer.remove();
+ layer=document.createElement('div');layer.className='dm-server-cinematic '+cls;
+ layer.innerHTML=`<div class="dm-cinema-rays"></div><section>${art?'<img src="'+esc(art)+'" alt="">':''}<small>${esc(e.seat==='SYSTEM'?'NÉMESIS':e.seat)}</small><b>${esc(title)}</b><span>${esc(sub)}</span></section>`;
+ root.appendChild(layer);requestAnimationFrame(()=>layer.classList.add('show'));
+ setTimeout(()=>{layer.classList.add('out');setTimeout(()=>layer.remove(),260);root.classList.remove(cls)},1150)
+}
 function dmVisualPulse(payload){
  const root=document.querySelector('.dm-online-board');if(!root)return;
  const kind=String(payload?.duelAction||'').toLowerCase();
@@ -231,7 +260,7 @@ function renderDuelMasterBoard(room){
  document.getElementById('dmSupportActivate').onclick=()=>{if(active&&dmSelectedSupport!==null)dmActivateSupport(room,null)};
  document.getElementById('dmDirect').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'attack',from:dmSelectedAttacker,target:null})};
  document.getElementById('dmEnd').onclick=()=>{if(active)dmSend({duelAction:'end_turn'})};
- current.room=room;saveSession();
+ current.room=room;saveSession();setTimeout(()=>dmServerCinematic(room),30);
 }
 
 function statusText(r){
