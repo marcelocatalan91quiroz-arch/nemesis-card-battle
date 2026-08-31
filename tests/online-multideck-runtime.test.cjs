@@ -21,12 +21,14 @@ function invoke(handler,{method='POST',query={},body={},cookie=''}={}){
 (async()=>{
  const audit=await invoke(online,{body:{action:'engine_audit'}});
  assert.equal(audit.status,200);
- for(const name of ['DUEL_MASTER','MAGO_ROJO','IMPERIO_DRAGON']){assert.equal(audit.payload.engines[name].count,20,name+' 20 cartas');assert.equal(audit.payload.engines[name].all,true,name+' handlers')}
+ for(const name of ['DUEL_MASTER','MAGO_ROJO','IMPERIO_DRAGON','CABALLEROS_SUBMUNDO']){assert.equal(audit.payload.engines[name].count,20,name+' 20 cartas');assert.equal(audit.payload.engines[name].all,true,name+' handlers')}assert.equal(audit.payload.engines.OLIMPO.count,11,'OLIMPO 11 cartas');assert.equal(audit.payload.engines.OLIMPO.all,true,'OLIMPO handlers')
  const probe=await invoke(online,{body:{action:'engine_probe'}});
- assert.equal(probe.status,200);if(!probe.payload.ok)console.error('ENGINE_PROBE_FAIL',JSON.stringify({mgr:probe.payload.runtime.MAGO_ROJO.cards.filter(x=>!x.ok),idr:probe.payload.runtime.IMPERIO_DRAGON.cards.filter(x=>!x.ok)}));assert.equal(probe.payload.ok,true);
+ assert.equal(probe.status,200);if(!probe.payload.ok)console.error('ENGINE_PROBE_FAIL',JSON.stringify(Object.fromEntries(Object.entries(probe.payload.runtime).map(([k,v])=>[k,v.cards.filter(x=>!x.ok)]))));assert.equal(probe.payload.ok,true);
  assert.equal(probe.payload.runtime.MAGO_ROJO.count,20);assert.equal(probe.payload.runtime.MAGO_ROJO.ok,true);
  assert.equal(probe.payload.runtime.IMPERIO_DRAGON.count,20);assert.equal(probe.payload.runtime.IMPERIO_DRAGON.ok,true);
- const badMgr=probe.payload.runtime.MAGO_ROJO.cards.filter(x=>!x.ok);const badIdr=probe.payload.runtime.IMPERIO_DRAGON.cards.filter(x=>!x.ok);assert.deepEqual(badMgr,[]);assert.deepEqual(badIdr,[]);
+ assert.equal(probe.payload.runtime.OLIMPO.count,11);assert.equal(probe.payload.runtime.OLIMPO.ok,true);
+ assert.equal(probe.payload.runtime.CABALLEROS_SUBMUNDO.count,20);assert.equal(probe.payload.runtime.CABALLEROS_SUBMUNDO.ok,true);
+ for(const v of Object.values(probe.payload.runtime))assert.deepEqual(v.cards.filter(x=>!x.ok),[]);
 
  const dmDenied=await invoke(online,{body:{action:'create',name:'NoOwner',deckName:'DUEL_MASTER'}});
  assert.equal(dmDenied.status,403);assert.equal(dmDenied.payload.error,'OWNER_AUTH_REQUIRED');
@@ -34,6 +36,8 @@ function invoke(handler,{method='POST',query={},body={},cookie=''}={}){
  const login=await invoke(owner,{body:{action:'login',key:process.env.NEMESIS_OWNER_KEY}});const cookie=String(login.headers['set-cookie']).split(';')[0];assert.ok(cookie.includes('nemesis_owner_session='));
  const dmAllowed=await invoke(online,{body:{action:'create',name:'Owner',deckName:'DUEL_MASTER'},cookie});
  assert.equal(dmAllowed.status,201);assert.equal(dmAllowed.payload.room.me.deckClass,'OWNER');
+ const olAllowed=await invoke(online,{body:{action:'create',name:'OwnerOlimpo',deckName:'OLIMPO'},cookie});assert.equal(olAllowed.status,201);assert.equal(olAllowed.payload.room.me.deckName,'OLIMPO');
+ const csAllowed=await invoke(online,{body:{action:'create',name:'OwnerCS',deckName:'CABALLEROS_SUBMUNDO'},cookie});assert.equal(csAllowed.status,201);assert.equal(csAllowed.payload.room.me.deckName,'CABALLEROS_SUBMUNDO');
 
  const invalid=await invoke(online,{body:{action:'create',name:'Trampa',deckName:'MAGO_ROJO',deckIds:['MGR-001','MS-001']}});assert.equal(invalid.status,403);assert.equal(invalid.payload.error,'ONLINE_DECK_INVALID_CARD');
  const mgr=await invoke(online,{body:{action:'create',name:'Rojo',deckName:'MAGO_ROJO',deckIds:['MGR-001','MGR-002','MGR-003','MGR-004','MGR-005']}});assert.equal(mgr.status,201);assert.equal(mgr.payload.room.me.deckName,'MAGO_ROJO');
