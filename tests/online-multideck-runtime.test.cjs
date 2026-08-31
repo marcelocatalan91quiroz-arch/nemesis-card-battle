@@ -35,7 +35,8 @@ function invoke(handler,{method='POST',query={},body={},cookie=''}={}){
  const dmAllowed=await invoke(online,{body:{action:'create',name:'Owner',deckName:'DUEL_MASTER'},cookie});
  assert.equal(dmAllowed.status,201);assert.equal(dmAllowed.payload.room.me.deckClass,'OWNER');
 
- const mgr=await invoke(online,{body:{action:'create',name:'Rojo',deckName:'MAGO_ROJO'}});assert.equal(mgr.status,201);assert.equal(mgr.payload.room.me.deckName,'MAGO_ROJO');
+ const invalid=await invoke(online,{body:{action:'create',name:'Trampa',deckName:'MAGO_ROJO',deckIds:['MGR-001','MS-001']}});assert.equal(invalid.status,403);assert.equal(invalid.payload.error,'ONLINE_DECK_INVALID_CARD');
+ const mgr=await invoke(online,{body:{action:'create',name:'Rojo',deckName:'MAGO_ROJO',deckIds:['MGR-001','MGR-002','MGR-003','MGR-004','MGR-005']}});assert.equal(mgr.status,201);assert.equal(mgr.payload.room.me.deckName,'MAGO_ROJO');
  const idr=await invoke(online,{body:{action:'join',name:'Dragon',code:mgr.payload.room.code,deckName:'IMPERIO_DRAGON'}});assert.equal(idr.status,200);assert.equal(idr.payload.room.me.deckName,'IMPERIO_DRAGON');
  console.log('NÉMESIS ONLINE MULTIMAZO 20/20 + OWNER AUTH: PASS');
 })().catch(e=>{console.error(e);process.exit(1)});
