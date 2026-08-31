@@ -699,12 +699,29 @@ function nemesisClaimUnique(id){
 window.NEMESIS_SANCTUARY=Object.freeze({cards:NEMESIS_UNIQUE_CARDS,claim:nemesisClaimUnique,deckRule:nemesisUniqueDeckRule});
 
 // V19.6.1 — AUTENTICACIÓN REAL DEL PROPIETARIO · COOKIE HTTPONLY
+function nemesisLoadOptionalScript(src,key){
+ const existing=document.querySelector(`script[data-nemesis-module="${key}"]`);
+ if(existing?.dataset.loaded==='1')return Promise.resolve(existing);
+ if(existing?.__nemesisPromise)return existing.__nemesisPromise;
+ const s=existing||document.createElement('script');s.src=src;s.defer=true;s.dataset.nemesisModule=key;
+ s.__nemesisPromise=new Promise((resolve,reject)=>{
+  s.addEventListener('load',()=>{s.dataset.loaded='1';resolve(s)},{once:true});
+  s.addEventListener('error',()=>reject(new Error('No se pudo cargar '+src)),{once:true});
+ });
+ if(!existing)document.head.appendChild(s);
+ return s.__nemesisPromise
+}
+async function nemesisEnsureOwnerAuth(){
+ if(window.NEMESIS_OWNER_AUTH)return window.NEMESIS_OWNER_AUTH;
+ await nemesisLoadOptionalScript('js/owner-auth.js','owner-auth');
+ return window.NEMESIS_OWNER_AUTH||null
+}
 async function nemesisOwnerVerify(){
- try{if(typeof window.NEMESIS_OWNER_AUTH?.refresh==='function')await window.NEMESIS_OWNER_AUTH.refresh();return nemesisOwnerSessionActive()}catch{return false}
+ try{const auth=await nemesisEnsureOwnerAuth();if(typeof auth?.refresh==='function')await auth.refresh();return nemesisOwnerSessionActive()}catch{return false}
 }
 async function nemesisOwnerLogin(){
  const ownerKey=prompt('CLAVE DEL PROPIETARIO NÉMESIS');if(!ownerKey)return false;
- try{const ok=await window.NEMESIS_OWNER_AUTH?.login?.(ownerKey);if(ok){toast('MODO PROPIETARIO AUTENTICADO');nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();menuScene();return true}return false}catch{alert('Clave de propietario incorrecta o servidor no disponible.');return false}
+ try{const auth=await nemesisEnsureOwnerAuth();const ok=await auth?.login?.(ownerKey);if(ok){toast('MODO PROPIETARIO AUTENTICADO');nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();menuScene();return true}return false}catch{alert('Clave de propietario incorrecta o servidor no disponible.');return false}
 }
 async function nemesisOwnerLogout(){
  try{await window.NEMESIS_OWNER_AUTH?.logout?.()}catch{}
@@ -5265,7 +5282,17 @@ function nemesisScheduleBootMaintenance(){
  else setTimeout(run,40);
 }
 
+function nemesisScheduleOptionalModules(){
+ const run=()=>{
+  nemesisEnsureOwnerAuth().catch(e=>console.warn('[NÉMESIS owner lazy]',e));
+  nemesisLoadOptionalScript('js/online1v1.js','online1v1').catch(e=>console.warn('[NÉMESIS online lazy]',e));
+ };
+ if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:1800});
+ else setTimeout(run,120);
+}
+
 title();
+nemesisScheduleOptionalModules();
 nemesisScheduleBootMaintenance();
 
 document.addEventListener('dblclick',(e)=>{const el=e.target.closest?.('.card3d,.hand-card,.card');if(!el)return;let idx=Number(el.dataset?.index);let side=el.dataset?.side;if(Number.isInteger(idx)){let c=side==='e'?enemyCards?.[idx]:playerCards?.[idx];if(c)v15Inspect(c)}});

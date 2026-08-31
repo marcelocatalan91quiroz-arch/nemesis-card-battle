@@ -13,6 +13,10 @@ const legacy=[
 for(const name of legacy)assert(!html.includes(name),'No debe cargarse '+name+' en el arranque.');
 
 assert(html.includes('js/card-art/card-art-paths.js'),'Debe cargarse el manifiesto ligero de arte.');
+assert(!html.includes('<script src="js/owner-auth.js"'),'Owner Auth debe ser opcional/diferido.');
+assert(!html.includes('<script src="js/online1v1.js"'),'Online debe ser opcional/diferido.');
+assert(game.includes("nemesisLoadOptionalScript('js/owner-auth.js','owner-auth')"),'Owner Auth debe tener cargador bajo demanda.');
+assert(game.includes("nemesisLoadOptionalScript('js/online1v1.js','online1v1')"),'Online debe tener cargador bajo demanda.');
 assert(!art.includes('data:image/'),'El manifiesto no debe incrustar imágenes Base64.');
 assert(!art.includes(';base64,'),'El manifiesto no debe contener Base64.');
 assert((art.match(/\.avif/g)||[]).length===65,'Deben existir 65 rutas AVIF autoritativas.');
