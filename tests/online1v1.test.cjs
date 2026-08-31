@@ -51,6 +51,8 @@ must('Caballeros 20/20 online',api.includes('CS_CATALOG')&&api.includes('resolve
 must('Eclipse MS-001 tiene motor autoritativo 3 de 5',api.includes('UNIVERSAL_ONLINE_CATALOG')&&api.includes('resolveAbsoluteEclipseSupport')&&api.includes('ECLIPSE_PICK_EXACTLY_3')&&api.includes('MS001_ECLIPSE_ABSOLUTO'));
 must('MS-001 online exige prueba de canje servidor',api.includes('ONLINE_REDEEM_PROOF_REQUIRED')&&client.includes('MS-001 necesita una prueba de canje verificable'));
 must('selector visual Eclipse 3 de 5',client.includes('dmEclipsePicks')&&client.includes('ACTIVAR 0/3')&&client.includes('eclipsePicks'));
+must('Online reproduce eventos autoritativos como cinemáticas',client.includes('function dmServerCinematic')&&client.includes("type.includes('FUSION')")&&client.includes("type.includes('TRANSFORM')")&&client.includes("type==='DIRECT_ATTACK'||type.startsWith('BATTLE_')")&&client.includes("type==='DESTROY'||type==='BANISH'"));
+must('cinemáticas Online se sincronizan para ambos jugadores',client.includes('dmLastFxKey')&&client.includes('setTimeout(()=>dmServerCinematic(room),30)'));
 must('armaduras visibles y persistentes online',api.includes("equipment:{weapon:null,armor:null,relic:null}")&&client.includes('eq.armor'));
 must('auditoría online cinco motores',api.includes('onlineEngineAudit')&&api.includes("action==='engine_audit'"));
 if(process.exitCode)process.exit(process.exitCode);
