@@ -2,6 +2,7 @@ const fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..');
 const game=fs.readFileSync(path.join(root,'js/game.js'),'utf8');
 const api=fs.readFileSync(path.join(root,'api/online1v1.js'),'utf8');
+const online=fs.readFileSync(path.join(root,'js/online1v1.js'),'utf8');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const exists=p=>fs.existsSync(path.join(root,p))&&fs.statSync(path.join(root,p)).size>0;
 const A=(n,v)=>{if(!v){console.error('FAIL',n);process.exitCode=1}else console.log('PASS',n)};
