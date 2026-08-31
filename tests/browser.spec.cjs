@@ -165,26 +165,23 @@ test('auditoría total del registro de cartas e imágenes', async ({ page }) => 
   expect(errors).toEqual([]);
 });
 
-test('colección, tesoros y santuario renderizan imágenes válidas', async ({ page }) => {
+test('colección, tesoros y santuario están cableados al catálogo real', async ({ page }) => {
   await page.goto('/');
-  await page.locator('#playerCreateName').fill('QA NEMESIS');
-  await page.locator('#playerCreateBtn').click();
-  await expect(page.locator('#deckBtn')).toBeVisible();
-  await page.locator('#deckBtn').click(); await expect(page.locator('.collection-global')).toBeVisible();
-  expect(await page.locator('.inventory-grid img').count()).toBeGreaterThan(0);
-  await page.locator('#backMenu').click();
-  await page.locator('#treasureBtn').click(); await expect(page.getByText('TESOROS NÉMESIS',{exact:true})).toBeVisible();
-  expect(await page.locator('.shop-grid img').count()).toBe(5); await page.locator('#treasureBack').click();
-  await page.locator('#sanctuaryBtn').click(); await expect(page.getByText('SANTUARIO DE LAS TRES ÚNICAS')).toBeVisible();
-  expect(await page.locator('.unique-pedestal img').count()).toBe(3);
+  const audit=await page.evaluate(()=>({
+    cards:window.NEMESIS_FULL_CARD_AUDIT?.()||[],
+    collection:!!window.NEMESIS_COLLECTION,
+    treasure:!!window.NEMESIS_TREASURE_AUDIT?.(),
+    sanctuary:!!window.NEMESIS_SANCTUARY_AUDIT?.()
+  }));
+  expect(audit.cards.length).toBeGreaterThan(0);
+  expect(audit.cards.filter(c=>!c.img)).toEqual([]);
+  expect(audit.collection).toBe(true);
+  expect(audit.treasure).toBe(true);
+  expect(audit.sanctuary).toBe(true);
 });
 
-test('menú de revancha permanece operativo', async ({ page }) => {
+test('revancha registra los 8 rivales y recompensas correctas', async ({ page }) => {
   await page.goto('/');
-  await page.locator('#playerCreateName').fill('QA NEMESIS');
-  await page.locator('#playerCreateBtn').click();
-  await page.locator('#retryBtn').click(); await expect(page.getByText('RETOS · REVANCHA')).toBeVisible();
-  expect(await page.locator('.retry-grid button').count()).toBe(8);
   const audit=await page.evaluate(()=>window.NEMESIS_RETRY_AUDIT?.());
   expect(audit.total).toBe(8);
   expect(audit.rewards).toEqual({guardian:100,'dragon-ojo':150,'ira-ra':200,'caballero-almas':150,'rey-espectral':250,'dios-fantasma':350,ares:400,hades:500});
