@@ -106,8 +106,11 @@ const CS_DATA=[
 ];
 const CS_CATALOG=Object.freeze(Object.fromEntries(CS_DATA.map(([id,name,atk,def,kind,img,supportType])=>[id,mkOnlineCard(id,name,atk,def,kind,img,{supportType:supportType||null,tags:['CABALLEROS_SUBMUNDO','OSCURIDAD']})])));
 const CABALLEROS_SUBMUNDO_DECK=CS_DATA.map(x=>x[0]);
+const UNIVERSAL_ONLINE_CATALOG=Object.freeze({
+ 'MS-001':mkOnlineCard('MS-001','Eclipse de NÉMESIS',0,0,'SUPPORT','assets/images/strategic/eclipse-de-nemesis.svg',{supportType:'SPELL',tags:['UNIVERSAL','SECRETA_NEMESIS','ECLIPSE']})
+});
 
-const ALL_ONLINE_CATALOG=Object.freeze({...DM_CATALOG,...MGR_CATALOG,...IDR_CATALOG,...OLIMPO_CATALOG,...CS_CATALOG});
+const ALL_ONLINE_CATALOG=Object.freeze({...DM_CATALOG,...MGR_CATALOG,...IDR_CATALOG,...OLIMPO_CATALOG,...CS_CATALOG,...UNIVERSAL_ONLINE_CATALOG});
 const ONLINE_DECK_IDS=Object.freeze({DUEL_MASTER:DM_DECK,MAGO_ROJO:MGR_DECK,IMPERIO_DRAGON:IDR_DECK,OLIMPO:OLIMPO_DECK,CABALLEROS_SUBMUNDO:CABALLEROS_SUBMUNDO_DECK});
 function catalogCard(id){return ALL_ONLINE_CATALOG[id]||null}
 function canonicalOnlineDeck(name){
@@ -132,6 +135,7 @@ function playerDeckMeta(b,req){
   deckName='MAGO_ROJO'
  }
  const official=ONLINE_DECK_IDS[deckName].slice(),allowed=new Set(official),requested=cleanDeckIds(b.deckIds);
+ if(requested.includes('MS-001')&&!allowed.has('MS-001'))return {error:'ONLINE_REDEEM_PROOF_REQUIRED',deckName,deckIds:[],deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC'};
  if(requested.some(id=>!allowed.has(id)))return {error:'ONLINE_DECK_INVALID_CARD',deckName,deckIds:[],deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC'};
  const deckIds=(requested.length?requested:official).slice(0,official.length);
  if(!deckIds.length)return {error:'ONLINE_DECK_EMPTY',deckName,deckIds:[],deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC'};
@@ -151,7 +155,7 @@ function onlineEngineAudit(){return Object.fromEntries(Object.entries(ONLINE_EFF
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=crypto.randomInt(0,i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 function initOnlinePlayer(meta,seat){
  const deckName=canonicalOnlineDeck(meta?.deckName),deck=shuffle((Array.isArray(meta?.deckIds)&&meta.deckIds.length?meta.deckIds:(ONLINE_DECK_IDS[deckName]||DM_DECK)).slice()),hand=deck.splice(0,5);
- return {seat,deckName,hp:DM_START_HP,deck,hand,monsters:Array(5).fill(null),supports:Array(5).fill(null),grave:[],banished:[],cardState:{},attacked:[],summonedThisTurn:false,effectLockUntil:0,originsUntil:0,titanShieldUntil:0,archetype:{seals:0,flames:0,magicUses:0,sky:false,solarShieldUntil:0,skipNextTurn:false,fusionReady:false,fusionGuard:false,enemySouls:0}};
+ return {seat,deckName,hp:DM_START_HP,deck,hand,monsters:Array(5).fill(null),supports:Array(5).fill(null),grave:[],banished:[],cardState:{},attacked:[],summonedThisTurn:false,effectLockUntil:0,originsUntil:0,titanShieldUntil:0,archetype:{seals:0,flames:0,magicUses:0,sky:false,solarShieldUntil:0,skipNextTurn:false,fusionReady:false,fusionGuard:false,enemySouls:0,eclipseUsed:false}};
 }
 function initDmPlayer(seat){return initOnlinePlayer({deckName:'DUEL_MASTER'},seat)}
 function initMonsterState(id){const c=catalogCard(id);return {energy:Number(c?.energy||0),uses:0,ultimateUsed:false,charges:0,solar:0,pact:0,austral:0,marks:0,fieldTurns:0,atkMod:0,defMod:0,equipment:{weapon:null,armor:null,relic:null},flags:{}}}
@@ -182,6 +186,7 @@ function effectiveStats(room,p,zone){
  if(equippedAnywhere(p,'DM-016')){atk+=1000;def+=1000;if(distinctTags(p)>=5)atk+=2000}
  if(shiny&&id!=='DM-018')def+=1000;
  if(st.flags.eclipseUntil>=room.duel.turn){atk+=3000;def+=3000}
+ if(st.flags.eclipseAscUntil>=room.duel.turn){atk+=3500;def+=3500}
  if(st.equipment.weapon==='DM-015'&&(id==='DM-004'||id==='DM-018'))atk+=1500;
  if(id.startsWith('MGR-')&&equippedAnywhere(p,'MGR-018')){const f=p.archetype?.flames||0;if(f>=1)atk+=300;if(f>=4){atk+=500;def+=500}}
  if(id.startsWith('IDR-')&&p.archetype?.sky){atk+=400;def+=400}
@@ -394,6 +399,36 @@ function resolveIdrAbility(room,p,zone){
  st.uses++;duelLog(room,'IDR_ABILITY',p.seat,{id,marks:st.marks});return {ok:true}
 }
 
+
+const NEMESIS_ECLIPSE_POWERS=new Set(['judgement','resurrection','silence','ascension','rupture']);
+function eclipseStrongestEquipment(room,p){
+ let best=null;
+ p.monsters.forEach((id,i)=>{if(!id)return;const st=monsterState(p,i);for(const kind of ['weapon','armor','relic']){const eq=st.equipment[kind];if(!eq)continue;const score=(catalogCard(eq)?.atk||0)+(catalogCard(eq)?.def||0)+(kind==='relic'?1:0);if(!best||score>best.score)best={zone:i,kind,id:eq,score}}});
+ return best
+}
+function resolveAbsoluteEclipseSupport(room,p,body){
+ const z=Number(body.supportZone),slot=p.supports[z];if(!slot||slot.id!=='MS-001')return {error:'INVALID_SUPPORT'};
+ if(p.archetype.eclipseUsed)return {error:'ECLIPSE_ALREADY_USED'};
+ const picks=Array.isArray(body.eclipsePicks)?[...new Set(body.eclipsePicks.map(String))]:[];
+ if(picks.length!==3||picks.some(x=>!NEMESIS_ECLIPSE_POWERS.has(x)))return {error:'ECLIPSE_PICK_EXACTLY_3'};
+ const opp=duelPlayer(room,duelOpponentSeat(p.seat));p.archetype.eclipseUsed=true;slot.faceDown=false;slot.active=true;
+ for(const power of picks){
+  if(power==='judgement'){const t=strongestZone(room,opp);if(t>=0)destroyMonster(room,opp,t,{ignoreProtection:true,banish:true,sourceSeat:p.seat,reason:'MS001_JUDGEMENT'})}
+  else if(power==='resurrection'){
+   const gi=p.grave.map((id,i)=>({id,i,c:catalogCard(id)})).filter(x=>x.c?.kind==='MONSTER').sort((a,b)=>(b.c.atk||0)-(a.c.atk||0))[0];
+   const free=firstFreeMonster(p);if(gi&&free>=0){p.grave.splice(gi.i,1);p.monsters[free]=gi.id;p.cardState[free]=initMonsterState(gi.id)}
+  }
+  else if(power==='silence'){const t=strongestZone(room,opp);if(t>=0)monsterState(opp,t).flags.silencedUntil=room.duel.turn;else opp.effectLockUntil=Math.max(opp.effectLockUntil,room.duel.turn)}
+  else if(power==='ascension'){
+   let t=Number(body.targetZone);if(!Number.isInteger(t)||t<0||t>4||!p.monsters[t])t=strongestZone(room,p);
+   if(t>=0){const st=monsterState(p,t);st.flags.eclipseAscUntil=room.duel.turn+2;st.flags.protectedUntil=Math.max(st.flags.protectedUntil||0,room.duel.turn)}
+  }
+  else if(power==='rupture'){
+   const eq=eclipseStrongestEquipment(room,opp);if(eq){const st=monsterState(opp,eq.zone);st.equipment[eq.kind]=null;opp.banished.push(eq.id);duelLog(room,'MS001_RUPTURE',p.seat,{targetSeat:opp.seat,...eq})}
+  }
+ }
+ discardSupportToGrave(p,z);duelLog(room,'MS001_ECLIPSE_ABSOLUTO',p.seat,{picks});return {ok:true,picks}
+}
 function olympusHasMaterial(p,id){return p.monsters.includes(id)||p.hand.includes(id)||p.deck.includes(id)}
 function olympusSearchMaterial(p){
  const ids=['dios-jupiter','zeus-emperador-rayo','kronos-devorador-tiempo'];
@@ -556,6 +591,7 @@ function tryArchetypeResponse(room,actingPlayer){
  return false
 }
 function resolveArchetypeAbility(room,p,zone,ultimate=false){
+ if(p.monsters[zone]&&monsterState(p,zone).flags.silencedUntil>=room.duel.turn)return {error:'SOURCE_SILENCED'};
  if(p.deckName!=='DUEL_MASTER'&&tryArchetypeResponse(room,p))return {ok:true,negated:true};
  if(p.deckName==='MAGO_ROJO')return ultimate?{error:'NO_ULTIMATE'}:resolveMgrAbility(room,p,zone);
  if(p.deckName==='IMPERIO_DRAGON')return ultimate?{error:'NO_ULTIMATE'}:resolveIdrAbility(room,p,zone);
@@ -628,17 +664,24 @@ function probeCsCard(id){
  const x=resolveCsSupport(room,p,{supportZone:0,targetZone:0});
  return {id,ok:!['UNKNOWN_CS_EFFECT','INVALID_SUPPORT','NO_TARGET'].includes(x?.error),error:x?.error||null,kind:'SUPPORT'}
 }
+function probeEclipse(){
+ const {room,p,opp}=makeProbeRoom('MAGO_ROJO');p.supports[0]={id:'MS-001',faceDown:true,active:false};p.monsters[0]='MGR-001';p.cardState[0]=initMonsterState('MGR-001');p.grave=['MGR-002'];opp.monsters[0]='IDR-001';opp.cardState[0]=initMonsterState('IDR-001');
+ const r=resolveAbsoluteEclipseSupport(room,p,{supportZone:0,targetZone:0,eclipsePicks:['judgement','resurrection','ascension']});
+ return {ok:r?.ok===true,used:p.archetype.eclipseUsed===true,banished:opp.banished.length===1,ascended:monsterState(p,0).flags.eclipseAscUntil>=room.duel.turn}
+}
 function onlineRuntimeProbe(){
  const mgr=MGR_DECK.map(probeMgrCard),idr=IDR_DECK.map(probeIdrCard),ol=OLIMPO_DECK.map(probeOlimpoCard),cs=CABALLEROS_SUBMUNDO_DECK.map(probeCsCard);
  return {
   MAGO_ROJO:{count:mgr.length,ok:mgr.every(x=>x.ok),cards:mgr},
   IMPERIO_DRAGON:{count:idr.length,ok:idr.every(x=>x.ok),cards:idr},
   OLIMPO:{count:ol.length,ok:ol.every(x=>x.ok),cards:ol},
-  CABALLEROS_SUBMUNDO:{count:cs.length,ok:cs.every(x=>x.ok),cards:cs}
+  CABALLEROS_SUBMUNDO:{count:cs.length,ok:cs.every(x=>x.ok),cards:cs},
+  ECLIPSE_MS001:probeEclipse()
  }
 }
 
 function resolveArchetypeSupport(room,p,body){
+ const slot=p.supports[Number(body.supportZone)];if(slot?.id==='MS-001')return resolveAbsoluteEclipseSupport(room,p,body);
  if(p.deckName==='MAGO_ROJO')return resolveMgrSupport(room,p,body);
  if(p.deckName==='IMPERIO_DRAGON')return resolveIdrSupport(room,p,body);
  if(p.deckName==='OLIMPO')return resolveOlimpoSupport(room,p,body);
@@ -914,7 +957,7 @@ module.exports=async function handler(req,res){
     return res.status(200).json({ok:true,mode:'MULTI_DECK',engines:onlineEngineAudit(),ownerAuthReady:ownerAuthReady()});
    }
    if(authBody.action==='engine_probe'&&!isProduction()){
-    const runtime=onlineRuntimeProbe();return res.status(200).json({ok:runtime.MAGO_ROJO.ok&&runtime.IMPERIO_DRAGON.ok&&runtime.OLIMPO.ok&&runtime.CABALLEROS_SUBMUNDO.ok,runtime});
+    const runtime=onlineRuntimeProbe();return res.status(200).json({ok:runtime.MAGO_ROJO.ok&&runtime.IMPERIO_DRAGON.ok&&runtime.OLIMPO.ok&&runtime.CABALLEROS_SUBMUNDO.ok&&runtime.ECLIPSE_MS001.ok,runtime});
    }
   }
   if(!storageReady())return res.status(503).json({ok:false,error:'PERSISTENCE_REQUIRED'});
