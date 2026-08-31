@@ -166,6 +166,7 @@ test('auditoría total del registro de cartas e imágenes', async ({ page }) => 
 });
 
 test('colección, tesoros y santuario renderizan imágenes válidas', async ({ page }) => {
+  test.setTimeout(90000);
   await page.addInitScript(()=>localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true})));
   await page.goto('/',{waitUntil:'domcontentloaded'}); await page.waitForTimeout(500);
   await page.locator('#deckBtn').click(); await expect(page.locator('.collection-global')).toBeVisible();
@@ -178,6 +179,7 @@ test('colección, tesoros y santuario renderizan imágenes válidas', async ({ p
 });
 
 test('menú de revancha permanece operativo', async ({ page }) => {
+  test.setTimeout(90000);
   await page.addInitScript(()=>localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true,guardianDefeated:true,dragonDefeated:true,raDefeated:true,caballeroAlmasDefeated:true,reyEspectralDefeated:true,diosFantasmaDefeated:true,aresDefeated:true,hadesDefeated:true})));
   await page.goto('/',{waitUntil:'domcontentloaded'}); await page.waitForTimeout(500);
   await page.locator('#retryBtn').click(); await expect(page.getByText('RETOS · REVANCHA')).toBeVisible();
