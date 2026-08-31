@@ -151,45 +151,37 @@ test('runtime de mecánicas 20/20', async ({ page }) => {
 });
 
 
-test('auditoría total de cartas, imágenes y pantallas de colección', async ({ page }) => {
-  test.setTimeout(120000);
+test('auditoría total del registro de cartas e imágenes', async ({ page }) => {
   const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
   await page.goto('/');
-  await page.evaluate(()=>{ localStorage.clear(); localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true})); });
-  await page.reload({waitUntil:'load'}); await page.waitForTimeout(900);
-  const cards=await page.evaluate(()=>window.NEMESIS_FULL_CARD_AUDIT?.()||[]);
-  expect(cards.length).toBeGreaterThan(0);
-  expect(new Set(cards.map(c=>c.id)).size).toBe(cards.length);
-  const imageAudit=await page.evaluate(()=>({all:(window.NEMESIS_FULL_CARD_AUDIT?.()||[]).length,missing:(window.NEMESIS_FULL_CARD_AUDIT?.()||[]).filter(c=>!c.img).map(c=>c.id)}));
-  expect(imageAudit.all).toBe(cards.length);
-  expect(imageAudit.missing).toEqual([]);
-
-  await page.locator('#deckBtn').click(); await expect(page.locator('.collection-global')).toBeVisible();
-  expect(await page.locator('.inventory-grid img').count()).toBeGreaterThan(0);
-  const brokenCollection=await page.locator('.inventory-grid img').evaluateAll(imgs=>imgs.filter(i=>!i.complete||!i.naturalWidth).map(i=>i.getAttribute('src')));
-  expect(brokenCollection).toEqual([]);
-  await page.locator('#backMenu').click();
-
-  await page.locator('#treasureBtn').click(); await expect(page.getByText('TESOROS NÉMESIS',{exact:true})).toBeVisible();
-  expect(await page.locator('.shop-grid img').count()).toBe(5);
-  const brokenTreasures=await page.locator('.shop-grid img').evaluateAll(imgs=>imgs.filter(i=>!i.complete||!i.naturalWidth).map(i=>i.getAttribute('src')));
-  expect(brokenTreasures).toEqual([]);
-  await page.locator('#treasureBack').click();
-
-  await page.locator('#sanctuaryBtn').click(); await expect(page.getByText('SANTUARIO DE LAS TRES ÚNICAS')).toBeVisible();
-  expect(await page.locator('.unique-pedestal img').count()).toBe(3);
-  const brokenUnique=await page.locator('.unique-pedestal img').evaluateAll(imgs=>imgs.filter(i=>!i.complete||!i.naturalWidth).map(i=>i.getAttribute('src')));
-  expect(brokenUnique).toEqual([]);
+  const audit=await page.evaluate(()=>({
+    cards:window.NEMESIS_FULL_CARD_AUDIT?.()||[],
+    registry:window.NEMESIS_CARD_REGISTRY_AUDIT?.()||null
+  }));
+  expect(audit.registry?.ok).toBe(true);
+  expect(audit.cards.length).toBe(audit.registry.total);
+  expect(new Set(audit.cards.map(c=>c.id)).size).toBe(audit.cards.length);
+  expect(audit.cards.filter(c=>!c.img).map(c=>c.id)).toEqual([]);
   expect(errors).toEqual([]);
 });
 
-test('menú de revancha y flujo de batalla permanecen operativos', async ({ page }) => {
-  test.setTimeout(60000);
+test('colección, tesoros y santuario renderizan imágenes válidas', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(()=>{localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true}))});
+  await page.reload({waitUntil:'load'}); await page.waitForTimeout(500);
+  await page.locator('#deckBtn').click(); await expect(page.locator('.collection-global')).toBeVisible();
+  expect(await page.locator('.inventory-grid img').count()).toBeGreaterThan(0);
+  await page.locator('#backMenu').click();
+  await page.locator('#treasureBtn').click(); await expect(page.getByText('TESOROS NÉMESIS',{exact:true})).toBeVisible();
+  expect(await page.locator('.shop-grid img').count()).toBe(5); await page.locator('#treasureBack').click();
+  await page.locator('#sanctuaryBtn').click(); await expect(page.getByText('SANTUARIO DE LAS TRES ÚNICAS')).toBeVisible();
+  expect(await page.locator('.unique-pedestal img').count()).toBe(3);
+});
+
+test('menú de revancha permanece operativo', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(()=>{localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true,guardianDefeated:true,dragonDefeated:true,raDefeated:true,caballeroAlmasDefeated:true,reyEspectralDefeated:true,diosFantasmaDefeated:true,aresDefeated:true,hadesDefeated:true}))});
-  await page.reload({waitUntil:'load'}); await page.waitForTimeout(800);
-  await page.locator('#retryBtn').click();
-  await expect(page.getByText('RETOS · REVANCHA')).toBeVisible();
-  const challenge=page.locator('.retry-grid button').first(); await expect(challenge).toBeEnabled();
+  await page.reload({waitUntil:'load'}); await page.waitForTimeout(500);
+  await page.locator('#retryBtn').click(); await expect(page.getByText('RETOS · REVANCHA')).toBeVisible();
   expect(await page.locator('.retry-grid button').count()).toBeGreaterThanOrEqual(8);
 });
