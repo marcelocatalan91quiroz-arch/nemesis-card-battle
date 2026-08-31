@@ -47,7 +47,7 @@ const DM_START_HP=30000;
 // autoritativa por jugador para que los motores Mago Rojo / Imperio Dragón puedan enchufarse
 // sin cambiar salas, Redis, sincronización ni protocolo.
 const PUBLIC_DECKS=new Set(['MAGO_ROJO','IMPERIO_DRAGON']);
-const OWNER_DECKS=new Set(['OLIMPO','DUEL_MASTER']);
+const OWNER_DECKS=new Set(['OLIMPO','DUEL_MASTER','CABALLEROS_SUBMUNDO']);
 function cleanDeckName(v){return String(v||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON').slice(0,40)}
 function cleanDeckIds(v){return [...new Set((Array.isArray(v)?v:[]).map(x=>String(x||'').trim()).filter(Boolean))].slice(0,40)}
 function playerDeckMeta(b){const deckName=cleanDeckName(b.deckName),deckIds=cleanDeckIds(b.deckIds);return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':PUBLIC_DECKS.has(deckName)?'PUBLIC':'CUSTOM'}}
