@@ -29,5 +29,8 @@ assert(css.includes('contain-intrinsic-size'),'Debe reservarse tamaño para evit
 assert(game.includes('function resolveBattle('),'El motor de duelo debe permanecer intacto.');
 assert(game.includes('NEMESIS_CAMPAIGN_PROFILES'),'Las campañas deben permanecer intactas.');
 assert(game.includes('NEMESIS_OFFICIAL_DECK_REGISTRY'),'Los mazos oficiales deben permanecer intactos.');
+assert(!game.includes('assets/images/imperio-dragon/idr-001.png'),'No deben quedar fallbacks PNG antiguos del Imperio Dragón.');
+assert(game.includes('assets/card-art/idr/IDR-001.avif')&&game.includes('assets/card-art/idr/IDR-020.avif'),'Los metadatos oficiales IDR deben apuntar al arte AVIF real.');
+assert(game.includes('assets/images/dios-fantasma/dios-fantasma.png'),'La victoria de Dios Fantasma debe usar una ruta real.');
 
 console.log('PASS art/performance: 65 AVIF bajo demanda, arranque ligero y motores preservados.');
