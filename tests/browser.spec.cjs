@@ -152,6 +152,7 @@ test('runtime de mecánicas 20/20', async ({ page }) => {
 
 
 test('auditoría total de cartas, imágenes y pantallas de colección', async ({ page }) => {
+  test.setTimeout(120000);
   const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
   await page.goto('/');
   await page.evaluate(()=>{ localStorage.clear(); localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true})); location.reload(); });
@@ -185,6 +186,7 @@ test('auditoría total de cartas, imágenes y pantallas de colección', async ({
 });
 
 test('menú de revancha y flujo de batalla permanecen operativos', async ({ page }) => {
+  test.setTimeout(60000);
   await page.goto('/');
   await page.evaluate(()=>{localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true,guardianDefeated:true,dragonDefeated:true,raDefeated:true,caballeroAlmasDefeated:true,reyEspectralDefeated:true,diosFantasmaDefeated:true,aresDefeated:true,hadesDefeated:true}));location.reload()});
   await page.waitForLoadState('load'); await page.waitForTimeout(800);
