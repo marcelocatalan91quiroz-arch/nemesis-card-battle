@@ -591,6 +591,11 @@ function nemesisCanonicalDeckName(name){
  if(k==='OLIMPO')return 'OLIMPO';
  return String(name||'').trim()
 }
+function nemesisOwnerSessionActive(){return window.NEMESIS_OWNER_AUTH?.isOwner===true}
+function nemesisOwnerDeckAllowed(name){const access=NEMESIS_DECK_ACCESS[nemesisCanonicalDeckName(name)];return !access?.ownerOnly||nemesisOwnerSessionActive()}
+const NEMESIS_PRIVATE_CARD_IDS=new Set([...OLIMPO_DECK_IDS,...NEMESIS_DUEL_MASTER_IDS,...CABALLEROS_SUBMUNDO_DECK_IDS]);
+function nemesisCardAllowedForUser(id){return !NEMESIS_PRIVATE_CARD_IDS.has(id)||nemesisOwnerSessionActive()}
+
 function nemesisMergeDeckIds(saved,official){
  const out=[],seen=new Set();
  for(const id of [...(Array.isArray(saved)?saved:[]),...(Array.isArray(official)?official:[])]){
@@ -608,6 +613,8 @@ function nemesisSyncOfficialDecks(){
  }
  state.activeDeckName=nemesisCanonicalDeckName(state.activeDeckName);
  for(const [name,ids] of Object.entries(NEMESIS_OFFICIAL_DECK_REGISTRY)){
+  const access=NEMESIS_DECK_ACCESS[name]||{ownerOnly:false};
+  if(access.ownerOnly&&!nemesisOwnerSessionActive())continue;
   const valid=ids.filter(id=>card(id));
   state.owned=[...new Set([...(state.owned||[]),...valid])];
   state.savedDecks[name]=nemesisMergeDeckIds(state.savedDecks[name],valid);
@@ -684,47 +691,34 @@ function nemesisClaimUnique(id){
 }
 window.NEMESIS_SANCTUARY=Object.freeze({cards:NEMESIS_UNIQUE_CARDS,claim:nemesisClaimUnique,deckRule:nemesisUniqueDeckRule});
 
-// V19.6 — AUTENTICACIÓN REAL DEL PROPIETARIO
-const NEMESIS_OWNER_TOKEN_KEY='nemesis_owner_token_v1';
-let nemesisOwnerVerified=false;
-function nemesisOwnerToken(){try{return sessionStorage.getItem(NEMESIS_OWNER_TOKEN_KEY)||''}catch{return ''}}
-async function nemesisOwnerVerify(force=false){
- const token=nemesisOwnerToken();if(!token){nemesisOwnerVerified=false;return false}
- if(nemesisOwnerVerified&&!force)return true;
- try{
-  const r=await fetch('/api/online1v1',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'owner_verify',ownerToken:token})});
-  const j=await r.json().catch(()=>({}));nemesisOwnerVerified=!!(r.ok&&j.ok&&j.owner);
-  if(!nemesisOwnerVerified)sessionStorage.removeItem(NEMESIS_OWNER_TOKEN_KEY);
-  return nemesisOwnerVerified
- }catch{nemesisOwnerVerified=false;return false}
+// V19.6.1 — AUTENTICACIÓN REAL DEL PROPIETARIO · COOKIE HTTPONLY
+async function nemesisOwnerVerify(){
+ try{if(typeof window.NEMESIS_OWNER_AUTH?.refresh==='function')await window.NEMESIS_OWNER_AUTH.refresh();return nemesisOwnerSessionActive()}catch{return false}
 }
 async function nemesisOwnerLogin(){
  const ownerKey=prompt('CLAVE DEL PROPIETARIO NÉMESIS');if(!ownerKey)return false;
- try{
-  const r=await fetch('/api/online1v1',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'owner_login',ownerKey})});
-  const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok||!j.ownerToken){alert(j.error==='OWNER_AUTH_NOT_CONFIGURED'?'Autenticación de propietario aún no configurada en el servidor.':'Clave de propietario incorrecta.');return false}
-  sessionStorage.setItem(NEMESIS_OWNER_TOKEN_KEY,j.ownerToken);nemesisOwnerVerified=true;toast('MODO PROPIETARIO AUTENTICADO');menuScene();return true
- }catch{alert('No se pudo validar el propietario con el servidor.');return false}
+ try{const ok=await window.NEMESIS_OWNER_AUTH?.login?.(ownerKey);if(ok){toast('MODO PROPIETARIO AUTENTICADO');nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();menuScene();return true}return false}catch{alert('Clave de propietario incorrecta o servidor no disponible.');return false}
 }
-function nemesisOwnerLogout(){try{sessionStorage.removeItem(NEMESIS_OWNER_TOKEN_KEY)}catch{}nemesisOwnerVerified=false;state.activeDeckName='MAGO_ROJO';nemesisSyncActiveDeck();save();menuScene()}
-function nemesisOwnerDeckAllowed(name){const access=NEMESIS_DECK_ACCESS[nemesisCanonicalDeckName(name)];return !access?.ownerOnly||nemesisOwnerVerified}
+async function nemesisOwnerLogout(){
+ try{await window.NEMESIS_OWNER_AUTH?.logout?.()}catch{}
+ state.activeDeckName='MAGO_ROJO';nemesisSyncActiveDeck();save();menuScene();return true
+}
 async function nemesisAuthorizeActiveDeck(){
  const d=nemesisDeckForMode('campaign');if(!d.access?.ownerOnly)return true;
- const ok=await nemesisOwnerVerify(true);if(!ok){alert('Este mazo es privado del propietario. Autentícate para usarlo.');return false}return true
+ const ok=await nemesisOwnerVerify();if(!ok){alert('Este mazo es privado del propietario. Autentícate para usarlo.');return false}return true
 }
-window.NEMESIS_OWNER_AUTH={login:nemesisOwnerLogin,logout:nemesisOwnerLogout,verify:nemesisOwnerVerify,get authenticated(){return nemesisOwnerVerified},get token(){return nemesisOwnerToken()}};
 
 // V18.12.00 — COLECCIÓN GLOBAL NÉMESIS
 function nemesisEnsureDeckLibrary(){
  if(!state.savedDecks||typeof state.savedDecks!=='object')state.savedDecks={};
  // Mazos creados por el jugador son biblioteca permanente, no recompensas de campaña.
  const publicCards=[...IMPERIO_DRAGON_DECK_IDS,...MAGO_ROJO_DECK_IDS,...NEMESIS_PUBLIC_23_IDS];
- const privateCards=nemesisOwnerVerified?[...NEMESIS_DUEL_MASTER_IDS,...OLIMPO_DECK_IDS,...CABALLEROS_SUBMUNDO_DECK_IDS]:[];
+ const privateCards=nemesisOwnerSessionActive()?[...NEMESIS_DUEL_MASTER_IDS,...OLIMPO_DECK_IDS,...CABALLEROS_SUBMUNDO_DECK_IDS]:[];
  const permanentUserCards=[...publicCards,...privateCards].filter(id=>card(id));
  state.owned=[...new Set([...(Array.isArray(state.owned)?state.owned:[]),...permanentUserCards])].filter(id=>card(id));
  const presets=NEMESIS_OFFICIAL_DECK_REGISTRY;
  for(const [name,ids] of Object.entries(presets)){
-   if(NEMESIS_DECK_ACCESS[name]?.ownerOnly&&!nemesisOwnerVerified)continue;
+   if(NEMESIS_DECK_ACCESS[name]?.ownerOnly&&!nemesisOwnerSessionActive())continue;
    if(!Array.isArray(state.savedDecks[name])||!state.savedDecks[name].length)
      state.savedDecks[name]=[...new Set(ids.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,11);
  }
@@ -734,11 +728,11 @@ function nemesisEnsureDeckLibrary(){
 function nemesisSyncActiveDeck(){
  nemesisEnsureDeckLibrary();
  const src=state.savedDecks[state.activeDeckName]||[];
- state.deck=[...new Set(src.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,11);
+ state.deck=[...new Set(src.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id)))].slice(0,11);
 }
 function nemesisSaveCurrentDeck(){
  nemesisEnsureDeckLibrary();
- state.savedDecks[state.activeDeckName]=[...new Set(state.deck.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,11);
+ state.savedDecks[state.activeDeckName]=[...new Set(state.deck.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id)))].slice(0,11);
  save();return state.savedDecks[state.activeDeckName];
 }
 function nemesisSelectDeck(name){
@@ -749,7 +743,7 @@ function nemesisSelectDeck(name){
 }
 function nemesisDeckForMode(mode='campaign'){
  nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();
- const name=nemesisCanonicalDeckName(state.activeDeckName),ids=[...new Set(state.deck.filter(id=>state.owned.includes(id)&&card(id)))];
+ const name=nemesisCanonicalDeckName(state.activeDeckName),ids=[...new Set(state.deck.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id)))];
  return {name,ids,mode,access:NEMESIS_DECK_ACCESS[name]||{ownerOnly:false,campaign:true,online:true}};
 }
 window.NEMESIS_ACTIVE_DECK=()=>nemesisDeckForMode('campaign');
@@ -5135,3 +5129,5 @@ window.nemesisExternal33Audit=function(){
 
 // V19.6 owner session bootstrap
 addEventListener('DOMContentLoaded',()=>{if(nemesisOwnerToken())nemesisOwnerVerify(true).then(ok=>{if(ok&&document.querySelector('.menu-home'))menuScene()}).catch(()=>{})});
+
+window.addEventListener('nemesis-owner-auth',()=>{try{nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();if(document.querySelector('.menu-home'))menuScene();else if(document.querySelector('.collection-global'))collectionScene()}catch(e){console.warn('NÉMESIS owner refresh',e)}});
