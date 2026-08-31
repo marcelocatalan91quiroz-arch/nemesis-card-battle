@@ -3217,6 +3217,8 @@ function csSync(){
  }
 }
 function csSkillDescriptor(c){
+ if(csIs(c,'CS-010'))return{name:'ECLIPSE DE LAS ALAS NEGRAS',kind:'caballerosSubmundo',action:'pegasusEclipse',desc:'Activa durante 2 turnos +4000 ATK/+4000 DEF, perforación y protección; con Cerberus obtiene sinergia adicional.'};
+ if(csIs(c,'CS-009'))return{name:'LAS TRES FAUCES DEL INFIERNO',kind:'caballerosSubmundo',action:'cerberusMaws',desc:'Una vez por duelo +4500 ATK y habilita hasta 3 ataques; las destrucciones causan daño directo adicional.'};
  if(csIs(c,'CS-008'))return{name:'NÚCLEO ESTELAR / LLUVIA METEÓRICA',kind:'caballerosSubmundo',action:'meteorCore',desc:'Convierte 2000 DEF en 2000 ATK por 1 turno; con 3 Caballeros entre Campo y Cementerio activa Lluvia del Juicio Meteórico durante 2 turnos.'};
  if(csIs(c,'CS-007'))return{name:'ECLIPSE SUPREMO / ETERNIDAD',kind:'caballerosSubmundo',action:'venuzShinyEclipse',desc:'Reduce 50% ATK/DEF de un rival y gana +2500 ATK; con 5 caídos puede activar Eclipse de la Eternidad durante 2 turnos.'};
  if(csIs(c,'CS-006'))return{name:'ECLIPSE / TRONO DE VENUZ',kind:'caballerosSubmundo',action:'venuzEclipse',desc:'Reduce 50% ATK/DEF de un rival; con 5 Caballeros caídos puede activar Eclipse Final una vez por duelo.'};
@@ -3228,6 +3230,8 @@ function csSkillDescriptor(c){
  return null
 }
 async function csUseSkill(side,i,c,sk){
+ if(sk.action==='cerberusMaws')return csCerberusUseSkill(side,c);
+ if(sk.action==='pegasusEclipse')return csPegasusUseSkill(side,c);
  if(sk.action==='meteorCore')return csMeteorUseSkill(side,c);
  if(sk.action==='venuzShinyEclipse')return csVenuzShinyUseSkill(side,c);
  if(sk.action==='venuzEclipse')return csVenuzUseSkill(side,c);
@@ -3253,6 +3257,40 @@ async function csUseSkill(side,i,c,sk){
  c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence'||sk.action==='shinySentence')c._csUnstoppableSecondTurn=turnNo;
  csSync();toast(victim.name+' es sacrificado · '+c.name+' habilita su segundo ataque.');return true
 }
+
+function csSubCount(side){return [...csOwn(side),...csGrave(side)].filter(x=>csIs(x)&&['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008'].includes(x.id)).length}
+function csCerberusUseSkill(side,c){
+ if(c._csCerberusMawsUsedDuel){toast('LAS TRES FAUCES DEL INFIERNO ya fue usada.');return false}
+ c._csCerberusMawsUsedDuel=true;c.atk+=4500;c._csCerberusMawsAtk=4500;c._csCerberusMawsUntil=turnNo;c._csCerberusAttackCap=3;c._csCerberusAttackCount=0;
+ toast('LAS TRES FAUCES DEL INFIERNO: +4500 ATK · hasta 3 ataques este turno.');update();return true
+}
+function csPegasusUseSkill(side,c){
+ if(c._csPegasusEclipseUsedDuel){toast('ECLIPSE DE LAS ALAS NEGRAS ya fue usado.');return false}
+ c._csPegasusEclipseUsedDuel=true;c.atk+=4000;c.def+=4000;c._csPegasusEclipseAtk=4000;c._csPegasusEclipseDef=4000;c._csPegasusEclipseUntil=turnNo+1;c._csPegasusNegateTurn=-1;c._csPegasusRescues=2;
+ const cerb=[...csOwn(side),...csGrave(side)].find(x=>csIs(x,'CS-009'));
+ if(cerb&&csOwn(side).includes(cerb)){cerb.atk+=2000;cerb._csPegasusCerbAtk=(cerb._csPegasusCerbAtk||0)+2000;cerb._csPegasusCerbUntil=turnNo+1;c.atk+=2000;c._csPegasusCerbSelfAtk=2000}
+ toast('ECLIPSE DE LAS ALAS NEGRAS: +4000 ATK/+4000 DEF durante 2 turnos · PERFORACIÓN · protección activa.');update();return true
+}
+function csCerberusBeforeAttack(side,c){
+ if(!csIs(c,'CS-009'))return;
+ if(c._csCerberusFireTurn!==turnNo){c._csCerberusFireTurn=turnNo;c.atk+=2000;c._csCerberusFireAtk=2000}
+ const bonus=Math.min(4000,Math.floor(csSubCount(side)/2)*500);
+ if(bonus>(c._csCerberusScale||0)){c.atk+=bonus-(c._csCerberusScale||0);c._csCerberusScale=bonus}
+}
+function csPegasusBeforeAttack(side,c){
+ if(!csIs(c,'CS-010'))return;
+ const hasCerb=[...csOwn(side),...csGrave(side)].some(x=>csIs(x,'CS-009'));
+ if(hasCerb&&!c._csPegasusHeart){c.atk+=1500;c._csPegasusHeart=1500}
+ const knights=csOwn(side).filter(x=>x&&['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008'].includes(x.id)).length;
+ const b=Math.min(3000,knights*500);if(b>(c._csPegasusHeartDef||0)){c.def+=b-(c._csPegasusHeartDef||0);c._csPegasusHeartDef=b}
+ if(c._csPegasusEvadedTurn===turnNo-1){c.atk+=3000;c._csPegasusChargeAtk=(c._csPegasusChargeAtk||0)+3000;c._csPegasusChargeUntil=turnNo}
+}
+function csPegasusEvade(defSide,D){
+ if(!csIs(D,'CS-010')||D._csPegasusEvadeTurn===turnNo)return false;
+ D._csPegasusEvadeTurn=turnNo;D._csPegasusEvadedTurn=turnNo;D.def=Math.max(0,D.def-1000);D._csPegasusEvadeDef=1000;D._csPegasusEvadeUntil=turnNo;
+ toast('VUELO DEL ECLIPSE: Pegasus Negro evade completamente el ataque.');return true
+}
+
 async function csMeteorUseSkill(side,c){
  if(c._csMeteorSkillTurn===turnNo){toast('CABALLERO METEORO ya utilizó su habilidad este turno.');return false}
  const count=[...csOwn(side),...csGrave(side)].filter(x=>csIs(x)).length;
@@ -3365,6 +3403,12 @@ function csHorusEye(side,target,amount){
 }
 function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
+  if(csIs(c,'CS-009')&&c._csCerberusFireAtk){c.atk=Math.max(0,c.atk-c._csCerberusFireAtk);delete c._csCerberusFireAtk}
+  if(csIs(c,'CS-009')&&c._csCerberusMawsAtk&&c._csCerberusMawsUntil<turnNo){c.atk=Math.max(0,c.atk-c._csCerberusMawsAtk);delete c._csCerberusMawsAtk;delete c._csCerberusAttackCap}
+  if(csIs(c,'CS-010')&&c._csPegasusEvadeDef&&c._csPegasusEvadeUntil<turnNo){c.def+=c._csPegasusEvadeDef;delete c._csPegasusEvadeDef}
+  if(csIs(c,'CS-010')&&c._csPegasusChargeAtk&&c._csPegasusChargeUntil<turnNo){c.atk=Math.max(0,c.atk-c._csPegasusChargeAtk);delete c._csPegasusChargeAtk}
+  if(csIs(c,'CS-010')&&c._csPegasusEclipseAtk&&c._csPegasusEclipseUntil<turnNo){c.atk=Math.max(0,c.atk-c._csPegasusEclipseAtk-(c._csPegasusCerbSelfAtk||0));c.def=Math.max(0,c.def-c._csPegasusEclipseDef);delete c._csPegasusEclipseAtk;delete c._csPegasusEclipseDef;delete c._csPegasusCerbSelfAtk}
+  if(c?._csPegasusCerbAtk&&c._csPegasusCerbUntil<turnNo){c.atk=Math.max(0,c.atk-c._csPegasusCerbAtk);delete c._csPegasusCerbAtk;delete c._csPegasusCerbUntil}
   if(c?._csMeteorReturnAtk&&c._csMeteorReturnUntil<turnNo){c.atk+=c._csMeteorReturnAtk;delete c._csMeteorReturnAtk;delete c._csMeteorReturnUntil}
   if(csIs(c,'CS-008')&&c._csMeteorCoreAtk&&c._csMeteorCoreUntil<turnNo){c.atk=Math.max(0,c.atk-c._csMeteorCoreAtk);c.def+=c._csMeteorCoreDef||0;delete c._csMeteorCoreAtk;delete c._csMeteorCoreDef;delete c._csMeteorCoreUntil}
   if(c?._csMeteorRainAllyDef&&c._csMeteorRainAllyUntil<turnNo){c.def=Math.max(0,c.def-c._csMeteorRainAllyDef);delete c._csMeteorRainAllyDef;delete c._csMeteorRainAllyUntil}
@@ -3383,17 +3427,19 @@ function csClearTurn(){
  });
 }
 function csKeepTurnAfterAttack(c){
+ if(csIs(c,'CS-009')&&c._csCerberusAttackCap===3&&c._csCerberusMawsUntil===turnNo){c._csCerberusAttackCount=(c._csCerberusAttackCount||0)+1;if(c._csCerberusAttackCount<3)return true;c._csCerberusSkipUntil=turnNo+1}
  if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003')&&!csIs(c,'CS-004'))return false;
  if(c._csSecondAttackTurn===turnNo&&c._csSecondAttackUsedTurn!==turnNo){c._csSecondAttackUsedTurn=turnNo;return true}
  return false
 }
 function csGoldenPiercingDamage(side,c,target){
+ if(csIs(c,'CS-010')&&(c._csPegasusEclipseUntil||-1)>=turnNo)return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-006'))return csVenuzPiercingDamage(side,c,target);
  if(csIs(c,'CS-007'))return csVenuzShinyPiercingDamage(side,c,target);
  if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
-window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
+window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
 
 function skillFor(c){if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
  'strategic-herrero':{name:'FORJA DE COMBATE',kind:'strategicBlacksmith',value:1,desc:'Recupera 1 arma o armadura del Cementerio y la equipa a un aliado.'},
@@ -3619,6 +3665,8 @@ async function resolveBattle(attSide,ai,defSide,di){
  if(csMeteorRainBlocksAttack(defSide)){update();return}
  di=await csMeteorIntercept(defSide,di,A);
  const D=(defSide==='p'?playerCards:enemyCards)[di];if(!D)return;
+ csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);
+ if(csPegasusEvade(defSide,D)){update();return}
  await idrBeforeAttack(attSide,ai,A);
  if(D.effect==='phantomReflect'){
   const reflected=Math.max(0,Number(A.atk)||0);D.atk=reflected;
