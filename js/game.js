@@ -773,6 +773,26 @@ function nemesisUnlockCards(ids,source='RECOMPENSA'){
  if(added)pcLog?.(`${source}: ${added} carta(s) pasan a la Colección Global.`,'effect');
  return added;
 }
+// V18.12.00 — PERFILES DE CAMPAÑA AISLADOS
+const NEMESIS_CAMPAIGN_PROFILES=Object.freeze({
+ campaign1:Object.freeze({
+  id:'campaign1',name:'CAMPAÑA I',bosses:['guardian','dragon','ra'],
+  systems:['Guardian AI','Dragon Rage','Ira de Ra','efectos ancestrales'],
+  completionBoss:'ra'
+ }),
+ campaign2:Object.freeze({
+  id:'campaign2',name:'CAMPAÑA II',bosses:['caballero-almas','rey-espectral','dios-fantasma'],
+  systems:['Cementerio','Almas','Almas Reales','Esencia Celestial','Resurrección','formas finales'],
+  completionBoss:'dios-fantasma'
+ }),
+ campaign3:Object.freeze({
+  id:'campaign3',name:'CAMPAÑA III · GUERRA DE LOS DIOSES',bosses:['ares','hades'],
+  systems:['Furia','Óbolos','Tártaro','IA Modo Dios','Campo Heroico','PC Ultra'],
+  completionBoss:'hades'
+ })
+});
+window.NEMESIS_CAMPAIGN_PROFILES=NEMESIS_CAMPAIGN_PROFILES;
+
 function nemesisUnlockCampaignDecks(campaignId,silent=false){
  const profile=NEMESIS_CAMPAIGN_PROFILES[campaignId];if(!profile)return 0;
  let total=0;
@@ -4800,25 +4820,6 @@ function v12EnemyCardInfo(i){
 
 
 
-// V18.12.00 — PERFILES DE CAMPAÑA AISLADOS
-const NEMESIS_CAMPAIGN_PROFILES=Object.freeze({
- campaign1:Object.freeze({
-  id:'campaign1',name:'CAMPAÑA I',bosses:['guardian','dragon','ra'],
-  systems:['Guardian AI','Dragon Rage','Ira de Ra','efectos ancestrales'],
-  completionBoss:'ra'
- }),
- campaign2:Object.freeze({
-  id:'campaign2',name:'CAMPAÑA II',bosses:['caballero-almas','rey-espectral','dios-fantasma'],
-  systems:['Cementerio','Almas','Almas Reales','Esencia Celestial','Resurrección','formas finales'],
-  completionBoss:'dios-fantasma'
- }),
- campaign3:Object.freeze({
-  id:'campaign3',name:'CAMPAÑA III · GUERRA DE LOS DIOSES',bosses:['ares','hades'],
-  systems:['Furia','Óbolos','Tártaro','IA Modo Dios','Campo Heroico','PC Ultra'],
-  completionBoss:'hades'
- })
-});
-window.NEMESIS_CAMPAIGN_PROFILES=NEMESIS_CAMPAIGN_PROFILES;
 
 // V18.11 — ADAPTADORES AISLADOS DE JEFE
 // Cada jefe conserva su motor; este adaptador decide qué hooks puede ejecutar.
