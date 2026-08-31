@@ -111,3 +111,16 @@ must('CS-010 perforación',game.includes("csIs(c,'CS-010')")&&game.includes("_cs
 must('CS-009/010 auditoría',game.includes("'CS-009','CS-010'")&&game.includes("cerberus:typeof csCerberusUseSkill==='function'")&&game.includes("pegasus:typeof csPegasusUseSkill==='function'"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('MONSTRUOS DEL SUBMUNDO · CS-009/CS-010: PASS');
+
+for(const [id,name,img] of [
+ ['CS-011','Luz de Ares','luz-de-ares.webp'],['CS-012','Sentencia de Venuz','sentencia-de-venuz.webp'],
+ ['CS-013','Aguijón de Escorpión','aguijon-de-escorpion.webp'],['CS-014','Agujero Negro','agujero-negro.webp']
+]){
+ must(id+' registrado',game.includes("id:'"+id+"',name:'"+name+"'"));
+ must(id+' es arma',game.includes("id:'"+id+"'")&&game.includes("subtype:'weapon'"));
+ must(id+' arte físico',fs.existsSync(path.join(root,'assets/images/caballeros-submundo/'+img)));
+}
+must('armas usan equipamiento central',game.includes("c?.family==='caballeros-submundo'&&c?.subtype==='weapon'")&&game.includes("nemesisEquip(side,idx,'weapon',c"));
+must('Sentencia conserva afinidad Venuz',game.includes("c.id==='CS-012'&&['CS-006','CS-007'].includes(arr[idx].id)"));
+if(process.exitCode)process.exit(process.exitCode);
+console.log('ARMAS SUBMUNDO · CS-011/CS-014: PASS');
