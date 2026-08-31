@@ -32,6 +32,8 @@ A('cada victoria de campaña puede entregar carta rival',game.includes('grantRan
 A('mazos completos se desbloquean al completar campañas',game.includes("nemesisUnlockCampaignDecks('campaign1')")&&game.includes("nemesisUnlockCampaignDecks('campaign2')")&&game.includes("nemesisUnlockCampaignDecks('campaign3')"));
 A('revanchas permanentes de 8 rivales',game.includes('const NEMESIS_RETRY_ROSTER=Object.freeze([')&&['guardian','dragon-ojo','ira-ra','caballero-almas','rey-espectral','dios-fantasma','ares','hades'].every(id=>game.includes("id:'"+id+"'")));
 A('retar otra vez usa mismo battle()',game.includes("RETAR OTRA VEZ")&&game.includes('battle(r.battleKey||undefined)'));
+A('revanchas Dragón y Ra usan claves reales del motor',game.includes("id:'dragon-ojo'")&&game.includes("battleKey:'dragon'")&&game.includes("id:'ira-ra'")&&game.includes("battleKey:'ra'"));
+A('recompensas de campaña usan tabla progresiva',game.includes('const campaignReward=NEMESIS_RETRY_ROSTER.find')&&game.includes("campaignReward?.reward||100"));
 
 // 5) Santuario y cartas secretas.
 for(const p of ['assets/images/unique/nemesis-primigenio.png','assets/images/unique/aion.png','assets/images/unique/azathiel.png'])A('Santuario asset '+p,exists(p));
