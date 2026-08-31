@@ -333,6 +333,8 @@ const CABALLEROS_SUBMUNDO_CARDS=[
  {id:'CS-006',name:'Caballero Sombra de Venuz',atk:15000,def:13000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','sombra','caballero','submundo','soberano','venuz'],rarity:'divina-suprema',level:12,effect:'csVenuzSovereign',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-sombra-de-venuz.webp',desc:'SOMBRA ABSOLUTA DE VENUZ: absorbe permanentemente +1200 ATK/+800 DEF por cada nuevo Caballero del Submundo que llegue a tu Cementerio. ECLIPSE DEL SUBMUNDO: una vez por turno reduce 50% ATK/DEF de 1 rival y Venuz obtiene +2000 ATK este turno. OJO DE LA SOMBRA ETERNA: niega la primera habilidad enemiga de cada turno que afecte a Venuz. VEREDICTO DE VENUZ: al destruir en combate puede causar 2500 HP directo. RETORNO DEL SOBERANO: una vez por duelo evita su destrucción, obtiene +3000 ATK/+3000 DEF permanentes y resucita 1 Caballero. ECLIPSE FINAL: una vez por duelo con 5 Caballeros caídos, durante 2 turnos obtiene +5000 ATK/+3000 DEF y perforación.'},
  {id:'CS-007',name:'Caballero Sombra de Venuz Shiny',atk:18000,def:16000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','sombra','caballero','submundo','soberano','venuz','shiny'],rarity:'shiny-divina-absoluta',level:12,effect:'csVenuzShinySovereign',caballerosSubmundo:true,shiny:true,img:'assets/images/caballeros-submundo/caballero-sombra-de-venuz-shiny.webp',desc:'SOMBRA ABSOLUTA SHINY: +1500 ATK/+1000 DEF permanente por cada nuevo Caballero caído. ECLIPSE SUPREMO: una vez por turno reduce 50% ATK/DEF de 1 rival y obtiene +2500 ATK este turno. PROTECCIONES SUPREMAS: niega la primera destrucción por combate, la primera destrucción por efecto y la primera anulación dirigida de cada turno. CUERPO DEL ECLIPSE: durante Eclipse sus estadísticas no pueden reducirse por debajo del 70%. RENACER DEL VACÍO: una vez por duelo evita abandonar el campo, obtiene +4000 ATK/+4000 DEF y resucita hasta 2 Caballeros. ECLIPSE DE LA ETERNIDAD: con 5 caídos, una vez por duelo durante 2 turnos obtiene +6000 ATK/+4000 DEF y perforación.'}
  ,{id:'CS-008',name:'Caballero Meteoro',atk:11500,def:15000,type:'monster',family:'caballeros-submundo',tags:['caballero','submundo','meteoro','cosmico','fuego','acero','defensivo'],rarity:'divina-suprema',level:11,effect:'csMeteorGuardian',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-meteoro.webp',desc:'ARMADURA METEÓRICA: la primera vez por turno que recibe daño de ataque, lo reduce 70%; si sobrevive gana +1000 DEF permanente. IMPACTO DE RETORNO: puede interceptar un ataque dirigido a otro Caballero y el atacante pierde 2000 ATK hasta el final del siguiente turno. NÚCLEO ESTELAR: una vez por turno convierte temporalmente 2000 DEF en 2000 ATK. GUARDIÁN DEL SUBMUNDO: la primera destrucción por efecto de otro Caballero aliado queda anulada pagando 1500 DEF. CONTRAATAQUE METEORO: si sobrevive a un intento de destrucción, inflige 2000 HP directo una vez por turno. LLUVIA DEL JUICIO METEÓRICO: una vez por duelo con 3 Caballeros entre Campo y Cementerio, durante 2 turnos obtiene +4000 DEF, los Caballeros aliados +1500 DEF y el primer ataque enemigo de cada turno queda anulado.'}
+ ,{id:'CS-009',name:'Cerberus Oscuro',atk:14500,def:11500,type:'monster',family:'caballeros-submundo',tags:['monstruo','bestia','submundo','oscuridad','fuego-infernal'],rarity:'divina-suprema',level:11,effect:'csCerberusDark',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/cerberus-oscuro.webp',desc:'CABEZA DEL FUEGO INFERNAL: primer ataque del turno +2000 ATK; si destruye, 1500 HP directo. CABEZA DE LA SOMBRA: una vez por turno niega una habilidad dirigida y debilita -2000 ATK/-2000 DEF. CABEZA DEL CARCELERO: la criatura destruida queda sellada 2 turnos. BESTIA GUARDIANA: con un Caballero aliado, niega la primera destrucción por efecto cada turno; gana +500 ATK permanente por cada 2 Caballeros, máximo +4000. DEVORADOR DE ALMAS: +500 DEF permanente por carta enemiga enviada al Cementerio, máximo +3000. LAS TRES FAUCES DEL INFIERNO: una vez por duelo +4500 ATK y hasta 3 ataques a objetivos distintos; cada destrucción causa 1000 HP adicional y después no puede atacar en su próximo turno.'}
+ ,{id:'CS-010',name:'Pegasus Negro',atk:15000,def:12500,type:'monster',family:'caballeros-submundo',tags:['monstruo','bestia-celestial','submundo','oscuridad','eclipse','volador'],rarity:'divina-suprema',level:11,effect:'csPegasusBlack',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/pegasus-negro.webp',desc:'VUELO DEL ECLIPSE: una vez por turno evade completamente un ataque y pierde 1000 DEF temporal. EMBESTIDA CELESTIAL NEGRA: tras evadir obtiene +3000 ATK y el objetivo -2000 DEF durante el combate. ALAS DEL SALVADOR OSCURO: una vez por turno rescata otro Caballero o Monstruo del Submundo que fuera a caer en combate; regresa al siguiente turno con +1000 DEF permanente. SOMBRA SOBRE EL CAMPO: enemigos que atacan pierden 1000 ATK hasta el final del siguiente turno. CORAZÓN DEL PEGASUS NEGRO: +500 DEF por Caballero distinto controlado, máximo +3000; con Cerberus Oscuro en Campo o Cementerio +1500 ATK. ECLIPSE DE LAS ALAS NEGRAS: una vez por duelo, durante 2 turnos +4000 ATK/+4000 DEF, niega la primera habilidad dirigida por turno, obtiene perforación y puede rescatar hasta 2 Caballeros; con Cerberus en Campo ambos reciben +2000 ATK.'}
 ];
 const CABALLEROS_SUBMUNDO_DECK_IDS=CABALLEROS_SUBMUNDO_CARDS.map(c=>c.id);
 
@@ -3215,6 +3217,8 @@ function csSync(){
  }
 }
 function csSkillDescriptor(c){
+ if(csIs(c,'CS-010'))return{name:'ECLIPSE DE LAS ALAS NEGRAS',kind:'caballerosSubmundo',action:'pegasusEclipse',desc:'Activa durante 2 turnos +4000 ATK/+4000 DEF, perforación y protección; con Cerberus obtiene sinergia adicional.'};
+ if(csIs(c,'CS-009'))return{name:'LAS TRES FAUCES DEL INFIERNO',kind:'caballerosSubmundo',action:'cerberusMaws',desc:'Una vez por duelo +4500 ATK y habilita hasta 3 ataques; las destrucciones causan daño directo adicional.'};
  if(csIs(c,'CS-008'))return{name:'NÚCLEO ESTELAR / LLUVIA METEÓRICA',kind:'caballerosSubmundo',action:'meteorCore',desc:'Convierte 2000 DEF en 2000 ATK por 1 turno; con 3 Caballeros entre Campo y Cementerio activa Lluvia del Juicio Meteórico durante 2 turnos.'};
  if(csIs(c,'CS-007'))return{name:'ECLIPSE SUPREMO / ETERNIDAD',kind:'caballerosSubmundo',action:'venuzShinyEclipse',desc:'Reduce 50% ATK/DEF de un rival y gana +2500 ATK; con 5 caídos puede activar Eclipse de la Eternidad durante 2 turnos.'};
  if(csIs(c,'CS-006'))return{name:'ECLIPSE / TRONO DE VENUZ',kind:'caballerosSubmundo',action:'venuzEclipse',desc:'Reduce 50% ATK/DEF de un rival; con 5 Caballeros caídos puede activar Eclipse Final una vez por duelo.'};
@@ -3226,6 +3230,8 @@ function csSkillDescriptor(c){
  return null
 }
 async function csUseSkill(side,i,c,sk){
+ if(sk.action==='cerberusMaws')return csCerberusUseSkill(side,c);
+ if(sk.action==='pegasusEclipse')return csPegasusUseSkill(side,c);
  if(sk.action==='meteorCore')return csMeteorUseSkill(side,c);
  if(sk.action==='venuzShinyEclipse')return csVenuzShinyUseSkill(side,c);
  if(sk.action==='venuzEclipse')return csVenuzUseSkill(side,c);
@@ -3251,6 +3257,40 @@ async function csUseSkill(side,i,c,sk){
  c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence'||sk.action==='shinySentence')c._csUnstoppableSecondTurn=turnNo;
  csSync();toast(victim.name+' es sacrificado · '+c.name+' habilita su segundo ataque.');return true
 }
+
+function csSubCount(side){return [...csOwn(side),...csGrave(side)].filter(x=>csIs(x)&&['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008'].includes(x.id)).length}
+function csCerberusUseSkill(side,c){
+ if(c._csCerberusMawsUsedDuel){toast('LAS TRES FAUCES DEL INFIERNO ya fue usada.');return false}
+ c._csCerberusMawsUsedDuel=true;c.atk+=4500;c._csCerberusMawsAtk=4500;c._csCerberusMawsUntil=turnNo;c._csCerberusAttackCap=3;c._csCerberusAttackCount=0;
+ toast('LAS TRES FAUCES DEL INFIERNO: +4500 ATK · hasta 3 ataques este turno.');update();return true
+}
+function csPegasusUseSkill(side,c){
+ if(c._csPegasusEclipseUsedDuel){toast('ECLIPSE DE LAS ALAS NEGRAS ya fue usado.');return false}
+ c._csPegasusEclipseUsedDuel=true;c.atk+=4000;c.def+=4000;c._csPegasusEclipseAtk=4000;c._csPegasusEclipseDef=4000;c._csPegasusEclipseUntil=turnNo+1;c._csPegasusNegateTurn=-1;c._csPegasusRescues=2;
+ const cerb=[...csOwn(side),...csGrave(side)].find(x=>csIs(x,'CS-009'));
+ if(cerb&&csOwn(side).includes(cerb)){cerb.atk+=2000;cerb._csPegasusCerbAtk=(cerb._csPegasusCerbAtk||0)+2000;cerb._csPegasusCerbUntil=turnNo+1;c.atk+=2000;c._csPegasusCerbSelfAtk=2000}
+ toast('ECLIPSE DE LAS ALAS NEGRAS: +4000 ATK/+4000 DEF durante 2 turnos · PERFORACIÓN · protección activa.');update();return true
+}
+function csCerberusBeforeAttack(side,c){
+ if(!csIs(c,'CS-009'))return;
+ if(c._csCerberusFireTurn!==turnNo){c._csCerberusFireTurn=turnNo;c.atk+=2000;c._csCerberusFireAtk=2000}
+ const bonus=Math.min(4000,Math.floor(csSubCount(side)/2)*500);
+ if(bonus>(c._csCerberusScale||0)){c.atk+=bonus-(c._csCerberusScale||0);c._csCerberusScale=bonus}
+}
+function csPegasusBeforeAttack(side,c){
+ if(!csIs(c,'CS-010'))return;
+ const hasCerb=[...csOwn(side),...csGrave(side)].some(x=>csIs(x,'CS-009'));
+ if(hasCerb&&!c._csPegasusHeart){c.atk+=1500;c._csPegasusHeart=1500}
+ const knights=csOwn(side).filter(x=>x&&['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008'].includes(x.id)).length;
+ const b=Math.min(3000,knights*500);if(b>(c._csPegasusHeartDef||0)){c.def+=b-(c._csPegasusHeartDef||0);c._csPegasusHeartDef=b}
+ if(c._csPegasusEvadedTurn===turnNo-1){c.atk+=3000;c._csPegasusChargeAtk=(c._csPegasusChargeAtk||0)+3000;c._csPegasusChargeUntil=turnNo}
+}
+function csPegasusEvade(defSide,D){
+ if(!csIs(D,'CS-010')||D._csPegasusEvadeTurn===turnNo)return false;
+ D._csPegasusEvadeTurn=turnNo;D._csPegasusEvadedTurn=turnNo;D.def=Math.max(0,D.def-1000);D._csPegasusEvadeDef=1000;D._csPegasusEvadeUntil=turnNo;
+ toast('VUELO DEL ECLIPSE: Pegasus Negro evade completamente el ataque.');return true
+}
+
 async function csMeteorUseSkill(side,c){
  if(c._csMeteorSkillTurn===turnNo){toast('CABALLERO METEORO ya utilizó su habilidad este turno.');return false}
  const count=[...csOwn(side),...csGrave(side)].filter(x=>csIs(x)).length;
@@ -3363,6 +3403,12 @@ function csHorusEye(side,target,amount){
 }
 function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
+  if(csIs(c,'CS-009')&&c._csCerberusFireAtk){c.atk=Math.max(0,c.atk-c._csCerberusFireAtk);delete c._csCerberusFireAtk}
+  if(csIs(c,'CS-009')&&c._csCerberusMawsAtk&&c._csCerberusMawsUntil<turnNo){c.atk=Math.max(0,c.atk-c._csCerberusMawsAtk);delete c._csCerberusMawsAtk;delete c._csCerberusAttackCap}
+  if(csIs(c,'CS-010')&&c._csPegasusEvadeDef&&c._csPegasusEvadeUntil<turnNo){c.def+=c._csPegasusEvadeDef;delete c._csPegasusEvadeDef}
+  if(csIs(c,'CS-010')&&c._csPegasusChargeAtk&&c._csPegasusChargeUntil<turnNo){c.atk=Math.max(0,c.atk-c._csPegasusChargeAtk);delete c._csPegasusChargeAtk}
+  if(csIs(c,'CS-010')&&c._csPegasusEclipseAtk&&c._csPegasusEclipseUntil<turnNo){c.atk=Math.max(0,c.atk-c._csPegasusEclipseAtk-(c._csPegasusCerbSelfAtk||0));c.def=Math.max(0,c.def-c._csPegasusEclipseDef);delete c._csPegasusEclipseAtk;delete c._csPegasusEclipseDef;delete c._csPegasusCerbSelfAtk}
+  if(c?._csPegasusCerbAtk&&c._csPegasusCerbUntil<turnNo){c.atk=Math.max(0,c.atk-c._csPegasusCerbAtk);delete c._csPegasusCerbAtk;delete c._csPegasusCerbUntil}
   if(c?._csMeteorReturnAtk&&c._csMeteorReturnUntil<turnNo){c.atk+=c._csMeteorReturnAtk;delete c._csMeteorReturnAtk;delete c._csMeteorReturnUntil}
   if(csIs(c,'CS-008')&&c._csMeteorCoreAtk&&c._csMeteorCoreUntil<turnNo){c.atk=Math.max(0,c.atk-c._csMeteorCoreAtk);c.def+=c._csMeteorCoreDef||0;delete c._csMeteorCoreAtk;delete c._csMeteorCoreDef;delete c._csMeteorCoreUntil}
   if(c?._csMeteorRainAllyDef&&c._csMeteorRainAllyUntil<turnNo){c.def=Math.max(0,c.def-c._csMeteorRainAllyDef);delete c._csMeteorRainAllyDef;delete c._csMeteorRainAllyUntil}
@@ -3381,17 +3427,19 @@ function csClearTurn(){
  });
 }
 function csKeepTurnAfterAttack(c){
+ if(csIs(c,'CS-009')&&c._csCerberusAttackCap===3&&c._csCerberusMawsUntil===turnNo){c._csCerberusAttackCount=(c._csCerberusAttackCount||0)+1;if(c._csCerberusAttackCount<3)return true;c._csCerberusSkipUntil=turnNo+1}
  if(!csIs(c,'CS-001')&&!csIs(c,'CS-002')&&!csIs(c,'CS-003')&&!csIs(c,'CS-004'))return false;
  if(c._csSecondAttackTurn===turnNo&&c._csSecondAttackUsedTurn!==turnNo){c._csSecondAttackUsedTurn=turnNo;return true}
  return false
 }
 function csGoldenPiercingDamage(side,c,target){
+ if(csIs(c,'CS-010')&&(c._csPegasusEclipseUntil||-1)>=turnNo)return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-006'))return csVenuzPiercingDamage(side,c,target);
  if(csIs(c,'CS-007'))return csVenuzShinyPiercingDamage(side,c,target);
  if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
-window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
+window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
 
 function skillFor(c){if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
  'strategic-herrero':{name:'FORJA DE COMBATE',kind:'strategicBlacksmith',value:1,desc:'Recupera 1 arma o armadura del Cementerio y la equipa a un aliado.'},
@@ -3617,6 +3665,8 @@ async function resolveBattle(attSide,ai,defSide,di){
  if(csMeteorRainBlocksAttack(defSide)){update();return}
  di=await csMeteorIntercept(defSide,di,A);
  const D=(defSide==='p'?playerCards:enemyCards)[di];if(!D)return;
+ csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);
+ if(csPegasusEvade(defSide,D)){update();return}
  await idrBeforeAttack(attSide,ai,A);
  if(D.effect==='phantomReflect'){
   const reflected=Math.max(0,Number(A.atk)||0);D.atk=reflected;
