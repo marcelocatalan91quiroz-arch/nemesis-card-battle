@@ -541,8 +541,10 @@ if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName])
 const restoredDeck=(state.savedDecks[state.activeDeckName]||[]).filter(id=>state.owned.includes(id)&&card(id)).slice(0,nemesisDeckLimit(state.activeDeckName));
 if(restoredDeck.length)state.deck=restoredDeck;
 state.olympoDeckUnlocked=false;
-save();
-v18918SaveMemoryCard();
+// El arranque no debe bloquear el primer render escribiendo dos veces todo el progreso.
+// La persistencia inicial se difiere hasta que el navegador quede libre.
+const nemesisPersistBootState=()=>{try{save()}catch(e){console.warn('[NÉMESIS boot save]',e)}};
+if(typeof requestIdleCallback==='function')requestIdleCallback(nemesisPersistBootState,{timeout:2000});else setTimeout(nemesisPersistBootState,0);
 const app=document.getElementById('app');
 
 // V18.9.4 — indicador de fase VISUAL. No controla el flujo del duelo.
@@ -5293,7 +5295,7 @@ function nemesisScheduleBootMaintenance(){
    if(typeof state!=='undefined'&&state){
     nemesisEnsureSanctuary();
     if(state.hadesDefeated)state.sanctuary.awake=true;
-    save();
+    v18918SaveMemoryCard();
    }
    window.nemesisIntegrityAudit?.();
   }catch(e){console.warn('[NÉMESIS boot maintenance]',e)}
