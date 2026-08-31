@@ -35,7 +35,7 @@ const defs={
  ARES:{cards:objects('ARES_CARDS_1_5'),hp:bossProfiles['3'].ares.hp},
  HADES:{cards:objects('HADES_CARDS'),hp:bossProfiles['3'].hades.hp}
 };
-const EXPECTED={DUEL_MASTER:20,MAGO_ROJO:20,IMPERIO_DRAGON:20,CABALLEROS_SUBMUNDO:20,OLIMPO:11,GUARDIAN:9,DRAGON_OJO:12,IRA_DE_RA:15,CABALLERO_ALMAS:15,REY_ESPECTRAL:15,DIOS_FANTASMA:10,ARES:12,HADES:12};
+const EXPECTED={DUEL_MASTER:20,MAGO_ROJO:20,IMPERIO_DRAGON:20,CABALLEROS_SUBMUNDO:20,OLIMPO:11,GUARDIAN:9,DRAGON_OJO:12,IRA_DE_RA:15,CABALLERO_ALMAS:10,REY_ESPECTRAL:10,DIOS_FANTASMA:10,ARES:12,HADES:12};
 for(const [n,d] of Object.entries(defs)){if(!d.cards.length)throw Error('Arena Global: '+n+' sin cartas');if(d.cards.length!==EXPECTED[n])throw Error('Arena Global: '+n+' incompleto '+d.cards.length+'/'+EXPECTED[n]);}
 // El perfil GUARDIAN declara 10 IDs, pero "dragon" es una clave legacy de jefe y no una carta definida.
 const guardianDeclared=ids('GUARDIAN_BOSS_CARD_IDS');
