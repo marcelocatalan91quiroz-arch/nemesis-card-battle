@@ -667,7 +667,8 @@ function probeCsCard(id){
 function probeEclipse(){
  const {room,p,opp}=makeProbeRoom('MAGO_ROJO');p.supports[0]={id:'MS-001',faceDown:true,active:false};p.monsters[0]='MGR-001';p.cardState[0]=initMonsterState('MGR-001');p.grave=['MGR-002'];opp.monsters[0]='IDR-001';opp.cardState[0]=initMonsterState('IDR-001');
  const r=resolveAbsoluteEclipseSupport(room,p,{supportZone:0,targetZone:0,eclipsePicks:['judgement','resurrection','ascension']});
- return {ok:r?.ok===true,used:p.archetype.eclipseUsed===true,banished:opp.banished.length===1,ascended:monsterState(p,0).flags.eclipseAscUntil>=room.duel.turn}
+ const result={id:'MS-001',ok:r?.ok===true,used:p.archetype.eclipseUsed===true,banished:opp.banished.length===1,ascended:monsterState(p,0).flags.eclipseAscUntil>=room.duel.turn};
+ return {count:1,ok:result.ok&&result.used&&result.banished&&result.ascended,cards:[result]}
 }
 function onlineRuntimeProbe(){
  const mgr=MGR_DECK.map(probeMgrCard),idr=IDR_DECK.map(probeIdrCard),ol=OLIMPO_DECK.map(probeOlimpoCard),cs=CABALLEROS_SUBMUNDO_DECK.map(probeCsCard);
