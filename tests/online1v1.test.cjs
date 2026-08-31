@@ -37,8 +37,11 @@ must('cliente controla habilidad ultimate soporte',client.includes('dmAbility')&
 must('cliente envía mazo activo',client.includes('activeDeckPayload')&&client.includes('deckName')&&client.includes('deckIds'));
 must('servidor registra mazo por jugador',api.includes('playerDeckMeta')&&api.includes('deckClass'));
 must('online reconoce Mago Rojo e Imperio Dragón',api.includes("'MAGO_ROJO'")&&api.includes("'IMPERIO_DRAGON'"));
-must('autenticación real propietario con HMAC',api.includes('NEMESIS_OWNER_KEY')&&api.includes('NEMESIS_OWNER_SIGNING_SECRET')&&api.includes('verifyOwnerToken')&&api.includes("action==='owner_login'"));
-must('token propietario viaja desde cliente',client.includes('ownerToken')&&client.includes('nemesis_owner_token_v1'));
+const ownerApi=fs.readFileSync(path.join(root,'api/owner-auth.js'),'utf8');
+const ownerLib=fs.readFileSync(path.join(root,'lib/owner-auth.js'),'utf8');
+const ownerClient=fs.readFileSync(path.join(root,'js/owner-auth.js'),'utf8');
+must('autenticación real propietario con HMAC y cookie HttpOnly',ownerLib.includes("createHmac('sha256'")&&ownerLib.includes('HttpOnly')&&ownerApi.includes("action==='login'")&&api.includes("ownerAuth.verifyRequest(req)"));
+must('secreto propietario no viaja por cliente online',!client.includes('nemesis_owner_token_v1')&&!client.includes('ownerToken=')&&ownerClient.includes("/api/owner-auth"));
 must('motor multideck autoritativo',api.includes("mode:'MULTI_DECK'")&&api.includes('ONLINE_EFFECT_HANDLERS'));
 must('Mago Rojo 20/20 online',api.includes('MGR_CATALOG')&&api.includes('resolveMgrAbility')&&api.includes('resolveMgrSupport')&&api.includes('MGR_MIRROR')&&api.includes('GRIMORIO_NEGATE'));
 must('Imperio Dragón 20/20 online',api.includes('IDR_CATALOG')&&api.includes('resolveIdrAbility')&&api.includes('resolveIdrSupport')&&api.includes('IDR_TRANSFORM')&&api.includes('IDR_FUSION'));
