@@ -14,7 +14,7 @@ A('Imperio Dragón usa mazo completo 20',game.includes("IMPERIO_DRAGON:IMPERIO_D
 A('Olimpo conserva su tamaño real 11',game.includes("OLIMPO:OLIMPO_DECK_IDS")&&game.includes("function nemesisDeckLimit"));
 A('duelo local consume mazo completo',game.includes("const deckQueue=state.deck.slice(0,nemesisActiveDeckLimit())"));
 A('usable por cualquier mazo tras canje',!(/NEMESIS_PRIVATE_CARD_IDS[^;]*MS-001/.test(game))&&game.includes("function nemesisCardAllowedForUser(id){return !NEMESIS_PRIVATE_CARD_IDS.has(id)||nemesisOwnerSessionActive()}")&&game.includes("state.deck.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id))"));
-A('colección permite agregarla al mazo solo si fue canjeada',game.includes("document.querySelectorAll('.card[data-owned=\"1\"][data-id]')")&&game.includes("else if(state.deck.length<11)state.deck.push(id)"));
+A('colección permite agregarla al mazo solo si fue canjeada',game.includes("document.querySelectorAll('.card[data-owned=\"1\"][data-id]')")&&game.includes("else if(state.deck.length<nemesisActiveDeckLimit())state.deck.push(id)"));
 A('ruta de Intercambio incluye estratégicas',game.includes('list.push(...STRATEGIC_REDEEM_CARDS)')&&game.includes('function shopScene()'));
 A('canje descuenta estrellas',game.includes('state.stars-=price')&&game.includes('state.owned.push(id)'));
 A('Eclipse no negociable',game.includes('unnegatable:true')&&game.includes('uncopyable:true')&&game.includes('noOpponentSearch:true'));
