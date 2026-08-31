@@ -413,7 +413,7 @@ function v18918LoadMemoryCard(){
    if(Number.isFinite(Number(mc.lastAutosaveAt)))state.lastAutosaveAt=Number(mc.lastAutosaveAt);
    if(Number.isFinite(Number(mc.stars))) state.stars=Math.max(0,Math.floor(Number(mc.stars)));
    if(Array.isArray(mc.owned)) state.owned=nemesisNormalizeCardIds(mc.owned);
-   if(Array.isArray(mc.deck)) state.deck=nemesisNormalizeCardIds(mc.deck,11);
+   if(Array.isArray(mc.deck)) state.deck=nemesisNormalizeCardIds(mc.deck,20);
    if(['guardian','dragon-ojo-diablo','ira-ra','campaign1-complete','campaign2-intro','campaign2-hub'].includes(mc.campaignStage))state.campaignStage=mc.campaignStage;
    if(typeof mc.guardianDefeated==='boolean')state.guardianDefeated=mc.guardianDefeated;
    if(typeof mc.dragonDefeated==='boolean')state.dragonDefeated=mc.dragonDefeated;
@@ -452,7 +452,7 @@ function v18918SaveMemoryCard(){
    lastAutosaveAt:Number(state.lastAutosaveAt)||0,
    stars:Math.max(0,Math.floor(Number(state.stars)||0)),
    owned:[...new Set(Array.isArray(state.owned)?state.owned:[])],
-   deck:[...new Set(Array.isArray(state.deck)?state.deck:[])].slice(0,11),
+   deck:[...new Set(Array.isArray(state.deck)?state.deck:[])].slice(0,20),
    campaignStage:['guardian','dragon-ojo-diablo','ira-ra','campaign1-complete','campaign2-intro','campaign2-hub'].includes(state.campaignStage)?state.campaignStage:'guardian',
    guardianDefeated:state.guardianDefeated===true,
    dragonDefeated:state.dragonDefeated===true,
@@ -485,11 +485,11 @@ function v18918SaveMemoryCard(){
 function v18918SanitizeMemoryCard(){
  // Solo IDs válidos del juego. Nunca crea objetos paralelos.
  state.owned=[...new Set((state.owned||[]).filter(id=>CARDS.some(c=>c.id===id)))];
- state.deck=[...new Set((state.deck||[]).filter(id=>state.owned.includes(id)&&CARDS.some(c=>c.id===id)))].slice(0,11);
+ state.deck=[...new Set((state.deck||[]).filter(id=>state.owned.includes(id)&&CARDS.some(c=>c.id===id)))].slice(0,20);
 
  // Si por alguna corrupción quedara vacío, conserva el mazo estable original.
  if(!state.owned.length) state.owned=INITIAL_OWNED.slice();
- if(!state.deck.length) state.deck=state.owned.slice(0,11);
+ if(!state.deck.length) state.deck=state.owned.slice(0,20);
 }
 
 try{Object.assign(state,JSON.parse(localStorage.getItem('nemesis_visible_v2')||localStorage.getItem('nemesis_visible_v1')||'{}'))}catch{}
@@ -510,7 +510,7 @@ if(!state.v8GuardianOwnershipFixed){
 state.owned=[...new Set(state.owned)].filter(id=>CARDS.some(c=>c.id===id));
 const playerExclusiveIds=PLAYER_EXCLUSIVE_CARDS.map(c=>c.id);
 state.owned=[...new Set([...playerExclusiveIds,...state.owned])];
-state.deck=[...new Set([...playerExclusiveIds,...state.deck])].slice(0,11);
+state.deck=[...new Set([...playerExclusiveIds,...state.deck])].slice(0,20);
 const v18919MagicIds=NEW_CARDS.filter(c=>c.type==='magic'&&!GUARDIAN_BOSS_CARD_IDS.includes(c.id)).map(c=>c.id);
 if(!state.v18919MagicCardsGranted){state.owned=[...new Set([...state.owned,...v18919MagicIds])];state.v18919MagicCardsGranted=true;}
 const guardianAlreadyUnlocked=state.guardianDefeated===true||state.campaignStage!=='guardian'||state.dragonDefeated===true||state.raDefeated===true;
@@ -548,7 +548,7 @@ const save=()=>{
 // Los mazos privados NO se conceden antes de validar la sesión del propietario.
 if(!state.savedDecks||typeof state.savedDecks!=='object')state.savedDecks={};
 if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName]))state.activeDeckName='MAGO_ROJO';
-const restoredDeck=(state.savedDecks[state.activeDeckName]||[]).filter(id=>state.owned.includes(id)&&card(id)).slice(0,11);
+const restoredDeck=(state.savedDecks[state.activeDeckName]||[]).filter(id=>state.owned.includes(id)&&card(id)).slice(0,nemesisDeckLimit(state.activeDeckName));
 if(restoredDeck.length)state.deck=restoredDeck;
 state.olympoDeckUnlocked=false;
 save();
@@ -570,6 +570,13 @@ const NEMESIS_OFFICIAL_DECK_REGISTRY=Object.freeze({
  MAGO_ROJO:MAGO_ROJO_DECK_IDS,
  IMPERIO_DRAGON:IMPERIO_DRAGON_DECK_IDS
 });
+function nemesisDeckLimit(name=state.activeDeckName){
+ const k=nemesisCanonicalDeckName(name);
+ const official=NEMESIS_OFFICIAL_DECK_REGISTRY[k];
+ return Array.isArray(official)&&official.length?official.length:20;
+}
+function nemesisActiveDeckLimit(){return nemesisDeckLimit(state.activeDeckName)}
+
 // Acceso definitivo: OLIMPO y DUEL_MASTER son mazos privados del propietario.
 // Los jugadores públicos pueden elegir MAGO_ROJO / IMPERIO_DRAGON y sus mazos personalizados.
 const NEMESIS_DECK_ACCESS=Object.freeze({
@@ -717,7 +724,7 @@ function nemesisEnsureDeckLibrary(){
  for(const [name,ids] of Object.entries(presets)){
    if(NEMESIS_DECK_ACCESS[name]?.ownerOnly&&!nemesisOwnerSessionActive())continue;
    if(!Array.isArray(state.savedDecks[name])||!state.savedDecks[name].length)
-     state.savedDecks[name]=[...new Set(ids.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,11);
+     state.savedDecks[name]=[...new Set(ids.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,nemesisDeckLimit(name));
  }
  if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName])||!nemesisOwnerDeckAllowed(state.activeDeckName))
    state.activeDeckName='MAGO_ROJO';
@@ -725,11 +732,11 @@ function nemesisEnsureDeckLibrary(){
 function nemesisSyncActiveDeck(){
  nemesisEnsureDeckLibrary();
  const src=state.savedDecks[state.activeDeckName]||[];
- state.deck=[...new Set(src.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id)))].slice(0,11);
+ state.deck=[...new Set(src.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id)))].slice(0,nemesisDeckLimit(state.activeDeckName));
 }
 function nemesisSaveCurrentDeck(){
  nemesisEnsureDeckLibrary();
- state.savedDecks[state.activeDeckName]=[...new Set(state.deck.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id)))].slice(0,11);
+ state.savedDecks[state.activeDeckName]=[...new Set(state.deck.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id)))].slice(0,nemesisDeckLimit(state.activeDeckName));
  save();return state.savedDecks[state.activeDeckName];
 }
 function nemesisSelectDeck(name){
@@ -947,16 +954,16 @@ function collectionScene(){
  const emptyCount=Math.max(0,Math.min(24,INVENTORY_CAPACITY-catalogCards.length));
  const emptySlots=Array.from({length:emptyCount},(_,i)=>`<div class="card empty-card" aria-label="Espacio vacío ${catalogCards.length+i+1}"><div class="empty-card-mark">${catalogCards.length+i+1}</div><b>ESPACIO VACÍO</b><small>PRÓXIMA CARTA</small></div>`).join('');
  const deckNames=Object.keys(state.savedDecks).filter(n=>nemesisOwnerDeckAllowed(n));
- app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${state.owned.length}/${INVENTORY_CAPACITY} obtenidas · ${catalogCards.length} cartas registradas · fuente única de arte</small></div><b>MAZO ${state.deck.length}/11</b></div>
+ app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${state.owned.length}/${INVENTORY_CAPACITY} obtenidas · ${catalogCards.length} cartas registradas · fuente única de arte</small></div><b>MAZO ${state.deck.length}/${nemesisActiveDeckLimit()}</b></div>
  <div class="saved-deck-console"><div><small>MAZO ACTIVO</small><select id="savedDeckSelect">${deckNames.map(n=>`<option ${n===state.activeDeckName?'selected':''}>${n}</option>`).join('')}</select></div><div><button class="btn" id="createSavedDeck">NUEVO MAZO</button><button class="btn" id="saveCurrentDeck">GUARDAR MAZO</button></div></div>
  <p style="max-width:1100px;margin:0 auto 14px">Imperio Dragón, Mago Rojo, Duel Master, Caballeros del Submundo y las cartas universales quedan disponibles en la misma colección. Los <b>Tesoros NÉMESIS</b> se muestran aquí, pero solo pasan al mazo después de canjearlos.</p>
  <div class="grid inventory-grid">${catalogCards.map(c=>{const owned=state.owned.includes(c.id),inDeck=state.deck.includes(c.id),treasure=c.treasure===true;const status=inDeck?'EN MAZO · TOCA PARA QUITAR':owned?'CANJEAR AL MAZO':treasure?'TESORO · ★1000 EN TESOROS':'BLOQUEADA';return `<button class="card ${inDeck?'sel':''} ${owned?'owned-card':'locked-card'}" ${owned?`data-id="${c.id}" data-owned="1"`:'disabled'}><img src="${c.img}" alt="${esc(c.name)}" loading="lazy"><b>${c.name}</b><small>${cardStats(c)}</small><small>${status}</small></button>`}).join('')}${emptySlots}</div>
- <div class="deckbar"><button class="btn" id="backMenu">VOLVER</button><button class="btn" id="startFromDeck">EMPEZAR · ${state.deck.length}/11</button></div></section>`;
+ <div class="deckbar"><button class="btn" id="backMenu">VOLVER</button><button class="btn" id="startFromDeck">EMPEZAR · ${state.deck.length}/${nemesisActiveDeckLimit()}</button></div></section>`;
  document.querySelectorAll('.card[data-owned="1"][data-id]').forEach(b=>b.onclick=()=>{
    const id=b.dataset.id;
    if(state.deck.includes(id))state.deck=state.deck.filter(x=>x!==id);
-   else if(state.deck.length<11)state.deck.push(id);
-   else{alert('El mazo puede tener máximo 11 cartas.');return}
+   else if(state.deck.length<nemesisActiveDeckLimit())state.deck.push(id);
+   else{alert(`El mazo activo puede tener máximo ${nemesisActiveDeckLimit()} cartas.`);return}
    nemesisSaveCurrentDeck();collectionScene()
  });
  savedDeckSelect.onchange=()=>{nemesisSelectDeck(savedDeckSelect.value);collectionScene()};
@@ -2425,7 +2432,7 @@ function v18917SendVisualToGrave(side,sourceMesh){
  }
 }
 
-const deckQueue=state.deck.slice(0,11),handState=deckQueue.splice(0,5);
+const deckQueue=state.deck.slice(0,nemesisActiveDeckLimit()),handState=deckQueue.splice(0,5);
 
 // V18.10.00 — CAMPO DE BATALLA HEROICO PC
 const HEROIC={climaxP:0,climaxE:0,max:100,weather:'NEUTRAL',will:{storm:0,death:0,war:0},lastFormation:''};
