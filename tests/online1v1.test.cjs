@@ -37,7 +37,7 @@ must('cliente controla habilidad ultimate soporte',client.includes('dmAbility')&
 must('cliente envía mazo activo',client.includes('activeDeckPayload')&&client.includes('deckName')&&client.includes('deckIds'));
 must('servidor registra mazo por jugador',api.includes('playerDeckMeta')&&api.includes('deckClass'));
 must('servidor usa composición real validada',api.includes("requested=cleanDeckIds(b.deckIds)")&&api.includes("requested.some(id=>!allowed.has(id))")&&api.includes("meta?.deckIds")&&api.includes("ONLINE_DECK_INVALID_CARD"));
-must('online reconoce Mago Rojo e Imperio Dragón',api.includes("'MAGO_ROJO'")&&api.includes("'IMPERIO_DRAGON'"));
+must('online reconoce cinco mazos oficiales',api.includes("'MAGO_ROJO'")&&api.includes("'IMPERIO_DRAGON'")&&api.includes("'OLIMPO'")&&api.includes("'CABALLEROS_SUBMUNDO'"));
 const ownerApi=fs.readFileSync(path.join(root,'api/owner-auth.js'),'utf8');
 const ownerLib=fs.readFileSync(path.join(root,'lib/owner-auth.js'),'utf8');
 const ownerClient=fs.readFileSync(path.join(root,'js/owner-auth.js'),'utf8');
@@ -46,6 +46,9 @@ must('secreto propietario no viaja por cliente online',!client.includes('nemesis
 must('motor multideck autoritativo',api.includes("mode:'MULTI_DECK'")&&api.includes('ONLINE_EFFECT_HANDLERS'));
 must('Mago Rojo 20/20 online',api.includes('MGR_CATALOG')&&api.includes('resolveMgrAbility')&&api.includes('resolveMgrSupport')&&api.includes('MGR_MIRROR')&&api.includes('GRIMORIO_NEGATE'));
 must('Imperio Dragón 20/20 online',api.includes('IDR_CATALOG')&&api.includes('resolveIdrAbility')&&api.includes('resolveIdrSupport')&&api.includes('IDR_TRANSFORM')&&api.includes('IDR_FUSION'));
-must('auditoría online 60 cartas',api.includes('onlineEngineAudit')&&api.includes("action==='engine_audit'"));
+must('Olimpo 11/11 online',api.includes('OLIMPO_CATALOG')&&api.includes('resolveOlimpoAbility')&&api.includes('resolveOlimpoSupport')&&api.includes('OLYMPUS_FUSION'));
+must('Caballeros 20/20 online',api.includes('CS_CATALOG')&&api.includes('resolveCsAbility')&&api.includes('resolveCsSupport')&&api.includes('CS_UNDERWORLD_RAY'));
+must('armaduras visibles y persistentes online',api.includes("equipment:{weapon:null,armor:null,relic:null}")&&client.includes('eq.armor'));
+must('auditoría online cinco motores',api.includes('onlineEngineAudit')&&api.includes("action==='engine_audit'"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('NÉMESIS ONLINE 1V1 BASE: PASS');
