@@ -667,6 +667,11 @@ window.NEMESIS_CARD_REGISTRY_AUDIT=()=>({
  invalidIds:CARDS.filter(c=>!c.id||typeof c.id!=='string').map(c=>c.name||'?'),
  ok:new Set(CARDS.map(c=>c.id)).size===CARDS.length&&CARDS.every(c=>c.id&&window.nemesisRealCardArt?.(c.id,c.img||''))
 });
+window.NEMESIS_FULL_CARD_AUDIT=()=>CARDS.map(c=>({
+ id:c.id,name:c.name,type:c.type||'monster',effect:c.effect||null,
+ img:window.nemesisRealCardArt?.(c.id,c.img||'')||'',enemyOnly:!!c.enemyOnly,
+ playerOnly:!!c.playerOnly,treasure:!!c.treasure,rarity:c.rarity||null
+}));
 
 
 // V19.1 — MOTOR AISLADO DEL SANTUARIO
