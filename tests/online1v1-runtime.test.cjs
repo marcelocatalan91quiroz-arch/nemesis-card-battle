@@ -67,7 +67,7 @@ function invoke({method='POST',query={},body={},cookie='',target=handler}={}){
  assert.equal(sync.payload.room.duel.me.monsters.length,5);
  assert.equal(sync.payload.room.duel.me.supports.length,5);
 
- const firstMonster=sync.payload.room.duel.me.hand.find(c=>c.kind==='MONSTER');
+ const firstMonster=sync.payload.room.duel.me.hand.find(c=>c.kind==='MONSTER'&&c.id!=='MGR-019');
  const firstSupport=sync.payload.room.duel.me.hand.find(c=>c.kind==='SUPPORT');
  if(firstMonster){
   const play=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'play',cardId:firstMonster.id,zone:0}});
