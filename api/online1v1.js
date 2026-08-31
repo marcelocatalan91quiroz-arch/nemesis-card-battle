@@ -386,6 +386,50 @@ function resolveArchetypeAbility(room,p,zone,ultimate=false){
  if(p.deckName==='IMPERIO_DRAGON')return ultimate?{error:'NO_ULTIMATE'}:resolveIdrAbility(room,p,zone);
  return resolveDmAbility(room,p,zone,ultimate)
 }
+function makeProbeRoom(deckName){
+ const p=initOnlinePlayer({deckName},'HOST'),opp=initOnlinePlayer({deckName:deckName==='MAGO_ROJO'?'IMPERIO_DRAGON':'MAGO_ROJO'},'GUEST');
+ p.deck=[];p.hand=[];p.grave=[];p.banished=[];p.monsters=Array(5).fill(null);p.supports=Array(5).fill(null);p.cardState={};p.archetype={seals:7,flames:7,magicUses:0,sky:false};
+ opp.deck=[];opp.hand=[];opp.grave=[];opp.banished=[];opp.monsters=Array(5).fill(null);opp.supports=Array(5).fill(null);opp.cardState={};opp.archetype={seals:3,flames:3,magicUses:0,sky:false};
+ const room={status:'ACTIVE',duel:{mode:'MULTI_DECK',turn:1,activeSeat:'HOST',phase:'MAIN',winnerSeat:null,players:{HOST:p,GUEST:opp},log:[]},events:[],seq:0};
+ return {room,p,opp}
+}
+function probeMgrCard(id){
+ const {room,p,opp}=makeProbeRoom('MAGO_ROJO');const card=catalogCard(id);if(!card)return {id,ok:false,error:'MISSING_CARD'};
+ opp.monsters[0]='IDR-001';opp.cardState[0]=initMonsterState('IDR-001');opp.supports[0]={id:'IDR-013',faceDown:false,active:true};
+ p.grave=['MGR-011','MGR-002'];p.deck=MGR_DECK.filter(x=>x!==id&&x!=='MGR-019');
+ if(card.kind==='MONSTER'){
+  p.monsters[0]=id;p.cardState[0]=initMonsterState(id);
+  const r=resolveMgrAbility(room,p,0);return {id,ok:!['INVALID_SOURCE','NO_ABILITY_HANDLER'].includes(r?.error),error:r?.error||null,kind:'MONSTER'}
+ }
+ p.supports[0]={id,faceDown:true,active:false};
+ if(id==='MGR-015'){p.monsters[0]='MGR-001';p.cardState[0]=initMonsterState('MGR-001');opp.monsters[0]='IDR-001';opp.cardState[0]=initMonsterState('IDR-001');const x=archetypeAttackTrap(room,opp,0,0);return {id,ok:x==='CANCEL',error:x==='CANCEL'?null:'TRAP_NOT_TRIGGERED',kind:'TRAP'}}
+ if(id==='MGR-016'){const x=tryArchetypeResponse(room,opp);return {id,ok:x===true,error:x?null:'TRAP_NOT_TRIGGERED',kind:'TRAP'}}
+ if(id==='MGR-017'){p.monsters[0]='MGR-001';p.cardState[0]=initMonsterState('MGR-001');const x=archetypePreventDestroy(room,p,0,{});return {id,ok:!!x,error:x?null:'TRAP_NOT_TRIGGERED',kind:'TRAP'}}
+ if(id==='MGR-014'){p.monsters[0]='MGR-008';p.cardState[0]=initMonsterState('MGR-008');p.monsters[1]='MGR-009';p.cardState[1]=initMonsterState('MGR-009');p.deck.push('MGR-019')}
+ else{p.monsters[0]='MGR-001';p.cardState[0]=initMonsterState('MGR-001');if(id==='MGR-013')p.grave.unshift('MGR-002')}
+ const r=resolveMgrSupport(room,p,{supportZone:0,targetZone:0});
+ return {id,ok:!['UNKNOWN_MGR_EFFECT','INVALID_SUPPORT'].includes(r?.error),error:r?.error||null,kind:'SUPPORT'}
+}
+function probeIdrCard(id){
+ const {room,p,opp}=makeProbeRoom('IMPERIO_DRAGON');const card=catalogCard(id);if(!card)return {id,ok:false,error:'MISSING_CARD'};
+ opp.monsters[0]='MGR-001';opp.cardState[0]=initMonsterState('MGR-001');opp.supports[0]={id:'MGR-011',faceDown:false,active:true};
+ p.grave=['IDR-001'];p.deck=IDR_DECK.filter(x=>x!==id&&x!=='IDR-009'&&x!=='IDR-010'&&x!=='IDR-019'&&x!=='IDR-020');
+ if(card.kind==='MONSTER'){
+  p.monsters[0]=id;p.cardState[0]=initMonsterState(id);
+  const r=resolveIdrAbility(room,p,0);return {id,ok:!['INVALID_SOURCE','NO_ABILITY_HANDLER'].includes(r?.error),error:r?.error||null,kind:'MONSTER'}
+ }
+ p.supports[0]={id,faceDown:true,active:false};p.monsters[0]='IDR-001';p.cardState[0]=initMonsterState('IDR-001');
+ if(id==='IDR-014'){const x=archetypeAttackTrap(room,opp,0,0);return {id,ok:x===null||x==='CANCEL',error:null,kind:'TRAP'}}
+ if(id==='IDR-015'){const x=archetypePreventDestroy(room,p,0,{});return {id,ok:!!x,error:x?null:'TRAP_NOT_TRIGGERED',kind:'TRAP'}}
+ if(id==='IDR-012')p.deck.push('IDR-009');
+ const r=resolveIdrSupport(room,p,{supportZone:0,targetZone:0});
+ return {id,ok:!['UNKNOWN_IDR_EFFECT','INVALID_SUPPORT'].includes(r?.error),error:r?.error||null,kind:'SUPPORT'}
+}
+function onlineRuntimeProbe(){
+ const mgr=MGR_DECK.map(probeMgrCard),idr=IDR_DECK.map(probeIdrCard);
+ return {MAGO_ROJO:{count:mgr.length,ok:mgr.every(x=>x.ok),cards:mgr},IMPERIO_DRAGON:{count:idr.length,ok:idr.every(x=>x.ok),cards:idr}}
+}
+
 function resolveArchetypeSupport(room,p,body){
  if(p.deckName==='MAGO_ROJO')return resolveMgrSupport(room,p,body);
  if(p.deckName==='IMPERIO_DRAGON')return resolveIdrSupport(room,p,body);
@@ -655,6 +699,9 @@ module.exports=async function handler(req,res){
    }
    if(authBody.action==='engine_audit'){
     return res.status(200).json({ok:true,mode:'MULTI_DECK',engines:onlineEngineAudit(),ownerAuthReady:ownerAuthReady()});
+   }
+   if(authBody.action==='engine_probe'&&!isProduction()){
+    const runtime=onlineRuntimeProbe();return res.status(200).json({ok:runtime.MAGO_ROJO.ok&&runtime.IMPERIO_DRAGON.ok,runtime});
    }
   }
   if(!storageReady())return res.status(503).json({ok:false,error:'PERSISTENCE_REQUIRED'});
