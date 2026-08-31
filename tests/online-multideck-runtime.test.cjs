@@ -23,7 +23,7 @@ function invoke(handler,{method='POST',query={},body={},cookie=''}={}){
  assert.equal(audit.status,200);
  for(const name of ['DUEL_MASTER','MAGO_ROJO','IMPERIO_DRAGON']){assert.equal(audit.payload.engines[name].count,20,name+' 20 cartas');assert.equal(audit.payload.engines[name].all,true,name+' handlers')}
  const probe=await invoke(online,{body:{action:'engine_probe'}});
- assert.equal(probe.status,200);assert.equal(probe.payload.ok,true);
+ assert.equal(probe.status,200);if(!probe.payload.ok)console.error('ENGINE_PROBE_FAIL',JSON.stringify({mgr:probe.payload.runtime.MAGO_ROJO.cards.filter(x=>!x.ok),idr:probe.payload.runtime.IMPERIO_DRAGON.cards.filter(x=>!x.ok)}));assert.equal(probe.payload.ok,true);
  assert.equal(probe.payload.runtime.MAGO_ROJO.count,20);assert.equal(probe.payload.runtime.MAGO_ROJO.ok,true);
  assert.equal(probe.payload.runtime.IMPERIO_DRAGON.count,20);assert.equal(probe.payload.runtime.IMPERIO_DRAGON.ok,true);
  const badMgr=probe.payload.runtime.MAGO_ROJO.cards.filter(x=>!x.ok);const badIdr=probe.payload.runtime.IMPERIO_DRAGON.cards.filter(x=>!x.ok);assert.deepEqual(badMgr,[]);assert.deepEqual(badIdr,[]);
