@@ -35,7 +35,7 @@ function injectEntry(){
  }
 }
 new MutationObserver(injectEntry).observe(document.documentElement,{childList:true,subtree:true});
-addEventListener('DOMContentLoaded',injectEntry);
+if(document.readyState==='loading')addEventListener('DOMContentLoaded',injectEntry,{once:true});else injectEntry();
 
 function onlineHome(name='Jugador'){
  stopPoll();

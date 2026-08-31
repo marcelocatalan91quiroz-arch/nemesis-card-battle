@@ -5,7 +5,7 @@
   "scripts": {
     "test:integrity": "node tests/integrity.test.cjs",
     "test:flow": "node tests/flow-regression.test.cjs",
-    "test:static": "npm run test:integrity && npm run test:flow && npm run test:duel-master && node tests/external33-engine.test.cjs && npm run test:public23 && npm run test:card-schema && npm run test:treasures && npm run test:catalog && npm run test:imperio-dragon && npm run test:mago-rojo && npm run test:online && npm run test:online-runtime && npm run test:balance && npm run test:strategic && npm run test:strategic-power && npm run test:caballeros-submundo && npm run test:eclipse && npm run test:ai-strategy && npm run test:release && npm run test:owner-auth && npm run test:online-multideck && npm run test:arena-global && npm run test:duel-cinematic && npm run test:boot-campaigns && npm run test:boot-performance",
+    "test:static": "npm run test:integrity && npm run test:flow && npm run test:duel-master && node tests/external33-engine.test.cjs && npm run test:public23 && npm run test:card-schema && npm run test:treasures && npm run test:catalog && npm run test:imperio-dragon && npm run test:mago-rojo && npm run test:online && npm run test:online-runtime && npm run test:balance && npm run test:strategic && npm run test:strategic-power && npm run test:caballeros-submundo && npm run test:eclipse && npm run test:ai-strategy && npm run test:release && npm run test:owner-auth && npm run test:online-multideck && npm run test:arena-global && npm run test:duel-cinematic && npm run test:boot-campaigns && npm run test:boot-performance && npm run test:art-performance",
     "test:e2e": "playwright test",
     "test:all": "npm run test:static && npm run test:e2e",
     "test:duel-master": "node tests/duel-master.test.cjs",
@@ -29,7 +29,8 @@
     "test:ai-strategy": "node tests/ai-strategy-runtime.test.cjs",
     "test:duel-cinematic": "node tests/duel-cinematic-v1.test.cjs",
     "test:boot-campaigns": "node tests/boot-campaign-profiles.test.cjs",
-    "test:boot-performance": "node tests/boot-performance.test.cjs"
+    "test:boot-performance": "node tests/boot-performance.test.cjs",
+    "test:art-performance": "node tests/art-loading-performance.test.cjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.55.0",
