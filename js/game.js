@@ -5249,16 +5249,24 @@ window.nemesisIntegrityAudit=function(){
  const result={version:window.NEMESIS_CORE_VERSION,totalCards:CARDS.length,duplicateIds:dup,bosses,campaigns,specialEffects:{count:specialEffects.length,unrouted},memory:{deck:state.deck.length,owned:state.owned.length,campaign3Stage:state.campaign3Stage},bridges:{battle:typeof window.battle==='function',menu:typeof window.menuScene==='function'},architecture:{centralPhaseGuard:true,bossRegistry:true,bossAdapters:true,flowSupervisor:true,campaignProfiles:!!window.NEMESIS_CAMPAIGN_PROFILES,globalCollection:!!window.NEMESIS_COLLECTION,savedDecks:!!state.savedDecks},ok:!dup.length&&!unrouted.length&&Object.values(bosses).every(x=>x.ok)&&Object.values(campaigns).every(Boolean)};
  console.info('[NÉMESIS INTEGRITY]',result);return result
 };
-setTimeout(()=>window.nemesisIntegrityAudit(),250);
-
-nemesisMigrateCompletedCampaignRewards();
-if(typeof state!=='undefined'&&state){
- nemesisEnsureSanctuary();
- if(state.hadesDefeated)state.sanctuary.awake=true;
- save();
+function nemesisScheduleBootMaintenance(){
+ const run=()=>{
+  try{
+   nemesisMigrateCompletedCampaignRewards();
+   if(typeof state!=='undefined'&&state){
+    nemesisEnsureSanctuary();
+    if(state.hadesDefeated)state.sanctuary.awake=true;
+    save();
+   }
+   window.nemesisIntegrityAudit?.();
+  }catch(e){console.warn('[NÉMESIS boot maintenance]',e)}
+ };
+ if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:1200});
+ else setTimeout(run,40);
 }
 
 title();
+nemesisScheduleBootMaintenance();
 
 document.addEventListener('dblclick',(e)=>{const el=e.target.closest?.('.card3d,.hand-card,.card');if(!el)return;let idx=Number(el.dataset?.index);let side=el.dataset?.side;if(Number.isInteger(idx)){let c=side==='e'?enemyCards?.[idx]:playerCards?.[idx];if(c)v15Inspect(c)}});
 
