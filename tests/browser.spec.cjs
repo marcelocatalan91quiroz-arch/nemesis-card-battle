@@ -155,8 +155,8 @@ test('auditoría total de cartas, imágenes y pantallas de colección', async ({
   test.setTimeout(120000);
   const errors=[]; page.on('pageerror',e=>errors.push(String(e)));
   await page.goto('/');
-  await page.evaluate(()=>{ localStorage.clear(); localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true})); location.reload(); });
-  await page.waitForLoadState('load'); await page.waitForTimeout(900);
+  await page.evaluate(()=>{ localStorage.clear(); localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true})); });
+  await page.reload({waitUntil:'load'}); await page.waitForTimeout(900);
   const cards=await page.evaluate(()=>window.NEMESIS_FULL_CARD_AUDIT?.()||[]);
   expect(cards.length).toBeGreaterThan(0);
   expect(new Set(cards.map(c=>c.id)).size).toBe(cards.length);
@@ -186,8 +186,8 @@ test('auditoría total de cartas, imágenes y pantallas de colección', async ({
 test('menú de revancha y flujo de batalla permanecen operativos', async ({ page }) => {
   test.setTimeout(60000);
   await page.goto('/');
-  await page.evaluate(()=>{localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true,guardianDefeated:true,dragonDefeated:true,raDefeated:true,caballeroAlmasDefeated:true,reyEspectralDefeated:true,diosFantasmaDefeated:true,aresDefeated:true,hadesDefeated:true}));location.reload()});
-  await page.waitForLoadState('load'); await page.waitForTimeout(800);
+  await page.evaluate(()=>{localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true,guardianDefeated:true,dragonDefeated:true,raDefeated:true,caballeroAlmasDefeated:true,reyEspectralDefeated:true,diosFantasmaDefeated:true,aresDefeated:true,hadesDefeated:true}))});
+  await page.reload({waitUntil:'load'}); await page.waitForTimeout(800);
   await page.locator('#retryBtn').click();
   await expect(page.getByText('RETOS · REVANCHA')).toBeVisible();
   const challenge=page.locator('.retry-grid button').first(); await expect(challenge).toBeEnabled();
