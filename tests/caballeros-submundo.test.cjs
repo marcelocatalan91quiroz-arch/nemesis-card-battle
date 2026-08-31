@@ -141,3 +141,21 @@ must('Plutón Poder de los Caídos',game.includes("PODER DE LOS CAÍDOS")&&game.
 must('Ultimates de armadura',game.includes("function csSubworldArmorUltimate(")&&game.includes("armorForgottenUltimate")&&game.includes("armorPlutoUltimate"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('ARMADURAS SUBMUNDO · CS-015/CS-016: PASS');
+
+
+must('CS-017 registrado',game.includes("id:'CS-017',name:'Corazón del Tártaro'"));
+must('CS-017 es reliquia',game.includes("id:'CS-017'")&&game.includes("subtype:'relic'"));
+must('CS-017 ruta oficial',game.includes("assets/images/caballeros-submundo/corazon-del-tartaro.webp"));
+must('CS-017 almas 5 y aura',game.includes("CORAZÓN DEL TÁRTARO: ALMA")&&game.includes("souls*300+(souls>=5?500:0)"));
+must('CS-017 Ultimate Puertas del Tártaro',game.includes("action:'tartarusGates'")&&game.includes("PUERTAS DEL TÁRTARO"));
+must('CS-018 registrado',game.includes("id:'CS-018',name:'Trono de las Almas Perdidas'"));
+must('CS-018 es reliquia',game.includes("id:'CS-018'")&&game.includes("subtype:'relic'"));
+must('CS-018 ruta oficial',game.includes("assets/images/caballeros-submundo/trono-almas-perdidas.webp"));
+must('CS-018 almas enemigas y debuff',game.includes("ALMA ENEMIGA")&&game.includes("souls*300"));
+must('CS-018 Trono Maldito',game.includes("function csSubworldRelicNegateMagic(")&&game.includes("TRONO MALDITO"));
+must('CS-018 Ultimate Juicio del Inframundo',game.includes("action:'underworldJudgement'")&&game.includes("JUICIO DEL INFRAMUNDO"));
+must('reliquias conectadas a applyMagic',game.includes("subtype==='relic')return await csSubworldRelicMagic(side,c)"));
+must('reliquias conectadas a Cementerio',game.includes("grave.push(arr[i]);csSubworldRelicOnDestroyed(side,victim)"));
+must('auditoría incluye CS-017/018',game.includes("'CS-016','CS-017','CS-018'"));
+if(process.exitCode)process.exit(process.exitCode);
+console.log('RELIQUIAS SUBMUNDO · CS-017/CS-018: PASS');
