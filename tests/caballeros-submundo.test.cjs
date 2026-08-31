@@ -124,3 +124,20 @@ must('armas usan equipamiento central',game.includes("c?.family==='caballeros-su
 must('Sentencia conserva afinidad Venuz',game.includes("c.id==='CS-012'&&['CS-006','CS-007'].includes(arr[idx].id)"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('ARMAS SUBMUNDO · CS-011/CS-014: PASS');
+
+for(const [id,name,img] of [
+ ['CS-015','Armadura Olvidada','armadura-olvidada.webp'],
+ ['CS-016','Armadura Forjada de Plutón','armadura-forjada-pluton.webp']
+]){
+ must(id+' registrado',game.includes("id:'"+id+"',name:'"+name+"'"));
+ must(id+' es armadura',game.includes("id:'"+id+"'")&&game.includes("subtype:'armor'"));
+ must(id+' arte físico',fs.existsSync(path.join(root,'assets/images/caballeros-submundo/'+img)));
+}
+must('armaduras usan ranura central',game.includes("csSubworldArmorMagic")&&game.includes("nemesisEquip(side,i,'armor',a"));
+must('Armadura Olvidada memorias',game.includes("eq.memories=(eq.memories||0)+1")&&game.includes("_csForgottenPierceReady"));
+must('Armadura Olvidada evita destrucción',game.includes("NEGARSE A MORIR")&&game.includes("victim.def=1"));
+must('Plutón cargas de forja',game.includes("eq.forgeCharges=(eq.forgeCharges||0)+1")&&game.includes("_csPlutoVengeance"));
+must('Plutón Poder de los Caídos',game.includes("PODER DE LOS CAÍDOS")&&game.includes("Math.floor(base*.20)"));
+must('Ultimates de armadura',game.includes("function csSubworldArmorUltimate(")&&game.includes("armorForgottenUltimate")&&game.includes("armorPlutoUltimate"));
+if(process.exitCode)process.exit(process.exitCode);
+console.log('ARMADURAS SUBMUNDO · CS-015/CS-016: PASS');
