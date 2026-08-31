@@ -22,12 +22,10 @@ async function logout(){
 }
 function canUseDeck(name){return !PRIVATE.has(canon(name))||state.isOwner}
 function inject(){
- const host=document.querySelector('.menu-actions');if(!host)return;
- let b=document.getElementById('ownerAuthBtn');
- if(!b){b=document.createElement('button');b.id='ownerAuthBtn';b.className='btn owner-auth-entry';host.appendChild(b)}
- b.textContent=state.isOwner?'PROPIETARIO · AUTENTICADO ✓':'ACCESO PROPIETARIO';
+ const b=document.getElementById('ownerBtn');if(!b)return;
+ b.textContent=state.isOwner?'PROPIETARIO ✓ · CERRAR':'MODO PROPIETARIO · BLOQUEADO';
  b.onclick=async()=>{
-  if(state.isOwner){if(confirm('¿Cerrar sesión de propietario?')){await logout();location.reload()}return}
+  if(state.isOwner){await logout();location.reload();return}
   if(!state.configured){alert('La autenticación de propietario aún no está configurada en el servidor.');return}
   const key=prompt('CLAVE PRIVADA DEL PROPIETARIO');if(!key)return;
   try{await login(key);location.reload()}catch(e){alert(e.message==='OWNER_AUTH_INVALID'?'Clave de propietario incorrecta.':'No se pudo autenticar al propietario.')}
