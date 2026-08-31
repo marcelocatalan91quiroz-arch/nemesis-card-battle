@@ -66,7 +66,7 @@ function onlineHome(name='Jugador'){
 }
 function busy(v){document.querySelectorAll('.online-console button').forEach(b=>b.disabled=v)}
 function msg(t){const e=document.getElementById('olMsg');if(e)e.textContent=t}
-function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',OWNER_AUTH_REQUIRED:'Este mazo requiere autenticación real del propietario.',ONLINE_DECK_ENGINE_PENDING:'Este mazo privado aún no tiene motor online habilitado.',ONLINE_DECK_INVALID_CARD:'El mazo contiene una carta que este motor Online todavía no admite.',ONLINE_DECK_EMPTY:'El mazo Online no puede estar vacío.',SOLAR_SHIELD:'El Escudo Solar del Olimpo bloquea el ataque directo.',FUSION_REQUIREMENT:'Faltan materiales para la Fusión Divina.',SACRIFICE_REQUIRED:'La habilidad requiere sacrificar otro Caballero.',GRAVE_REQUIREMENT:'Faltan Caballeros del Submundo en el Cementerio.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
+function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',OWNER_AUTH_REQUIRED:'Este mazo requiere autenticación real del propietario.',ONLINE_DECK_ENGINE_PENDING:'Este mazo privado aún no tiene motor online habilitado.',ONLINE_DECK_INVALID_CARD:'El mazo contiene una carta que este motor Online todavía no admite.',ONLINE_DECK_EMPTY:'El mazo Online no puede estar vacío.',ONLINE_REDEEM_PROOF_REQUIRED:'MS-001 necesita una prueba de canje verificable por el servidor Online.',SOLAR_SHIELD:'El Escudo Solar del Olimpo bloquea el ataque directo.',FUSION_REQUIREMENT:'Faltan materiales para la Fusión Divina.',SACRIFICE_REQUIRED:'La habilidad requiere sacrificar otro Caballero.',GRAVE_REQUIREMENT:'Faltan Caballeros del Submundo en el Cementerio.',ECLIPSE_PICK_EXACTLY_3:'Eclipse Absoluto requiere exactamente 3 poderes.',ECLIPSE_ALREADY_USED:'Eclipse Absoluto ya fue usado por este jugador en este duelo.',SOURCE_SILENCED:'La criatura permanece sellada por Silencio de NÉMESIS.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
 
 async function resume(s){
  current={code:s.code,token:s.token,name:s.name||'Jugador'};
@@ -138,6 +138,27 @@ function dmVisualPulse(payload){
 function dmLogHtml(log=[]){
  return log.slice().reverse().slice(0,12).map(x=>`<div><b>${esc(x.type)}</b><span>${esc(x.seat)}</span></div>`).join('')||'<p>Duelo iniciado.</p>';
 }
+async function dmEclipsePicks(){
+ return new Promise(resolve=>{
+  const powers=[
+   ['judgement','JUICIO DEL ECLIPSE','Destierra 1 carta rival ignorando protección normal.'],
+   ['resurrection','RENACIMIENTO SUPREMO','Revive 1 monstruo del Cementerio con sus efectos.'],
+   ['silence','SILENCIO DE NÉMESIS','Sella una carta o habilidad rival durante el turno.'],
+   ['ascension','ASCENSIÓN ABSOLUTA','+3500 ATK / +3500 DEF durante 2 turnos.'],
+   ['rupture','RUPTURA DEL DESTINO','Destierra un arma, armadura o reliquia rival.']
+  ],selected=new Set(),d=document.createElement('div');d.className='dm-eclipse-picker';
+  d.innerHTML=`<section><small>SECRETA NÉMESIS · MS-001</small><h2>ECLIPSE ABSOLUTO</h2><p>Elige exactamente 3 de 5 poderes.</p><div class="dm-eclipse-options">${powers.map(([id,n,desc])=>`<button data-eclipse="${id}"><b>${n}</b><span>${desc}</span></button>`).join('')}</div><footer><button id="dmEclipseCancel">CANCELAR</button><button id="dmEclipseGo" disabled>ACTIVAR 0/3</button></footer></section>`;
+  document.body.appendChild(d);const go=d.querySelector('#dmEclipseGo');
+  d.querySelectorAll('[data-eclipse]').forEach(b=>b.onclick=()=>{const id=b.dataset.eclipse;if(selected.has(id)){selected.delete(id);b.classList.remove('selected')}else if(selected.size<3){selected.add(id);b.classList.add('selected')}go.disabled=selected.size!==3;go.textContent='ACTIVAR '+selected.size+'/3'});
+  d.querySelector('#dmEclipseCancel').onclick=()=>{d.remove();resolve(null)};
+  go.onclick=()=>{if(selected.size!==3)return;const out=[...selected];d.remove();resolve(out)}
+ })
+}
+async function dmActivateSupport(room,targetZone=null){
+ const slot=room?.duel?.me?.supports?.[dmSelectedSupport];
+ if(slot?.id==='MS-001'){const eclipsePicks=await dmEclipsePicks();if(!eclipsePicks)return;return dmSend({duelAction:'activate_support',supportZone:dmSelectedSupport,targetZone,eclipsePicks})}
+ return dmSend({duelAction:'activate_support',supportZone:dmSelectedSupport,targetZone})
+}
 async function dmSend(payload){
  try{
   dmVisualPulse(payload);
@@ -189,7 +210,7 @@ function renderDuelMasterBoard(room){
  document.querySelectorAll('.dm-zone[data-side="me"][data-zone]').forEach(el=>el.onclick=()=>{
    if(!active)return;
    const z=Number(el.dataset.zone);
-   if(dmSelectedSupport!==null&&me.monsters[z]){dmSend({duelAction:'activate_support',supportZone:dmSelectedSupport,targetZone:z})}
+   if(dmSelectedSupport!==null&&me.monsters[z]){dmActivateSupport(room,z)}
    else if(dmSelectedCard){
      const card=me.hand.find(x=>x.id===dmSelectedCard);if(card?.kind==='MONSTER')dmSend({duelAction:'play',cardId:dmSelectedCard,zone:z});
    }else if(me.monsters[z]){dmSelectedAttacker=z;dmSelectedCard=null;dmSelectedSupport=null;renderDuelMasterBoard(room)}
@@ -207,7 +228,7 @@ function renderDuelMasterBoard(room){
  });
  document.getElementById('dmAbility').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'ability',from:dmSelectedAttacker})};
  document.getElementById('dmUltimate').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'ultimate',from:dmSelectedAttacker})};
- document.getElementById('dmSupportActivate').onclick=()=>{if(active&&dmSelectedSupport!==null)dmSend({duelAction:'activate_support',supportZone:dmSelectedSupport,targetZone:null})};
+ document.getElementById('dmSupportActivate').onclick=()=>{if(active&&dmSelectedSupport!==null)dmActivateSupport(room,null)};
  document.getElementById('dmDirect').onclick=()=>{if(active&&dmSelectedAttacker!==null)dmSend({duelAction:'attack',from:dmSelectedAttacker,target:null})};
  document.getElementById('dmEnd').onclick=()=>{if(active)dmSend({duelAction:'end_turn'})};
  current.room=room;saveSession();
