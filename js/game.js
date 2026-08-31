@@ -3459,6 +3459,30 @@ function csSubworldArmorUltimate(side,c,action){
  toast(eq.sourceId==='CS-015'?'EL GUERRERO QUE EL MUNDO OLVIDÓ activado durante 2 turnos.':'FORJA DEL REY PLUTÓN activada durante 2 turnos.');update();return true
 }
 
+function csRelicState(side){return side==='p'?(window._csRelicsP??=( {} )):(window._csRelicsE??=( {} ))}
+function csRelicMagic(side,a){
+ if(!a||a.family!=='caballeros-submundo'||a.subtype!=='relic')return false;
+ const s=csRelicState(side); if(s.active){toast('Ya tienes una Reliquia del Submundo activa.');return false}
+ s.active={sourceId:a.id,name:a.name,souls:0,enemySouls:0,ultimateUsed:false,indestructibleUsed:false,turnUsed:-1};
+ toast(a.name+' ACTIVADA en la zona de RELIQUIA.');update();return true
+}
+function csRelicOnOwnToGrave(side,c){
+ const r=csRelicState(side).active;if(!r||r.sourceId!=='CS-017'||!csIs(c))return;
+ if(r.souls>=5)return;r.souls++;for(const x of csOwn(side).filter(x=>csIs(x))){x.atk+=300;x.def+=300}toast('CORAZÓN DEL TÁRTARO: ALMA '+r.souls+'/5 · ejército +300 ATK/+300 DEF.')
+}
+function csRelicOnEnemyDestroyed(killerSide,victim){
+ const r=csRelicState(killerSide).active;if(!r||r.sourceId!=='CS-018'||r.enemySouls>=3)return;
+ r.enemySouls++;const foes=csOwn(other(killerSide));for(const x of foes){x.atk=Math.max(0,x.atk-300);x.def=Math.max(0,x.def-300)}toast('TRONO DE LAS ALMAS PERDIDAS: ALMA ENEMIGA '+r.enemySouls+'/3 · ejército rival -300 ATK/-300 DEF.')
+}
+function csRelicPreventStatReduction(side,c){const r=csRelicState(side).active;return !!(r&&r.sourceId==='CS-017'&&csIs(c))}
+function csRelicBlockEnemyBuff(side){const r=csRelicState(other(side)).active;return !!(r&&r.sourceId==='CS-018'&&r.enemySouls>=2)}
+function csRelicNegateMagic(side){const r=csRelicState(other(side)).active;if(!r||r.sourceId!=='CS-018'||r.enemySouls<3||r.magicNegateTurn===turnNo)return false;r.magicNegateTurn=turnNo;toast('TRONO MALDITO: primera Mágica rival del turno NEGADA.');return true}
+async function csRelicUltimate(side){
+ const r=csRelicState(side).active;if(!r||r.ultimateUsed)return false;
+ if(r.sourceId==='CS-017'&&r.souls>=5){const g=csGrave(side),idx=g.findIndex(x=>csIs(x));if(idx<0)return false;const x=g.splice(idx,1)[0];const arr=side==='p'?playerCards:enemyCards,slot=arr.findIndex(v=>!v);if(slot<0){g.push(x);return false}r.souls=0;r.ultimateUsed=true;const base=card(x.id)||x;arr[slot]=clone(base);arr[slot]._summonLockedUntil=turnNo+1;toast('PUERTAS DEL TÁRTARO: '+arr[slot].name+' regresa del Cementerio.');update();return true}
+ if(r.sourceId==='CS-018'&&r.enemySouls>=3){const foes=side==='p'?enemyCards:playerCards,idx=foes.findIndex(Boolean);if(idx<0)return false;r.enemySouls=0;r.ultimateUsed=true;foes[idx]._csControlledBy=side;foes[idx]._csControlUntil=turnNo;toast('JUICIO DEL INFRAMUNDO: '+foes[idx].name+' queda controlado este turno.');update();return true}
+ return false
+}
 function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
   if(csIs(c,'CS-009')&&c._csCerberusFireAtk){c.atk=Math.max(0,c.atk-c._csCerberusFireAtk);delete c._csCerberusFireAtk}
@@ -3501,7 +3525,7 @@ function csGoldenPiercingDamage(side,c,target){
  if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
-window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010','CS-011','CS-012','CS-013','CS-014','CS-015','CS-016'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function',armors:typeof csSubworldArmorMagic==='function'&&typeof csSubworldArmorPreventDestroy==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
+window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010','CS-011','CS-012','CS-013','CS-014','CS-015','CS-016','CS-017','CS-018'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function',armors:typeof csSubworldArmorMagic==='function'&&typeof csSubworldArmorPreventDestroy==='function',relics:typeof csRelicMagic==='function'&&typeof csRelicUltimate==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
 
 function skillFor(c){const armorSkill=csArmorSkillDescriptor(c);if(armorSkill)return armorSkill;if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
  'strategic-herrero':{name:'FORJA DE COMBATE',kind:'strategicBlacksmith',value:1,desc:'Recupera 1 arma o armadura del Cementerio y la equipa a un aliado.'},
@@ -4214,6 +4238,7 @@ async function applyMagic(side,c){strategicVoidMageOnMagic(side);
  if(side==='p'&&isGhostGod&&(window.__nemesisGhostEyeCharges||0)>0){window.__nemesisGhostEyeCharges--;toast(`OJO DEL DIOS FANTASMA anula ${c.name}.`);pcChainLog(`Ojo del Dios Fantasma anula ${c.name}.`);return true}
  if(side==='p'){const counter=enemyCards.findIndex(x=>x&&x.effect==='negateMagic');if(counter>=0){toast(`Sello del Oráculo anuló ${c.name} y fue enviado al Cementerio.`);await destroyCard('e',counter);return true}}
  if(c?.effect==='orbPowerWeapon')return await orbPowerEquip(side,c);
+ if(c?.family==='caballeros-submundo'&&c?.subtype==='relic')return csRelicMagic(side,c);
  if(c?.family==='caballeros-submundo'&&c?.subtype==='armor')return await csSubworldArmorMagic(side,c);
  if(c?.family==='caballeros-submundo'&&c?.subtype==='weapon'){
   const arr=side==='p'?playerCards:enemyCards;
