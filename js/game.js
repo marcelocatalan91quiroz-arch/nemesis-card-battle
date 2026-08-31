@@ -162,7 +162,7 @@ const DIOS_FANTASMA_DECK=DIOS_FANTASMA_CARDS.map(c=>c.id);
 
 const INVENTORY_CAPACITY=500;
 // V18.9.43 — progresión de cartas por jefe, manteniendo intactos los mazos rivales.
-const GUARDIAN_BOSS_CARD_IDS=['dragon-carmesi-caos','dragon-abisal-nemesis','dragon-negro-ruinas','dragon-infernal-sangre','magica-curandero','magica-nosferatu','df-dragon-vacio','dragon','dragon-infernal','esp-dragon-abismo'];
+const GUARDIAN_BOSS_CARD_IDS=['dragon-carmesi-caos','dragon-abisal-nemesis','dragon-negro-ruinas','dragon-infernal-sangre','magica-curandero','magica-nosferatu','df-dragon-vacio','fusion-caotico-supremo','dragon-infernal','esp-dragon-abismo'];
 const PLAYER_DRAGON_SHOP=NEW_CARDS.filter(c=>c.type==='monster');
 const MAGIC_SHOP=NEW_CARDS.filter(c=>c.type==='magic');
 const SHOP_CARDS=[...PLAYER_DRAGON_SHOP,...BASE_CARDS];
