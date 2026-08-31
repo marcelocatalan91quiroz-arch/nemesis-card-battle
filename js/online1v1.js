@@ -115,11 +115,32 @@ function dmMonsterZones(cards=[],side='me'){
 function dmSupportZones(cards=[],side='me'){
  return cards.map((slot,i)=>`<button class="dm-zone support ${slot?'occupied':''}" data-support-zone="${i}" data-side="${side}">${slot?(slot.faceDown?'<div class="dm-cardback">NÉMESIS</div>':dmCardHtml(slot.card)):'<span>SOPORTE '+(i+1)+'</span>'}</button>`).join('');
 }
+function dmDeckTheme(name){
+ const n=String(name||'').toUpperCase();
+ if(n.includes('MAGO_ROJO'))return 'theme-mago';
+ if(n.includes('IMPERIO_DRAGON'))return 'theme-dragon';
+ if(n.includes('DUEL_MASTER'))return 'theme-duelmaster';
+ if(n.includes('CABALLEROS'))return 'theme-submundo';
+ if(n.includes('OLIMPO'))return 'theme-olimpo';
+ return 'theme-nemesis'
+}
+function dmVisualPulse(payload){
+ const root=document.querySelector('.dm-online-board');if(!root)return;
+ const kind=String(payload?.duelAction||'').toLowerCase();
+ const cls=kind==='ultimate'?'fx-ultimate':kind==='attack'?'fx-attack':kind==='ability'?'fx-ability':kind==='activate_support'?'fx-support':kind==='play'?'fx-summon':'fx-action';
+ root.classList.remove('fx-ultimate','fx-attack','fx-ability','fx-support','fx-summon','fx-action');
+ void root.offsetWidth;root.classList.add(cls);
+ let flash=root.querySelector('.dm-action-flash');
+ if(!flash){flash=document.createElement('div');flash.className='dm-action-flash';root.appendChild(flash)}
+ flash.textContent=kind==='ultimate'?'ULTIMATE':kind==='attack'?'ATAQUE':kind==='ability'?'HABILIDAD':kind==='activate_support'?'ACTIVACIÓN':kind==='play'?'INVOCACIÓN':'ACCIÓN';
+ setTimeout(()=>root.classList.remove(cls),760)
+}
 function dmLogHtml(log=[]){
  return log.slice().reverse().slice(0,12).map(x=>`<div><b>${esc(x.type)}</b><span>${esc(x.seat)}</span></div>`).join('')||'<p>Duelo iniciado.</p>';
 }
 async function dmSend(payload){
  try{
+  dmVisualPulse(payload);
   const j=await api({action:'duel',code:current.code,token:current.token,...payload});
   dmSelectedCard=null;dmSelectedAttacker=null;dmSelectedSupport=null;updateRoom(j.room);
  }catch(e){
@@ -131,8 +152,8 @@ function renderDuelMasterBoard(room){
  const d=room.duel;if(!d)return;
  const me=d.me,op=d.opponent,myName=room.me.name,opName=room.players.find(p=>p.id!==room.me.id)?.name||'Rival';
  const active=d.isMyTurn&&d.phase!=='END';
- document.getElementById('app').innerHTML=`<section class="dm-online-board dm-cinematic-online">
-  <div class="dm-board-bg"></div>\n  <div class="dm-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+ document.getElementById('app').innerHTML=`<section class="dm-online-board dm-cinematic-online ${dmDeckTheme(me.deckName)} ${dmDeckTheme(op.deckName)}">
+  <div class="dm-board-bg"></div>\n  <div class="dm-atmosphere" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="dm-energy-rings" aria-hidden="true"><i></i><i></i><i></i></div><div class="dm-vignette" aria-hidden="true"></div>
   <header class="dm-hud">
    <button id="dmLeave" class="dm-exit">← SALIR</button>
    <div class="dm-player-hud rival"><small>${esc(opName)}</small><b>HP ${op.hp.toLocaleString('es-CL')}</b><span>Mano ${op.handCount} · Deck ${op.deckCount} · Cementerio ${op.graveCount}</span></div>
