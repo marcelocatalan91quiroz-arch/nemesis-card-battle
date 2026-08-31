@@ -37,5 +37,13 @@ A('Caballeros reliquias y mágicas',game.includes('function csSubworldRelicSync(
 A('Eclipse 3/5 y una vez por duelo',game.includes('async function nemesisAbsoluteEclipseMagic')&&game.includes('picks.length!==3')&&game.includes('__nemesisEclipseUsedP=false'));
 A('Eclipse destierro/resurrección/silencio/ascensión/ruptura',['nemesisEclipseJudgement','nemesisEclipseResurrection','nemesisEclipseSilence','nemesisEclipseAscension','nemesisEclipseRupture'].every(x=>game.includes('function '+x)||game.includes('async function '+x)));
 
+// Presentación audiovisual del duelo local
+A('perfiles cinematográficos PC activos',game.includes('PC_CINEMATIC_PROFILES')&&game.includes('pcCardCinematic'));
+A('cinemática de invocación conectada',game.includes("pcCardCinematic('summon'"));
+A('cinemática de habilidad conectada',game.includes("pcCardCinematic('skill'"));
+A('ataques con animación y nombre/impacto',game.includes('attackAnim(')&&game.includes('damageFx(')&&game.includes('pcElementImpactFx('));
+A('destrucción cinematográfica conectada',game.includes('pcDestructionFx(')&&game.includes('v18917SendVisualToGrave'));
+A('Fusión Divina conserva cinemática Ultra + motor original',game.includes('olympusFusionUltraCinematic')&&game.includes('fusionAnim('));
+
 if(process.exitCode)process.exit(process.exitCode);
 console.log('NÉMESIS IA + ESTRATEGIAS + TRANSFORMACIONES + FUSIONES: PASS');
