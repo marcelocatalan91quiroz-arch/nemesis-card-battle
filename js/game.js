@@ -518,25 +518,15 @@ if(!state.v18943BossProgressionFixed){
  if(!guardianAlreadyUnlocked){state.owned=state.owned.filter(id=>!GUARDIAN_BOSS_CARD_IDS.includes(id));state.deck=state.deck.filter(id=>!GUARDIAN_BOSS_CARD_IDS.includes(id))}
  state.v18943BossProgressionFixed=true;
 }
-const v18942DivineIds=DIVINE_PLAYER_CARDS.map(c=>c.id);
+// V19.7.3 — MIGRACIÓN PRIVADA SEGURA.
+// Las migraciones antiguas ya no conceden cartas del mazo OLIMPO antes de autenticar al propietario.
+// Solo conserva antiguas cartas divinas que NO pertenecen al mazo privado actual.
+const v18942DivineIds=DIVINE_PLAYER_CARDS.map(c=>c.id).filter(id=>!OLIMPO_DECK_IDS.includes(id));
 if(!state.v18942DivineCardsGranted){
  state.owned=[...new Set([...state.owned,...v18942DivineIds])];
- for(const id of v18942DivineIds){if(!state.deck.includes(id)&&state.deck.length<11)state.deck.push(id)}
  state.v18942DivineCardsGranted=true;
 }
-const v18949OlympusIds=['zeus-emperador-rayo','kronos-devorador-tiempo'];
-if(!state.v18949OlympusCardsGranted){state.owned=[...new Set([...state.owned,...v18949OlympusIds])];for(const id of v18949OlympusIds){if(!state.deck.includes(id)&&state.deck.length<11)state.deck.push(id)}state.v18949OlympusCardsGranted=true;}
-// V18.9.59 — RECUPERACIÓN OLIMPO.
-// Repara partidas antiguas donde el indicador de concesión quedó guardado pero las cartas
-// desaparecieron de owned/deck durante una migración posterior. No reemplaza ninguna carta.
-const v18959OlympusRecoveryIds=['dios-jupiter','zeus-emperador-rayo','kronos-devorador-tiempo'];
-state.owned=[...new Set([...(state.owned||[]),...v18959OlympusRecoveryIds])];
-for(const id of v18959OlympusRecoveryIds){
-  if(!state.deck.includes(id)&&state.deck.length<nemesisActiveDeckLimit())state.deck.push(id);
-}
 state.v18949OlympusCardsGranted=true;
-if(!state.owned.includes('apolo-guardian-solar'))state.owned.push('apolo-guardian-solar');
-if(!state.deck.includes('apolo-guardian-solar')&&state.deck.length<nemesisActiveDeckLimit())state.deck.push('apolo-guardian-solar');
 v18918SanitizeMemoryCard();
 
 const save=()=>{
