@@ -3268,7 +3268,89 @@ function csSync(){
   });
  }
 }
+
+function csWeaponEq(c){return nemesisEquipmentSlots(c)?.weapon||null}
+async function csSubworldWeaponMagic(side,w){
+ if(!w||w.family!=='caballeros-submundo'||w.subtype!=='weapon')return false;
+ const arr=side==='p'?playerCards:enemyCards;
+ const i=side==='p'?await magicAllyIndex(side,`ELIGE PORTADOR PARA ${w.name}`):arr.map((c,i)=>({c,i})).filter(x=>x.c&&x.c.family==='caballeros-submundo').sort((a,b)=>(b.c.atk||0)-(a.c.atk||0))[0]?.i??-1;
+ if(i<0||!arr[i]||arr[i].family!=='caballeros-submundo'){toast(`${w.name}: requiere un Caballero o Monstruo del Submundo.`);return false}
+ const t=arr[i];
+ nemesisEquip(side,i,'weapon',w,{atkBonus:Number(w.equipAtk||0),defBonus:Number(w.equipDef||0),flag:`_${w.effect}`});
+ const eq=csWeaponEq(t);
+ if(eq?.sourceId==='CS-012'&&['CS-006','CS-007'].includes(t.id)){t.atk+=1500;t.def+=1500;eq.venuzAtk=1500;eq.venuzDef=1500}
+ if(eq?.sourceId==='CS-013'){eq.poisonTurns=3}
+ toast(`${w.name} equipada a ${t.name} en ranura ARMA.`);update();return true
+}
+function csWeaponSkillDescriptor(c){
+ const eq=csWeaponEq(c);if(!eq||eq.ultimateUsed)return null;
+ if(eq.sourceId==='CS-011')return{name:'JUICIO DE ARES',kind:'caballerosSubmundo',action:'weaponAresUltimate',desc:'+5000 ATK temporal, Perforación Total y 2000 HP directo al destruir.'};
+ if(eq.sourceId==='CS-012')return{name:'VEREDICTO DEL ECLIPSE',kind:'caballerosSubmundo',action:'weaponVenuzUltimate',desc:'+5000 ATK, Perforación y 2500 HP directo al ejecutar.'};
+ if(eq.sourceId==='CS-013')return{name:'PICADURA DE LA MUERTE',kind:'caballerosSubmundo',action:'weaponScorpionUltimate',desc:'+4000 ATK, Perforación y Veneno máximo.'};
+ if(eq.sourceId==='CS-014')return{name:'SINGULARIDAD ABSOLUTA',kind:'caballerosSubmundo',action:'weaponBlackHoleUltimate',desc:'+5000 ATK/+3000 DEF, Perforación y colapso del ejército rival.'};
+ return null
+}
+function csSubworldWeaponUltimate(side,c,action){
+ const eq=csWeaponEq(c);if(!eq||eq.ultimateUsed)return false;
+ const map={weaponAresUltimate:'CS-011',weaponVenuzUltimate:'CS-012',weaponScorpionUltimate:'CS-013',weaponBlackHoleUltimate:'CS-014'};
+ if(map[action]!==eq.sourceId)return false;
+ eq.ultimateUsed=true;eq.ultimateUntil=turnNo;
+ if(eq.sourceId==='CS-011'){c.atk+=5000;eq.ultimateAtk=5000;c._csWeaponPierceUntil=turnNo;c._csWeaponKillDirect=2000}
+ if(eq.sourceId==='CS-012'){c.atk+=5000;eq.ultimateAtk=5000;c._csWeaponPierceUntil=turnNo;c._csWeaponKillDirect=2500}
+ if(eq.sourceId==='CS-013'){c.atk+=4000;eq.ultimateAtk=4000;c._csWeaponPierceUntil=turnNo;c._csScorpionUltimate=true}
+ if(eq.sourceId==='CS-014'){c.atk+=5000;c.def+=3000;eq.ultimateAtk=5000;eq.ultimateDef=3000;c._csWeaponPierceUntil=turnNo;
+   const riv=side==='p'?enemyCards:playerCards;for(const x of riv)if(x){const al=Math.min(2000,x.atk||0),dl=Math.min(2000,x.def||0);x.atk-=al;x.def-=dl;x._csBlackHoleUltAtkLoss=(x._csBlackHoleUltAtkLoss||0)+al;x._csBlackHoleUltDefLoss=(x._csBlackHoleUltDefLoss||0)+dl}
+ }
+ toast(c.name+' activa '+(action==='weaponAresUltimate'?'JUICIO DE ARES':action==='weaponVenuzUltimate'?'VEREDICTO DEL ECLIPSE':action==='weaponScorpionUltimate'?'PICADURA DE LA MUERTE':'SINGULARIDAD ABSOLUTA')+'.');update();return true
+}
+function csSubworldWeaponBeforeCombat(side,c,target){
+ const eq=csWeaponEq(c);if(!eq||!target)return;
+ if(eq.sourceId==='CS-011'){
+  if(target.def>(c._csBaseAtk||((c.atk||0)-(eq.atkBonus||0)))&&eq.aresVsWallTurn!==turnNo){eq.aresVsWallTurn=turnNo;c.atk+=2000;c._csAresWallBonus=(c._csAresWallBonus||0)+2000}
+  if(eq.ruptureTurn!==turnNo){eq.ruptureTurn=turnNo;const n=Math.min(2500,target.def||0);target.def-=n;target._csAresRuptureLoss=(target._csAresRuptureLoss||0)+n}
+ }
+ if(eq.sourceId==='CS-012'&&eq.sentenceTurn!==turnNo){
+  eq.sentenceTurn=turnNo;const n=Math.min(2000,target.def||0);target.def-=n;target._csVenuzSentenceLoss=(target._csVenuzSentenceLoss||0)+n;target._csVenuzMarkedUntil=turnNo+2
+ }
+ if(eq.sourceId==='CS-013'){
+  target._csPoisonStacks=Math.min(3,(target._csPoisonStacks||0)+1);target._csPoisonUntil=Math.max(target._csPoisonUntil||0,turnNo+3);
+  if(target._csPoisonStacks===1){const a=Math.min(1000,target.atk||0),d=Math.min(1000,target.def||0);target.atk-=a;target.def-=d;target._csPoisonAtkLoss=(target._csPoisonAtkLoss||0)+a;target._csPoisonDefLoss=(target._csPoisonDefLoss||0)+d}
+  if(target._csPoisonStacks===2&&!target._csPoisonBurstTurn){target._csPoisonBurstTurn=turnNo;if(side==='p'){ehpv=Math.max(0,ehpv-1000);damageFx(1000,'e')}else{phpv=Math.max(0,phpv-1000);damageFx(1000,'p')}}
+  if(c._csScorpionUltimate){target._csPoisonStacks=3}
+ }
+ if(eq.sourceId==='CS-014'&&eq.gravityTurn!==turnNo){
+  eq.gravityTurn=turnNo;const a=Math.floor((target.atk||0)*.30),d=Math.floor((target.def||0)*.30);target.atk=Math.max(0,target.atk-a);target.def=Math.max(0,target.def-d);target._csGravityAtkLoss=(target._csGravityAtkLoss||0)+a;target._csGravityDefLoss=(target._csGravityDefLoss||0)+d
+ }
+}
+function csSubworldWeaponAfterKill(side,c){
+ const eq=csWeaponEq(c);if(!eq)return;
+ if(eq.sourceId==='CS-011'){const gain=Math.min(1000,3000-(eq.battleAtk||0));if(gain>0){c.atk+=gain;eq.battleAtk=(eq.battleAtk||0)+gain}}
+ if(eq.sourceId==='CS-014'){const gain=Math.min(500,3000-(eq.devourAtk||0));if(gain>0){c.atk+=gain;c.def+=gain;eq.devourAtk=(eq.devourAtk||0)+gain;eq.devourDef=(eq.devourDef||0)+gain}}
+ if(c._csWeaponKillDirect){const n=c._csWeaponKillDirect;if(side==='p'){ehpv=Math.max(0,ehpv-n);damageFx(n,'e')}else{phpv=Math.max(0,phpv-n);damageFx(n,'p')};delete c._csWeaponKillDirect}
+}
+function csSubworldWeaponAfterSurvive(side,c,attacker){
+ const eq=csWeaponEq(c);if(!eq)return;
+ if(eq.sourceId==='CS-011')c._csAresCounterPierce=true;
+ if(eq.sourceId==='CS-013'&&attacker){attacker._csPoisonStacks=Math.min(3,(attacker._csPoisonStacks||0)+1);attacker._csPoisonUntil=Math.max(attacker._csPoisonUntil||0,turnNo+3)}
+}
+function csSubworldWeaponPiercing(c){const eq=csWeaponEq(c);return !!(eq&&(c._csAresCounterPierce||c._csWeaponPierceUntil===turnNo||eq.sourceId==='CS-014'&&eq.ultimateUntil===turnNo))}
+function csSubworldWeaponPreventDestroy(side,i,victim,cause='effect'){
+ const eq=csWeaponEq(victim);if(!eq)return false;
+ if(eq.sourceId==='CS-012'&&!eq.savedDuel){eq.savedDuel=true;nemesisUnequip(side,i,'weapon',{broken:true,toGrave:true,reason:'VOLUNTAD DE VENUZ sustituye la destrucción'});toast('VOLUNTAD DE VENUZ: el arma se destruye en lugar del portador.');return true}
+ if(eq.sourceId==='CS-011'&&['CS-003','CS-007'].includes(victim.id)&&cause!=='combat'&&!eq.shinySaveUsed){eq.shinySaveUsed=true;nemesisUnequip(side,i,'weapon',{broken:true,toGrave:true,reason:'SINERGIA DEL SUBMUNDO sustituye la destrucción'});toast('SINERGIA DEL SUBMUNDO: Luz de Ares salva la versión Shiny.');return true}
+ return false
+}
+function csSubworldWeaponClearTurn(){
+ for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(!c)return;
+  for(const [k,field] of [['_csAresRuptureLoss','def'],['_csVenuzSentenceLoss','def'],['_csGravityAtkLoss','atk'],['_csGravityDefLoss','def'],['_csBlackHoleUltAtkLoss','atk'],['_csBlackHoleUltDefLoss','def']])if(c[k]){c[field]+=c[k];delete c[k]}
+  if(c._csAresWallBonus){c.atk=Math.max(0,c.atk-c._csAresWallBonus);delete c._csAresWallBonus}
+  delete c._csAresCounterPierce;
+  const eq=csWeaponEq(c);if(eq&&eq.ultimateUntil!=null&&turnNo>eq.ultimateUntil){if(eq.ultimateAtk){c.atk=Math.max(0,c.atk-eq.ultimateAtk);delete eq.ultimateAtk}if(eq.ultimateDef){c.def=Math.max(0,c.def-eq.ultimateDef);delete eq.ultimateDef}delete c._csWeaponPierceUntil;delete c._csScorpionUltimate}
+  if(c._csPoisonUntil!=null&&turnNo>c._csPoisonUntil){if(c._csPoisonAtkLoss){c.atk+=c._csPoisonAtkLoss;delete c._csPoisonAtkLoss}if(c._csPoisonDefLoss){c.def+=c._csPoisonDefLoss;delete c._csPoisonDefLoss}delete c._csPoisonStacks;delete c._csPoisonUntil;delete c._csPoisonBurstTurn}
+ })
+}
 function csArmorSkillDescriptor(c){
+ const weapon=csWeaponSkillDescriptor(c);if(weapon)return weapon;
  const relic=csRelicSkillDescriptor(c);if(relic)return relic;
  const eq=nemesisEquipmentSlots(c)?.armor;if(!eq)return null;
  if(eq.sourceId==='CS-015'&&(eq.memories||0)>=3&&!eq.ultimateUsed)return{name:'EL GUERRERO QUE EL MUNDO OLVIDÓ',kind:'caballerosSubmundo',action:'armorForgottenUltimate',desc:'Consume 3 MEMORIAS: durante 2 turnos +4000 ATK/+5000 DEF y protección reforzada.'};
@@ -3289,6 +3371,7 @@ function csSkillDescriptor(c){
  return null
 }
 async function csUseSkill(side,i,c,sk){
+ if(['weaponAresUltimate','weaponVenuzUltimate','weaponScorpionUltimate','weaponBlackHoleUltimate'].includes(sk.action))return csSubworldWeaponUltimate(side,c,sk.action);
  if(sk.action==='tartarusGates'||sk.action==='underworldJudgement')return await csSubworldRelicUltimate(side,c,sk.action);
  if(sk.action==='armorForgottenUltimate'||sk.action==='armorPlutoUltimate')return csSubworldArmorUltimate(side,c,sk.action);
  if(sk.action==='cerberusMaws')return csCerberusUseSkill(side,c);
@@ -3387,6 +3470,7 @@ function csMeteorRainBlocksAttack(defSide){
  m._csMeteorRainBlockTurn=turnNo;toast('LLUVIA DEL JUICIO METEÓRICO: el primer ataque enemigo del turno queda ANULADO.');return true
 }
 async function csPreventDestroy(side,i,victim,cause='effect'){
+ if(csSubworldWeaponPreventDestroy(side,i,victim,cause))return true;
  const grave=csGrave(side);
  if(cause==='effect'&&csIs(victim)&&!csIs(victim,'CS-008')){
   const m=csOwn(side).find(x=>csIs(x,'CS-008')&&x._csMeteorGuardianTurn!==turnNo&&(x.def||0)>=1500);
@@ -3612,6 +3696,7 @@ function csKeepTurnAfterAttack(c){
  return false
 }
 function csGoldenPiercingDamage(side,c,target){
+ if(csSubworldWeaponPiercing(c))return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csSubworldArmorPiercing(c))return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-010')&&(c._csPegasusEclipseUntil||-1)>=turnNo)return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-006'))return csVenuzPiercingDamage(side,c,target);
@@ -3619,7 +3704,7 @@ function csGoldenPiercingDamage(side,c,target){
  if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
-window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010','CS-011','CS-012','CS-013','CS-014','CS-015','CS-016','CS-017','CS-018','CS-019','CS-020'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function',armors:typeof csSubworldArmorMagic==='function'&&typeof csSubworldArmorPreventDestroy==='function',relics:typeof csSubworldRelicMagic==='function',spells:typeof csSubworldSpellMagic==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
+window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010','CS-011','CS-012','CS-013','CS-014','CS-015','CS-016','CS-017','CS-018','CS-019','CS-020'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function',weapons:typeof csSubworldWeaponMagic==='function'&&typeof csSubworldWeaponBeforeCombat==='function'&&typeof csSubworldWeaponUltimate==='function',armors:typeof csSubworldArmorMagic==='function'&&typeof csSubworldArmorPreventDestroy==='function',relics:typeof csSubworldRelicMagic==='function',spells:typeof csSubworldSpellMagic==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
 
 function skillFor(c){const armorSkill=csArmorSkillDescriptor(c);if(armorSkill)return armorSkill;if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
  'strategic-herrero':{name:'FORJA DE COMBATE',kind:'strategicBlacksmith',value:1,desc:'Recupera 1 arma o armadura del Cementerio y la equipa a un aliado.'},
@@ -3678,7 +3763,7 @@ async function useCreatureSkill(side,i){const arr=side==='p'?playerCards:enemyCa
  else if(sk.kind==='dmAphrodite'){const rival=side==='p'?enemyCards:playerCards,t=rival.filter(Boolean).sort((a,b)=>(b.atk||0)-(a.atk||0))[0];if(t){t.atk=Math.max(0,t.atk-1500);t._dmAphroditeLockedUntil=turnNo;toast('SEDUCCIÓN DEL ALMA: '+t.name+' queda sometida este turno.')}c._immortalUntil=Math.max(c._immortalUntil||0,turnNo+1)}
  else if(sk.kind==='dmThorShiny'){const rival=side==='p'?enemyCards:playerCards;rival.filter(Boolean).forEach(t=>{t.atk=Math.max(0,t.atk-1500)});if(side==='p'){ehpv=Math.max(0,ehpv-2500);damageFx(2500,'e')}else{phpv=Math.max(0,phpv-2500);damageFx(2500,'p')}c.atk+=1000;toast('THOR SHINY: TRUENO ETERNO desatado.');}
  else if(sk.kind==='dmMedusa'){const rival=side==='p'?enemyCards:playerCards,t=rival.filter(Boolean).sort((a,b)=>(b.atk||0)-(a.atk||0))[0];if(t){t._dmPetrifiedUntil=turnNo+1;t._attackDisabledUntil=turnNo+1;c.atk+=500;c.def+=500;c._dmStoneBonus=Math.min(2000,(c._dmStoneBonus||0)+500);toast('MIRADA PETRIFICANTE: '+t.name+' queda petrificada.')}}else if(sk.kind==='attack'){c.atk+=sk.value;olympusNotifyAttackIncrease(side,sk.value);const key=side==='p'?'_skillAtkBonus':'_enemySkillAtkBonus';c[key]=(c[key]||0)+sk.value}else if(sk.kind==='shield'){c._shieldBonus=(c._shieldBonus||0)+sk.value;c._shieldPending=true}else if(sk.kind==='heal'){if(side==='p')phpv=Math.min(playerMaxHp,phpv+sk.value);else ehpv=Math.min(enemyMaxHp,ehpv+sk.value)}else if(sk.kind==='damage'){if(side==='p')ehpv=Math.max(0,ehpv-sk.value);else phpv=Math.max(0,phpv-sk.value);damageFx(sk.value,side==='p'?'e':'p')}else if(sk.kind==='solarShield'){if(side==='p'){playerDirectShieldUntil=Math.max(playerDirectShieldUntil,turnNo+1);toast(`${c.name}: Escudo Solar protege tus HP de ataques directos durante 2 turnos.`)}else{toast(`${c.name}: Escudo Solar activado.`)}}else if(sk.kind==='debuff'){const rivals=side==='p'?enemyCards:playerCards,target=rivals.map((x,j)=>({c:x,j})).filter(x=>x.c).sort((a,b)=>b.c.atk-a.c.atk)[0];if(target){const defendedSide=side==='p'?'e':'p',eye=csHorusEye(defendedSide,target.c,sk.value),tc=eye.target,val=eye.amount;if(!orbPowerDominion(tc)){tc.atk=Math.max(0,tc.atk-val);tc._skillDebuff=(tc._skillDebuff||0)+val;}toast(`${tc.name} pierde ${val} ATK durante este turno.`)}}else if(sk.kind==='stopTime'){if(side==='p'){enemySkipTurns=Math.max(enemySkipTurns,1);toast('KRONOS DETIENE EL TIEMPO: el rival perderá su siguiente turno completo.')}else{playerAttackBlockedUntil=Math.max(playerAttackBlockedUntil,turnNo+1)}}else if(sk.kind==='destroyEquipment'){await destroyEnemyEquipment(side,sk.value||1,c)}else if(sk.kind==='strategicBlacksmith'){await strategicBlacksmithUse(side,i,c)}else if(sk.kind==='strategicDarkClown'){await strategicDarkClownUse(side,i,c)}else if(sk.kind==='strategicDeathGolem'){await strategicDeathGolemUse(side,i,c)}else if(sk.kind==='strategicVoidMage'){await strategicVoidMageUse(side,i,c)}else if(sk.kind==='eternalVoidGod'){await eternalVoidGodUse(side,i,c)}update();updateSkillButtons();await wait(280);return true}
-function clearSkillTurnEffects(){csClearTurn();mgrClearTurn();strategicVoidMageExpire();eternalVoidGodExpire();nemesisEclipseExpire();for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(c?._strategicClownOriginal&&c._strategicClownSwapTurn<=turnNo){c.atk=c._strategicClownOriginal.atk;c.def=c._strategicClownOriginal.def;delete c._strategicClownOriginal;delete c._strategicClownSwapTurn;}});for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(!c)return;if(c._idrVortexBonus){c.atk=Math.max(0,c.atk-c._idrVortexBonus);delete c._idrVortexBonus}if(c._idrApocalypseBonus){c.atk=Math.max(0,c.atk-c._idrApocalypseBonus);delete c._idrApocalypseBonus}});playerCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._skillDebuff){c.atk+=c._skillDebuff;delete c._skillDebuff}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}});enemyCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._enemySkillAtkBonus){c.atk=Math.max(0,c.atk-c._enemySkillAtkBonus);delete c._enemySkillAtkBonus}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}})}
+function clearSkillTurnEffects(){csSubworldWeaponClearTurn();csClearTurn();mgrClearTurn();strategicVoidMageExpire();eternalVoidGodExpire();nemesisEclipseExpire();for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(c?._strategicClownOriginal&&c._strategicClownSwapTurn<=turnNo){c.atk=c._strategicClownOriginal.atk;c.def=c._strategicClownOriginal.def;delete c._strategicClownOriginal;delete c._strategicClownSwapTurn;}});for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(!c)return;if(c._idrVortexBonus){c.atk=Math.max(0,c.atk-c._idrVortexBonus);delete c._idrVortexBonus}if(c._idrApocalypseBonus){c.atk=Math.max(0,c.atk-c._idrApocalypseBonus);delete c._idrApocalypseBonus}});playerCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._skillDebuff){c.atk+=c._skillDebuff;delete c._skillDebuff}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}});enemyCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._enemySkillAtkBonus){c.atk=Math.max(0,c.atk-c._enemySkillAtkBonus);delete c._enemySkillAtkBonus}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}})}
 function update(){csSync();strategicSyncBlacksmithAura();mgrSync();idrStormSync();treasureSyncEquipmentBonuses();pub23Sync();nemesisDmSync();heroicSync();const hp=document.getElementById('heroicP'),he=document.getElementById('heroicE'),hpt=document.getElementById('heroicPT'),het=document.getElementById('heroicET'),hf=document.getElementById('heroicFormation'),hi=document.getElementById('heroicIntent'),hw=document.getElementById('heroicWeather');if(hp)hp.style.width=HEROIC.climaxP+'%';if(he)he.style.width=HEROIC.climaxE+'%';if(hpt)hpt.textContent=HEROIC.climaxP+'%';if(het)het.textContent=HEROIC.climaxE+'%';if(hf)hf.textContent=heroicFormation()?.name||'SIN FORMACIÓN';if(hi)hi.textContent='IA: '+heroicIntent();if(hw)hw.textContent=HEROIC.weather;if(aresIsBoss())aresSyncPhase();if(hadesIsBoss())hadesSyncPhase();applyTitanDominion();v188UpdateHUD();applyDragonRage();applyBossPhases();olympusEvaluateSynergies();olympusUpdateZone();updatePcStrategicHud();updateSkillButtons()}
 const NEMESIS_PHASES=Object.freeze(['DRAW','PLACE','ACTION','TARGET','ENEMY','END']);
 const NEMESIS_PHASE_TRANSITIONS=Object.freeze({
@@ -3845,7 +3930,7 @@ async function resolveBattle(attSide,ai,defSide,di){
  if(csMeteorRainBlocksAttack(defSide)){update();return}
  di=await csMeteorIntercept(defSide,di,A);
  const D=(defSide==='p'?playerCards:enemyCards)[di];if(!D)return;
- csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);csSubworldArmorBeforeAttack(attSide,A);if(A._csPlutoVengeance){A._csPlutoVengeanceConsumedTurn=turnNo}
+ csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);csSubworldArmorBeforeAttack(attSide,A);csSubworldWeaponBeforeCombat(attSide,A,D);if(A._csPlutoVengeance){A._csPlutoVengeanceConsumedTurn=turnNo}
  if(csPegasusEvade(defSide,D)){update();return}
  await idrBeforeAttack(attSide,ai,A);
  if(D.effect==='phantomReflect'){
@@ -3855,23 +3940,23 @@ async function resolveBattle(attSide,ai,defSide,di){
   damageFx(reflected,defSide==='p'?'e':'p');update();toast(`${D.name}: copia ${reflected} ATK y causa ${reflected} de daño directo al rival.`);await wait(320);
   if((defSide==='p'&&ehpv<=0)||(defSide==='e'&&phpv<=0))return;
  }
- const rewardAres=()=>{if(A.id==="anc-ares"){A.atk+=500;toast(`Furia del Conquistador: Ares gana +500 ATK (${A.atk}).`)}};const dm=(defSide==='p'?playerModes:enemyModes)[di]||'ATAQUE';await (defSide==='e'?revealEnemy(di):revealPlayer(di));const shieldBonus=D._shieldPending?(Number(D._shieldBonus)||0):0;const defenseValue=A._treasurePiercing?0:(dm==='DEFENSA'?D.def:D.atk)+shieldBonus;const diff=A.atk-defenseValue;if(shieldBonus)toast(`${D.name}: protección de habilidad aporta +${shieldBonus} DEF.`);await attackAnim(attSide,ai,defSide,di,A,Math.max(0,diff));if(attSide==='e')clearNextEnemyShields();else if(shieldBonus){delete D._shieldBonus;delete D._shieldPending}if(A.effect==='royalExecution'&&(D.def||0)<=4000){await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);toast(`EJECUCIÓN: ${D.name} es destruida por la Corona Maldita.`);update();return}if(dm==='DEFENSA'){
+ const rewardAres=()=>{if(A.id==="anc-ares"){A.atk+=500;toast(`Furia del Conquistador: Ares gana +500 ATK (${A.atk}).`)}};const dm=(defSide==='p'?playerModes:enemyModes)[di]||'ATAQUE';await (defSide==='e'?revealEnemy(di):revealPlayer(di));const shieldBonus=D._shieldPending?(Number(D._shieldBonus)||0):0;const defenseValue=A._treasurePiercing?0:(dm==='DEFENSA'?D.def:D.atk)+shieldBonus;const diff=A.atk-defenseValue;if(shieldBonus)toast(`${D.name}: protección de habilidad aporta +${shieldBonus} DEF.`);await attackAnim(attSide,ai,defSide,di,A,Math.max(0,diff));if(attSide==='e')clearNextEnemyShields();else if(shieldBonus){delete D._shieldBonus;delete D._shieldPending}if(A.effect==='royalExecution'&&(D.def||0)<=4000){await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);csSubworldWeaponAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);toast(`EJECUCIÓN: ${D.name} es destruida por la Corona Maldita.`);update();return}if(dm==='DEFENSA'){
  if(diff>0){
-  await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();
+  await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);csSubworldWeaponAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();
   const csPierce=csGoldenPiercingDamage(attSide,A,D);if(csPierce>0){if(defSide==='e')ehpv=Math.max(0,ehpv-csPierce);else phpv=Math.max(0,phpv-csPierce);damageFx(csPierce,defSide);toast('ÚLTIMO JUICIO: '+csPierce+' de daño perforante directo.')}
   toast('Defensa superada. La carta defensora fue destruida'+(csPierce>0?' y Último Juicio atraviesa la defensa.':', pero no se pierden HP.'));
  }else if(diff<0){
   const rebote=Math.abs(diff);
   if(attSide==='p')phpv=Math.max(0,phpv-rebote);else ehpv=Math.max(0,ehpv-rebote);
   damageFx(rebote,attSide);
-  toast(`¡Muro impenetrable! El atacante rebota y pierde ${rebote} HP.`);mgrAfterSurvive(defSide,D);csSubworldArmorAfterSurvive(defSide,D);
+  toast(`¡Muro impenetrable! El atacante rebota y pierde ${rebote} HP.`);mgrAfterSurvive(defSide,D);csSubworldArmorAfterSurvive(defSide,D);csSubworldWeaponAfterSurvive(defSide,D,A);
  }else{
   toast('Ataque y defensa iguales. Nadie recibe daño.');
  }
  update();
  return
 }
- if(diff>0){await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);const csPierce=csGoldenPiercingDamage(attSide,A,D);if(csPierce>hpDiff){hpDiff=csPierce;toast('ÚLTIMO JUICIO: el daño perforante aumenta el impacto a '+hpDiff+'.')}if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);mgrAfterSurvive(defSide,D);csSubworldArmorAfterSurvive(defSide,D);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A)}update()}
+ if(diff>0){await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);csSubworldWeaponAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);const csPierce=csGoldenPiercingDamage(attSide,A,D);if(csPierce>hpDiff){hpDiff=csPierce;toast('ÚLTIMO JUICIO: el daño perforante aumenta el impacto a '+hpDiff+'.')}if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);mgrAfterSurvive(defSide,D);csSubworldArmorAfterSurvive(defSide,D);csSubworldWeaponAfterSurvive(defSide,D,A);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A)}update()}
 function chooseMagicTarget(titleText,cards,side='p'){
  return new Promise(resolve=>{
   const old=document.getElementById('magicTargetPicker');if(old)old.remove();
@@ -4441,14 +4526,6 @@ async function applyMagic(side,c){strategicVoidMageOnMagic(side);if(c?.effect===
  if(c?.family==='caballeros-submundo'&&c?.subtype==='spell')return await csSubworldSpellMagic(side,c);
  if(c?.family==='caballeros-submundo'&&c?.subtype==='relic')return await csSubworldRelicMagic(side,c);
  if(c?.family==='caballeros-submundo'&&c?.subtype==='armor')return await csSubworldArmorMagic(side,c);
- if(c?.family==='caballeros-submundo'&&c?.subtype==='weapon'){
-  const arr=side==='p'?playerCards:enemyCards;
-  const idx=side==='p'?await magicAllyIndex(side,`ELIGE PORTADOR PARA ${c.name}`):arr.findIndex(x=>x&&x.family==='caballeros-submundo');
-  if(idx<0||!arr[idx]||arr[idx].family!=='caballeros-submundo'){toast(`${c.name}: requiere un Caballero o Monstruo del Submundo.`);return false}
-  nemesisEquip(side,idx,'weapon',c,{atkBonus:Number(c.equipAtk||0),defBonus:Number(c.equipDef||0),flag:`_${c.effect}`});
-  if(c.id==='CS-012'&&['CS-006','CS-007'].includes(arr[idx].id)){arr[idx].atk+=1500;arr[idx].def+=1500}
-  toast(`${c.name} equipada y operativa en la ranura ARMA.`);update();return true
- }
  if(c?.family==='caballeros-submundo'&&c?.subtype==='weapon')return await csSubworldWeaponMagic(side,c);
  if(treasureIs(c))return await applyTreasureMagic(side,c);
  if(c?.family==='imperio-dragon'&&c.type==='magic')return await idrApplyMagic(side,c);
