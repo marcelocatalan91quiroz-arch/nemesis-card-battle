@@ -63,6 +63,9 @@ A('online cliente cargado',html.includes('js/online1v1.js'));
 A('online servidor autoritativo y Redis',api.includes("authority:'server'")&&api.includes('REDIS_URL')&&api.includes('storageReady'));
 A('online 2 jugadores, turnos y reconexión',api.includes('ROOM_FULL')&&api.includes('NOT_YOUR_TURN')&&api.includes("action==='heartbeat'"));
 A('online Duel Master 20 efectos',api.includes('DM_EFFECT_HANDLERS')&&api.includes("'DM-020'"));
+A('online Olimpo 11/11 autoritativo',api.includes('OLIMPO_CATALOG')&&api.includes('OLIMPO:OLIMPO_DECK')&&api.includes('resolveOlimpoAbility')&&api.includes('resolveOlimpoSupport'));
+A('online Caballeros 20/20 autoritativo',api.includes('CS_CATALOG')&&api.includes('CABALLEROS_SUBMUNDO:CABALLEROS_SUBMUNDO_DECK')&&api.includes('resolveCsAbility')&&api.includes('resolveCsSupport'));
+A('online soporta armaduras reales',api.includes("equipment:{weapon:null,armor:null,relic:null}")&&api.includes("['weapon','armor','relic']"));
 
 if(process.exitCode)process.exit(process.exitCode);
 console.log('NÉMESIS RELEASE READINESS: PASS');
