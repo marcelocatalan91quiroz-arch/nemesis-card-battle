@@ -602,9 +602,40 @@ function probeIdrCard(id){
  const r=resolveIdrSupport(room,p,{supportZone:0,targetZone:0});
  return {id,ok:!['UNKNOWN_IDR_EFFECT','INVALID_SUPPORT'].includes(r?.error),error:r?.error||null,kind:'SUPPORT'}
 }
+function probeOlimpoCard(id){
+ const {room,p,opp}=makeProbeRoom('OLIMPO'),c=catalogCard(id);if(!c)return {id,ok:false,error:'MISSING_CARD'};
+ opp.monsters[0]='MGR-001';opp.cardState[0]=initMonsterState('MGR-001');opp.supports[0]={id:'MGR-011',faceDown:false,active:true};
+ p.deck=OLIMPO_DECK.filter(x=>x!==id);p.grave=[];
+ if(c.kind==='MONSTER'){
+  p.monsters[0]=id;p.cardState[0]=initMonsterState(id);
+  if(id==='olimpo-atenea'){p.monsters[1]='dios-jupiter';p.cardState[1]=initMonsterState('dios-jupiter')}
+  const x=resolveOlimpoAbility(room,p,0,false);return {id,ok:!['INVALID_SOURCE','NO_ABILITY_HANDLER'].includes(x?.error),error:x?.error||null,kind:'MONSTER'}
+ }
+ p.supports[0]={id,faceDown:true,active:false};p.monsters[0]='dios-jupiter';p.cardState[0]=initMonsterState('dios-jupiter');
+ if(id==='olimpo-ascension')p.deck=['zeus-emperador-rayo','kronos-devorador-tiempo'];
+ const x=resolveOlimpoSupport(room,p,{supportZone:0,targetZone:0});
+ return {id,ok:!['UNKNOWN_OLYMPUS_EFFECT','INVALID_SUPPORT','FUSION_REQUIREMENT'].includes(x?.error),error:x?.error||null,kind:'SUPPORT'}
+}
+function probeCsCard(id){
+ const {room,p,opp}=makeProbeRoom('CABALLEROS_SUBMUNDO'),c=catalogCard(id);if(!c)return {id,ok:false,error:'MISSING_CARD'};
+ opp.monsters[0]='MGR-001';opp.cardState[0]=initMonsterState('MGR-001');p.grave=['CS-001','CS-004','CS-005','CS-008','CS-010'];
+ if(c.kind==='MONSTER'){
+  p.monsters[0]=id;p.cardState[0]=initMonsterState(id);
+  if(['CS-001','CS-002','CS-003','CS-004'].includes(id)){p.monsters[1]='CS-008';p.cardState[1]=initMonsterState('CS-008')}
+  const x=resolveCsAbility(room,p,0,false);return {id,ok:!['INVALID_SOURCE','NO_ABILITY_HANDLER','SACRIFICE_REQUIRED','NO_TARGET'].includes(x?.error),error:x?.error||null,kind:'MONSTER'}
+ }
+ p.supports[0]={id,faceDown:true,active:false};p.monsters[0]='CS-001';p.cardState[0]=initMonsterState('CS-001');
+ const x=resolveCsSupport(room,p,{supportZone:0,targetZone:0});
+ return {id,ok:!['UNKNOWN_CS_EFFECT','INVALID_SUPPORT','NO_TARGET'].includes(x?.error),error:x?.error||null,kind:'SUPPORT'}
+}
 function onlineRuntimeProbe(){
- const mgr=MGR_DECK.map(probeMgrCard),idr=IDR_DECK.map(probeIdrCard);
- return {MAGO_ROJO:{count:mgr.length,ok:mgr.every(x=>x.ok),cards:mgr},IMPERIO_DRAGON:{count:idr.length,ok:idr.every(x=>x.ok),cards:idr}}
+ const mgr=MGR_DECK.map(probeMgrCard),idr=IDR_DECK.map(probeIdrCard),ol=OLIMPO_DECK.map(probeOlimpoCard),cs=CABALLEROS_SUBMUNDO_DECK.map(probeCsCard);
+ return {
+  MAGO_ROJO:{count:mgr.length,ok:mgr.every(x=>x.ok),cards:mgr},
+  IMPERIO_DRAGON:{count:idr.length,ok:idr.every(x=>x.ok),cards:idr},
+  OLIMPO:{count:ol.length,ok:ol.every(x=>x.ok),cards:ol},
+  CABALLEROS_SUBMUNDO:{count:cs.length,ok:cs.every(x=>x.ok),cards:cs}
+ }
 }
 
 function resolveArchetypeSupport(room,p,body){
@@ -883,7 +914,7 @@ module.exports=async function handler(req,res){
     return res.status(200).json({ok:true,mode:'MULTI_DECK',engines:onlineEngineAudit(),ownerAuthReady:ownerAuthReady()});
    }
    if(authBody.action==='engine_probe'&&!isProduction()){
-    const runtime=onlineRuntimeProbe();return res.status(200).json({ok:runtime.MAGO_ROJO.ok&&runtime.IMPERIO_DRAGON.ok,runtime});
+    const runtime=onlineRuntimeProbe();return res.status(200).json({ok:runtime.MAGO_ROJO.ok&&runtime.IMPERIO_DRAGON.ok&&runtime.OLIMPO.ok&&runtime.CABALLEROS_SUBMUNDO.ok,runtime});
    }
   }
   if(!storageReady())return res.status(503).json({ok:false,error:'PERSISTENCE_REQUIRED'});
