@@ -392,7 +392,7 @@ function nemesisTreasureScene(){
 window.nemesisTreasureScene=nemesisTreasureScene;
 
 const INITIAL_OWNED=SHOP_CARDS.slice(0,20).map(c=>c.id);
-let state={name:'',profileCreated:false,battlesPlayed:0,lastBattleResult:null,lastBattleKey:null,lastAutosaveAt:0,dialog:0,fear:null,stars:0,retryBattle:null,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'OLIMPO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,11)};
+let state={name:'',profileCreated:false,battlesPlayed:0,lastBattleResult:null,lastBattleKey:null,lastAutosaveAt:0,dialog:0,fear:null,stars:0,retryBattle:null,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'MAGO_ROJO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,20)};
 
 
 // V18.9.18 — MEMORY CARD SEGURA
@@ -532,11 +532,11 @@ if(!state.v18949OlympusCardsGranted){state.owned=[...new Set([...state.owned,...
 const v18959OlympusRecoveryIds=['dios-jupiter','zeus-emperador-rayo','kronos-devorador-tiempo'];
 state.owned=[...new Set([...(state.owned||[]),...v18959OlympusRecoveryIds])];
 for(const id of v18959OlympusRecoveryIds){
-  if(!state.deck.includes(id)&&state.deck.length<11)state.deck.push(id);
+  if(!state.deck.includes(id)&&state.deck.length<nemesisActiveDeckLimit())state.deck.push(id);
 }
 state.v18949OlympusCardsGranted=true;
 if(!state.owned.includes('apolo-guardian-solar'))state.owned.push('apolo-guardian-solar');
-if(!state.deck.includes('apolo-guardian-solar')&&state.deck.length<11)state.deck.push('apolo-guardian-solar');
+if(!state.deck.includes('apolo-guardian-solar')&&state.deck.length<nemesisActiveDeckLimit())state.deck.push('apolo-guardian-solar');
 v18918SanitizeMemoryCard();
 
 const save=()=>{
@@ -5138,7 +5138,7 @@ window.NEMESIS_ARCHITECTURE_RULES=Object.freeze({
  isolatedCampaigns:['campaign1','campaign2','campaign3'],
  rule:'Una campaña nueva crea perfiles/adaptadores nuevos. No modifica IA, fases, mazos, recursos ni efectos privados de campañas anteriores.',
  inventory:'Al completar una campaña, los mazos de sus jefes pasan a la Colección Global y pueden usarse en mazos personales sin alterar los mazos enemigos originales.',
- savedDecks:true,deckLimit:11
+ savedDecks:true,deckLimit:'dynamic-by-archetype'
 });
 
 // V18.9.72 — REGISTRO CENTRAL Y AUTOAUDITORÍA
