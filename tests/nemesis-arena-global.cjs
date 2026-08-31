@@ -35,8 +35,12 @@ const defs={
  ARES:{cards:objects('ARES_CARDS_1_5'),hp:bossProfiles['3'].ares.hp},
  HADES:{cards:objects('HADES_CARDS'),hp:bossProfiles['3'].hades.hp}
 };
-const EXPECTED={DUEL_MASTER:20,MAGO_ROJO:20,IMPERIO_DRAGON:20,CABALLEROS_SUBMUNDO:20,OLIMPO:11,GUARDIAN:10,DRAGON_OJO:12,IRA_DE_RA:15,CABALLERO_ALMAS:15,REY_ESPECTRAL:15,DIOS_FANTASMA:10,ARES:12,HADES:12};
+const EXPECTED={DUEL_MASTER:20,MAGO_ROJO:20,IMPERIO_DRAGON:20,CABALLEROS_SUBMUNDO:20,OLIMPO:11,GUARDIAN:9,DRAGON_OJO:12,IRA_DE_RA:15,CABALLERO_ALMAS:15,REY_ESPECTRAL:15,DIOS_FANTASMA:10,ARES:12,HADES:12};
 for(const [n,d] of Object.entries(defs)){if(!d.cards.length)throw Error('Arena Global: '+n+' sin cartas');if(d.cards.length!==EXPECTED[n])throw Error('Arena Global: '+n+' incompleto '+d.cards.length+'/'+EXPECTED[n]);}
+// El perfil GUARDIAN declara 10 IDs, pero "dragon" es una clave legacy de jefe y no una carta definida.
+const guardianDeclared=ids('GUARDIAN_BOSS_CARD_IDS');
+const guardianMissing=guardianDeclared.filter(id=>!pool.has(id));
+if(guardianMissing.some(id=>id!=='dragon'))throw Error('Arena Global: GUARDIAN IDs reales faltantes '+guardianMissing.join(','));
 const deckAudit=Object.fromEntries(Object.entries(defs).map(([n,d])=>[n,{loaded:d.cards.length,expected:EXPECTED[n],ok:d.cards.length===EXPECTED[n],ids:d.cards.map(c=>c.id)}]));
 function hash(s){let h=2166136261>>>0;for(const c of s){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0}
 function rng(seed){let x=seed>>>0;return()=>{x+=0x6D2B79F5;let t=x;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
