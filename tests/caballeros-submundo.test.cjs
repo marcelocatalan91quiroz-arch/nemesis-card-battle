@@ -111,3 +111,20 @@ must('CS-010 perforación',game.includes("csIs(c,'CS-010')")&&game.includes("_cs
 must('CS-009/010 auditoría',game.includes("'CS-009','CS-010'")&&game.includes("cerberus:typeof csCerberusUseSkill==='function'")&&game.includes("pegasus:typeof csPegasusUseSkill==='function'"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('MONSTRUOS DEL SUBMUNDO · CS-009/CS-010: PASS');
+
+for(const [id,name,img] of [
+ ['CS-011','Luz de Ares','luz-de-ares.webp'],['CS-012','Sentencia de Venuz','sentencia-de-venuz.webp'],
+ ['CS-013','Aguijón de Escorpión','aguijon-de-escorpion.webp'],['CS-014','Agujero Negro','agujero-negro.webp']
+]){
+ must(id+' registrado',game.includes("id:'"+id+"',name:'"+name+"'"));
+ must(id+' es arma',game.includes("id:'"+id+"'")&&game.includes("subtype:'weapon'"));
+ must(id+' arte físico',fs.existsSync(path.join(root,'assets/images/caballeros-submundo/'+img)));
+}
+must('armas conectadas al equipamiento central',game.includes("async function csSubworldWeaponMagic(")&&game.includes("nemesisEquip(side,i,'weapon',w"));
+must('Luz de Ares ruptura',game.includes("eq.sourceId==='CS-011'")&&game.includes("D.def=Math.max(0,(D.def||0)-2500)"));
+must('Sentencia de Venuz afinidad',game.includes("['CS-006','CS-007'].includes(t.id)")&&game.includes("_csVenuzSentenceAffinity"));
+must('Aguijón aplica veneno',game.includes("_csPoisonStacks=Math.min(3")&&game.includes("_csPoisonUntil=turnNo+3"));
+must('Agujero Negro gravedad',game.includes("eq.sourceId==='CS-014'")&&game.includes("Math.floor((D.atk||0)*.30)"));
+must('Ultimate armas',game.includes("function csSubworldWeaponUltimate(")&&game.includes("_ultimateUsed"));
+if(process.exitCode)process.exit(process.exitCode);
+console.log('ARMAS SUBMUNDO · CS-011/CS-014: PASS');
