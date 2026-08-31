@@ -332,6 +332,7 @@ const CABALLEROS_SUBMUNDO_CARDS=[
  {id:'CS-005',name:'Caballero Rose',atk:10000,def:8500,type:'monster',family:'caballeros-submundo',tags:['oscuridad','caballero','submundo','rose','control'],rarity:'ancestral',level:10,effect:'csRoseKnight',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-rose.webp',desc:'DOMINIO DE LAS ROSAS MALDITAS: al entrar coloca 1 Marca de Rosa sobre hasta 2 criaturas rivales; cada Marca reduce 700 ATK/500 DEF, máximo 3. PÉTALO DE LA MUERTE: una vez por turno coloca 1 Marca; con 3 Marcas las detona, causa 2000 HP directo y bloquea el ataque de esa criatura este turno. ROSA DEL CABALLERO CAÍDO: la primera vez por turno que un Caballero aliado va al Cementerio obtiene +500 ATK/+500 DEF permanente, máximo 5. ESPINAS DEL SUBMUNDO: una criatura marcada que ataque a tus Caballeros causa 1000 HP reflejado a su controlador. JARDÍN DE LA MUERTE: una vez por duelo con 3 Caballeros caídos, durante 2 turnos marca a todas las criaturas enemigas y recupera 1000 HP cuando una marcada es destruida.'},
  {id:'CS-006',name:'Caballero Sombra de Venuz',atk:15000,def:13000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','sombra','caballero','submundo','soberano','venuz'],rarity:'divina-suprema',level:12,effect:'csVenuzSovereign',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-sombra-de-venuz.webp',desc:'SOMBRA ABSOLUTA DE VENUZ: absorbe permanentemente +1200 ATK/+800 DEF por cada nuevo Caballero del Submundo que llegue a tu Cementerio. ECLIPSE DEL SUBMUNDO: una vez por turno reduce 50% ATK/DEF de 1 rival y Venuz obtiene +2000 ATK este turno. OJO DE LA SOMBRA ETERNA: niega la primera habilidad enemiga de cada turno que afecte a Venuz. VEREDICTO DE VENUZ: al destruir en combate puede causar 2500 HP directo. RETORNO DEL SOBERANO: una vez por duelo evita su destrucción, obtiene +3000 ATK/+3000 DEF permanentes y resucita 1 Caballero. ECLIPSE FINAL: una vez por duelo con 5 Caballeros caídos, durante 2 turnos obtiene +5000 ATK/+3000 DEF y perforación.'},
  {id:'CS-007',name:'Caballero Sombra de Venuz Shiny',atk:18000,def:16000,type:'monster',family:'caballeros-submundo',tags:['oscuridad','sombra','caballero','submundo','soberano','venuz','shiny'],rarity:'shiny-divina-absoluta',level:12,effect:'csVenuzShinySovereign',caballerosSubmundo:true,shiny:true,img:'assets/images/caballeros-submundo/caballero-sombra-de-venuz-shiny.webp',desc:'SOMBRA ABSOLUTA SHINY: +1500 ATK/+1000 DEF permanente por cada nuevo Caballero caído. ECLIPSE SUPREMO: una vez por turno reduce 50% ATK/DEF de 1 rival y obtiene +2500 ATK este turno. PROTECCIONES SUPREMAS: niega la primera destrucción por combate, la primera destrucción por efecto y la primera anulación dirigida de cada turno. CUERPO DEL ECLIPSE: durante Eclipse sus estadísticas no pueden reducirse por debajo del 70%. RENACER DEL VACÍO: una vez por duelo evita abandonar el campo, obtiene +4000 ATK/+4000 DEF y resucita hasta 2 Caballeros. ECLIPSE DE LA ETERNIDAD: con 5 caídos, una vez por duelo durante 2 turnos obtiene +6000 ATK/+4000 DEF y perforación.'}
+ ,{id:'CS-008',name:'Caballero Meteoro',atk:11500,def:15000,type:'monster',family:'caballeros-submundo',tags:['caballero','submundo','meteoro','cosmico','fuego','acero','defensivo'],rarity:'divina-suprema',level:11,effect:'csMeteorGuardian',caballerosSubmundo:true,img:'assets/images/caballeros-submundo/caballero-meteoro.webp',desc:'ARMADURA METEÓRICA: la primera vez por turno que recibe daño de ataque, lo reduce 70%; si sobrevive gana +1000 DEF permanente. IMPACTO DE RETORNO: puede interceptar un ataque dirigido a otro Caballero y el atacante pierde 2000 ATK hasta el final del siguiente turno. NÚCLEO ESTELAR: una vez por turno convierte temporalmente 2000 DEF en 2000 ATK. GUARDIÁN DEL SUBMUNDO: la primera destrucción por efecto de otro Caballero aliado queda anulada pagando 1500 DEF. CONTRAATAQUE METEORO: si sobrevive a un intento de destrucción, inflige 2000 HP directo una vez por turno. LLUVIA DEL JUICIO METEÓRICO: una vez por duelo con 3 Caballeros entre Campo y Cementerio, durante 2 turnos obtiene +4000 DEF, los Caballeros aliados +1500 DEF y el primer ataque enemigo de cada turno queda anulado.'}
 ];
 const CABALLEROS_SUBMUNDO_DECK_IDS=CABALLEROS_SUBMUNDO_CARDS.map(c=>c.id);
 
@@ -3214,6 +3215,7 @@ function csSync(){
  }
 }
 function csSkillDescriptor(c){
+ if(csIs(c,'CS-008'))return{name:'NÚCLEO ESTELAR / LLUVIA METEÓRICA',kind:'caballerosSubmundo',action:'meteorCore',desc:'Convierte 2000 DEF en 2000 ATK por 1 turno; con 3 Caballeros entre Campo y Cementerio activa Lluvia del Juicio Meteórico durante 2 turnos.'};
  if(csIs(c,'CS-007'))return{name:'ECLIPSE SUPREMO / ETERNIDAD',kind:'caballerosSubmundo',action:'venuzShinyEclipse',desc:'Reduce 50% ATK/DEF de un rival y gana +2500 ATK; con 5 caídos puede activar Eclipse de la Eternidad durante 2 turnos.'};
  if(csIs(c,'CS-006'))return{name:'ECLIPSE / TRONO DE VENUZ',kind:'caballerosSubmundo',action:'venuzEclipse',desc:'Reduce 50% ATK/DEF de un rival; con 5 Caballeros caídos puede activar Eclipse Final una vez por duelo.'};
  if(csIs(c,'CS-005'))return{name:'PÉTALO / JARDÍN DE LA MUERTE',kind:'caballerosSubmundo',action:'rosePetal',desc:'Coloca Marcas de Rosa; con 3 las detona. Con 3 Caballeros caídos puede activar Jardín de la Muerte una vez por duelo.'};
@@ -3224,6 +3226,7 @@ function csSkillDescriptor(c){
  return null
 }
 async function csUseSkill(side,i,c,sk){
+ if(sk.action==='meteorCore')return csMeteorUseSkill(side,c);
  if(sk.action==='venuzShinyEclipse')return csVenuzShinyUseSkill(side,c);
  if(sk.action==='venuzEclipse')return csVenuzUseSkill(side,c);
  if(sk.action==='rosePetal')return csRoseUseSkill(side,c);
@@ -3248,8 +3251,51 @@ async function csUseSkill(side,i,c,sk){
  c._csSecondAttackTurn=turnNo;if(sk.action==='goldenSentence'||sk.action==='shinySentence')c._csUnstoppableSecondTurn=turnNo;
  csSync();toast(victim.name+' es sacrificado · '+c.name+' habilita su segundo ataque.');return true
 }
+async function csMeteorUseSkill(side,c){
+ if(c._csMeteorSkillTurn===turnNo){toast('CABALLERO METEORO ya utilizó su habilidad este turno.');return false}
+ const count=[...csOwn(side),...csGrave(side)].filter(x=>csIs(x)).length;
+ if(!c._csMeteorRainUsedDuel&&count>=3){
+  const activate=side==='p'?confirm('LLUVIA DEL JUICIO METEÓRICO: ¿activar durante 2 turnos?\nAceptar = Ultimate · Cancelar = Núcleo Estelar'):true;
+  if(activate){
+   c._csMeteorRainUsedDuel=true;c._csMeteorRainUntil=turnNo+1;c._csMeteorSkillTurn=turnNo;
+   c.def+=4000;c._csMeteorRainSelfDef=4000;
+   csOwn(side).forEach(x=>{if(x&&csIs(x)&&x!==c){x.def+=1500;x._csMeteorRainAllyDef=(x._csMeteorRainAllyDef||0)+1500;x._csMeteorRainAllyUntil=turnNo+1}});
+   toast('LLUVIA DEL JUICIO METEÓRICO: +4000 DEF a Meteoro · +1500 DEF a aliados · primer ataque enemigo de cada turno NEGADO.');
+   update();return true
+  }
+ }
+ if((c.def||0)<2000){toast('NÚCLEO ESTELAR requiere al menos 2000 DEF.');return false}
+ c.def-=2000;c.atk+=2000;c._csMeteorCoreAtk=(c._csMeteorCoreAtk||0)+2000;c._csMeteorCoreDef=(c._csMeteorCoreDef||0)+2000;c._csMeteorCoreUntil=turnNo;c._csMeteorSkillTurn=turnNo;
+ toast('NÚCLEO ESTELAR: 2000 DEF se convierten en 2000 ATK este turno.');update();return true
+}
+async function csMeteorIntercept(defSide,di,attacker){
+ const own=csOwn(defSide),target=own[di];
+ if(!target||!csIs(target)||csIs(target,'CS-008'))return di;
+ const mi=own.findIndex(x=>csIs(x,'CS-008'));if(mi<0)return di;
+ const m=own[mi];if(m._csMeteorInterceptTurn===turnNo)return di;
+ const use=defSide==='p'?confirm('IMPACTO DE RETORNO: ¿Caballero Meteoro intercepta el ataque dirigido a '+target.name+'?'):true;
+ if(!use)return di;
+ m._csMeteorInterceptTurn=turnNo;
+ if(attacker){attacker.atk=Math.max(0,(attacker.atk||0)-2000);attacker._csMeteorReturnAtk=(attacker._csMeteorReturnAtk||0)+2000;attacker._csMeteorReturnUntil=turnNo+1}
+ toast('IMPACTO DE RETORNO: Caballero Meteoro intercepta · atacante -2000 ATK hasta el final del siguiente turno.');
+ return mi
+}
+function csMeteorRainBlocksAttack(defSide){
+ const m=csOwn(defSide).find(x=>csIs(x,'CS-008')&&(x._csMeteorRainUntil||-1)>=turnNo);
+ if(!m||m._csMeteorRainBlockTurn===turnNo)return false;
+ m._csMeteorRainBlockTurn=turnNo;toast('LLUVIA DEL JUICIO METEÓRICO: el primer ataque enemigo del turno queda ANULADO.');return true
+}
 async function csPreventDestroy(side,i,victim,cause='effect'){
  const grave=csGrave(side);
+ if(cause==='effect'&&csIs(victim)&&!csIs(victim,'CS-008')){
+  const m=csOwn(side).find(x=>csIs(x,'CS-008')&&x._csMeteorGuardianTurn!==turnNo&&(x.def||0)>=1500);
+  if(m){m._csMeteorGuardianTurn=turnNo;m.def=Math.max(0,m.def-1500);toast('GUARDIÁN DEL SUBMUNDO: Meteoro paga 1500 DEF y anula la destrucción de '+victim.name+'.');return true}
+ }
+ if(csIs(victim,'CS-008')&&cause==='combat'&&victim._csMeteorArmorTurn!==turnNo){
+  victim._csMeteorArmorTurn=turnNo;victim.def+=1000;
+  if(side==='p')ehpv=Math.max(0,ehpv-2000);else phpv=Math.max(0,phpv-2000);damageFx(2000,side==='p'?'e':'p');
+  toast('ARMADURA METEÓRICA: sobrevive al primer impacto · +1000 DEF permanente · CONTRAATAQUE METEORO 2000 HP.');return true
+ }
  if(csIs(victim,'CS-007')){
   const key=cause==='combat'?'_csShinyCombatGuardTurn':'_csShinyEffectGuardTurn';
   if(victim[key]!==turnNo){victim[key]=turnNo;toast('PROTECCIÓN SUPREMA SHINY: la primera destrucción por '+(cause==='combat'?'combate':'efecto')+' del turno queda NEGADA.');return true}
@@ -3317,6 +3363,10 @@ function csHorusEye(side,target,amount){
 }
 function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
+  if(c?._csMeteorReturnAtk&&c._csMeteorReturnUntil<turnNo){c.atk+=c._csMeteorReturnAtk;delete c._csMeteorReturnAtk;delete c._csMeteorReturnUntil}
+  if(csIs(c,'CS-008')&&c._csMeteorCoreAtk&&c._csMeteorCoreUntil<turnNo){c.atk=Math.max(0,c.atk-c._csMeteorCoreAtk);c.def+=c._csMeteorCoreDef||0;delete c._csMeteorCoreAtk;delete c._csMeteorCoreDef;delete c._csMeteorCoreUntil}
+  if(c?._csMeteorRainAllyDef&&c._csMeteorRainAllyUntil<turnNo){c.def=Math.max(0,c.def-c._csMeteorRainAllyDef);delete c._csMeteorRainAllyDef;delete c._csMeteorRainAllyUntil}
+  if(csIs(c,'CS-008')&&c._csMeteorRainSelfDef&&c._csMeteorRainUntil<turnNo){c.def=Math.max(0,c.def-c._csMeteorRainSelfDef);delete c._csMeteorRainSelfDef;delete c._csMeteorRainUntil}
   if(c?._csSacrificeAtk){c.atk=Math.max(0,c.atk-c._csSacrificeAtk);delete c._csSacrificeAtk}
   if(csIs(c,'CS-004')&&c._csHorusJudgementAtk&&c._csHorusJudgementUntil<turnNo){c.atk=Math.max(0,c.atk-c._csHorusJudgementAtk);delete c._csHorusJudgementAtk;delete c._csHorusJudgementUntil}
   if(csIs(c,'CS-007')){
@@ -3341,7 +3391,7 @@ function csGoldenPiercingDamage(side,c,target){
  if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
-window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
+window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
 
 function skillFor(c){if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
  'strategic-herrero':{name:'FORJA DE COMBATE',kind:'strategicBlacksmith',value:1,desc:'Recupera 1 arma o armadura del Cementerio y la equipa a un aliado.'},
@@ -3563,7 +3613,10 @@ async function resolveBattle(attSide,ai,defSide,di){
   const _gr=attSide==='p'?playerGrave:enemyGrave;
   if(_gr.length){_gr.pop();_preA.atk+=500;_preA._treasureHungerBonus=(_preA._treasureHungerBonus||0)+500;_preA._treasureHungerTurn=turnNo;toast('HAMBRE INFINITA: consume 1 carta del Cementerio · +500 ATK este turno.')}
  }
- const _heroA=attSide==='p'?playerCards[ai]:enemyCards[ai],_heroD=defSide==='p'?playerCards[di]:enemyCards[di];if(_heroA&&!heroicCanAct(_heroA)){toast(`${_heroA.name} no puede actuar por su estado heroico.`);return}heroicAttack(attSide,_heroA,_heroD);if(attSide==='p'&&!hadesCanAct(playerCards[ai])){toast('El control del Inframundo impide atacar.');return;}if(attSide==='p'){olympusOnPlayerAttack(ai);olympusSynergyAttack(attSide,ai);}aresOnCombatParticipation(attSide,ai);const A=(attSide==='p'?playerCards:enemyCards)[ai],D=(defSide==='p'?playerCards:enemyCards)[di];if(!A||!D)return;
+ const _heroA=attSide==='p'?playerCards[ai]:enemyCards[ai],_heroD=defSide==='p'?playerCards[di]:enemyCards[di];if(_heroA&&!heroicCanAct(_heroA)){toast(`${_heroA.name} no puede actuar por su estado heroico.`);return}heroicAttack(attSide,_heroA,_heroD);if(attSide==='p'&&!hadesCanAct(playerCards[ai])){toast('El control del Inframundo impide atacar.');return;}if(attSide==='p'){olympusOnPlayerAttack(ai);olympusSynergyAttack(attSide,ai);}aresOnCombatParticipation(attSide,ai);const A=(attSide==='p'?playerCards:enemyCards)[ai];if(!A)return;
+ if(csMeteorRainBlocksAttack(defSide)){update();return}
+ di=await csMeteorIntercept(defSide,di,A);
+ const D=(defSide==='p'?playerCards:enemyCards)[di];if(!D)return;
  await idrBeforeAttack(attSide,ai,A);
  if(D.effect==='phantomReflect'){
   const reflected=Math.max(0,Number(A.atk)||0);D.atk=reflected;
