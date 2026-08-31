@@ -15,7 +15,8 @@ const api=async(body,method='POST')=>{
 };
 const activeDeckPayload=()=>{
  const d=window.NEMESIS_COLLECTION?.activeDeckData||window.NEMESIS_ACTIVE_DECK?.()||null;
- return d&&Array.isArray(d.ids)?{deckName:d.name,deckIds:d.ids.slice(0,40)}:{deckName:'',deckIds:[]};
+ const ownerToken=window.NEMESIS_OWNER_AUTH?.token||sessionStorage.getItem('nemesis_owner_token_v1')||'';
+ return d&&Array.isArray(d.ids)?{deckName:d.name,deckIds:d.ids.slice(0,40),ownerToken}:{deckName:'',deckIds:[],ownerToken};
 };
 const saveSession=()=>{if(current)sessionStorage.setItem(SESSION_KEY,JSON.stringify({code:current.code,token:current.token,name:current.name}))};
 const clearSession=()=>sessionStorage.removeItem(SESSION_KEY);
@@ -41,7 +42,7 @@ function onlineHome(name='Jugador'){
  stopPoll();
  document.getElementById('app').innerHTML=`<section class="online-shell">
   <div class="online-stars"></div>
-  <header class="online-top"><button class="online-back" id="olBack">← VOLVER</button><div><small>NÉMESIS NETWORK CORE</small><h1>ONLINE 1 VS 1</h1><p>El mazo activo viaja a la sala · Mago Rojo e Imperio Dragón públicos · Olimpo/Duel Master privados del propietario</p></div><div class="online-security">◈ SERVER AUTHORITY</div></header>
+  <header class="online-top"><button class="online-back" id="olBack">← VOLVER</button><div><small>NÉMESIS NETWORK CORE</small><h1>ONLINE 1 VS 1</h1><p>El mazo activo viaja a la sala · Duel Master, Mago Rojo e Imperio Dragón usan motores autoritativos · mazos privados requieren autenticación</p></div><div class="online-security">◈ SERVER AUTHORITY</div></header>
   <main class="online-home-grid">
    <article class="online-hero">
     <div class="holo-orb"><span>1</span><i>VS</i><span>1</span></div>
@@ -58,7 +59,7 @@ function onlineHome(name='Jugador'){
     <p class="online-msg" id="olMsg"></p>
    </article>
   </main>
-  <footer class="online-foot">FASE ONLINE BASE · EL MOTOR DUEL MASTER SE CONECTA DESPUÉS</footer>
+  <footer class="online-foot">ONLINE MULTIMAZO · SERVIDOR AUTORITATIVO · DM / MAGO ROJO / IMPERIO DRAGÓN</footer>
  </section>`;
  document.getElementById('olBack').onclick=()=>location.reload();
  document.getElementById('olCreate').onclick=async()=>{const n=document.getElementById('olName').value.trim()||'Jugador';busy(true);try{const j=await api({action:'create',name:n,...activeDeckPayload()});current={code:j.room.code,token:j.token,name:n};saveSession();renderRoom(j.room)}catch(e){msg(errorText(e.message))}finally{busy(false)}};
@@ -66,7 +67,7 @@ function onlineHome(name='Jugador'){
 }
 function busy(v){document.querySelectorAll('.online-console button').forEach(b=>b.disabled=v)}
 function msg(t){const e=document.getElementById('olMsg');if(e)e.textContent=t}
-function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
+function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',OWNER_AUTH_REQUIRED:'Este mazo requiere autenticación real del propietario.',ONLINE_DECK_ENGINE_PENDING:'Este mazo privado aún no tiene motor online habilitado.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
 
 async function resume(s){
  current={code:s.code,token:s.token,name:s.name||'Jugador'};
@@ -136,7 +137,7 @@ function renderDuelMasterBoard(room){
   <header class="dm-hud">
    <button id="dmLeave" class="dm-exit">← SALIR</button>
    <div class="dm-player-hud rival"><small>${esc(opName)}</small><b>HP ${op.hp.toLocaleString('es-CL')}</b><span>Mano ${op.handCount} · Deck ${op.deckCount} · Cementerio ${op.graveCount}</span></div>
-   <div class="dm-center-hud"><small>DUEL MASTER ONLINE</small><b>TURNO ${d.turn}</b><span>${d.phase==='END'?'DUELO FINALIZADO':active?'TU TURNO':'TURNO RIVAL'}</span></div>
+   <div class="dm-center-hud"><small>${esc(me.deckName||'NÉMESIS')} VS ${esc(op.deckName||'NÉMESIS')} · ONLINE</small><b>TURNO ${d.turn}</b><span>${d.phase==='END'?'DUELO FINALIZADO':active?'TU TURNO':'TURNO RIVAL'}</span></div>
    <div class="dm-player-hud me"><small>${esc(myName)}</small><b>HP ${me.hp.toLocaleString('es-CL')}</b><span>Deck ${me.deckCount} · Cementerio ${me.graveCount}</span></div>
    <div class="dm-netstate"><b>${lastPing} ms</b><span>${esc(room.transport)}</span></div>
   </header>
@@ -219,7 +220,7 @@ function updateRoom(room){
  const cd=document.getElementById('olCountdown');
  if(room.status==='COUNTDOWN'&&room.countdownAt){
   const sec=Math.max(0,Math.ceil((room.countdownAt-room.serverTime)/1000));cd.innerHTML=`<b>${sec||'GO'}</b><span>ENLACE DE ARENA</span>`;
- }else if(room.status==='ACTIVE'){cd.innerHTML='<b>ONLINE</b><span>DUEL MASTER ONLINE CONECTADO</span>'}
+ }else if(room.status==='ACTIVE'){cd.innerHTML='<b>ONLINE</b><span>MOTOR MULTIMAZO CONECTADO</span>'}
  else cd.innerHTML='';
  current.room=room;saveSession();
 }
@@ -236,5 +237,5 @@ function schedulePoll(){
   schedulePoll();
  },1200);
 }
-window.NEMESIS_ONLINE_1V1={open:()=>onlineHome(menuName()),resume:()=>{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');if(s)resume(s)},version:'2.1.0'};
+window.NEMESIS_ONLINE_1V1={open:()=>onlineHome(menuName()),resume:()=>{const s=JSON.parse(sessionStorage.getItem(SESSION_KEY)||'null');if(s)resume(s)},version:'3.0.0'};
 })();
