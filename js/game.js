@@ -569,6 +569,7 @@ function v1894PhaseLabel(){}
 const NEMESIS_OFFICIAL_DECK_REGISTRY=Object.freeze({
  OLIMPO:OLIMPO_DECK_IDS,
  DUEL_MASTER:NEMESIS_DUEL_MASTER_IDS,
+ CABALLEROS_SUBMUNDO:CABALLEROS_SUBMUNDO_DECK_IDS,
  MAGO_ROJO:MAGO_ROJO_DECK_IDS,
  IMPERIO_DRAGON:IMPERIO_DRAGON_DECK_IDS
 });
@@ -577,6 +578,7 @@ const NEMESIS_OFFICIAL_DECK_REGISTRY=Object.freeze({
 const NEMESIS_DECK_ACCESS=Object.freeze({
  OLIMPO:{ownerOnly:true,campaign:true,online:true},
  DUEL_MASTER:{ownerOnly:true,campaign:true,online:true},
+ CABALLEROS_SUBMUNDO:{ownerOnly:true,campaign:true,online:true},
  MAGO_ROJO:{ownerOnly:false,campaign:true,online:true},
  IMPERIO_DRAGON:{ownerOnly:false,campaign:true,online:true}
 });
@@ -585,6 +587,7 @@ function nemesisCanonicalDeckName(name){
  if(k==='IMPERIO_DRAGON')return 'IMPERIO_DRAGON';
  if(k==='MAGO_ROJO')return 'MAGO_ROJO';
  if(k==='DUEL_MASTER')return 'DUEL_MASTER';
+ if(k==='CABALLEROS_DEL_SUBMUNDO'||k==='CABALLEROS_SUBMUNDO')return 'CABALLEROS_SUBMUNDO';
  if(k==='OLIMPO')return 'OLIMPO';
  return String(name||'').trim()
 }
@@ -910,6 +913,7 @@ function collectionScene(){
    ...IMPERIO_DRAGON_DECK_IDS,
    ...MAGO_ROJO_DECK_IDS,
    ...NEMESIS_DUEL_MASTER_IDS,
+   ...CABALLEROS_SUBMUNDO_DECK_IDS,
    ...NEMESIS_PUBLIC_23_IDS,
    ...NEMESIS_TREASURE_CARDS.map(c=>c.id),
    ...STRATEGIC_REDEEM_CARDS.map(c=>c.id)
@@ -920,7 +924,7 @@ function collectionScene(){
  const deckNames=Object.keys(state.savedDecks);
  app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${state.owned.length}/${INVENTORY_CAPACITY} obtenidas · ${catalogCards.length} cartas registradas · fuente única de arte</small></div><b>MAZO ${state.deck.length}/11</b></div>
  <div class="saved-deck-console"><div><small>MAZO ACTIVO</small><select id="savedDeckSelect">${deckNames.map(n=>`<option ${n===state.activeDeckName?'selected':''}>${n}</option>`).join('')}</select></div><div><button class="btn" id="createSavedDeck">NUEVO MAZO</button><button class="btn" id="saveCurrentDeck">GUARDAR MAZO</button></div></div>
- <p style="max-width:1100px;margin:0 auto 14px">Imperio Dragón, Mago Rojo, Duel Master y las cartas universales quedan disponibles en la misma colección. Los <b>Tesoros NÉMESIS</b> se muestran aquí, pero solo pasan al mazo después de canjearlos.</p>
+ <p style="max-width:1100px;margin:0 auto 14px">Imperio Dragón, Mago Rojo, Duel Master, Caballeros del Submundo y las cartas universales quedan disponibles en la misma colección. Los <b>Tesoros NÉMESIS</b> se muestran aquí, pero solo pasan al mazo después de canjearlos.</p>
  <div class="grid inventory-grid">${catalogCards.map(c=>{const owned=state.owned.includes(c.id),inDeck=state.deck.includes(c.id),treasure=c.treasure===true;const status=inDeck?'EN MAZO · TOCA PARA QUITAR':owned?'CANJEAR AL MAZO':treasure?'TESORO · ★1000 EN TESOROS':'BLOQUEADA';return `<button class="card ${inDeck?'sel':''} ${owned?'owned-card':'locked-card'}" ${owned?`data-id="${c.id}" data-owned="1"`:'disabled'}><img src="${c.img}" alt="${esc(c.name)}" loading="lazy"><b>${c.name}</b><small>${cardStats(c)}</small><small>${status}</small></button>`}).join('')}${emptySlots}</div>
  <div class="deckbar"><button class="btn" id="backMenu">VOLVER</button><button class="btn" id="startFromDeck">EMPEZAR · ${state.deck.length}/11</button></div></section>`;
  document.querySelectorAll('.card[data-owned="1"][data-id]').forEach(b=>b.onclick=()=>{
