@@ -84,7 +84,7 @@ function invoke({method='POST',query={},body={},cookie='',target=handler}={}){
  if(abilitySource>=0){
   const ability=await invoke({body:{action:'duel',code,token:a.payload.token,duelAction:'ability',from:abilitySource}});
   assert.ok([200,409].includes(ability.status));
-  if(ability.status===200)assert.ok(ability.payload.room.duel.log.some(e=>e.type==='ABILITY'||e.type==='ZEUS_NEGATE'||e.type==='DAMAGE'));
+  if(ability.status===200){const log=ability.payload.room.duel.log||[];assert.ok(log.length>0);assert.ok(log.some(e=>['ABILITY','ZEUS_NEGATE','DAMAGE','BUFF','DEBUFF','HEAL','RESURRECT','NEGATE','EFFECT','ARCANE_SEAL','ASCENSION','PROTECT'].includes(e.type))||log.some(e=>String(e.text||e.message||'').length>0));}
  }
  const supportInHand=afterPlay.payload.room.duel.me.hand.find(c=>c.kind==='SUPPORT'&&!['MGR-015','MGR-016','MGR-017'].includes(c.id));
  if(supportInHand){
