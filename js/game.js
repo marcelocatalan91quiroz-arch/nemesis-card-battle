@@ -684,20 +684,52 @@ function nemesisClaimUnique(id){
 }
 window.NEMESIS_SANCTUARY=Object.freeze({cards:NEMESIS_UNIQUE_CARDS,claim:nemesisClaimUnique,deckRule:nemesisUniqueDeckRule});
 
+// V19.6 — AUTENTICACIÓN REAL DEL PROPIETARIO
+const NEMESIS_OWNER_TOKEN_KEY='nemesis_owner_token_v1';
+let nemesisOwnerVerified=false;
+function nemesisOwnerToken(){try{return sessionStorage.getItem(NEMESIS_OWNER_TOKEN_KEY)||''}catch{return ''}}
+async function nemesisOwnerVerify(force=false){
+ const token=nemesisOwnerToken();if(!token){nemesisOwnerVerified=false;return false}
+ if(nemesisOwnerVerified&&!force)return true;
+ try{
+  const r=await fetch('/api/online1v1',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'owner_verify',ownerToken:token})});
+  const j=await r.json().catch(()=>({}));nemesisOwnerVerified=!!(r.ok&&j.ok&&j.owner);
+  if(!nemesisOwnerVerified)sessionStorage.removeItem(NEMESIS_OWNER_TOKEN_KEY);
+  return nemesisOwnerVerified
+ }catch{nemesisOwnerVerified=false;return false}
+}
+async function nemesisOwnerLogin(){
+ const ownerKey=prompt('CLAVE DEL PROPIETARIO NÉMESIS');if(!ownerKey)return false;
+ try{
+  const r=await fetch('/api/online1v1',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'owner_login',ownerKey})});
+  const j=await r.json().catch(()=>({}));if(!r.ok||!j.ok||!j.ownerToken){alert(j.error==='OWNER_AUTH_NOT_CONFIGURED'?'Autenticación de propietario aún no configurada en el servidor.':'Clave de propietario incorrecta.');return false}
+  sessionStorage.setItem(NEMESIS_OWNER_TOKEN_KEY,j.ownerToken);nemesisOwnerVerified=true;toast('MODO PROPIETARIO AUTENTICADO');menuScene();return true
+ }catch{alert('No se pudo validar el propietario con el servidor.');return false}
+}
+function nemesisOwnerLogout(){try{sessionStorage.removeItem(NEMESIS_OWNER_TOKEN_KEY)}catch{}nemesisOwnerVerified=false;state.activeDeckName='MAGO_ROJO';nemesisSyncActiveDeck();save();menuScene()}
+function nemesisOwnerDeckAllowed(name){const access=NEMESIS_DECK_ACCESS[nemesisCanonicalDeckName(name)];return !access?.ownerOnly||nemesisOwnerVerified}
+async function nemesisAuthorizeActiveDeck(){
+ const d=nemesisDeckForMode('campaign');if(!d.access?.ownerOnly)return true;
+ const ok=await nemesisOwnerVerify(true);if(!ok){alert('Este mazo es privado del propietario. Autentícate para usarlo.');return false}return true
+}
+window.NEMESIS_OWNER_AUTH={login:nemesisOwnerLogin,logout:nemesisOwnerLogout,verify:nemesisOwnerVerify,get authenticated(){return nemesisOwnerVerified},get token(){return nemesisOwnerToken()}};
+
 // V18.12.00 — COLECCIÓN GLOBAL NÉMESIS
 function nemesisEnsureDeckLibrary(){
  if(!state.savedDecks||typeof state.savedDecks!=='object')state.savedDecks={};
  // Mazos creados por el jugador son biblioteca permanente, no recompensas de campaña.
- const permanentUserCards=[...IMPERIO_DRAGON_DECK_IDS,...MAGO_ROJO_DECK_IDS,...NEMESIS_DUEL_MASTER_IDS,...NEMESIS_PUBLIC_23_IDS,...CABALLEROS_SUBMUNDO_DECK_IDS]
-   .filter(id=>card(id));
+ const publicCards=[...IMPERIO_DRAGON_DECK_IDS,...MAGO_ROJO_DECK_IDS,...NEMESIS_PUBLIC_23_IDS];
+ const privateCards=nemesisOwnerVerified?[...NEMESIS_DUEL_MASTER_IDS,...OLIMPO_DECK_IDS,...CABALLEROS_SUBMUNDO_DECK_IDS]:[];
+ const permanentUserCards=[...publicCards,...privateCards].filter(id=>card(id));
  state.owned=[...new Set([...(Array.isArray(state.owned)?state.owned:[]),...permanentUserCards])].filter(id=>card(id));
  const presets=NEMESIS_OFFICIAL_DECK_REGISTRY;
  for(const [name,ids] of Object.entries(presets)){
+   if(NEMESIS_DECK_ACCESS[name]?.ownerOnly&&!nemesisOwnerVerified)continue;
    if(!Array.isArray(state.savedDecks[name])||!state.savedDecks[name].length)
      state.savedDecks[name]=[...new Set(ids.filter(id=>state.owned.includes(id)&&card(id)))].slice(0,11);
  }
- if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName]))
-   state.activeDeckName='OLIMPO';
+ if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName])||!nemesisOwnerDeckAllowed(state.activeDeckName))
+   state.activeDeckName='MAGO_ROJO';
 }
 function nemesisSyncActiveDeck(){
  nemesisEnsureDeckLibrary();
@@ -711,6 +743,7 @@ function nemesisSaveCurrentDeck(){
 }
 function nemesisSelectDeck(name){
  nemesisEnsureDeckLibrary();name=nemesisCanonicalDeckName(name);
+ if(!nemesisOwnerDeckAllowed(name)){alert('Mazo privado del propietario. Activa MODO PROPIETARIO.');return false}
  if(!Array.isArray(state.savedDecks[name]))return false;
  state.activeDeckName=name;nemesisSyncActiveDeck();save();return true;
 }
@@ -890,13 +923,14 @@ function menuScene(){
  app.innerHTML=`<section class="deck menu-home"><div class="deckbar"><div><div class="logo" style="font-size:42px">NÉMESIS<small>CARD BATTLE</small></div><small>PREPARA TU MAZO ANTES DE ENTRAR AL REINO</small></div><b>★ ${state.stars||0}</b></div>
  ${campaignStatus}
  <div class="menu-panel"><h2>JUGADOR</h2><div class="name-row"><input id="nm" maxlength="24" placeholder="NOMBRE DEL JUGADOR" value="${esc(state.name||'')}"><button class="btn" id="changeName">CAMBIAR</button></div><small>Tu nombre aparecerá en la historia y en los duelos.</small></div>
- <div class="menu-actions"><button class="btn" id="shopBtn">INTERCAMBIAR CARTAS · ${unlockedCount}</button><button class="btn" id="deckBtn">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="treasureBtn">TESOROS NÉMESIS · ★1000</button><button class="btn retry-entry" id="retryBtn">RETOS · REVANCHA ★</button><button class="btn sanctuary-entry" id="sanctuaryBtn">SANTUARIO · 3 ÚNICAS</button><button class="btn" id="menuFullscreen">⛶ PANTALLA COMPLETA</button></div>
+ <div class="menu-actions"><button class="btn" id="shopBtn">INTERCAMBIAR CARTAS · ${unlockedCount}</button><button class="btn" id="deckBtn">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="treasureBtn">TESOROS NÉMESIS · ★1000</button><button class="btn retry-entry" id="retryBtn">RETOS · REVANCHA ★</button><button class="btn sanctuary-entry" id="sanctuaryBtn">SANTUARIO · 3 ÚNICAS</button><button class="btn owner-entry" id="ownerBtn">${nemesisOwnerVerified?'PROPIETARIO ✓ · CERRAR':'MODO PROPIETARIO · BLOQUEADO'}</button><button class="btn" id="menuFullscreen">⛶ PANTALLA COMPLETA</button></div>
  <div class="menu-panel"><h2>MAZO DE BATALLA</h2><p>Elige hasta <b>11 cartas</b> de tu colección para usar en batalla.</p><div class="mini-deck">${state.deck.map(id=>{const c=card(id);return c?`<img src="${c.img}" alt="${esc(c.name)}" title="${esc(c.name)}">`:''}).join('')}</div><b>${state.deck.length}/11 seleccionadas</b></div>
  <div class="deckbar"><span>Tu colección, estrellas, cartas ganadas y mazo se conservan entre campañas. <small class="mc-safe">MEMORY CARD · AUTO-GUARDADO · ${state.battlesPlayed||0} PELEAS</small></span><button class="btn big-start" id="startStory">${campaignButton}</button></div></section>`;
  changeName.onclick=()=>{const next=nemesisValidPlayerName(nm.value);if(!next){alert('Escribe un nombre válido.');return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();save();changeName.textContent='GUARDADO ✓';setTimeout(()=>menuScene(),500)};
  shopBtn.onclick=shopScene;deckBtn.onclick=collectionScene;if(typeof treasureBtn!=='undefined'&&treasureBtn)treasureBtn.onclick=nemesisTreasureScene;
 if(typeof sanctuaryBtn!=='undefined'&&sanctuaryBtn)sanctuaryBtn.onclick=sanctuaryScene;
 if(typeof retryBtn!=='undefined'&&retryBtn)retryBtn.onclick=nemesisRetryScene;
+if(typeof ownerBtn!=='undefined'&&ownerBtn)ownerBtn.onclick=()=>nemesisOwnerVerified?nemesisOwnerLogout():nemesisOwnerLogin();
 menuFullscreen.onclick=requestNemesisFullscreen;startStory.onclick=()=>{const next=nemesisValidPlayerName(nm.value)||nemesisValidPlayerName(state.name);if(!next){nemesisCreateProfileScene();return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}if(state.campaign1Completed&&!state.campaign2Started){state.campaign2Started=true;state.campaignStage='campaign2-intro';state.campaign2Stage='intro'}save();continueCampaign()};
 }
 function shopPrice(c,i){if(Number.isFinite(Number(c?.priceStars)))return Number(c.priceStars);return Math.max(50,Math.round((c.atk+c.def)/20/10)*10 + (i%5)*20)}
@@ -921,7 +955,7 @@ function collectionScene(){
  const catalogCards=registeredIds.map(id=>card(id)).filter(Boolean);
  const emptyCount=Math.max(0,Math.min(24,INVENTORY_CAPACITY-catalogCards.length));
  const emptySlots=Array.from({length:emptyCount},(_,i)=>`<div class="card empty-card" aria-label="Espacio vacío ${catalogCards.length+i+1}"><div class="empty-card-mark">${catalogCards.length+i+1}</div><b>ESPACIO VACÍO</b><small>PRÓXIMA CARTA</small></div>`).join('');
- const deckNames=Object.keys(state.savedDecks);
+ const deckNames=Object.keys(state.savedDecks).filter(n=>nemesisOwnerDeckAllowed(n));
  app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${state.owned.length}/${INVENTORY_CAPACITY} obtenidas · ${catalogCards.length} cartas registradas · fuente única de arte</small></div><b>MAZO ${state.deck.length}/11</b></div>
  <div class="saved-deck-console"><div><small>MAZO ACTIVO</small><select id="savedDeckSelect">${deckNames.map(n=>`<option ${n===state.activeDeckName?'selected':''}>${n}</option>`).join('')}</select></div><div><button class="btn" id="createSavedDeck">NUEVO MAZO</button><button class="btn" id="saveCurrentDeck">GUARDAR MAZO</button></div></div>
  <p style="max-width:1100px;margin:0 auto 14px">Imperio Dragón, Mago Rojo, Duel Master, Caballeros del Submundo y las cartas universales quedan disponibles en la misma colección. Los <b>Tesoros NÉMESIS</b> se muestran aquí, pero solo pasan al mazo después de canjearlos.</p>
@@ -1019,6 +1053,7 @@ window.nemesisCampaign3Ares=aresCampaign3Scene;
 
 async function battle(opponent='guardian'){
 nemesisSyncActiveDeck();const activePlayerDeck=nemesisDeckForMode('campaign');
+if(activePlayerDeck.access?.ownerOnly&&!await nemesisAuthorizeActiveDeck()){menuScene();return}
 window.__NEMESIS_LAST_CAMPAIGN_DECK={name:activePlayerDeck.name,ids:activePlayerDeck.ids.slice()};
 window.__mgrP={seals:0,flames:0,magicUses:0,mirrorDamageTurn:-1,_battle:Date.now(),_resetPending:false};
 window.__mgrE={seals:0,flames:0,magicUses:0,mirrorDamageTurn:-1,_battle:Date.now(),_resetPending:false};
@@ -5097,3 +5132,6 @@ window.nemesisExternal33Audit=function(){
   ok:ext.length===33&&new Set(ext.map(c=>c.id)).size===33&&pub.length===23&&dm.length===10&&ext.every(x=>!!card(x.id))&&state.savedDecks?.DUEL_MASTER?.length===10
  }
 };
+
+// V19.6 owner session bootstrap
+addEventListener('DOMContentLoaded',()=>{if(nemesisOwnerToken())nemesisOwnerVerify(true).then(ok=>{if(ok&&document.querySelector('.menu-home'))menuScene()}).catch(()=>{})});
