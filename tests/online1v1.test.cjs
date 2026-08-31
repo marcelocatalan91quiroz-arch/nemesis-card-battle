@@ -36,6 +36,7 @@ must('Eclipse de los Reinos servidor',api.includes('ECLIPSE_REALMS')&&api.includ
 must('cliente controla habilidad ultimate soporte',client.includes('dmAbility')&&client.includes('dmUltimate')&&client.includes('dmSupportActivate'));
 must('cliente envía mazo activo',client.includes('activeDeckPayload')&&client.includes('deckName')&&client.includes('deckIds'));
 must('servidor registra mazo por jugador',api.includes('playerDeckMeta')&&api.includes('deckClass'));
+must('servidor usa composición real validada',api.includes("requested=cleanDeckIds(b.deckIds)")&&api.includes("requested.some(id=>!allowed.has(id))")&&api.includes("meta?.deckIds")&&api.includes("ONLINE_DECK_INVALID_CARD"));
 must('online reconoce Mago Rojo e Imperio Dragón',api.includes("'MAGO_ROJO'")&&api.includes("'IMPERIO_DRAGON'"));
 const ownerApi=fs.readFileSync(path.join(root,'api/owner-auth.js'),'utf8');
 const ownerLib=fs.readFileSync(path.join(root,'lib/owner-auth.js'),'utf8');
