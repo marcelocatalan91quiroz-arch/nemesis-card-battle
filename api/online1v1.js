@@ -143,7 +143,7 @@ function sanitizeDuel(room,seat){
  if(!room.duel)return null;
  const me=duelPlayer(room,seat),opp=duelPlayer(room,duelOpponentSeat(seat));
  const expose=(p,owner)=>({
-   hp:p.hp,deckCount:p.deck.length,handCount:p.hand.length,graveCount:p.grave.length,banishedCount:p.banished.length,
+   hp:p.hp,deckName:p.deckName,deckCount:p.deck.length,handCount:p.hand.length,graveCount:p.grave.length,banishedCount:p.banished.length,archetype:{...(p.archetype||{})},
    monsters:p.monsters.map((_,i)=>monsterView(room,p,i)),
    supports:p.supports.map(x=>supportView(x,owner))
  });
@@ -171,6 +171,7 @@ function onDestroyed(room,p,id){
 }
 function canPreventDestroy(room,p,zone,attackerSeat){
  const id=p.monsters[zone],st=monsterState(p,zone);if(!id)return false;
+ const archetypeWhy=archetypePreventDestroy(room,p,zone,{attackerSeat});if(archetypeWhy)return archetypeWhy;
  if(st.flags.zeroDamageUntil>=room.duel.turn)return 'ZERO_DAMAGE';
  if(st.flags.immortalUntil>=room.duel.turn)return 'IMMORTAL';
  if(st.flags.protectedUntil>=room.duel.turn)return 'PROTECTED';
@@ -231,6 +232,155 @@ function tryTitanTrap(room,attacker,from){
  const atk=effectiveStats(room,attacker,from).atk;owner.supports[z].faceDown=false;damagePlayer(room,attacker,Math.max(2000,atk),owner.seat);owner.titanShieldUntil=room.duel.turn+1;discardSupportToGrave(owner,z);
  duelLog(room,'TRAP_TRIGGER','SYSTEM',{id:'DM-019',owner:owner.seat,damage:Math.max(2000,atk)});return true
 }
+
+function addSeal(p,n=1){p.archetype=p.archetype||{};p.archetype.seals=Math.min(7,Math.max(0,Number(p.archetype.seals||0)+n));return p.archetype.seals}
+function spendSeal(p,n){if(Number(p.archetype?.seals||0)<n)return false;p.archetype.seals-=n;return true}
+function addMark(p,zone,n=1){if(!p.monsters[zone])return 0;const st=monsterState(p,zone);st.marks=Math.min(8,Math.max(0,Number(st.marks||0)+n));return st.marks}
+function searchDeckToHand(p,pred){const i=p.deck.findIndex(id=>pred(id,catalogCard(id)));if(i<0)return null;const id=p.deck.splice(i,1)[0];p.hand.push(id);return id}
+function reviveFirstMonster(p,pred=()=>true){const free=firstFreeMonster(p);if(free<0)return null;const gi=p.grave.findIndex(id=>catalogCard(id)?.kind==='MONSTER'&&pred(id,catalogCard(id)));if(gi<0)return null;const id=p.grave.splice(gi,1)[0];p.monsters[free]=id;p.cardState[free]=initMonsterState(id);return {id,zone:free}}
+function removeReserveCard(p,id){let i=p.hand.indexOf(id);if(i>=0){p.hand.splice(i,1);return true}i=p.deck.indexOf(id);if(i>=0){p.deck.splice(i,1);return true}return false}
+function strongestSupportZone(p){let z=-1;for(let i=0;i<p.supports.length;i++)if(p.supports[i]){z=i;break}return z}
+function genericEquip(room,p,supportZone,targetZone,id,kind,atk=0,def=0){
+ if(!p.monsters[targetZone])return {error:'TARGET_REQUIRED'};const st=monsterState(p,targetZone);
+ if(st.equipment[kind])p.grave.push(st.equipment[kind]);st.equipment[kind]=id;st.atkMod+=atk;st.defMod+=def;p.supports[supportZone]=null;
+ duelLog(room,'EQUIP',p.seat,{id,targetZone,kind,atk,def});return {ok:true}
+}
+function mgrMagicPulse(room,p){
+ addSeal(p,1);p.archetype.magicUses=(p.archetype.magicUses||0)+1;
+ if(equippedAnywhere(p,'MGR-018'))p.archetype.flames=Math.min(7,(p.archetype.flames||0)+1);
+}
+function resolveMgrSupport(room,p,body){
+ const z=Number(body.supportZone),slot=p.supports[z];if(!slot)return {error:'INVALID_SUPPORT'};const id=slot.id,opp=duelPlayer(room,duelOpponentSeat(p.seat));slot.faceDown=false;slot.active=true;
+ if(['MGR-015','MGR-016','MGR-017'].includes(id))return {error:'TRAP_AUTO'};
+ mgrMagicPulse(room,p);
+ if(id==='MGR-011'){searchDeckToHand(p,(x)=>x.startsWith('MGR-')&&x!=='MGR-011');if((p.archetype.seals||0)>=3)searchDeckToHand(p,x=>x==='MGR-008'||x==='MGR-009');discardSupportToGrave(p,z);return {ok:true}}
+ if(id==='MGR-012'){let dmg=1500;if(p.monsters.filter(Boolean).length>=2)dmg+=500;damagePlayer(room,opp,dmg,p.seat);discardSupportToGrave(p,z);return {ok:true}}
+ if(id==='MGR-013'){const r=reviveFirstMonster(p,id2=>id2.startsWith('MGR-'));if(!r)return {error:'NO_REVIVE_TARGET'};const st=monsterState(p,r.zone),b=(p.archetype.seals||0)>=2?800:500;st.atkMod=b-(catalogCard(r.id)?.atk||0);st.defMod=b-(catalogCard(r.id)?.def||0);discardSupportToGrave(p,z);return {ok:true}}
+ if(id==='MGR-014'){const a=findMonster(p,'MGR-008'),b=findMonster(p,'MGR-009');if(a<0||b<0||!removeReserveCard(p,'MGR-019'))return {error:'FUSION_REQUIREMENT'};destroyMonster(room,p,Math.max(a,b),{ignoreProtection:true,reason:'FUSION'});destroyMonster(room,p,Math.min(a,b),{ignoreProtection:true,reason:'FUSION'});const free=firstFreeMonster(p);if(free<0)return {error:'NO_ZONE'};p.monsters[free]='MGR-019';p.cardState[free]=initMonsterState('MGR-019');p.monsters.forEach((x,i)=>{if(x&&x.startsWith('MGR-')&&i!==free){monsterState(p,i).atkMod+=800;monsterState(p,i).defMod+=800}});discardSupportToGrave(p,z);duelLog(room,'MGR_FUSION',p.seat,{to:'MGR-019'});return {ok:true}}
+ if(id==='MGR-018'){const t=Number(body.targetZone);const r=genericEquip(room,p,z,t,id,'relic',0,0);if(!r.error)p.archetype.flames=Math.max(1,p.archetype.flames||0);return r}
+ if(id==='MGR-020')return genericEquip(room,p,z,Number(body.targetZone),id,'weapon',1800,1200);
+ return {error:'UNKNOWN_MGR_EFFECT'}
+}
+function resolveMgrAbility(room,p,zone){
+ const id=p.monsters[zone],st=monsterState(p,zone),opp=duelPlayer(room,duelOpponentSeat(p.seat));if(!id||!id.startsWith('MGR-'))return {error:'INVALID_SOURCE'};
+ const target=strongestZone(room,opp);
+ if(id==='MGR-001'){if(!spendSeal(p,3))return {error:'SEALS_REQUIRED'};const gi=p.grave.findIndex(x=>x.startsWith('MGR-')&&catalogCard(x)?.kind==='SUPPORT');if(gi<0){addSeal(p,3);return {error:'NO_MAGIC_IN_GRAVE'}}p.hand.push(p.grave.splice(gi,1)[0])}
+ else if(id==='MGR-002'){const gi=p.grave.findIndex(x=>x.startsWith('MGR-')&&catalogCard(x)?.kind==='SUPPORT');if(gi>=0)p.hand.push(p.grave.splice(gi,1)[0]);else return {error:'NO_MAGIC_IN_GRAVE'}}
+ else if(id==='MGR-003'){addSeal(p,1)}
+ else if(id==='MGR-004'){const t=p.monsters.findIndex(Boolean);if(t<0)return {error:'NO_TARGET'};const ts=monsterState(p,t);ts.flags.protectedUntil=room.duel.turn;ts.defMod+=1000}
+ else if(id==='MGR-005'){if(!spendSeal(p,1))return {error:'SEALS_REQUIRED'};if(target<0)return {error:'NO_TARGET'};monsterState(opp,target).atkMod-=1500}
+ else if(id==='MGR-006'){const t=p.monsters.findIndex(Boolean);if(t<0)return {error:'NO_TARGET'};monsterState(p,t).defMod+=700;monsterState(p,t).flags.protectedUntil=room.duel.turn}
+ else if(id==='MGR-007'){if((p.archetype.seals||0)<3)return {error:'SEALS_REQUIRED'};st.atkMod+=500}
+ else if(id==='MGR-008'){p.monsters.forEach((x,i)=>{if(x&&x.startsWith('MGR-'))monsterState(p,i).atkMod+=600});if(target>=0){monsterState(opp,target).atkMod-=400;monsterState(opp,target).defMod-=400}}
+ else if(id==='MGR-009'){const s=strongestSupportZone(opp);if(s>=0)discardSupportToGrave(opp,s);else damagePlayer(room,opp,700,p.seat)}
+ else if(id==='MGR-010'){st.atkMod+=700;if((p.archetype.seals||0)>=3)searchDeckToHand(p,x=>x.startsWith('MGR-')&&x!=='MGR-010')}
+ else if(id==='MGR-019'){if(spendSeal(p,2))st.atkMod+=1200;st.flags.protectedUntil=room.duel.turn}
+ else return {error:'PASSIVE_ONLY'};
+ st.uses++;duelLog(room,'MGR_ABILITY',p.seat,{id,seals:p.archetype.seals});return {ok:true}
+}
+function transformIdr(room,p,zone,to,need){
+ const id=p.monsters[zone],st=monsterState(p,zone);if(!id||st.marks<need||!removeReserveCard(p,to))return false;
+ const next=initMonsterState(to);next.marks=st.marks;next.fieldTurns=st.fieldTurns;next.equipment=st.equipment;p.grave.push(id);p.monsters[zone]=to;p.cardState[zone]=next;duelLog(room,'IDR_TRANSFORM',p.seat,{from:id,to,marks:next.marks});return true
+}
+function fusionIdr(room,p,to){
+ let a=-1,b=-1;if(to==='IDR-019'){a=findMonster(p,'IDR-003');b=findMonster(p,'IDR-004')}
+ else{a=p.monsters.findIndex((x,i)=>x&&(x==='IDR-009'||x==='IDR-010'));b=findMonster(p,'IDR-008')}
+ if(a<0||b<0||a===b||!removeReserveCard(p,to))return false;
+ const marks=(monsterState(p,a).marks||0)+(monsterState(p,b).marks||0);destroyMonster(room,p,Math.max(a,b),{ignoreProtection:true,reason:'FUSION'});destroyMonster(room,p,Math.min(a,b),{ignoreProtection:true,reason:'FUSION'});
+ const z=firstFreeMonster(p);if(z<0)return false;p.monsters[z]=to;p.cardState[z]=initMonsterState(to);p.cardState[z].marks=marks;
+ if(to==='IDR-019'){p.cardState[z].atkMod+=marks*300;p.cardState[z].flags.unlimitedAttacksUntil=room.duel.turn;const opp=duelPlayer(room,duelOpponentSeat(p.seat));opp.supports.forEach((s,i)=>{if(s)discardSupportToGrave(opp,i)})}
+ else{p.archetype.sky=true}
+ duelLog(room,'IDR_FUSION',p.seat,{to,marks});return true
+}
+function resolveIdrSupport(room,p,body){
+ const z=Number(body.supportZone),slot=p.supports[z];if(!slot)return {error:'INVALID_SUPPORT'};const id=slot.id;slot.faceDown=false;slot.active=true;
+ if(['IDR-014','IDR-015'].includes(id))return {error:'TRAP_AUTO'};
+ if(id==='IDR-011'){searchDeckToHand(p,(x,c)=>x.startsWith('IDR-')&&c?.kind==='MONSTER'&&!c.specialOnly);const t=p.monsters.findIndex((x,i)=>x&&(x==='IDR-009'||x==='IDR-010'));if(t>=0)addMark(p,t,1);discardSupportToGrave(p,z);return {ok:true}}
+ if(id==='IDR-012'){const t=Number(body.targetZone);if(!p.monsters[t]||!p.monsters[t].startsWith('IDR-'))return {error:'TARGET_REQUIRED'};addMark(p,t,1);if(p.monsters[t]==='IDR-001'&&monsterState(p,t).marks>=2)transformIdr(room,p,t,'IDR-009',2);if(p.monsters[t]==='IDR-008'&&monsterState(p,t).marks>=4)transformIdr(room,p,t,'IDR-010',4);discardSupportToGrave(p,z);return {ok:true}}
+ if(id==='IDR-013'){p.archetype.sky=true;return {ok:true}}
+ if(id==='IDR-016')return genericEquip(room,p,z,Number(body.targetZone),id,'weapon',1400,0);
+ if(id==='IDR-017')return genericEquip(room,p,z,Number(body.targetZone),id,'weapon',1000,400);
+ if(id==='IDR-018')return genericEquip(room,p,z,Number(body.targetZone),id,'relic',0,0);
+ return {error:'UNKNOWN_IDR_EFFECT'}
+}
+function resolveIdrAbility(room,p,zone){
+ const id=p.monsters[zone],st=monsterState(p,zone),opp=duelPlayer(room,duelOpponentSeat(p.seat));if(!id||!id.startsWith('IDR-'))return {error:'INVALID_SOURCE'};
+ if(id==='IDR-001'&&st.marks>=2&&transformIdr(room,p,zone,'IDR-009',2))return {ok:true};
+ if(id==='IDR-008'&&st.marks>=4&&transformIdr(room,p,zone,'IDR-010',4))return {ok:true};
+ if((id==='IDR-003'||id==='IDR-004')&&findMonster(p,'IDR-003')>=0&&findMonster(p,'IDR-004')>=0&&fusionIdr(room,p,'IDR-019'))return {ok:true};
+ if((id==='IDR-008'||id==='IDR-009'||id==='IDR-010')&&findMonster(p,'IDR-008')>=0&&p.monsters.some(x=>x==='IDR-009'||x==='IDR-010')&&fusionIdr(room,p,'IDR-020'))return {ok:true};
+ const target=strongestZone(room,opp);
+ if(id==='IDR-001')addMark(p,zone,1);
+ else if(id==='IDR-002'){st.atkMod+=500;st.flags.unlimitedAttacksUntil=room.duel.turn}
+ else if(id==='IDR-003'){const s=strongestSupportZone(opp);if(s>=0){discardSupportToGrave(opp,s);st.atkMod+=500}}
+ else if(id==='IDR-004')damagePlayer(room,opp,opp.monsters.filter(Boolean).length*400,p.seat);
+ else if(id==='IDR-005'){let n=0;for(let i=opp.monsters.length-1;i>=0&&n<2;i--)if(opp.monsters[i]&&destroyMonster(room,opp,i,{sourceSeat:p.seat,reason:'VUELO_SUPREMO'}))n++}
+ else if(id==='IDR-006'){const t=p.monsters.findIndex(x=>x&&x.startsWith('IDR-'));if(t<0)return {error:'NO_TARGET'};monsterState(p,t).flags.protectedUntil=room.duel.turn}
+ else if(id==='IDR-007'){if(target<0)return {error:'NO_TARGET'};const gain=effectiveStats(room,opp,target).atk;if(destroyMonster(room,opp,target,{sourceSeat:p.seat,reason:'VORTEX'}))st.atkMod+=gain}
+ else if(id==='IDR-008'){if(target<0)return {error:'NO_TARGET'};if(destroyMonster(room,opp,target,{sourceSeat:p.seat,reason:'DOMINION'})){st.atkMod+=500;damagePlayer(room,opp,500,p.seat)}}
+ else if(id==='IDR-009')st.atkMod+=500;
+ else if(id==='IDR-010'){let n=0;for(let i=opp.monsters.length-1;i>=0&&n<2;i--)if(opp.monsters[i]&&destroyMonster(room,opp,i,{sourceSeat:p.seat,reason:'THRONE'}))n++;st.flags.extraAttacks=(st.flags.extraAttacks||0)+1}
+ else if(id==='IDR-019')st.flags.unlimitedAttacksUntil=room.duel.turn;
+ else if(id==='IDR-020'){let n=0;for(let i=opp.monsters.length-1;i>=0&&n<3;i--)if(opp.monsters[i]&&destroyMonster(room,opp,i,{sourceSeat:p.seat,reason:'APOCALYPSE'}))n++;st.atkMod+=n*500}
+ else return {error:'NO_ABILITY_HANDLER'};
+ st.uses++;duelLog(room,'IDR_ABILITY',p.seat,{id,marks:st.marks});return {ok:true}
+}
+function archetypePreventDestroy(room,p,zone,opts){
+ const id=p.monsters[zone],st=monsterState(p,zone),opp=duelPlayer(room,duelOpponentSeat(p.seat));
+ if(id?.startsWith('MGR-')){
+  if(st.flags.protectedUntil>=room.duel.turn)return 'MGR_GUARD';
+  if(id==='MGR-009'&&!st.flags.ancestorSave){const gi=p.grave.findIndex(x=>x.startsWith('MGR-'));if(gi>=0){p.grave.splice(gi,1);st.flags.ancestorSave=true;st.defMod+=1000;return 'MGR_ANCESTOR'}}
+  const tz=firstSupport(p,x=>x.id==='MGR-017'&&x.faceDown);if(tz>=0&&(p.archetype.seals||0)>=3){spendSeal(p,3);discardSupportToGrave(p,tz);return 'MGR_LAST_FLAME'}
+ }
+ if(id?.startsWith('IDR-')){
+  if(st.flags.protectedUntil>=room.duel.turn){st.flags.protectedUntil=0;addMark(p,zone,1);return 'IDR_FORGE_SCALES'}
+  if(id==='IDR-008'){const gi=p.grave.findIndex(x=>x.startsWith('IDR-'));if(gi>=0){p.banished.push(p.grave.splice(gi,1)[0]);return 'IDR_INFERNAL_SURVIVE'}}
+  if(id==='IDR-020'){let total=p.monsters.reduce((n,x,i)=>n+(x?monsterState(p,i).marks||0:0),0);if(total>=3){for(let i=0;i<5&&total>0;i++){const s=p.monsters[i]?monsterState(p,i):null;if(!s)continue;const take=Math.min(3,s.marks||0);s.marks-=take;total-=take;if(total<=p.monsters.reduce((n,x,j)=>n+(x?monsterState(p,j).marks||0:0),0)-3)break}return 'IDR_END_EMPEROR'}}
+  const tz=firstSupport(p,x=>x.id==='IDR-015'&&x.faceDown);if(tz>=0){discardSupportToGrave(p,tz);const t=strongestZone(room,opp);if(t>=0)destroyMonster(room,opp,t,{ignoreProtection:true,sourceSeat:p.seat,reason:'LAST_DRAGON_RAGE'});return 'IDR_LAST_DRAGON'}
+ }
+ return false
+}
+function archetypeAttackTrap(room,attacker,from,target){
+ const defender=duelPlayer(room,duelOpponentSeat(attacker.seat));
+ if(defender.deckName==='MAGO_ROJO'){
+  const z=firstSupport(defender,x=>x.id==='MGR-015'&&x.faceDown);if(z>=0&&target!==null&&defender.monsters[target]?.startsWith('MGR-')){discardSupportToGrave(defender,z);const ast=monsterState(attacker,from);ast.atkMod-=1000;ast.flags.attackDisabledUntil=room.duel.turn;duelLog(room,'MGR_PRISON',defender.seat,{from});return 'CANCEL'}
+ }
+ if(defender.deckName==='IMPERIO_DRAGON'){
+  const z=firstSupport(defender,x=>x.id==='IDR-014'&&x.faceDown);if(z>=0&&target!==null&&defender.monsters[target]?.startsWith('IDR-')){discardSupportToGrave(defender,z);monsterState(defender,target).defMod+=1200;monsterState(attacker,from).atkMod-=600;duelLog(room,'IDR_SCALE_COUNTER',defender.seat,{from,target})}
+ }
+ return null
+}
+function archetypeOnSummon(room,p,zone){
+ const id=p.monsters[zone];if(!id)return;
+ if(id==='MGR-002'){const gi=p.grave.findIndex(x=>x.startsWith('MGR-')&&catalogCard(x)?.kind==='SUPPORT');if(gi>=0)p.hand.push(p.grave.splice(gi,1)[0])}
+ if(id==='MGR-005')addSeal(p,2);
+ if(id==='MGR-019')p.monsters.forEach((x,i)=>{if(x&&x.startsWith('MGR-')&&i!==zone){monsterState(p,i).atkMod+=800;monsterState(p,i).defMod+=800}});
+}
+function archetypeAfterAttack(room,p,zone,killed,defender,target){
+ const id=p.monsters[zone],st=p.monsters[zone]?monsterState(p,zone):null;if(!id||!st)return;
+ if(id==='IDR-001')addMark(p,zone,1);
+ if(st.equipment.weapon==='IDR-016'&&killed)addMark(p,zone,1);
+ if(st.equipment.weapon==='IDR-017'&&(hasTag(id,'VIENTO')||id==='IDR-009'||id==='IDR-010'))st.flags.extraAttacks=(st.flags.extraAttacks||0)+1;
+ if(p.archetype?.sky&&id.startsWith('IDR-'))addMark(p,zone,1);
+ if(defender&&target!==null&&defender.monsters[target]==='MGR-003'&&!killed)addSeal(defender,1);
+}
+function archetypeTurnStart(room,p){
+ if(p.deckName==='MAGO_ROJO'&&equippedAnywhere(p,'MGR-018')){
+  const flames=p.archetype.flames||0;if(flames>=5)healPlayer(room,p,1000,p.seat);
+  if(flames>=7&&!p.monsters.includes('MGR-019')&&removeReserveCard(p,'MGR-019')){const z=firstFreeMonster(p);if(z>=0){p.monsters[z]='MGR-019';p.cardState[z]=initMonsterState('MGR-019');archetypeOnSummon(room,p,z)}}
+ }
+}
+function resolveArchetypeAbility(room,p,zone,ultimate=false){
+ if(p.deckName==='MAGO_ROJO')return ultimate?{error:'NO_ULTIMATE'}:resolveMgrAbility(room,p,zone);
+ if(p.deckName==='IMPERIO_DRAGON')return ultimate?{error:'NO_ULTIMATE'}:resolveIdrAbility(room,p,zone);
+ return resolveDmAbility(room,p,zone,ultimate)
+}
+function resolveArchetypeSupport(room,p,body){
+ if(p.deckName==='MAGO_ROJO')return resolveMgrSupport(room,p,body);
+ if(p.deckName==='IMPERIO_DRAGON')return resolveIdrSupport(room,p,body);
+ return useSupport(room,p,body)
+}
+
 function useSupport(room,p,body){
  const z=Number(body.supportZone),slot=p.supports[z];if(!Number.isInteger(z)||z<0||z>4||!slot)return {error:'INVALID_SUPPORT'};
  const id=slot.id;
@@ -241,7 +391,7 @@ function useSupport(room,p,body){
  if(id==='DM-005'){p.originsUntil=room.duel.turn+2;drawMany(p,2);duelLog(room,'ORIGINS',p.seat,{until:p.originsUntil});return {ok:true}}
  if(id==='DM-020'){
    healPlayer(room,p,3000,p.seat);p.monsters.forEach((x,i)=>{if(x){const st=monsterState(p,i);st.flags.eclipseUntil=room.duel.turn;st.flags.directUntil=room.duel.turn}});
-   let revived=0;for(let i=p.grave.length-1;i>=0&&revived<3;i--){const id2=p.grave[i],c=DM_CATALOG[id2],free=firstFreeMonster(p);if(free<0)break;if(c?.kind==='MONSTER'&&(c.atk||0)<=2000){p.grave.splice(i,1);p.monsters[free]=id2;p.cardState[free]=initMonsterState(id2);revived++}}
+   let revived=0;for(let i=p.grave.length-1;i>=0&&revived<3;i--){const id2=p.grave[i],c=catalogCard(id2),free=firstFreeMonster(p);if(free<0)break;if(c?.kind==='MONSTER'&&(c.atk||0)<=2000){p.grave.splice(i,1);p.monsters[free]=id2;p.cardState[free]=initMonsterState(id2);revived++}}
    discardSupportToGrave(p,z);duelLog(room,'ECLIPSE_REALMS',p.seat,{revived});return {ok:true}
  }
  return {error:'UNKNOWN_SUPPORT_EFFECT'}
@@ -272,7 +422,7 @@ function resolveDmAbility(room,p,zone,ultimate=false){
  }
  const k=st.uses%(c.abilities?.length||1);let target=strongestZone(room,opp);
  if(id==='DM-001'){
-  if(k===0&&target>=0){const victim=opp.monsters[target],ally=DM_CATALOG[victim]?.kind==='MONSTER';destroyMonster(room,opp,target,{ignoreProtection:true,banish:true,sourceSeat:p.seat,reason:'CELESTIAL_DOMAIN'});if(ally)damagePlayer(room,opp,3000,p.seat)}
+  if(k===0&&target>=0){const victim=opp.monsters[target],ally=catalogCard(victim)?.kind==='MONSTER';destroyMonster(room,opp,target,{ignoreProtection:true,banish:true,sourceSeat:p.seat,reason:'CELESTIAL_DOMAIN'});if(ally)damagePlayer(room,opp,3000,p.seat)}
   else if(k===1)st.flags.chainThunderUntil=room.duel.turn;
   else if(k===2)st.flags.olympusShield=true;
   else if(k===3&&opp.hand.length){const ix=crypto.randomInt(0,opp.hand.length),gone=opp.hand.splice(ix,1)[0];opp.banished.push(gone);duelLog(room,'HAND_BANISH',p.seat,{count:1})}
@@ -281,7 +431,7 @@ function resolveDmAbility(room,p,zone,ultimate=false){
   if(k===0&&target>=0){const os=monsterState(opp,target);os.defMod-=6000;if(effectiveStats(room,opp,target).def===0){destroyMonster(room,opp,target,{sourceSeat:p.seat,reason:'GOLDEN_COMET'});damagePlayer(room,opp,3000,p.seat)}}
   else if(k===1){opp.effectLockUntil=Math.max(opp.effectLockUntil,room.duel.turn+1);st.energy+=2;const sz=firstSupport(opp);if(sz>=0)discardSupportToGrave(opp,sz)}
   else if(k===2){st.flags.zeroDamageUntil=room.duel.turn+1}
-  else if(k===3&&opp.grave.length){let bi=0,bv=-1;opp.grave.forEach((x,i)=>{const a=DM_CATALOG[x]?.atk||0;if(a>bv){bv=a;bi=i}});const gone=opp.grave.splice(bi,1)[0];opp.banished.push(gone);if(DM_CATALOG[gone]?.kind==='MONSTER')damagePlayer(room,opp,4000,p.seat)}
+  else if(k===3&&opp.grave.length){let bi=0,bv=-1;opp.grave.forEach((x,i)=>{const a=catalogCard(x)?.atk||0;if(a>bv){bv=a;bi=i}});const gone=opp.grave.splice(bi,1)[0];opp.banished.push(gone);if(catalogCard(gone)?.kind==='MONSTER')damagePlayer(room,opp,4000,p.seat)}
  }else if(id==='DM-003'){
   if(k===0)drawOne(p);
   else if(k===1&&p.hand.length&&p.hand.length<6)p.hand.push(p.hand[0]);
@@ -337,7 +487,7 @@ function afterAttackEffects(room,p,zone,killed){
 function finishDuel(room,winnerSeat,reason){room.duel.winnerSeat=winnerSeat;room.duel.phase='END';room.status='ENDED';room.result={reason,winnerSeat};duelLog(room,'DUEL_END','SYSTEM',{winnerSeat,reason});pushEvent(room,'DUEL_END','SYSTEM',{winnerSeat,reason})}
 function startTurn(room,p){
  p.attacked=[];p.summonedThisTurn=false;drawOne(p);
- p.monsters.forEach((id,i)=>{if(!id)return;const st=monsterState(p,i);st.fieldTurns++;if(id==='DM-004')st.charges=Math.min(5,st.charges+1);if(id==='DM-002')st.flags.extraAttacks=1});
+ p.monsters.forEach((id,i)=>{if(!id)return;const st=monsterState(p,i);st.fieldTurns++;if(id==='DM-004')st.charges=Math.min(5,st.charges+1);if(id==='DM-002')st.flags.extraAttacks=1});archetypeTurnStart(room,p);
 }
 function applyDuelAction(room,p,body){
  const duel=room.duel;if(!duel||duel.phase==='END')return {error:'DUEL_NOT_ACTIVE'};
@@ -348,6 +498,7 @@ function applyDuelAction(room,p,body){
    const cardId=String(body.cardId||''),card=catalogCard(cardId),hi=findHand(me,cardId),zone=Number(body.zone);
    if(!card||hi<0||!Number.isInteger(zone)||zone<0||zone>4)return {error:'INVALID_PLAY'};
    if(card.kind==='MONSTER'){
+     if(card.specialOnly)return {error:'SPECIAL_SUMMON_ONLY'};
      if(me.summonedThisTurn)return {error:'SUMMON_ALREADY_USED'};
      if(me.monsters[zone])return {error:'ZONE_OCCUPIED'};
      me.monsters[zone]=cardId;me.cardState[zone]=initMonsterState(cardId);me.summonedThisTurn=true;
@@ -356,12 +507,12 @@ function applyDuelAction(room,p,body){
      me.supports[zone]={id:cardId,faceDown:Boolean(body.faceDown),active:false};
    }
    me.hand.splice(hi,1);duelLog(room,'PLAY',seat,{cardId,zone,kind:card.kind,faceDown:Boolean(body.faceDown)});
-   if(card.kind==='MONSTER')tryHunterTrap(room,me,zone);
+   if(card.kind==='MONSTER'){tryHunterTrap(room,me,zone);archetypeOnSummon(room,me,zone)}
    return {ok:true};
  }
- if(body.duelAction==='activate_support')return useSupport(room,me,body);
- if(body.duelAction==='ability')return resolveDmAbility(room,me,Number(body.from),false);
- if(body.duelAction==='ultimate')return resolveDmAbility(room,me,Number(body.from),true);
+ if(body.duelAction==='activate_support')return resolveArchetypeSupport(room,me,body);
+ if(body.duelAction==='ability')return resolveArchetypeAbility(room,me,Number(body.from),false);
+ if(body.duelAction==='ultimate')return resolveArchetypeAbility(room,me,Number(body.from),true);
  if(body.duelAction==='attack'){
    const from=Number(body.from),target=body.target===null||body.target===undefined?null:Number(body.target);
    if(!Number.isInteger(from)||from<0||from>4||!me.monsters[from])return {error:'INVALID_ATTACKER'};
@@ -369,19 +520,20 @@ function applyDuelAction(room,p,body){
    const already=me.attacked.includes(from),unlimited=ast.flags.unlimitedAttacksUntil>=duel.turn;
    if(already&&!unlimited){if((ast.flags.extraAttacks||0)>0)ast.flags.extraAttacks--;else return {error:'ALREADY_ATTACKED'}}
    if(tryTitanTrap(room,me,from)){if(!already)me.attacked.push(from);return {ok:true,trap:true}}
+   const archTrap=archetypeAttackTrap(room,me,from,target);if(archTrap==='CANCEL'){if(!already)me.attacked.push(from);return {ok:true,trap:true}}
    const attackerId=me.monsters[from],a=effectiveStats(room,me,from).atk;
    const occupied=opp.monsters.map((x,i)=>x?i:null).filter(x=>x!==null);
    if(target===null){
      const directAllowed=ast.flags.directUntil>=duel.turn;
      if(occupied.length&&!directAllowed)return {error:'DIRECT_BLOCKED'};
-     damagePlayer(room,opp,a,seat);if(!already)me.attacked.push(from);duelLog(room,'DIRECT_ATTACK',seat,{attackerId,damage:a});afterAttackEffects(room,me,from,false);return {ok:true};
+     damagePlayer(room,opp,a,seat);if(!already)me.attacked.push(from);duelLog(room,'DIRECT_ATTACK',seat,{attackerId,damage:a});afterAttackEffects(room,me,from,false);archetypeAfterAttack(room,me,from,false,opp,null);return {ok:true};
    }
    if(!Number.isInteger(target)||target<0||target>4||!opp.monsters[target])return {error:'INVALID_TARGET'};
    const defenderId=opp.monsters[target],d=effectiveStats(room,opp,target).atk;if(!already)me.attacked.push(from);let killed=false;
    if(a>d){const banish=ast.equipment.weapon==='DM-013';killed=destroyMonster(room,opp,target,{banish,attackerSeat:seat,sourceSeat:seat,reason:'BATTLE'});if(killed)damagePlayer(room,opp,a-d,seat);duelLog(room,'BATTLE_WIN',seat,{attackerId,defenderId,damage:killed?a-d:0,target})}
    else if(a<d){const dead=destroyMonster(room,me,from,{attackerSeat:opp.seat,sourceSeat:opp.seat,reason:'BATTLE'});if(dead)damagePlayer(room,me,d-a,opp.seat);duelLog(room,'BATTLE_LOSS',seat,{attackerId,defenderId,damage:dead?d-a:0,target})}
    else{const aDead=destroyMonster(room,me,from,{attackerSeat:opp.seat,sourceSeat:opp.seat,reason:'BATTLE'}),dDead=destroyMonster(room,opp,target,{attackerSeat:seat,sourceSeat:seat,reason:'BATTLE'});killed=dDead;duelLog(room,'BATTLE_DRAW',seat,{attackerId,defenderId,target,aDead,dDead})}
-   if(me.monsters[from])afterAttackEffects(room,me,from,killed);
+   if(me.monsters[from]){afterAttackEffects(room,me,from,killed);archetypeAfterAttack(room,me,from,killed,opp,target)}
    return {ok:true};
  }
  if(body.duelAction==='end_turn'){
