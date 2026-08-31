@@ -14,7 +14,7 @@ function objects(name){
  const b=block(name),out=[];let d=0,s=-1,q='',esc=false;
  for(let i=0;i<b.length;i++){const ch=b[i];if(q){if(esc)esc=false;else if(ch==='\\')esc=true;else if(ch===q)q='';continue}if(ch==="'"||ch==='"'||ch==='\x60'){q=ch;continue}if(ch==='{'){if(d++===0)s=i}else if(ch==='}'&&--d===0&&s>=0){const x=b.slice(s,i+1),get=(k)=>{const m=x.match(new RegExp(k+"\\s*:\\s*['\x22]([^'\x22]+)['\x22]"));return m&&m[1]},num=(k)=>{const m=x.match(new RegExp(k+'\\s*:\\s*(-?\\d+)'));return m?+m[1]:0};const id=get('id');if(id)out.push({id,name:get('name')||id,atk:num('atk'),def:num('def'),type:get('type')||'monster',rarity:get('rarity')||'',effect:get('effect')||'',text:x})}}return out
 }
-const allArrays=['OLIMPO_CARDS','BASE_CARDS','NEW_CARDS','PLAYER_EXCLUSIVE_CARDS','DIVINE_PLAYER_CARDS','DRAGON_OJO_CARDS','ANCESTRAL_CARDS','SPECTRAL_CARDS','REY_ESPECTRAL_CARDS','DIOS_FANTASMA_CARDS','ARES_CARDS_1_5','HADES_CARDS','OLIMPO_CARDS','CABALLEROS_SUBMUNDO_CARDS','MAGO_ROJO_CARDS','IMPERIO_DRAGON_CARDS'];
+const allArrays=['OLIMPO_PLAYER_CARDS','APOLO_PLAYER_CARDS','DIVINE_PLAYER_CARDS','BASE_CARDS','NEW_CARDS','PLAYER_EXCLUSIVE_CARDS','DIVINE_PLAYER_CARDS','DRAGON_OJO_CARDS','ANCESTRAL_CARDS','SPECTRAL_CARDS','REY_ESPECTRAL_CARDS','DIOS_FANTASMA_CARDS','ARES_CARDS_1_5','HADES_CARDS','OLIMPO_CARDS','CABALLEROS_SUBMUNDO_CARDS','MAGO_ROJO_CARDS','IMPERIO_DRAGON_CARDS'];
 const pool=new Map();for(const a of allArrays)for(const c of objects(a))pool.set(c.id,c);
 for(const c of collection){pool.set(c.id,{id:c.id,name:c.nombre||c.id,atk:+(c.atk||c.atk_bonus||c.bonos?.atk||0),def:+(c.def||c.def_bonus||c.bonos?.def||0),type:/TRAMPA/i.test(c.clase)?'trap':/(MAGICA|ARMA|ARMADURA|RELIQUIA)/i.test(c.clase)?'magic':'monster',rarity:c.rareza||'',effect:'external',text:JSON.stringify(c)})}
 function ids(name){const b=block(name);return [...b.matchAll(/['"]([^'"]+)['"]/g)].map(m=>m[1])}
@@ -25,7 +25,7 @@ const defs={
  MAGO_ROJO:{cards:objects('MAGO_ROJO_CARDS'),hp:30000},
  IMPERIO_DRAGON:{cards:objects('IMPERIO_DRAGON_CARDS'),hp:30000},
  CABALLEROS_SUBMUNDO:{cards:objects('CABALLEROS_SUBMUNDO_CARDS'),hp:30000},
- OLIMPO:{cards:objects('OLIMPO_CARDS'),hp:30000},
+ OLIMPO:{cards:fromIds(ids('OLIMPO_DECK_IDS')),hp:30000},
  GUARDIAN:{cards:fromIds(ids('GUARDIAN_BOSS_CARD_IDS')),hp:bossProfiles['1'].guardian.hp},
  DRAGON_OJO:{cards:fromIds(ids('DRAGON_OJO_DECK_SLOTS')),hp:bossProfiles['1'].dragon.hp},
  IRA_DE_RA:{cards:objects('ANCESTRAL_CARDS'),hp:bossProfiles['1'].ra.hp},
