@@ -59,6 +59,32 @@ const DM_CATALOG={
  'DM-020':{name:'Eclipse de los Reinos',kind:'SUPPORT',supportType:'MAGIC',atk:0,def:0,img:'assets/images/external33/dm-020.svg'}
 };
 const DM_DECK=Object.keys(DM_CATALOG);
+const MGR_DATA=require('../data/mago_rojo_deck_v1.json');
+const IDR_DATA=require('../data/imperio_dragon_deck_v1.json');
+function normalizeDeckCard(c,deckName){
+ const type=String(c.tipo||'').toUpperCase();
+ const monster=type==='CRIATURA'||type==='FUSION';
+ const supportType=type==='ARMA'?'WEAPON':type==='RELIQUIA'?'RELIC':type.includes('TRAMPA')?'TRAP_RESPONSE':'MAGIC';
+ return {
+  name:c.nombre||c.id,kind:monster?'MONSTER':'SUPPORT',supportType:monster?null:supportType,
+  atk:Number(c.atk||0),def:Number(c.def||0),energy:0,tags:[...(c.afinidades||[]),...(c.arquetipos||[])].map(x=>String(x).toUpperCase()),
+  abilities:monster&&c.habilidad?[String(c.habilidad)]:[],ultimate:null,img:c.img_game||c.img,deckName,
+  specialOnly:(deckName==='IMPERIO_DRAGON'&&['IDR-009','IDR-010','IDR-019','IDR-020'].includes(c.id))||(deckName==='MAGO_ROJO'&&c.id==='MGR-019')
+ };
+}
+const MGR_CATALOG=Object.fromEntries(MGR_DATA.cards.map(c=>[c.id,normalizeDeckCard(c,'MAGO_ROJO')]));
+const IDR_CATALOG=Object.fromEntries(IDR_DATA.cards.map(c=>[c.id,normalizeDeckCard(c,'IMPERIO_DRAGON')]));
+const MGR_DECK=MGR_DATA.deck_ids.slice();
+const IDR_DECK=IDR_DATA.deck_ids.slice();
+const ALL_ONLINE_CATALOG=Object.freeze({...DM_CATALOG,...MGR_CATALOG,...IDR_CATALOG});
+const ONLINE_DECK_IDS=Object.freeze({DUEL_MASTER:DM_DECK,MAGO_ROJO:MGR_DECK,IMPERIO_DRAGON:IDR_DECK});
+function catalogCard(id){return ALL_ONLINE_CATALOG[id]||null}
+function canonicalOnlineDeck(name){
+ name=cleanDeckName(name);
+ if(name==='MAGO_ROJO'||name==='IMPERIO_DRAGON'||name==='DUEL_MASTER')return name;
+ return 'DUEL_MASTER'
+}
+
 const DM_START_HP=30000;
 // El núcleo conserva el motor Duel Master existente. El mazo elegido se registra de forma
 // autoritativa por jugador para que los motores Mago Rojo / Imperio Dragón puedan enchufarse
@@ -67,30 +93,32 @@ const PUBLIC_DECKS=new Set(['MAGO_ROJO','IMPERIO_DRAGON']);
 const OWNER_DECKS=new Set(['OLIMPO','DUEL_MASTER','CABALLEROS_SUBMUNDO']);
 function cleanDeckName(v){return String(v||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON').slice(0,40)}
 function cleanDeckIds(v){return [...new Set((Array.isArray(v)?v:[]).map(x=>String(x||'').trim()).filter(Boolean))].slice(0,40)}
-function playerDeckMeta(b){const deckName=cleanDeckName(b.deckName),deckIds=cleanDeckIds(b.deckIds),owner=verifyOwnerToken(b.ownerToken);if(OWNER_DECKS.has(deckName)&&!owner)return {error:'OWNER_AUTH_REQUIRED',deckName,deckIds:[],deckClass:'OWNER'};return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':PUBLIC_DECKS.has(deckName)?'PUBLIC':'CUSTOM',ownerAuthenticated:owner}}
+function playerDeckMeta(b){let deckName=cleanDeckName(b.deckName),owner=verifyOwnerToken(b.ownerToken);if(OWNER_DECKS.has(deckName)&&!owner)return {error:'OWNER_AUTH_REQUIRED',deckName,deckIds:[],deckClass:'OWNER'};if(!ONLINE_DECK_IDS[deckName]){if(OWNER_DECKS.has(deckName))return {error:'ONLINE_DECK_ENGINE_PENDING',deckName,deckIds:[],deckClass:'OWNER'};deckName='MAGO_ROJO'}const deckIds=ONLINE_DECK_IDS[deckName].slice();return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC',ownerAuthenticated:owner}}
 
 const DM_EFFECT_HANDLERS=Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,true])));
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=crypto.randomInt(0,i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
-function initDmPlayer(seat){
- const deck=shuffle(DM_DECK),hand=deck.splice(0,5);
- return {seat,hp:DM_START_HP,deck,hand,monsters:Array(5).fill(null),supports:Array(5).fill(null),grave:[],banished:[],cardState:{},attacked:[],summonedThisTurn:false,effectLockUntil:0,originsUntil:0,titanShieldUntil:0};
+function initOnlinePlayer(meta,seat){
+ const deckName=canonicalOnlineDeck(meta?.deckName),deck=shuffle((ONLINE_DECK_IDS[deckName]||DM_DECK).slice()),hand=deck.splice(0,5);
+ return {seat,deckName,hp:DM_START_HP,deck,hand,monsters:Array(5).fill(null),supports:Array(5).fill(null),grave:[],banished:[],cardState:{},attacked:[],summonedThisTurn:false,effectLockUntil:0,originsUntil:0,titanShieldUntil:0,archetype:{seals:0,flames:0,magicUses:0,sky:false}};
 }
-function initMonsterState(id){const c=DM_CATALOG[id];return {energy:Number(c?.energy||0),uses:0,ultimateUsed:false,charges:0,solar:0,pact:0,austral:0,fieldTurns:0,atkMod:0,defMod:0,equipment:{weapon:null,relic:null},flags:{}}}
+function initDmPlayer(seat){return initOnlinePlayer({deckName:'DUEL_MASTER'},seat)}
+function initMonsterState(id){const c=catalogCard(id);return {energy:Number(c?.energy||0),uses:0,ultimateUsed:false,charges:0,solar:0,pact:0,austral:0,marks:0,fieldTurns:0,atkMod:0,defMod:0,equipment:{weapon:null,relic:null},flags:{}}}
 function initDuel(room){
  if(room.duel)return;
- room.duel={mode:'DUEL_MASTER',turn:1,activeSeat:'HOST',phase:'MAIN',winnerSeat:null,players:{HOST:initDmPlayer('HOST'),GUEST:initDmPlayer('GUEST')},log:[]};
- pushEvent(room,'DUELMASTER_BOARD_READY','SYSTEM',{deckSize:20,zones:{monsters:5,supports:5},effects:20});
+ const host=room.players.find(x=>x.seat==='HOST'),guest=room.players.find(x=>x.seat==='GUEST');
+ room.duel={mode:'MULTI_DECK',turn:1,activeSeat:'HOST',phase:'MAIN',winnerSeat:null,players:{HOST:initOnlinePlayer(host,'HOST'),GUEST:initOnlinePlayer(guest,'GUEST')},log:[]};
+ pushEvent(room,'MULTIDECK_BOARD_READY','SYSTEM',{decks:{HOST:host?.deckName,GUEST:guest?.deckName},deckSize:20,zones:{monsters:5,supports:5},effects:{DUEL_MASTER:20,MAGO_ROJO:20,IMPERIO_DRAGON:20}});
 }
 function duelPlayer(room,seat){return room.duel?.players?.[seat]||null}
 function duelOpponentSeat(seat){return seat==='HOST'?'GUEST':'HOST'}
 function monsterState(p,zone){if(!p.cardState[zone])p.cardState[zone]=initMonsterState(p.monsters[zone]);return p.cardState[zone]}
-function cardPublic(id){const c=DM_CATALOG[id];return c?{id,name:c.name,kind:c.kind,atk:c.atk,def:c.def,energy:c.energy||0,supportType:c.supportType||null,abilities:c.abilities||[],ultimate:c.ultimate||null,img:c.img}:null}
-function hasTag(id,tag){return (DM_CATALOG[id]?.tags||[]).includes(tag)}
+function cardPublic(id){const c=catalogCard(id);return c?{id,name:c.name,kind:c.kind,atk:c.atk,def:c.def,energy:c.energy||0,supportType:c.supportType||null,abilities:c.abilities||[],ultimate:c.ultimate||null,img:c.img}:null}
+function hasTag(id,tag){return (catalogCard(id)?.tags||[]).includes(tag)}
 function findMonster(p,id){return p.monsters.findIndex(x=>x===id)}
 function equippedAnywhere(p,id){return p.monsters.some((x,i)=>x&&Object.values(monsterState(p,i).equipment||{}).includes(id))}
-function distinctTags(p){const z=new Set();p.monsters.filter(Boolean).forEach(id=>(DM_CATALOG[id]?.tags||[]).forEach(t=>z.add(t)));return z.size}
+function distinctTags(p){const z=new Set();p.monsters.filter(Boolean).forEach(id=>(catalogCard(id)?.tags||[]).forEach(t=>z.add(t)));return z.size}
 function effectiveStats(room,p,zone){
- const id=p.monsters[zone],c=DM_CATALOG[id];if(!c)return {atk:0,def:0};
+ const id=p.monsters[zone],c=catalogCard(id);if(!c)return {atk:0,def:0};
  const st=monsterState(p,zone),opp=duelPlayer(room,duelOpponentSeat(p.seat));
  let atk=(c.atk||0)+(st.atkMod||0),def=(c.def||0)+(st.defMod||0);
  const zeus=findMonster(p,'DM-001')>=0,dragon=findMonster(p,'DM-002')>=0,shiny=findMonster(p,'DM-018')>=0;
@@ -168,7 +196,7 @@ function banishStrongest(room,p,sourceSeat){const z=strongestZone(room,p);if(z<0
 function discardSupportToGrave(p,zone){const s=p.supports[zone];if(!s)return null;p.supports[zone]=null;p.grave.push(s.id);return s.id}
 function equipSupport(room,p,supportZone,targetZone){
  const slot=p.supports[supportZone];if(!slot||!p.monsters[targetZone])return {error:'TARGET_REQUIRED'};
- const id=slot.id,c=DM_CATALOG[id],st=monsterState(p,targetZone),kind=c.supportType==='RELIC'?'relic':'weapon';
+ const id=slot.id,c=catalogCard(id),st=monsterState(p,targetZone),kind=c.supportType==='RELIC'?'relic':'weapon';
  if(!['DM-013','DM-014','DM-015','DM-016','DM-017'].includes(id))return {error:'NOT_EQUIPMENT'};
  if(st.equipment[kind])p.grave.push(st.equipment[kind]);
  st.equipment[kind]=id;p.supports[supportZone]=null;duelLog(room,'EQUIP',p.seat,{id,targetZone,kind});
@@ -224,7 +252,7 @@ function stealStrongest(room,me,opp){
 }
 function abilityCost(st,n){if(st.energy<n)return false;st.energy-=n;return true}
 function resolveDmAbility(room,p,zone,ultimate=false){
- const id=p.monsters[zone],c=DM_CATALOG[id];if(!id||c?.kind!=='MONSTER')return {error:'INVALID_SOURCE'};
+ const id=p.monsters[zone],c=catalogCard(id);if(!id||c?.kind!=='MONSTER')return {error:'INVALID_SOURCE'};
  const st=monsterState(p,zone),opp=duelPlayer(room,duelOpponentSeat(p.seat));
  if(st.flags.petrifiedUntil>=room.duel.turn||st.flags.attackDisabledUntil>=room.duel.turn)return {error:'SOURCE_DISABLED'};
  if(p.effectLockUntil>=room.duel.turn)return {error:'EFFECTS_LOCKED'};
@@ -238,7 +266,7 @@ function resolveDmAbility(room,p,zone,ultimate=false){
    else if(id==='DM-007'){const cost=st.flags.ascended?4:8;if(!abilityCost(st,cost))return {error:'ENERGY'};st.flags.ascended=true;st.flags.immortalUntil=room.duel.turn+2;st.atkMod+=5000;st.defMod+=5000;healPlayer(room,p,2000,p.seat)}
    else if(id==='DM-008'){if(st.solar<5||!abilityCost(st,10))return {error:'SOLAR_REQUIREMENT'};st.solar-=5;let total=0;for(const q of [p,opp])q.monsters.forEach((x,i)=>{if(x&&!(q===p&&i===zone)){total+=effectiveStats(room,q,i).atk;destroyMonster(room,q,i,{ignoreProtection:true,sourceSeat:p.seat,reason:'FIFTH_SUN'})}});damagePlayer(room,opp,total,p.seat);st.atkMod+=5000;st.defMod+=5000}
    else if(id==='DM-009'){if(st.pact<6||!abilityCost(st,12))return {error:'PACT_REQUIREMENT'};st.pact-=6;opp.monsters.forEach((x,i)=>{if(x){const os=monsterState(opp,i);os.atkMod-=1200;os.defMod-=1200;os.flags.attackDisabledUntil=room.duel.turn+1}});opp.effectLockUntil=Math.max(opp.effectLockUntil,room.duel.turn+1);if(!opp.monsters.some(Boolean))damagePlayer(room,opp,5000,p.seat)}
-   else if(id==='DM-010'){if(st.energy<16&&p.hp>2000&&p.monsters.filter(Boolean).length>1)return {error:'AURORA_REQUIREMENT'};st.energy=Math.max(0,st.energy-16);st.austral+=5;healPlayer(room,p,3000,p.seat);opp.monsters.forEach((x,i)=>{if(x)destroyMonster(room,opp,i,{sourceSeat:p.seat,reason:'AURORA'})});for(let n=0;n<5;n++){const gi=p.grave.findIndex(x=>DM_CATALOG[x]?.kind==='MONSTER'),free=firstFreeMonster(p);if(gi<0||free<0)break;const rid=p.grave.splice(gi,1)[0];p.monsters[free]=rid;p.cardState[free]=initMonsterState(rid);p.cardState[free].atkMod+=1500;p.cardState[free].defMod+=1500;p.cardState[free].flags.directUntil=room.duel.turn}}
+   else if(id==='DM-010'){if(st.energy<16&&p.hp>2000&&p.monsters.filter(Boolean).length>1)return {error:'AURORA_REQUIREMENT'};st.energy=Math.max(0,st.energy-16);st.austral+=5;healPlayer(room,p,3000,p.seat);opp.monsters.forEach((x,i)=>{if(x)destroyMonster(room,opp,i,{sourceSeat:p.seat,reason:'AURORA'})});for(let n=0;n<5;n++){const gi=p.grave.findIndex(x=>catalogCard(x)?.kind==='MONSTER'),free=firstFreeMonster(p);if(gi<0||free<0)break;const rid=p.grave.splice(gi,1)[0];p.monsters[free]=rid;p.cardState[free]=initMonsterState(rid);p.cardState[free].atkMod+=1500;p.cardState[free].defMod+=1500;p.cardState[free].flags.directUntil=room.duel.turn}}
    else return {error:'NO_ULTIMATE'};
    st.ultimateUsed=true;duelLog(room,'ULTIMATE',p.seat,{id,name:c.ultimate});return {ok:true}
  }
@@ -282,7 +310,7 @@ function resolveDmAbility(room,p,zone,ultimate=false){
  }else if(id==='DM-010'){
   if(k===0&&p.hp<=4000)st.flags.immortalUntil=room.duel.turn+1;
   else if(k===1){let n=Math.min(3,st.austral);while(n-->0){if(banishStrongest(room,opp,p.seat))st.austral--}}
-  else if(k===2){const gi=p.grave.findIndex(x=>DM_CATALOG[x]?.kind==='MONSTER'),free=firstFreeMonster(p);if(gi>=0&&free>=0){const rid=p.grave.splice(gi,1)[0];p.monsters[free]=rid;p.cardState[free]=initMonsterState(rid)}}
+  else if(k===2){const gi=p.grave.findIndex(x=>catalogCard(x)?.kind==='MONSTER'),free=firstFreeMonster(p);if(gi>=0&&free>=0){const rid=p.grave.splice(gi,1)[0];p.monsters[free]=rid;p.cardState[free]=initMonsterState(rid)}}
   else if(k===3){if(st.austral<5)return {error:'AUSTRAL_REQUIREMENT'};st.austral-=5;drawMany(p,2);healPlayer(room,p,1000,p.seat)}
  }else if(id==='DM-011'){
   if(k===0&&target>=0){monsterState(opp,target).atkMod-=1500;monsterState(opp,target).flags.attackDisabledUntil=room.duel.turn+1}
@@ -317,7 +345,7 @@ function applyDuelAction(room,p,body){
  if(body.duelAction==='concede'){finishDuel(room,duelOpponentSeat(seat),'CONCEDE');return {ok:true}}
  if(duel.activeSeat!==seat)return {error:'NOT_YOUR_TURN'};
  if(body.duelAction==='play'){
-   const cardId=String(body.cardId||''),card=DM_CATALOG[cardId],hi=findHand(me,cardId),zone=Number(body.zone);
+   const cardId=String(body.cardId||''),card=catalogCard(cardId),hi=findHand(me,cardId),zone=Number(body.zone);
    if(!card||hi<0||!Number.isInteger(zone)||zone<0||zone>4)return {error:'INVALID_PLAY'};
    if(card.kind==='MONSTER'){
      if(me.summonedThisTurn)return {error:'SUMMON_ALREADY_USED'};
