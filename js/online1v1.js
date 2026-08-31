@@ -7,7 +7,7 @@ let pollTimer=null,lastPing=0,lastVersion=0,current=null,dmSelectedCard=null,dmS
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const api=async(body,method='POST')=>{
  const t=performance.now();
- const r=await fetch(API+(method==='GET'?body:''),method==='GET'?{cache:'no-store'}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+ const r=await fetch(API+(method==='GET'?body:''),method==='GET'?{cache:'no-store',credentials:'same-origin'}:{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)});
  lastPing=Math.max(1,Math.round(performance.now()-t));
  const j=await r.json().catch(()=>({ok:false,error:'BAD_RESPONSE'}));
  if(!r.ok||!j.ok)throw new Error(j.error||('HTTP_'+r.status));
@@ -15,8 +15,7 @@ const api=async(body,method='POST')=>{
 };
 const activeDeckPayload=()=>{
  const d=window.NEMESIS_COLLECTION?.activeDeckData||window.NEMESIS_ACTIVE_DECK?.()||null;
- const ownerToken=window.NEMESIS_OWNER_AUTH?.token||sessionStorage.getItem('nemesis_owner_token_v1')||'';
- return d&&Array.isArray(d.ids)?{deckName:d.name,deckIds:d.ids.slice(0,40),ownerToken}:{deckName:'',deckIds:[],ownerToken};
+ return d&&Array.isArray(d.ids)?{deckName:d.name,deckIds:d.ids.slice(0,40)}:{deckName:'',deckIds:[]};
 };
 const saveSession=()=>{if(current)sessionStorage.setItem(SESSION_KEY,JSON.stringify({code:current.code,token:current.token,name:current.name}))};
 const clearSession=()=>sessionStorage.removeItem(SESSION_KEY);
