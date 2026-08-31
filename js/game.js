@@ -543,17 +543,13 @@ const save=()=>{
  v18918SaveMemoryCard();
 };
 
-// V18.12.00 — MAZOS PERSISTENTES / OLIMPO COMO MAZO OFICIAL
-// No vuelve a pisar el mazo activo en cada carga.
-for(const id of OLIMPO_DECK_IDS)if(card(id)&&!state.owned.includes(id))state.owned.push(id);
+// V19.6.2 — arranque público seguro.
+// Los mazos privados NO se conceden antes de validar la sesión del propietario.
 if(!state.savedDecks||typeof state.savedDecks!=='object')state.savedDecks={};
-if(!Array.isArray(state.savedDecks.OLIMPO)||!state.savedDecks.OLIMPO.length){
- state.savedDecks.OLIMPO=OLIMPO_DECK_IDS.filter(id=>card(id)).slice(0,11);
-}
-if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName]))state.activeDeckName='OLIMPO';
-const restoredDeck=(state.savedDecks[state.activeDeckName]||state.savedDecks.OLIMPO||[]).filter(id=>state.owned.includes(id)&&card(id)).slice(0,11);
+if(!state.activeDeckName||!Array.isArray(state.savedDecks[state.activeDeckName]))state.activeDeckName='MAGO_ROJO';
+const restoredDeck=(state.savedDecks[state.activeDeckName]||[]).filter(id=>state.owned.includes(id)&&card(id)).slice(0,11);
 if(restoredDeck.length)state.deck=restoredDeck;
-state.olympoDeckUnlocked=true;
+state.olympoDeckUnlocked=false;
 save();
 v18918SaveMemoryCard();
 const app=document.getElementById('app');
@@ -5127,7 +5123,7 @@ window.nemesisExternal33Audit=function(){
  }
 };
 
-// V19.6 owner session bootstrap
-addEventListener('DOMContentLoaded',()=>{if(nemesisOwnerToken())nemesisOwnerVerify(true).then(ok=>{if(ok&&document.querySelector('.menu-home'))menuScene()}).catch(()=>{})});
+// V19.6.2 owner session bootstrap: la cookie HttpOnly se valida en js/owner-auth.js.
+addEventListener('DOMContentLoaded',()=>{nemesisOwnerVerify().then(ok=>{if(ok&&document.querySelector('.menu-home'))menuScene()}).catch(()=>{})});
 
 window.addEventListener('nemesis-owner-auth',()=>{try{nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();if(document.querySelector('.menu-home'))menuScene();else if(document.querySelector('.collection-global'))collectionScene()}catch(e){console.warn('NÉMESIS owner refresh',e)}});
