@@ -4721,7 +4721,7 @@ function bossAiAttackChoice(){
  }}
  return best||{attacker:attackers[0],target:targets[0]};
 }
-async function enemyPlace(){const free=[0,1,2,3,4].filter(i=>!enemyCards[i]);if(!enemyQueue.length)return -1;const pick=(isRa||isDragon||isSoulKnight||isSpectralKing||isGhostGod||isAres||isHades)?bossAiPickQueueIndex():0;if(pick<0)return -1;const ec=enemyQueue.splice(pick,1)[0];if(['magic','trap','relic'].includes(ec.type)){
+async function enemyPlace(){const free=[0,1,2,3,4].filter(i=>!enemyCards[i]);if(!enemyQueue.length)return -1;const pick=bossAiPickQueueIndex();if(pick<0)return -1;const ec=enemyQueue.splice(pick,1)[0];if(['magic','trap','relic'].includes(ec.type)){
  if(isHades){
   if(ec.effect==='hadesPortal'&&!hadesPortalActive&&hadesObols<3&&!hadesCoinAvailable){enemyQueue.push(ec);return -1}
   if(ec.effect==='hadesChains'&&hadesChainsArmed){enemyQueue.push(ec);return -1}
@@ -4841,7 +4841,7 @@ nemesisBossTurnStart();endPlayerMagicTurn();v172ClosePicker();v171HideAttackConf
  try{
   await wait(220);await guardStep(enemyPlace(),3500,'colocación rival');await nemesisDmCheckHunterTrap();if(window.__treasureEndEnemyTurn===turnNo)return;if(phpv<=0)return finish(false);
   if(isDragon&&dragonRageLevel>=2&&enemyQueue.length){setPhase('ENEMY',`TURNO ${turnNo} DE ${enemyTurnName} · IRA DEL DIABLO`);await wait(260);await guardStep(enemyPlace(),3500,'segunda colocación rival');await nemesisDmCheckHunterTrap();if(phpv<=0)return finish(false)}
-  const attackers=enemyCards.map((c,i)=>c&&enemyModes[i]==='ATAQUE'?i:-1).filter(i=>i>=0),targets=playerCards.map((c,i)=>c?i:-1).filter(i=>i>=0),aiChoice=(isRa||isDragon||isSoulKnight||isSpectralKing||isGhostGod||isAres||isHades)?bossAiAttackChoice():null;
+  const attackers=enemyCards.map((c,i)=>c&&enemyModes[i]==='ATAQUE'?i:-1).filter(i=>i>=0),targets=playerCards.map((c,i)=>c?i:-1).filter(i=>i>=0),aiChoice=bossAiAttackChoice();
   if(attackers.length&&await treasureTryJudgement())return;
   if(attackers.length&&!targets.length){
    enemySlot=aiChoice?.attacker??attackers[Math.floor(Math.random()*attackers.length)];
