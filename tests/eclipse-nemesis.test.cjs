@@ -9,6 +9,8 @@ A('tipo Mágica universal secreta',game.includes("type:'magic',subtype:'spell',f
 A('solo canje estratégico',game.includes("strategicRedeem:true,shopExclusive:true,priceStars:5000"));
 A('no se entrega automáticamente',!game.includes("INITIAL_OWNED")||!(/INITIAL_OWNED[^;]*MS-001/.test(game)));
 A('arte registrado y físico',game.includes("img:'"+art+"'")&&fs.existsSync(path.join(root,art))&&fs.statSync(path.join(root,art)).size>1000);
+A('usable por cualquier mazo tras canje',!(/NEMESIS_PRIVATE_CARD_IDS[^;]*MS-001/.test(game))&&game.includes("function nemesisCardAllowedForUser(id){return !NEMESIS_PRIVATE_CARD_IDS.has(id)||nemesisOwnerSessionActive()}")&&game.includes("state.deck.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id))"));
+A('colección permite agregarla al mazo solo si fue canjeada',game.includes("document.querySelectorAll('.card[data-owned=\"1\"][data-id]')")&&game.includes("else if(state.deck.length<11)state.deck.push(id)"));
 A('ruta de Intercambio incluye estratégicas',game.includes('list.push(...STRATEGIC_REDEEM_CARDS)')&&game.includes('function shopScene()'));
 A('canje descuenta estrellas',game.includes('state.stars-=price')&&game.includes('state.owned.push(id)'));
 A('Eclipse no negociable',game.includes('unnegatable:true')&&game.includes('uncopyable:true')&&game.includes('noOpponentSearch:true'));
