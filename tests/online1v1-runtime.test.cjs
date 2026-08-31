@@ -10,19 +10,20 @@ process.env.NEMESIS_OWNER_KEY='NEMESIS_OWNER_TEST_KEY_2026';
 process.env.NEMESIS_OWNER_SIGNING_SECRET='NEMESIS_OWNER_SIGNING_SECRET_TEST_2026_ABC';
 
 const handler=require('../api/online1v1.js');
+const ownerHandler=require('../api/owner-auth.js');
 
-function invoke({method='POST',query={},body={}}={}){
+function invoke({method='POST',query={},body={},cookie='',target=handler}={}){
  return new Promise((resolve,reject)=>{
-  const req={method,query,body};
+  const req={method,query,body,headers:{cookie,'x-forwarded-proto':'https'}};
   const headers={};
   const res={
    statusCode:200,
-   setHeader(k,v){headers[k]=v},
+   setHeader(k,v){headers[String(k).toLowerCase()]=v},
    status(n){this.statusCode=n;return this},
    json(payload){resolve({status:this.statusCode,headers,payload});return this},
    end(){resolve({status:this.statusCode,headers,payload:null});return this}
   };
-  Promise.resolve(handler(req,res)).catch(reject);
+  Promise.resolve(target(req,res)).catch(reject);
  });
 }
 (async()=>{
@@ -31,9 +32,10 @@ function invoke({method='POST',query={},body={}}={}){
  assert.equal(health.payload.storage,'FLUID_MEMORY_DEV');
 
  const audit=await invoke({body:{action:'engine_audit'}});assert.equal(audit.status,200);assert.equal(audit.payload.mode,'MULTI_DECK');assert.equal(audit.payload.engines.DUEL_MASTER.count,20);assert.equal(audit.payload.engines.MAGO_ROJO.count,20);assert.equal(audit.payload.engines.IMPERIO_DRAGON.count,20);
- const badOwner=await invoke({body:{action:'owner_login',ownerKey:'bad'}});assert.equal(badOwner.status,403);
- const owner=await invoke({body:{action:'owner_login',ownerKey:process.env.NEMESIS_OWNER_KEY}});assert.equal(owner.status,200);assert.ok(owner.payload.ownerToken);
- const verify=await invoke({body:{action:'owner_verify',ownerToken:owner.payload.ownerToken}});assert.equal(verify.status,200);
+ const badOwner=await invoke({target:ownerHandler,body:{action:'login',key:'bad'}});assert.equal(badOwner.status,403);
+ const owner=await invoke({target:ownerHandler,body:{action:'login',key:process.env.NEMESIS_OWNER_KEY}});assert.equal(owner.status,200);assert.equal(owner.payload.owner,true);
+ const ownerCookie=String(owner.headers['set-cookie']||'').split(';')[0];assert.ok(ownerCookie.includes('nemesis_owner_session='));
+ const verify=await invoke({target:ownerHandler,method:'GET',cookie:ownerCookie});assert.equal(verify.status,200);assert.equal(verify.payload.owner,true);
  const privateDenied=await invoke({body:{action:'create',name:'Private',deckName:'DUEL_MASTER'}});assert.equal(privateDenied.status,403);assert.equal(privateDenied.payload.error,'OWNER_AUTH_REQUIRED');
  const a=await invoke({body:{action:'create',name:'Alpha',deckName:'MAGO_ROJO'}});
  assert.equal(a.status,201);
@@ -111,6 +113,6 @@ function invoke({method='POST',query={},body={}}={}){
  const bad=await invoke({body:{action:'sync',code,token:'token-invalido'}});
  assert.equal(bad.status,403);
 
- const ownerRoom=await invoke({body:{action:'create',name:'Owner',deckName:'DUEL_MASTER',ownerToken:owner.payload.ownerToken}});assert.equal(ownerRoom.status,201);assert.equal(ownerRoom.payload.room.me.deckClass,'OWNER');
+ const ownerRoom=await invoke({body:{action:'create',name:'Owner',deckName:'DUEL_MASTER'},cookie:ownerCookie});assert.equal(ownerRoom.status,201);assert.equal(ownerRoom.payload.room.me.deckClass,'OWNER');
  console.log('NÉMESIS ONLINE MULTIDECK + OWNER AUTH RUNTIME: PASS');
 })().catch(err=>{console.error(err);process.exit(1)});
