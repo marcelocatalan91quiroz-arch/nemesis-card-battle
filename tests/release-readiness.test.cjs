@@ -20,10 +20,12 @@ A('colección muestra Caballeros del Submundo',/collectionScene\(\)[\s\S]*CABALL
 A('online clasifica los 3 mazos privados',api.includes("new Set(['OLIMPO','DUEL_MASTER','CABALLEROS_SUBMUNDO'])"));
 
 // 3) Canje y precios.
-for(const [id,price] of [['strategic-herrero',300],['strategic-payaso-oscuro',350],['strategic-golem-muerte',800],['strategic-mago-vacio',700],['limited-dios-vacio-eterno',3000],['MGR-SHINY-001',1800],['limited-orbe-poder',3500]]){
+for(const [id,price] of [['strategic-herrero',300],['strategic-payaso-oscuro',350],['strategic-golem-muerte',800],['strategic-mago-vacio',700],['limited-dios-vacio-eterno',3000],['MGR-SHINY-001',1800],['limited-orbe-poder',3500],['MS-001',5000]]){
  A(id+' precio '+price,game.includes("id:'"+id+"'")&&game.includes("priceStars:"+price));
 }
 A('intercambio descuenta estrellas y agrega a colección',game.includes('state.stars-=price')&&game.includes('state.owned.push(id)'));
+A('Eclipse MS-001 en Intercambio NÉMESIS y no entrega automática',game.includes("id:'MS-001'")&&game.includes("strategicRedeem:true,shopExclusive:true,priceStars:5000")&&game.includes('list.push(...STRATEGIC_REDEEM_CARDS)'));
+A('Eclipse MS-001 motor completo 3 de 5 una vez por duelo',game.includes('nemesisAbsoluteEclipseMagic')&&game.includes('picks.length!==3')&&game.includes('__nemesisEclipseUsedP=false'));
 A('Tesoro NÉMESIS canje exclusivo 1000',game.includes('nemesisTreasureRedeem')&&game.includes('state.stars-=1000')&&game.includes('SOLO CANJE'));
 
 // 4) Campañas, desbloqueos, revanchas y recompensas.
