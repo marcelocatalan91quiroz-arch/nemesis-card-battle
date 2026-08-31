@@ -49,6 +49,7 @@ A('fases ACTION/TARGET/PLACE/END',game.includes("'ACTION'")&&game.includes("'TAR
 A('equipamiento arma/armadura/reliquia',game.includes("nemesisEquip(side")&&game.includes("'weapon'")&&game.includes("'armor'")&&game.includes("'relic'"));
 A('Caballeros habilidades y mágicas 20/20',game.includes('NEMESIS_CABALLEROS_SUBMUNDO_AUDIT')&&game.includes('csSubworldSpellMagic')&&game.includes('csSubworldRelicMagic')&&game.includes('csSubworldArmorMagic'));
 A('Duel Master motor 20/20',game.includes('NEMESIS_DUEL_MASTER_AUDIT')&&game.includes('dmDeepSync'));
+A('sin residuos ejecutables del límite global 11',!game.includes("deck:INITIAL_OWNED.slice(0,11)")&&!game.includes("savedDecks:true,deckLimit:11")&&!game.includes("state.deck.length<11"));
 A('Mago Rojo e Imperio Dragón motores',game.includes('MAGO_ROJO_CARDS')&&game.includes('IMPERIO_DRAGON_CARDS')&&game.includes('mgrApplyMagic')&&game.includes('idrApplyMagic'));
 
 // 7) PC avanzada.
