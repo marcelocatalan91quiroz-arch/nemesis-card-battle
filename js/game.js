@@ -3406,6 +3406,7 @@ function csHorusEye(side,target,amount){
  return{target:h,amount:reduced}
 }
 function csClearTurn(){
+ csSubworldWeaponTurn();
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
   if(csIs(c,'CS-009')&&c._csCerberusFireAtk){c.atk=Math.max(0,c.atk-c._csCerberusFireAtk);delete c._csCerberusFireAtk}
   if(csIs(c,'CS-009')&&c._csCerberusMawsAtk&&c._csCerberusMawsUntil<turnNo){c.atk=Math.max(0,c.atk-c._csCerberusMawsAtk);delete c._csCerberusMawsAtk;delete c._csCerberusAttackCap}
@@ -3437,6 +3438,7 @@ function csKeepTurnAfterAttack(c){
  return false
 }
 function csGoldenPiercingDamage(side,c,target){
+ if(csSubworldWeaponPiercing(c))return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-010')&&(c._csPegasusEclipseUntil||-1)>=turnNo)return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-006'))return csVenuzPiercingDamage(side,c,target);
  if(csIs(c,'CS-007'))return csVenuzShinyPiercingDamage(side,c,target);
@@ -3669,7 +3671,7 @@ async function resolveBattle(attSide,ai,defSide,di){
  if(csMeteorRainBlocksAttack(defSide)){update();return}
  di=await csMeteorIntercept(defSide,di,A);
  const D=(defSide==='p'?playerCards:enemyCards)[di];if(!D)return;
- csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);
+ csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);csSubworldWeaponOnAttack(attSide,ai,di);
  if(csPegasusEvade(defSide,D)){update();return}
  await idrBeforeAttack(attSide,ai,A);
  if(D.effect==='phantomReflect'){
@@ -4148,6 +4150,51 @@ async function applyTreasureMagic(side,c){
  return false
 }
 
+
+function csSubworldEquipTarget(side){
+ const arr=side==='p'?playerCards:enemyCards;
+ return arr.map((x,i)=>({x,i})).filter(o=>o.x&&o.x.family==='caballeros-submundo').sort((a,b)=>(b.x.atk||0)-(a.x.atk||0))[0]?.i??-1
+}
+async function csSubworldWeaponMagic(side,w){
+ if(!w||w.family!=='caballeros-submundo'||w.subtype!=='weapon')return false;
+ const arr=side==='p'?playerCards:enemyCards;let i;
+ if(side==='p')i=await magicAllyIndex(side,`ELIGE CABALLERO DEL SUBMUNDO PARA EQUIPAR ${w.name}`);
+ else i=csSubworldEquipTarget(side);
+ if(i<0||!arr[i]||arr[i].family!=='caballeros-submundo'){toast(`${w.name}: requiere un Caballero o Monstruo del Submundo en campo.`);return false}
+ const t=arr[i],atk=Number(w.equipAtk||0),def=Number(w.equipDef||0);
+ nemesisEquip(side,i,'weapon',w,{atkBonus:atk,defBonus:def,flag:`_${w.effect}`});
+ if(w.id==='CS-012'&&['CS-006','CS-007'].includes(t.id)){t.atk+=1500;t.def+=1500;t._csVenuzSentenceAffinity={atk:1500,def:1500}}
+ if(w.id==='CS-014')t._csBlackHoleProtectedBonus=true;
+ toast(`${w.name} equipada a ${t.name}: +${atk} ATK${def?` / +${def} DEF`:''}.`);update();return true
+}
+function csSubworldWeaponOnAttack(side,ai,di){
+ const arr=side==='p'?playerCards:enemyCards,rivals=side==='p'?enemyCards:playerCards,A=arr[ai],D=rivals[di],eq=nemesisEquipmentSlots(A)?.weapon;if(!A||!D||!eq)return;
+ if(eq.sourceId==='CS-011'&&eq._ruptureTurn!==turnNo){eq._ruptureTurn=turnNo;D.def=Math.max(0,(D.def||0)-2500);D._csAresDefLoss=(D._csAresDefLoss||0)+2500;D._csAresDefLossUntil=turnNo}
+ if(eq.sourceId==='CS-012'&&eq._verdictTurn!==turnNo){eq._verdictTurn=turnNo;D.def=Math.max(0,(D.def||0)-2000);D._csVenuzDefLoss=(D._csVenuzDefLoss||0)+2000;D._csVenuzDefLossUntil=turnNo;D._csCondemnedMarkUntil=turnNo}
+ if(eq.sourceId==='CS-013'){D._csPoisonStacks=Math.min(3,(D._csPoisonStacks||0)+1);D._csPoisonUntil=turnNo+3;if(D._csPoisonStacks>=2){if(side==='p')ehpv=Math.max(0,ehpv-1000);else phpv=Math.max(0,phpv-1000);damageFx(1000,side==='p'?'e':'p')}}
+ if(eq.sourceId==='CS-014'&&eq._gravityTurn!==turnNo){eq._gravityTurn=turnNo;const al=Math.floor((D.atk||0)*.30),dl=Math.floor((D.def||0)*.30);D.atk=Math.max(0,D.atk-al);D.def=Math.max(0,D.def-dl);D._csGravityLoss={atk:al,def:dl,until:turnNo}}
+}
+function csSubworldWeaponPiercing(c){
+ const eq=nemesisEquipmentSlots(c)?.weapon;return !!(eq&&(eq._ultimateUntil===turnNo||eq.sourceId==='CS-011'&&c._csAresCounterPierce))
+}
+function csSubworldWeaponUltimate(side,c){
+ const eq=nemesisEquipmentSlots(c)?.weapon;if(!eq||!['CS-011','CS-012','CS-013','CS-014'].includes(eq.sourceId)||eq._ultimateUsed)return false;
+ eq._ultimateUsed=true;eq._ultimateUntil=turnNo;
+ const bonus=eq.sourceId==='CS-014'?5000:eq.sourceId==='CS-012'?5000:eq.sourceId==='CS-011'?5000:4000;c.atk+=bonus;eq._ultimateAtk=bonus;
+ if(eq.sourceId==='CS-014'){c.def+=3000;eq._ultimateDef=3000;(side==='p'?enemyCards:playerCards).forEach(x=>{if(x){x.atk=Math.max(0,x.atk-2000);x.def=Math.max(0,x.def-2000);x._csSingularityLoss={atk:2000,def:2000,until:turnNo}}})}
+ if(eq.sourceId==='CS-013')eq._deathSting=true;
+ toast(`${eq.label}: ULTIMATE activada.`);update();return true
+}
+function csSubworldWeaponTurn(){
+ for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(!c)return;
+  if(c._csPoisonStacks&&c._csPoisonUntil>=turnNo){c.atk=Math.max(0,c.atk-1000);c.def=Math.max(0,c.def-1000)}
+  for(const k of ['_csAresDefLoss','_csVenuzDefLoss'])if(c[k]&&c[k+'Until']<turnNo){c.def+=c[k];delete c[k];delete c[k+'Until']}
+  if(c._csGravityLoss&&c._csGravityLoss.until<turnNo){c.atk+=c._csGravityLoss.atk;c.def+=c._csGravityLoss.def;delete c._csGravityLoss}
+  if(c._csSingularityLoss&&c._csSingularityLoss.until<turnNo){c.atk+=c._csSingularityLoss.atk;c.def+=c._csSingularityLoss.def;delete c._csSingularityLoss}
+  const eq=nemesisEquipmentSlots(c)?.weapon;if(eq&&eq._ultimateAtk&&eq._ultimateUntil<turnNo){c.atk=Math.max(0,c.atk-eq._ultimateAtk);if(eq._ultimateDef)c.def=Math.max(0,c.def-eq._ultimateDef);delete eq._ultimateAtk;delete eq._ultimateDef}
+ })}
+}
+
 async function applyMagic(side,c){strategicVoidMageOnMagic(side);
  if(side==='e'&&window.__treasureEnemyEffectLockUntil>=turnNo){toast('TIEMPO MUERTO: el efecto rival fue anulado.');return true}
  if(side==='e'&&await treasureTryJudgement())return true;
@@ -4155,6 +4202,7 @@ async function applyMagic(side,c){strategicVoidMageOnMagic(side);
  if(side==='p'&&isGhostGod&&(window.__nemesisGhostEyeCharges||0)>0){window.__nemesisGhostEyeCharges--;toast(`OJO DEL DIOS FANTASMA anula ${c.name}.`);pcChainLog(`Ojo del Dios Fantasma anula ${c.name}.`);return true}
  if(side==='p'){const counter=enemyCards.findIndex(x=>x&&x.effect==='negateMagic');if(counter>=0){toast(`Sello del Oráculo anuló ${c.name} y fue enviado al Cementerio.`);await destroyCard('e',counter);return true}}
  if(c?.effect==='orbPowerWeapon')return await orbPowerEquip(side,c);
+ if(c?.family==='caballeros-submundo'&&c?.subtype==='weapon')return await csSubworldWeaponMagic(side,c);
  if(treasureIs(c))return await applyTreasureMagic(side,c);
  if(c?.family==='imperio-dragon'&&c.type==='magic')return await idrApplyMagic(side,c);
  if(c?.magoRojo)return await mgrApplyMagic(side,c);
