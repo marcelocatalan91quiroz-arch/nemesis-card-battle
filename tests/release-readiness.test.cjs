@@ -15,6 +15,7 @@ if(missing.length)console.error(missing);
 // 2) Mazos oficiales / privados / públicos.
 A('Caballeros del Submundo oficial 20/20',game.includes('CABALLEROS_SUBMUNDO:CABALLEROS_SUBMUNDO_DECK_IDS')&&game.includes('const CABALLEROS_SUBMUNDO_DECK_IDS=CABALLEROS_SUBMUNDO_CARDS.map'));
 A('privados: Olimpo, Duel Master y Caballeros del Submundo',game.includes('OLIMPO:{ownerOnly:true')&&game.includes('DUEL_MASTER:{ownerOnly:true')&&game.includes('CABALLEROS_SUBMUNDO:{ownerOnly:true'));
+A('migraciones antiguas no regalan Olimpo público',game.includes("filter(id=>!OLIMPO_DECK_IDS.includes(id))")&&!game.includes("const v18959OlympusRecoveryIds=['dios-jupiter','zeus-emperador-rayo','kronos-devorador-tiempo']"));
 A('públicos: Mago Rojo e Imperio Dragón',game.includes('MAGO_ROJO:{ownerOnly:false')&&game.includes('IMPERIO_DRAGON:{ownerOnly:false'));
 A('colección muestra Caballeros del Submundo',/collectionScene\(\)[\s\S]*CABALLEROS_SUBMUNDO_DECK_IDS/.test(game));
 A('online clasifica los 3 mazos privados',api.includes("new Set(['OLIMPO','DUEL_MASTER','CABALLEROS_SUBMUNDO'])"));
