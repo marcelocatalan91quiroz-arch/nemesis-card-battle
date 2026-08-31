@@ -3222,6 +3222,12 @@ function csSync(){
   });
  }
 }
+function csArmorSkillDescriptor(c){
+ const eq=nemesisEquipmentSlots(c)?.armor;if(!eq)return null;
+ if(eq.sourceId==='CS-015'&&(eq.memories||0)>=3&&!eq.ultimateUsed)return{name:'EL GUERRERO QUE EL MUNDO OLVIDÓ',kind:'caballerosSubmundo',action:'armorForgottenUltimate',desc:'Consume 3 MEMORIAS: durante 2 turnos +4000 ATK/+5000 DEF y protección reforzada.'};
+ if(eq.sourceId==='CS-016'&&(eq.forgeCharges||0)>=3&&!eq.ultimateUsed)return{name:'FORJA DEL REY PLUTÓN',kind:'caballerosSubmundo',action:'armorPlutoUltimate',desc:'Consume 3 CARGAS: durante 2 turnos +4000 ATK/+5000 DEF, reducción y protección por efecto.'};
+ return null
+}
 function csSkillDescriptor(c){
  if(csIs(c,'CS-010'))return{name:'ECLIPSE DE LAS ALAS NEGRAS',kind:'caballerosSubmundo',action:'pegasusEclipse',desc:'Activa durante 2 turnos +4000 ATK/+4000 DEF, perforación y protección; con Cerberus obtiene sinergia adicional.'};
  if(csIs(c,'CS-009'))return{name:'LAS TRES FAUCES DEL INFIERNO',kind:'caballerosSubmundo',action:'cerberusMaws',desc:'Una vez por duelo +4500 ATK y habilita hasta 3 ataques; las destrucciones causan daño directo adicional.'};
@@ -3236,6 +3242,7 @@ function csSkillDescriptor(c){
  return null
 }
 async function csUseSkill(side,i,c,sk){
+ if(sk.action==='armorForgottenUltimate'||sk.action==='armorPlutoUltimate')return csSubworldArmorUltimate(side,c,sk.action);
  if(sk.action==='cerberusMaws')return csCerberusUseSkill(side,c);
  if(sk.action==='pegasusEclipse')return csPegasusUseSkill(side,c);
  if(sk.action==='meteorCore')return csMeteorUseSkill(side,c);
@@ -3407,6 +3414,49 @@ function csHorusEye(side,target,amount){
  toast('OJO DE HORUS: '+h.name+' intercepta la habilidad y reduce su efecto en 50%.');
  return{target:h,amount:reduced}
 }
+function csSubworldArmorEquipTarget(side){const arr=side==='p'?playerCards:enemyCards;return arr.map((x,i)=>({x,i})).filter(o=>o.x&&o.x.family==='caballeros-submundo').sort((a,b)=>(b.x.def||0)-(a.x.def||0))[0]?.i??-1}
+async function csSubworldArmorMagic(side,a){
+ if(!a||a.family!=='caballeros-submundo'||a.subtype!=='armor')return false;
+ const arr=side==='p'?playerCards:enemyCards;const i=side==='p'?await magicAllyIndex(side,`ELIGE PORTADOR PARA ${a.name}`):csSubworldArmorEquipTarget(side);
+ if(i<0||!arr[i]||arr[i].family!=='caballeros-submundo'){toast(`${a.name}: requiere un Caballero o Monstruo del Submundo.`);return false}
+ const t=arr[i];nemesisEquip(side,i,'armor',a,{atkBonus:Number(a.equipAtk||0),defBonus:Number(a.equipDef||0),flag:`_${a.effect}`});
+ const eq=nemesisEquipmentSlots(t)?.armor;
+ if(eq?.sourceId==='CS-015'){eq.memories=0;eq.memoryAtk=0;eq.memoryDef=0;const distinct=new Set([...csOwn(side),...csGrave(side)].filter(x=>csIs(x)).map(x=>x.id)).size;if(distinct>=3){t.def+=1500;eq.heritageDef=1500}}
+ if(eq?.sourceId==='CS-016'){eq.forgeCharges=0;eq.plutoGraveTurn=-1}
+ toast(`${a.name} equipada a ${t.name} en ranura ARMADURA.`);update();return true
+}
+function csSubworldArmorAfterSurvive(side,c){
+ const eq=nemesisEquipmentSlots(c)?.armor;if(!eq)return;
+ if(eq.sourceId==='CS-015'&&(eq.memories||0)<3){eq.memories=(eq.memories||0)+1;c.atk+=500;c.def+=500;eq.memoryAtk=(eq.memoryAtk||0)+500;eq.memoryDef=(eq.memoryDef||0)+500;if(eq.memories>=3)c._csForgottenPierceReady=true;toast(`ARMADURA OLVIDADA: MEMORIA ${eq.memories}/3.`)}
+ if(eq.sourceId==='CS-016'&&(eq.forgeCharges||0)<3){eq.forgeCharges=(eq.forgeCharges||0)+1;c.atk+=2000;c._csPlutoVengeance=(c._csPlutoVengeance||0)+2000;if(eq.forgeCharges>=3)c._csPlutoPierceReady=true;toast(`FORJA DE PLUTÓN: CARGA ${eq.forgeCharges}/3.`)}
+}
+function csSubworldArmorBeforeAttack(side,c){
+ const eq=nemesisEquipmentSlots(c)?.armor;if(!eq)return;
+ if(eq.sourceId==='CS-016'&&eq.plutoGraveTurn!==turnNo){const grave=csGrave(side).filter(x=>csIs(x));if(grave.length){const base=Math.max(...grave.map(x=>Number(card(x.id)?.atk||x.atk||0))),bonus=Math.floor(base*.20);if(bonus>0){c.atk+=bonus;c._csPlutoGraveAtk=bonus;c._csPlutoGraveUntil=turnNo;eq.plutoGraveTurn=turnNo;toast(`PODER DE LOS CAÍDOS: +${bonus} ATK este turno.`)}}}
+}
+function csSubworldArmorPiercing(c){const eq=nemesisEquipmentSlots(c)?.armor;return !!(eq&&(c._csForgottenPierceReady||c._csPlutoPierceReady||((eq.ultimateUntil||-1)>=turnNo)))}
+async function csSubworldArmorPreventDestroy(side,i,victim,cause='effect'){
+ const eq=nemesisEquipmentSlots(victim)?.armor;if(!eq)return false;
+ if(eq.sourceId==='CS-015'){
+  if((eq.ultimateUntil||-1)>=turnNo&&cause!=='combat'&&eq.ultimateNegateTurn!==turnNo){eq.ultimateNegateTurn=turnNo;toast('ARMADURA OLVIDADA: el Ultimate niega la destrucción por efecto.');return true}
+  if(!eq.savedDuel){eq.savedDuel=true;victim.def=1;if(eq.memoryAtk)victim.atk=Math.max(0,victim.atk-eq.memoryAtk);eq.memories=0;eq.memoryAtk=0;eq.memoryDef=0;delete victim._csForgottenPierceReady;toast('NEGARSE A MORIR: el portador permanece con 1 DEF.');return true}
+ }
+ if(eq.sourceId==='CS-016'){
+  if(!eq.savedDuel&&cause!=='combat'){eq.savedDuel=true;victim.def+=2000;eq.permanentDef=(eq.permanentDef||0)+2000;toast('ARMADURA DEL REY DEL INFRAMUNDO: destrucción negada · +2000 DEF permanente.');return true}
+  if((eq.ultimateUntil||-1)>=turnNo&&cause!=='combat'&&eq.ultimateNegateTurn!==turnNo){eq.ultimateNegateTurn=turnNo;toast('FORJA DEL REY PLUTÓN: primera destrucción por efecto negada.');return true}
+ }
+ return false
+}
+function csSubworldArmorUltimate(side,c,action){
+ const eq=nemesisEquipmentSlots(c)?.armor;if(!eq||eq.ultimateUsed)return false;
+ if(action==='armorForgottenUltimate'&&(eq.sourceId!=='CS-015'||(eq.memories||0)<3))return false;
+ if(action==='armorPlutoUltimate'&&(eq.sourceId!=='CS-016'||(eq.forgeCharges||0)<3))return false;
+ eq.ultimateUsed=true;eq.ultimateUntil=turnNo+1;c.atk+=4000;c.def+=5000;eq.ultimateAtk=4000;eq.ultimateDef=5000;
+ if(eq.sourceId==='CS-015'){eq.memories=0;delete c._csForgottenPierceReady}
+ else{eq.forgeCharges=0;delete c._csPlutoPierceReady}
+ toast(eq.sourceId==='CS-015'?'EL GUERRERO QUE EL MUNDO OLVIDÓ activado durante 2 turnos.':'FORJA DEL REY PLUTÓN activada durante 2 turnos.');update();return true
+}
+
 function csClearTurn(){
  for(const arr of [playerCards,enemyCards])arr.forEach(c=>{
   if(csIs(c,'CS-009')&&c._csCerberusFireAtk){c.atk=Math.max(0,c.atk-c._csCerberusFireAtk);delete c._csCerberusFireAtk}
@@ -3419,6 +3469,9 @@ function csClearTurn(){
   if(csIs(c,'CS-008')&&c._csMeteorCoreAtk&&c._csMeteorCoreUntil<turnNo){c.atk=Math.max(0,c.atk-c._csMeteorCoreAtk);c.def+=c._csMeteorCoreDef||0;delete c._csMeteorCoreAtk;delete c._csMeteorCoreDef;delete c._csMeteorCoreUntil}
   if(c?._csMeteorRainAllyDef&&c._csMeteorRainAllyUntil<turnNo){c.def=Math.max(0,c.def-c._csMeteorRainAllyDef);delete c._csMeteorRainAllyDef;delete c._csMeteorRainAllyUntil}
   if(csIs(c,'CS-008')&&c._csMeteorRainSelfDef&&c._csMeteorRainUntil<turnNo){c.def=Math.max(0,c.def-c._csMeteorRainSelfDef);delete c._csMeteorRainSelfDef;delete c._csMeteorRainUntil}
+  if(c?._csPlutoGraveAtk&&c._csPlutoGraveUntil<turnNo){c.atk=Math.max(0,c.atk-c._csPlutoGraveAtk);delete c._csPlutoGraveAtk;delete c._csPlutoGraveUntil}
+  if(c?._csPlutoVengeance&&c._csPlutoVengeanceConsumedTurn!=null&&c._csPlutoVengeanceConsumedTurn<turnNo){c.atk=Math.max(0,c.atk-c._csPlutoVengeance);delete c._csPlutoVengeance;delete c._csPlutoVengeanceConsumedTurn}
+  {const eq=nemesisEquipmentSlots(c)?.armor;if(eq&&eq.ultimateAtk&&eq.ultimateUntil<turnNo){c.atk=Math.max(0,c.atk-eq.ultimateAtk);c.def=Math.max(0,c.def-eq.ultimateDef);delete eq.ultimateAtk;delete eq.ultimateDef}}
   if(c?._csSacrificeAtk){c.atk=Math.max(0,c.atk-c._csSacrificeAtk);delete c._csSacrificeAtk}
   if(csIs(c,'CS-004')&&c._csHorusJudgementAtk&&c._csHorusJudgementUntil<turnNo){c.atk=Math.max(0,c.atk-c._csHorusJudgementAtk);delete c._csHorusJudgementAtk;delete c._csHorusJudgementUntil}
   if(csIs(c,'CS-007')){
@@ -3439,15 +3492,16 @@ function csKeepTurnAfterAttack(c){
  return false
 }
 function csGoldenPiercingDamage(side,c,target){
+ if(csSubworldArmorPiercing(c))return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-010')&&(c._csPegasusEclipseUntil||-1)>=turnNo)return Math.max(0,(c.atk||0)-(target?.def||0));
  if(csIs(c,'CS-006'))return csVenuzPiercingDamage(side,c,target);
  if(csIs(c,'CS-007'))return csVenuzShinyPiercingDamage(side,c,target);
  if((!csIs(c,'CS-002')&&!csIs(c,'CS-003'))||csGrave(side).filter(x=>csIs(x)).length<(csIs(c,'CS-003')?4:5)||!target)return 0;
  return Math.max(0,(c.atk||0)-(target.def||0))
 }
-window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
+window.NEMESIS_CABALLEROS_SUBMUNDO_AUDIT=()=>{const ids=['CS-001','CS-002','CS-003','CS-004','CS-005','CS-006','CS-007','CS-008','CS-009','CS-010','CS-011','CS-012','CS-013','CS-014','CS-015','CS-016'],cards=ids.map(card);return{deck:'CABALLEROS_SUBMUNDO',planned:20,integrated:CABALLEROS_SUBMUNDO_DECK_IDS.length,cards:cards.filter(Boolean).map(x=>({id:x.id,atk:x.atk,def:x.def,family:x.family,img:x.img})),systems:{grave:typeof csSync==='function',sacrifice:typeof csUseSkill==='function',preventDestroy:typeof csPreventDestroy==='function',secondAttack:typeof csKeepTurnAfterAttack==='function',horusEye:typeof csHorusEye==='function',horusResurrection:typeof csHorusBlessResurrection==='function',roseMarks:typeof csRoseApplyMark==='function',roseGarden:typeof csRoseUseSkill==='function',venuzEclipse:typeof csVenuzUseSkill==='function',venuzPiercing:typeof csVenuzPiercingDamage==='function',venuzShiny:typeof csVenuzShinyUseSkill==='function',venuzShinyPiercing:typeof csVenuzShinyPiercingDamage==='function',meteorSkill:typeof csMeteorUseSkill==='function',meteorIntercept:typeof csMeteorIntercept==='function',meteorRain:typeof csMeteorRainBlocksAttack==='function',cerberus:typeof csCerberusUseSkill==='function',pegasus:typeof csPegasusUseSkill==='function',armors:typeof csSubworldArmorMagic==='function'&&typeof csSubworldArmorPreventDestroy==='function'},cardOk:cards.every(Boolean)&&cards.every(x=>x.family==='caballeros-submundo')}};
 
-function skillFor(c){if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
+function skillFor(c){const armorSkill=csArmorSkillDescriptor(c);if(armorSkill)return armorSkill;if(csIs(c)&&c.type==='monster')return csSkillDescriptor(c);if(idrIs(c)&&(c.type==='monster'||c.type==='fusion'))return idrSkillDescriptor(c);if(mgrIs(c)&&c.type==='monster')return mgrSkillDescriptor(c);if(dmIs(c)&&c.type==='monster')return dmSkillDescriptor(c);if(c?.externalCard&&c.type==='monster')return extAbilityDescriptor(c);if(!c||c.type==='magic'||c.type==='trap'||c.effect==='phantomReflect'||c.id==='apolo-guardian-solar')return null;const custom={
  'strategic-herrero':{name:'FORJA DE COMBATE',kind:'strategicBlacksmith',value:1,desc:'Recupera 1 arma o armadura del Cementerio y la equipa a un aliado.'},
  'strategic-payaso-oscuro':{name:'JUEGO MACABRO',kind:'strategicDarkClown',value:1,desc:'Intercambia ATK y DEF de 1 monstruo enemigo hasta el final del turno.'},
  'strategic-golem-muerte':{name:'SENTENCIA MORTAL',kind:'strategicDeathGolem',value:1,desc:'Con Cosecha al máximo, destruye una vez por duelo 1 monstruo rival con menor ATK.'},
@@ -3655,7 +3709,7 @@ async function applyRoyalEntryEffect(i,c){
  refreshRoyalSoulPower();update();
 }
 function clearExpiredRoyalBuffs(){if(!isSpectralKing)return;enemyCards.forEach(c=>{if(!c)return;if(c._royalOrderBonus&&turnNo>c._royalOrderUntil){c.atk=Math.max(0,c.atk-c._royalOrderBonus);c._royalOrderBonus=0;}if(c._royalPortalUntil&&turnNo>c._royalPortalUntil){c.atk=Math.max(0,c.atk-(c._royalPortalAtk||0));c.def=Math.max(0,c.def-(c._royalPortalDef||0));c._royalPortalAtk=0;c._royalPortalDef=0;c._royalPortalUntil=0;}});}
-async function destroyCard(side,i,cause='effect'){const arr=side==='p'?playerCards:enemyCards,grave=side==='p'?playerGrave:enemyGrave,g=board[side][i],victim=arr[i];if(!victim)return false;if(eternalVoidGodPreventDestroy(victim))return false;if(await treasurePreventDestroy(side,i,victim))return false;if(await idrPreventDestroy(side,i,victim))return false;if(await pub23PreventDestroy(side,i,victim))return false;if(await nemesisDmPreventDestroy(side,i,victim))return false;if(await mgrPreventDestroy(side,i,victim))return false;if(await csPreventDestroy(side,i,victim,cause))return false;aresOnDestroyed(side,victim);if(olympusSynergyPreventDestroy(side,victim))return false;if(olympusPreventDestroy(side,victim))return false;if(victim._immortalUntil>=turnNo){toast(`${victim.name} es INMORTAL este turno y evita su destrucción.`);return false;}if(side==='p'&&victim.id==='apolo-guardian-solar'){playerFusionProtectionUntil=Math.max(playerFusionProtectionUntil,turnNo+1);toast('ÚLTIMO RESPLANDOR: la Fusión Divina queda protegida durante 1 turno.');pcLog('Apolo cae, pero protege a Júpiter, Zeus y Kronos para la Fusión Divina.','effect');}if(isGhostGod&&side==='e'&&victim.effect==='thresholdGuardian'&&!victim._celestialSaved&&(window.__nemesisCelestialEssence||0)>=2){victim._celestialSaved=true;window.__nemesisCelestialEssence-=2;victim.def=1500;toast('GUARDIÁN DEL UMBRAL: consume 2 Esencias y permanece con 1.500 DEF.');update();return false;}if(isSpectralKing&&side==='e'&&victim.effect==='underworldBreath'&&!victim._royalDragonSaved&&(window.__nemesisRoyalSouls||0)>=2){victim._royalDragonSaved=true;window.__nemesisRoyalSouls-=2;victim.def=1000;refreshRoyalSoulPower();toast('RESURGIR ESPECTRAL: el Dragón consume 2 Almas Reales, evita su primera destrucción y queda con 1.000 DEF.');update();return false;}if(victim.id==='kronos-devorador-tiempo'&&!victim._retrocesoUsed){victim._retrocesoUsed=true;victim.def=8500;burst(g?.position||new THREE.Vector3(),0x9a55ff,48);toast('RETROCESO TEMPORAL: Kronos evita su primera destrucción y recupera 8500 DEF.');pcLog('Kronos altera el tiempo y evita su destrucción.','effect');update();return false}if(victim.id==='titan-del-olimpo'&&!victim._olympusWillUsed){victim._olympusWillUsed=true;victim.def=3000;burst(g?.position||new THREE.Vector3(),0xffd45c,64);toast('VOLUNTAD DEL OLIMPO: el Titán evita su primera destrucción y permanece con 3000 DEF.');pcLog('Titán del Olimpo resiste su primera destrucción.','effect');update();return false}v15Flash('destroy');sfx('destroy');const v184Victim=board?.[side]?.[i];if(v184Victim){v184CrearFuegoConsumidor(v184Victim);await wait(320);}if(g)v18917SendVisualToGrave(side,g);grave.push(arr[i]);pub23AfterDestroyed(side,victim);nemesisDmAfterDestroyed(side,victim);if(isGhostGod&&(victim.family==='celestial'||victim.family==='spectral'||victim.tags?.includes('divine'))){window.__nemesisCelestialEssence=(window.__nemesisCelestialEssence||0)+1;toast(`ESENCIA CELESTIAL: +1 · Total ${window.__nemesisCelestialEssence}`);}
+async function destroyCard(side,i,cause='effect'){const arr=side==='p'?playerCards:enemyCards,grave=side==='p'?playerGrave:enemyGrave,g=board[side][i],victim=arr[i];if(!victim)return false;if(eternalVoidGodPreventDestroy(victim))return false;if(await treasurePreventDestroy(side,i,victim))return false;if(await idrPreventDestroy(side,i,victim))return false;if(await pub23PreventDestroy(side,i,victim))return false;if(await nemesisDmPreventDestroy(side,i,victim))return false;if(await mgrPreventDestroy(side,i,victim))return false;if(await csSubworldArmorPreventDestroy(side,i,victim,cause))return false;if(await csPreventDestroy(side,i,victim,cause))return false;aresOnDestroyed(side,victim);if(olympusSynergyPreventDestroy(side,victim))return false;if(olympusPreventDestroy(side,victim))return false;if(victim._immortalUntil>=turnNo){toast(`${victim.name} es INMORTAL este turno y evita su destrucción.`);return false;}if(side==='p'&&victim.id==='apolo-guardian-solar'){playerFusionProtectionUntil=Math.max(playerFusionProtectionUntil,turnNo+1);toast('ÚLTIMO RESPLANDOR: la Fusión Divina queda protegida durante 1 turno.');pcLog('Apolo cae, pero protege a Júpiter, Zeus y Kronos para la Fusión Divina.','effect');}if(isGhostGod&&side==='e'&&victim.effect==='thresholdGuardian'&&!victim._celestialSaved&&(window.__nemesisCelestialEssence||0)>=2){victim._celestialSaved=true;window.__nemesisCelestialEssence-=2;victim.def=1500;toast('GUARDIÁN DEL UMBRAL: consume 2 Esencias y permanece con 1.500 DEF.');update();return false;}if(isSpectralKing&&side==='e'&&victim.effect==='underworldBreath'&&!victim._royalDragonSaved&&(window.__nemesisRoyalSouls||0)>=2){victim._royalDragonSaved=true;window.__nemesisRoyalSouls-=2;victim.def=1000;refreshRoyalSoulPower();toast('RESURGIR ESPECTRAL: el Dragón consume 2 Almas Reales, evita su primera destrucción y queda con 1.000 DEF.');update();return false;}if(victim.id==='kronos-devorador-tiempo'&&!victim._retrocesoUsed){victim._retrocesoUsed=true;victim.def=8500;burst(g?.position||new THREE.Vector3(),0x9a55ff,48);toast('RETROCESO TEMPORAL: Kronos evita su primera destrucción y recupera 8500 DEF.');pcLog('Kronos altera el tiempo y evita su destrucción.','effect');update();return false}if(victim.id==='titan-del-olimpo'&&!victim._olympusWillUsed){victim._olympusWillUsed=true;victim.def=3000;burst(g?.position||new THREE.Vector3(),0xffd45c,64);toast('VOLUNTAD DEL OLIMPO: el Titán evita su primera destrucción y permanece con 3000 DEF.');pcLog('Titán del Olimpo resiste su primera destrucción.','effect');update();return false}v15Flash('destroy');sfx('destroy');const v184Victim=board?.[side]?.[i];if(v184Victim){v184CrearFuegoConsumidor(v184Victim);await wait(320);}if(g)v18917SendVisualToGrave(side,g);grave.push(arr[i]);pub23AfterDestroyed(side,victim);nemesisDmAfterDestroyed(side,victim);if(isGhostGod&&(victim.family==='celestial'||victim.family==='spectral'||victim.tags?.includes('divine'))){window.__nemesisCelestialEssence=(window.__nemesisCelestialEssence||0)+1;toast(`ESENCIA CELESTIAL: +1 · Total ${window.__nemesisCelestialEssence}`);}
 if(isSpectralKing){const gain=(side==='e'&&victim.effect==='royalBlood')?2:1;window.__nemesisRoyalSouls=(window.__nemesisRoyalSouls||0)+gain;toast(`${victim.effect==='royalBlood'?'SANGRE REAL':'ALMA REAL'}: +${gain} Alma(s) Real(es). Total ${window.__nemesisRoyalSouls}.`);refreshRoyalSoulPower();if(window.__nemesisRoyalSouls>=2&&ehpv<enemyMaxHp*.40){window.__nemesisRoyalSouls-=2;ehpv=Math.min(enemyMaxHp,ehpv+700);refreshRoyalSoulPower();toast('EL REY NO LUCHA SOLO: consume 2 Almas Reales y recupera 700 HP.')}}if(isSoulKnight&&side==='e'&&victim.family==='spectral'){window.__nemesisSoulCount=(window.__nemesisSoulCount||0)+1;if(victim.effect==='soulPersistent'){ehpv=Math.min(enemyMaxHp,ehpv+300);toast('ALMA PERSISTENTE: +300 HP al Caballero.')}if(window.__nemesisSoulCount%2===0){ehpv=Math.min(enemyMaxHp,ehpv+400);toast('REINO DE LOS MUERTOS: dos almas alimentan al Caballero (+400 HP).')}}if(g){nemesisBreakAllEquipment(side,i);if(g.userData?.equipment)Object.keys({...g.userData.equipment}).forEach(label=>pcRemoveEquipment(g,label,true));const destroyedCard=arr[i],destroyedElement=pcCardElement(destroyedCard,META[destroyedCard?.id]||{}),destroyedColor=pcElementColor(destroyedElement,side==='p'?0xa34cff:0xff334f);pcDestructionFx(destroyedElement,g.position);pcElementImpactFx(destroyedElement,g.position.clone(),destroyedColor,true);burst(g.position,destroyedColor,isRa?28:54);if(window.gsap){await Promise.all([new Promise(res=>gsap.to(g.scale,{x:.06,y:.06,z:.06,duration:.34,ease:'power2.in',onComplete:res})),new Promise(res=>gsap.to(g.rotation,{z:g.rotation.z+Math.PI*1.5,y:g.rotation.y+Math.PI*.7,duration:.34,ease:'power2.in',onComplete:res}))])}else await twVec(g.scale,new THREE.Vector3(.08,.08,.08),380);scene.remove(g)}board[side][i]=null;arr[i]=null;(side==='p'?playerModes:enemyModes)[i]=null;const el=document.getElementById(side==='p'?'playergrave':'enemygrave');if(el)el.innerHTML=`☠ ${side==='p'?'TU CEMENTERIO':'CEMENTERIO RIVAL'} <b>${grave.length}</b>`;toast(`Carta destruida → Cementerio ${grave.length}`);if(mgrIs(victim,'MGR-007')&&!victim._mgrPhoenixReturned)setTimeout(()=>mgrPhoenixReturn(side,victim),120);await v16Cam(side==='p'?'GRAVE_PLAYER':'GRAVE_ENEMY',side,i).catch(()=>{});await wait(120);update();return true}
 function clearNextEnemyShields(){playerCards.forEach((c,i)=>{if(c){delete c._shieldBonus;delete c._shieldPending;const g=board.p?.[i];if(g?.userData?.equipment)Object.entries({...g.userData.equipment}).forEach(([label,eq])=>{if(eq?.userData?.kind==='armor'&&eq?.userData?.temporary)pcRemoveEquipment(g,label,true)})}})}
 function endPlayerMagicTurn(){pcClearTemporaryEquipment();playerCards.forEach(c=>{if(!c)return;if(c._turnAtkBonus){c.atk=Math.max(0,c.atk-c._turnAtkBonus);delete c._turnAtkBonus}if(c._skillAtkBonus){c.atk=Math.max(0,c.atk-c._skillAtkBonus);delete c._skillAtkBonus}if(c._playerPowerBonus){c.atk=Math.max(0,c.atk-c._playerPowerBonus);delete c._playerPowerBonus}})}
@@ -3671,7 +3725,7 @@ async function resolveBattle(attSide,ai,defSide,di){
  if(csMeteorRainBlocksAttack(defSide)){update();return}
  di=await csMeteorIntercept(defSide,di,A);
  const D=(defSide==='p'?playerCards:enemyCards)[di];if(!D)return;
- csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);
+ csCerberusBeforeAttack(attSide,A);csPegasusBeforeAttack(attSide,A);csSubworldArmorBeforeAttack(attSide,A);if(A._csPlutoVengeance){A._csPlutoVengeanceConsumedTurn=turnNo}
  if(csPegasusEvade(defSide,D)){update();return}
  await idrBeforeAttack(attSide,ai,A);
  if(D.effect==='phantomReflect'){
@@ -3690,14 +3744,14 @@ async function resolveBattle(attSide,ai,defSide,di){
   const rebote=Math.abs(diff);
   if(attSide==='p')phpv=Math.max(0,phpv-rebote);else ehpv=Math.max(0,ehpv-rebote);
   damageFx(rebote,attSide);
-  toast(`¡Muro impenetrable! El atacante rebota y pierde ${rebote} HP.`);mgrAfterSurvive(defSide,D);
+  toast(`¡Muro impenetrable! El atacante rebota y pierde ${rebote} HP.`);mgrAfterSurvive(defSide,D);csSubworldArmorAfterSurvive(defSide,D);
  }else{
   toast('Ataque y defensa iguales. Nadie recibe daño.');
  }
  update();
  return
 }
- if(diff>0){await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);const csPierce=csGoldenPiercingDamage(attSide,A,D);if(csPierce>hpDiff){hpDiff=csPierce;toast('ÚLTIMO JUICIO: el daño perforante aumenta el impacto a '+hpDiff+'.')}if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);mgrAfterSurvive(defSide,D);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A)}update()}
+ if(diff>0){await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A);royalAfterKill(attSide,ai,D);await ghostAfterKill(attSide,ai,D);await aresOnKill(attSide,ai,D);await treasureOnBattleKill(attSide,A);await idrAfterKill(attSide,A);await nemesisDmAfterKill(attSide,A,D);rewardAres();let hpDiff=(defSide==='e'?ghostReduceIncomingHpDamage(diff,A):diff);hpDiff=aresFrontLineReduction(defSide,di,hpDiff);const csPierce=csGoldenPiercingDamage(attSide,A,D);if(csPierce>hpDiff){hpDiff=csPierce;toast('ÚLTIMO JUICIO: el daño perforante aumenta el impacto a '+hpDiff+'.')}if(defSide==='e')ehpv-=hpDiff;else phpv-=hpDiff;damageFx(hpDiff,defSide)}else if(diff<0){await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);mgrAfterSurvive(defSide,D);csSubworldArmorAfterSurvive(defSide,D);if(attSide==='p')phpv-=Math.abs(diff);else ehpv-=Math.abs(diff);damageFx(Math.abs(diff),attSide)}else{await destroyCard(attSide,ai,'combat');strategicClownLastJoke(A,D);await destroyCard(defSide,di,'combat');strategicClownLastJoke(D,A)}update()}
 function chooseMagicTarget(titleText,cards,side='p'){
  return new Promise(resolve=>{
   const old=document.getElementById('magicTargetPicker');if(old)old.remove();
@@ -4158,6 +4212,7 @@ async function applyMagic(side,c){strategicVoidMageOnMagic(side);
  if(side==='p'&&isGhostGod&&(window.__nemesisGhostEyeCharges||0)>0){window.__nemesisGhostEyeCharges--;toast(`OJO DEL DIOS FANTASMA anula ${c.name}.`);pcChainLog(`Ojo del Dios Fantasma anula ${c.name}.`);return true}
  if(side==='p'){const counter=enemyCards.findIndex(x=>x&&x.effect==='negateMagic');if(counter>=0){toast(`Sello del Oráculo anuló ${c.name} y fue enviado al Cementerio.`);await destroyCard('e',counter);return true}}
  if(c?.effect==='orbPowerWeapon')return await orbPowerEquip(side,c);
+ if(c?.family==='caballeros-submundo'&&c?.subtype==='armor')return await csSubworldArmorMagic(side,c);
  if(c?.family==='caballeros-submundo'&&c?.subtype==='weapon'){
   const arr=side==='p'?playerCards:enemyCards;
   const idx=side==='p'?await magicAllyIndex(side,`ELIGE PORTADOR PARA ${c.name}`):arr.findIndex(x=>x&&x.family==='caballeros-submundo');
