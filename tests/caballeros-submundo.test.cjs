@@ -122,6 +122,11 @@ for(const [id,name,img] of [
 }
 must('armas usan equipamiento central',game.includes("c?.family==='caballeros-submundo'&&c?.subtype==='weapon'")&&game.includes("nemesisEquip(side,idx,'weapon',c"));
 must('Sentencia conserva afinidad Venuz',game.includes("c.id==='CS-012'&&['CS-006','CS-007'].includes(arr[idx].id)"));
+must('armas Submundo tienen motor especializado',game.includes('function csSubworldWeaponMagic(')&&game.includes('function csSubworldWeaponBeforeCombat(')&&game.includes('function csSubworldWeaponAfterKill('));
+must('Luz de Ares ruptura/contraofensiva/ultimate',game.includes("eq.sourceId==='CS-011'")&&game.includes('_csAresRuptureLoss')&&game.includes('_csAresCounterPierce')&&game.includes('weaponAresUltimate'));
+must('Sentencia de Venuz reducción/protección/ultimate',game.includes("eq.sourceId==='CS-012'")&&game.includes('_csVenuzSentenceLoss')&&game.includes('VOLUNTAD DE VENUZ')&&game.includes('weaponVenuzUltimate'));
+must('Aguijón de Escorpión veneno/ultimate',game.includes("eq.sourceId==='CS-013'")&&game.includes('_csPoisonStacks')&&game.includes('_csPoisonUntil')&&game.includes('weaponScorpionUltimate'));
+must('Agujero Negro gravedad/devorador/ultimate',game.includes("eq.sourceId==='CS-014'")&&game.includes('_csGravityAtkLoss')&&game.includes('devourAtk')&&game.includes('weaponBlackHoleUltimate'));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('ARMAS SUBMUNDO · CS-011/CS-014: PASS');
 
