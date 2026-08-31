@@ -570,9 +570,17 @@ const NEMESIS_OFFICIAL_DECK_REGISTRY=Object.freeze({
  MAGO_ROJO:MAGO_ROJO_DECK_IDS,
  IMPERIO_DRAGON:IMPERIO_DRAGON_DECK_IDS
 });
+function nemesisDeckKey(name){
+ const k=String(name||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON');
+ if(k==='CABALLEROS_DEL_SUBMUNDO'||k==='CABALLEROS_SUBMUNDO')return 'CABALLEROS_SUBMUNDO';
+ if(k==='IMPERIO_DRAGON')return 'IMPERIO_DRAGON';
+ if(k==='MAGO_ROJO')return 'MAGO_ROJO';
+ if(k==='DUEL_MASTER')return 'DUEL_MASTER';
+ if(k==='OLIMPO')return 'OLIMPO';
+ return k;
+}
 function nemesisDeckLimit(name=state.activeDeckName){
- const k=nemesisCanonicalDeckName(name);
- const official=NEMESIS_OFFICIAL_DECK_REGISTRY[k];
+ const official=NEMESIS_OFFICIAL_DECK_REGISTRY[nemesisDeckKey(name)];
  return Array.isArray(official)&&official.length?official.length:20;
 }
 function nemesisActiveDeckLimit(){return nemesisDeckLimit(state.activeDeckName)}
