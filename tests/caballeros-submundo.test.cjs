@@ -81,3 +81,18 @@ must('CS-007 Eclipse Eternidad',game.includes("_csVenuzShinyFinalUsedDuel=true")
 must('CS-007 Cuerpo Eclipse 70%',game.includes("_csShinyFloorAtk=Math.ceil(c.atk*.7)")&&game.includes("_csShinyFloorDef=Math.ceil(c.def*.7)"));
 must('CS-007 perforación conectada',game.includes("function csVenuzShinyPiercingDamage")&&game.includes("if(csIs(c,'CS-007'))return csVenuzShinyPiercingDamage"));
 must('CS-007 anti-anulación',game.includes("_csShinyNegateTurn!==turnNo")&&game.includes("la primera anulación dirigida del turno queda NEGADA"));
+
+must('CS-008 registrado',game.includes("id:'CS-008',name:'Caballero Meteoro'"));
+must('CS-008 stats 11500/15000',game.includes("name:'Caballero Meteoro',atk:11500,def:15000"));
+must('CS-008 familia correcta',game.includes("id:'CS-008'")&&game.includes("family:'caballeros-submundo'"));
+must('CS-008 arte físico',game.includes("img:'assets/images/caballeros-submundo/caballero-meteoro.webp'")&&fs.existsSync(path.join(root,'assets/images/caballeros-submundo/caballero-meteoro.webp')));
+must('CS-008 Núcleo Estelar',game.includes("action:'meteorCore'")&&game.includes("NÚCLEO ESTELAR")&&game.includes("c.def-=2000;c.atk+=2000"));
+must('CS-008 Impacto de Retorno',game.includes("function csMeteorIntercept(")&&game.includes("attacker.atk=Math.max(0,(attacker.atk||0)-2000)"));
+must('CS-008 Armadura Meteórica',game.includes("_csMeteorArmorTurn!==turnNo")&&game.includes("victim.def+=1000"));
+must('CS-008 Guardián del Submundo',game.includes("_csMeteorGuardianTurn!==turnNo")&&game.includes("m.def=Math.max(0,m.def-1500)"));
+must('CS-008 Contraataque Meteoro',game.includes("damageFx(2000")&&game.includes("CONTRAATAQUE METEORO"));
+must('CS-008 Ultimate 2 turnos',game.includes("_csMeteorRainUntil=turnNo+1")&&game.includes("_csMeteorRainSelfDef=4000")&&game.includes("_csMeteorRainAllyDef"));
+must('CS-008 bloqueo primer ataque',game.includes("function csMeteorRainBlocksAttack(")&&game.includes("_csMeteorRainBlockTurn===turnNo"));
+must('CS-008 conectado a combate',game.includes("di=await csMeteorIntercept(defSide,di,A)")&&game.includes("if(csMeteorRainBlocksAttack(defSide))"));
+if(process.exitCode)process.exit(process.exitCode);
+console.log('CABALLERO METEORO · CS-008: PASS');
