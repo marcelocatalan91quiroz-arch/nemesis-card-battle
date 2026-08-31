@@ -159,3 +159,16 @@ must('reliquias conectadas a Cementerio',game.includes("grave.push(arr[i]);csSub
 must('auditoría incluye CS-017/018',game.includes("'CS-016','CS-017','CS-018'"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('RELIQUIAS SUBMUNDO · CS-017/CS-018: PASS');
+
+must('CS-019 registrado',game.includes("id:'CS-019',name:'Escudo de Luna'"));
+must('CS-019 es mágica de hechizo',game.includes("id:'CS-019'")&&game.includes("subtype:'spell'"));
+must('CS-019 arte físico',fs.existsSync(path.join(root,'assets/images/caballeros-submundo/escudo-de-luna.webp')));
+must('CS-019 motor operativo',game.includes("m.id==='CS-019'")&&game.includes("ECLIPSE DE LA LUNA INMORTAL"));
+must('CS-020 registrado',game.includes("id:'CS-020',name:'Rayo del Submundo'"));
+must('CS-020 es mágica de hechizo',game.includes("id:'CS-020'")&&game.includes("subtype:'spell'"));
+must('CS-020 arte físico',fs.existsSync(path.join(root,'assets/images/caballeros-submundo/rayo-del-submundo.webp')));
+must('CS-020 motor operativo',game.includes("m.id==='CS-020'")&&game.includes("TORMENTA DEL FIN DEL SUBMUNDO"));
+must('mágicas conectadas a applyMagic',game.includes("subtype==='spell')return await csSubworldSpellMagic(side,c)"));
+must('auditoría completa 20 cartas',game.includes("'CS-018','CS-019','CS-020'")&&game.includes("planned:20"));
+if(process.exitCode)process.exit(process.exitCode);
+console.log('MÁGICAS SUBMUNDO · CS-019/CS-020: PASS');
