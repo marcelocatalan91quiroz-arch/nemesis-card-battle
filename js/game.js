@@ -580,7 +580,12 @@ function nemesisDeckKey(name){
  return k;
 }
 function nemesisDeckLimit(name=state.activeDeckName){
- const official=NEMESIS_OFFICIAL_DECK_REGISTRY[nemesisDeckKey(name)];
+ const k=nemesisDeckKey(name);
+ const official=k==='OLIMPO'?OLIMPO_DECK_IDS:
+  k==='DUEL_MASTER'?NEMESIS_DUEL_MASTER_IDS:
+  k==='CABALLEROS_SUBMUNDO'?CABALLEROS_SUBMUNDO_DECK_IDS:
+  k==='MAGO_ROJO'?MAGO_ROJO_DECK_IDS:
+  k==='IMPERIO_DRAGON'?IMPERIO_DRAGON_DECK_IDS:null;
  return Array.isArray(official)&&official.length?official.length:20;
 }
 function nemesisActiveDeckLimit(){return nemesisDeckLimit(state.activeDeckName)}
