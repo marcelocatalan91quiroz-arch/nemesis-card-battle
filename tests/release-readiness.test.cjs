@@ -32,6 +32,9 @@ A('Tesoro NÉMESIS canje exclusivo 1000',game.includes('nemesisTreasureRedeem')&
 // 4) Campañas, desbloqueos, revanchas y recompensas.
 for(const x of ['guardianDefeated','dragonDefeated','raDefeated','caballeroAlmasDefeated','reyEspectralDefeated','diosFantasmaDefeated','aresDefeated','hadesDefeated'])A('progreso '+x,game.includes(x));
 A('cada victoria de campaña puede entregar carta rival',game.includes('grantRandomBossCard(duelKey)'));
+A('Guardián mantiene 10 cartas reales sin ID legacy roto',game.includes("const GUARDIAN_BOSS_CARD_IDS=['dragon-carmesi-caos','dragon-abisal-nemesis','dragon-negro-ruinas','dragon-infernal-sangre','magica-curandero','magica-nosferatu','df-dragon-vacio','fusion-caotico-supremo','dragon-infernal','esp-dragon-abismo']"));
+A('registro de jefes rechaza cartas inexistentes',game.includes('const missing=b.deck.filter(x=>!card(x))')&&game.includes('Object.values(bosses).every(x=>x.ok)'));
+A('cartas de campaña ganadas entran a owned y colección con su arte',game.includes('state.owned=[...new Set([...state.owned,id])]')&&game.includes('...state.owned,')&&game.includes('<img src="${c.img}"'));
 A('mazos completos se desbloquean al completar campañas',game.includes("nemesisUnlockCampaignDecks('campaign1')")&&game.includes("nemesisUnlockCampaignDecks('campaign2')")&&game.includes("nemesisUnlockCampaignDecks('campaign3')"));
 A('revanchas permanentes de 8 rivales',game.includes('const NEMESIS_RETRY_ROSTER=Object.freeze([')&&['guardian','dragon-ojo','ira-ra','caballero-almas','rey-espectral','dios-fantasma','ares','hades'].every(id=>game.includes("id:'"+id+"'")));
 A('retar otra vez usa mismo battle()',game.includes("RETAR OTRA VEZ")&&game.includes('battle(r.battleKey||undefined)'));
