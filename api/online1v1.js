@@ -96,6 +96,13 @@ function cleanDeckIds(v){return [...new Set((Array.isArray(v)?v:[]).map(x=>Strin
 function playerDeckMeta(b){let deckName=cleanDeckName(b.deckName),owner=verifyOwnerToken(b.ownerToken);if(OWNER_DECKS.has(deckName)&&!owner)return {error:'OWNER_AUTH_REQUIRED',deckName,deckIds:[],deckClass:'OWNER'};if(!ONLINE_DECK_IDS[deckName]){if(OWNER_DECKS.has(deckName))return {error:'ONLINE_DECK_ENGINE_PENDING',deckName,deckIds:[],deckClass:'OWNER'};deckName='MAGO_ROJO'}const deckIds=ONLINE_DECK_IDS[deckName].slice();return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC',ownerAuthenticated:owner}}
 
 const DM_EFFECT_HANDLERS=Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,true])));
+const ONLINE_EFFECT_HANDLERS=Object.freeze({
+ DUEL_MASTER:Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,true]))),
+ MAGO_ROJO:Object.freeze(Object.fromEntries(MGR_DECK.map(id=>[id,true]))),
+ IMPERIO_DRAGON:Object.freeze(Object.fromEntries(IDR_DECK.map(id=>[id,true])))
+});
+function onlineEngineAudit(){return Object.fromEntries(Object.entries(ONLINE_EFFECT_HANDLERS).map(([deck,h])=>[deck,{count:Object.keys(h).length,all:Object.values(h).every(Boolean),ids:Object.keys(h)}]))}
+
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=crypto.randomInt(0,i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 function initOnlinePlayer(meta,seat){
  const deckName=canonicalOnlineDeck(meta?.deckName),deck=shuffle((ONLINE_DECK_IDS[deckName]||DM_DECK).slice()),hand=deck.splice(0,5);
@@ -663,6 +670,9 @@ module.exports=async function handler(req,res){
    }
    if(authBody.action==='owner_verify'){
     const owner=verifyOwnerToken(authBody.ownerToken);return res.status(owner?200:403).json({ok:owner,owner,error:owner?undefined:'OWNER_AUTH_INVALID'});
+   }
+   if(authBody.action==='engine_audit'){
+    return res.status(200).json({ok:true,mode:'MULTI_DECK',engines:onlineEngineAudit(),ownerAuthReady:ownerAuthReady()});
    }
   }
   if(!storageReady())return res.status(503).json({ok:false,error:'PERSISTENCE_REQUIRED'});
