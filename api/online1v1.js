@@ -50,7 +50,7 @@ const MGR_DATA=require('../data/mago_rojo_deck_v1.json');
 const IDR_DATA=require('../data/imperio_dragon_deck_v1.json');
 function normalizeDeckCard(c,deckName){
  const type=String(c.tipo||'').toUpperCase();
- const monster=type==='CRIATURA'||type==='FUSION';
+ const monster=type==='CRIATURA'||type==='FUSION'||type==='TRANSFORMACION';
  const supportType=type==='ARMA'?'WEAPON':type==='RELIQUIA'?'RELIC':type.includes('TRAMPA')?'TRAP_RESPONSE':'MAGIC';
  return {
   name:c.nombre||c.id,kind:monster?'MONSTER':'SUPPORT',supportType:monster?null:supportType,
