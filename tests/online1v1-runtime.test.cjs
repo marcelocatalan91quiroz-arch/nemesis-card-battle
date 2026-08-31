@@ -6,6 +6,8 @@ delete process.env.KV_REST_API_URL;
 delete process.env.KV_REST_API_TOKEN;
 delete process.env.UPSTASH_REDIS_REST_URL;
 delete process.env.UPSTASH_REDIS_REST_TOKEN;
+process.env.NEMESIS_OWNER_KEY='NEMESIS_OWNER_TEST_KEY_2026';
+process.env.NEMESIS_OWNER_SIGNING_SECRET='NEMESIS_OWNER_SIGNING_SECRET_TEST_2026_ABC';
 
 const handler=require('../api/online1v1.js');
 
@@ -28,13 +30,18 @@ function invoke({method='POST',query={},body={}}={}){
  assert.equal(health.status,200);
  assert.equal(health.payload.storage,'FLUID_MEMORY_DEV');
 
- const a=await invoke({body:{action:'create',name:'Alpha'}});
+ const audit=await invoke({body:{action:'engine_audit'}});assert.equal(audit.status,200);assert.equal(audit.payload.mode,'MULTI_DECK');assert.equal(audit.payload.engines.DUEL_MASTER.count,20);assert.equal(audit.payload.engines.MAGO_ROJO.count,20);assert.equal(audit.payload.engines.IMPERIO_DRAGON.count,20);
+ const badOwner=await invoke({body:{action:'owner_login',ownerKey:'bad'}});assert.equal(badOwner.status,403);
+ const owner=await invoke({body:{action:'owner_login',ownerKey:process.env.NEMESIS_OWNER_KEY}});assert.equal(owner.status,200);assert.ok(owner.payload.ownerToken);
+ const verify=await invoke({body:{action:'owner_verify',ownerToken:owner.payload.ownerToken}});assert.equal(verify.status,200);
+ const privateDenied=await invoke({body:{action:'create',name:'Private',deckName:'DUEL_MASTER'}});assert.equal(privateDenied.status,403);assert.equal(privateDenied.payload.error,'OWNER_AUTH_REQUIRED');
+ const a=await invoke({body:{action:'create',name:'Alpha',deckName:'MAGO_ROJO'}});
  assert.equal(a.status,201);
  assert.ok(a.payload.token);
  const code=a.payload.room.code;
  assert.equal(a.payload.room.players.length,1);
 
- const b=await invoke({body:{action:'join',code,name:'Beta'}});
+ const b=await invoke({body:{action:'join',code,name:'Beta',deckName:'IMPERIO_DRAGON'}});
  assert.equal(b.status,200);
  assert.ok(b.payload.token);
  assert.equal(b.payload.room.players.length,2);
@@ -51,7 +58,9 @@ function invoke({method='POST',query={},body={}}={}){
  assert.equal(sync.status,200);
  assert.equal(sync.payload.room.status,'ACTIVE');
 
- assert.equal(sync.payload.room.duel.mode,'DUEL_MASTER');
+ assert.equal(sync.payload.room.duel.mode,'MULTI_DECK');
+ assert.equal(sync.payload.room.duel.me.deckName,'MAGO_ROJO');
+ assert.equal(sync.payload.room.duel.opponent.deckName,'IMPERIO_DRAGON');
  assert.equal(sync.payload.room.duel.me.hand.length,5);
  assert.equal(sync.payload.room.duel.me.monsters.length,5);
  assert.equal(sync.payload.room.duel.me.supports.length,5);
@@ -75,7 +84,7 @@ function invoke({method='POST',query={},body={}}={}){
   assert.ok([200,409].includes(ability.status));
   if(ability.status===200)assert.ok(ability.payload.room.duel.log.some(e=>e.type==='ABILITY'||e.type==='ZEUS_NEGATE'||e.type==='DAMAGE'));
  }
- const supportInHand=afterPlay.payload.room.duel.me.hand.find(c=>c.kind==='SUPPORT'&&!['DM-006','DM-019'].includes(c.id));
+ const supportInHand=afterPlay.payload.room.duel.me.hand.find(c=>c.kind==='SUPPORT'&&!['MGR-015','MGR-016','MGR-017'].includes(c.id));
  if(supportInHand){
   const freeSupport=afterPlay.payload.room.duel.me.supports.findIndex(x=>!x);
   if(freeSupport>=0){
@@ -95,12 +104,13 @@ function invoke({method='POST',query={},body={}}={}){
  assert.equal(wrongTurn.status,409);
  assert.equal(wrongTurn.payload.error,'NOT_YOUR_TURN');
 
- const evt=await invoke({body:{action:'event',code,token:b.payload.token,type:'CLIENT_READY_FOR_DUELMASTER',payload:{deck:'DUEL_MASTER'}}});
+ const evt=await invoke({body:{action:'event',code,token:b.payload.token,type:'CLIENT_READY_FOR_DUELMASTER',payload:{deck:'IMPERIO_DRAGON'}}});
  assert.equal(evt.status,200);
  assert.ok(evt.payload.room.events.some(e=>e.type==='CLIENT_READY_FOR_DUELMASTER'));
 
  const bad=await invoke({body:{action:'sync',code,token:'token-invalido'}});
  assert.equal(bad.status,403);
 
- console.log('NÉMESIS DUEL MASTER ONLINE EFFECTS 20/20 RUNTIME: PASS');
+ const ownerRoom=await invoke({body:{action:'create',name:'Owner',deckName:'DUEL_MASTER',ownerToken:owner.payload.ownerToken}});assert.equal(ownerRoom.status,201);assert.equal(ownerRoom.payload.room.me.deckClass,'OWNER');
+ console.log('NÉMESIS ONLINE MULTIDECK + OWNER AUTH RUNTIME: PASS');
 })().catch(err=>{console.error(err);process.exit(1)});
