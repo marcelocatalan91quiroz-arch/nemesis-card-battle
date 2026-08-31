@@ -80,7 +80,19 @@ const PUBLIC_DECKS=new Set(['MAGO_ROJO','IMPERIO_DRAGON']);
 const OWNER_DECKS=new Set(['OLIMPO','DUEL_MASTER','CABALLEROS_SUBMUNDO']);
 function cleanDeckName(v){return String(v||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON').slice(0,40)}
 function cleanDeckIds(v){return [...new Set((Array.isArray(v)?v:[]).map(x=>String(x||'').trim()).filter(Boolean))].slice(0,40)}
-function playerDeckMeta(b,req){let deckName=cleanDeckName(b.deckName),owner=ownerAuth.verifyRequest(req)||(!isProduction()&&verifyOwnerToken(b.ownerToken));if(OWNER_DECKS.has(deckName)&&!owner)return {error:'OWNER_AUTH_REQUIRED',deckName,deckIds:[],deckClass:'OWNER'};if(!ONLINE_DECK_IDS[deckName]){if(OWNER_DECKS.has(deckName))return {error:'ONLINE_DECK_ENGINE_PENDING',deckName,deckIds:[],deckClass:'OWNER'};deckName='MAGO_ROJO'}const deckIds=ONLINE_DECK_IDS[deckName].slice();return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC',ownerAuthenticated:owner}}
+function playerDeckMeta(b,req){
+ let deckName=cleanDeckName(b.deckName),owner=ownerAuth.verifyRequest(req)||(!isProduction()&&verifyOwnerToken(b.ownerToken));
+ if(OWNER_DECKS.has(deckName)&&!owner)return {error:'OWNER_AUTH_REQUIRED',deckName,deckIds:[],deckClass:'OWNER'};
+ if(!ONLINE_DECK_IDS[deckName]){
+  if(OWNER_DECKS.has(deckName))return {error:'ONLINE_DECK_ENGINE_PENDING',deckName,deckIds:[],deckClass:'OWNER'};
+  deckName='MAGO_ROJO'
+ }
+ const official=ONLINE_DECK_IDS[deckName].slice(),allowed=new Set(official),requested=cleanDeckIds(b.deckIds);
+ if(requested.some(id=>!allowed.has(id)))return {error:'ONLINE_DECK_INVALID_CARD',deckName,deckIds:[],deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC'};
+ const deckIds=(requested.length?requested:official).slice(0,official.length);
+ if(!deckIds.length)return {error:'ONLINE_DECK_EMPTY',deckName,deckIds:[],deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC'};
+ return {deckName,deckIds,deckClass:OWNER_DECKS.has(deckName)?'OWNER':'PUBLIC',ownerAuthenticated:owner}
+}
 
 const DM_EFFECT_HANDLERS=Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,true])));
 const ONLINE_EFFECT_HANDLERS=Object.freeze({
@@ -92,7 +104,7 @@ function onlineEngineAudit(){return Object.fromEntries(Object.entries(ONLINE_EFF
 
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=crypto.randomInt(0,i+1);[a[i],a[j]]=[a[j],a[i]]}return a}
 function initOnlinePlayer(meta,seat){
- const deckName=canonicalOnlineDeck(meta?.deckName),deck=shuffle((ONLINE_DECK_IDS[deckName]||DM_DECK).slice()),hand=deck.splice(0,5);
+ const deckName=canonicalOnlineDeck(meta?.deckName),deck=shuffle((Array.isArray(meta?.deckIds)&&meta.deckIds.length?meta.deckIds:(ONLINE_DECK_IDS[deckName]||DM_DECK)).slice()),hand=deck.splice(0,5);
  return {seat,deckName,hp:DM_START_HP,deck,hand,monsters:Array(5).fill(null),supports:Array(5).fill(null),grave:[],banished:[],cardState:{},attacked:[],summonedThisTurn:false,effectLockUntil:0,originsUntil:0,titanShieldUntil:0,archetype:{seals:0,flames:0,magicUses:0,sky:false}};
 }
 function initDmPlayer(seat){return initOnlinePlayer({deckName:'DUEL_MASTER'},seat)}
