@@ -166,9 +166,10 @@ test('auditoría total del registro de cartas e imágenes', async ({ page }) => 
 });
 
 test('colección, tesoros y santuario renderizan imágenes válidas', async ({ page }) => {
-  test.setTimeout(90000);
-  await page.addInitScript(()=>localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true})));
-  await page.goto('/',{waitUntil:'domcontentloaded'}); await page.waitForTimeout(500);
+  await page.goto('/');
+  await page.locator('#playerCreateName').fill('QA NEMESIS');
+  await page.locator('#playerCreateBtn').click();
+  await expect(page.locator('#deckBtn')).toBeVisible();
   await page.locator('#deckBtn').click(); await expect(page.locator('.collection-global')).toBeVisible();
   expect(await page.locator('.inventory-grid img').count()).toBeGreaterThan(0);
   await page.locator('#backMenu').click();
@@ -179,9 +180,12 @@ test('colección, tesoros y santuario renderizan imágenes válidas', async ({ p
 });
 
 test('menú de revancha permanece operativo', async ({ page }) => {
-  test.setTimeout(90000);
-  await page.addInitScript(()=>localStorage.setItem('nemesis_memory_card_v1',JSON.stringify({name:'QA NEMESIS',profileCreated:true,guardianDefeated:true,dragonDefeated:true,raDefeated:true,caballeroAlmasDefeated:true,reyEspectralDefeated:true,diosFantasmaDefeated:true,aresDefeated:true,hadesDefeated:true})));
-  await page.goto('/',{waitUntil:'domcontentloaded'}); await page.waitForTimeout(500);
+  await page.goto('/');
+  await page.locator('#playerCreateName').fill('QA NEMESIS');
+  await page.locator('#playerCreateBtn').click();
   await page.locator('#retryBtn').click(); await expect(page.getByText('RETOS · REVANCHA')).toBeVisible();
-  expect(await page.locator('.retry-grid button').count()).toBeGreaterThanOrEqual(8);
+  expect(await page.locator('.retry-grid button').count()).toBe(8);
+  const audit=await page.evaluate(()=>window.NEMESIS_RETRY_AUDIT?.());
+  expect(audit.total).toBe(8);
+  expect(audit.rewards).toEqual({guardian:100,'dragon-ojo':150,'ira-ra':200,'caballero-almas':150,'rey-espectral':250,'dios-fantasma':350,ares:400,hades:500});
 });
