@@ -141,3 +141,13 @@ must('Plutón Poder de los Caídos',game.includes("PODER DE LOS CAÍDOS")&&game.
 must('Ultimates de armadura',game.includes("function csSubworldArmorUltimate(")&&game.includes("armorForgottenUltimate")&&game.includes("armorPlutoUltimate"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('ARMADURAS SUBMUNDO · CS-015/CS-016: PASS');
+
+must('CS-017 Corazón del Tártaro registrado',game.includes("id:'CS-017',name:'Corazón del Tártaro'"));
+must('CS-018 Trono registrado',game.includes("id:'CS-018',name:'Trono de las Almas Perdidas'"));
+must('reliquias usan subtype relic',game.includes("subtype:'relic'"));
+must('motor reliquias activo',game.includes("function csRelicMagic(")&&game.includes("function csRelicUltimate("));
+must('Corazón acumula almas',game.includes("CORAZÓN DEL TÁRTARO: ALMA"));
+must('Trono acumula almas enemigas',game.includes("TRONO DE LAS ALMAS PERDIDAS: ALMA ENEMIGA"));
+must('triggers conectados a Cementerio',game.includes("csRelicOnOwnToGrave(side,victim)")&&game.includes("csRelicOnEnemyDestroyed(other(side),victim)"));
+must('Trono niega mágica',game.includes("csRelicNegateMagic(side)"));
+console.log('RELIQUIAS SUBMUNDO · CS-017/CS-018: PASS');
