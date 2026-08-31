@@ -4192,7 +4192,7 @@ function csSubworldWeaponTurn(){
   if(c._csGravityLoss&&c._csGravityLoss.until<turnNo){c.atk+=c._csGravityLoss.atk;c.def+=c._csGravityLoss.def;delete c._csGravityLoss}
   if(c._csSingularityLoss&&c._csSingularityLoss.until<turnNo){c.atk+=c._csSingularityLoss.atk;c.def+=c._csSingularityLoss.def;delete c._csSingularityLoss}
   const eq=nemesisEquipmentSlots(c)?.weapon;if(eq&&eq._ultimateAtk&&eq._ultimateUntil<turnNo){c.atk=Math.max(0,c.atk-eq._ultimateAtk);if(eq._ultimateDef)c.def=Math.max(0,c.def-eq._ultimateDef);delete eq._ultimateAtk;delete eq._ultimateDef}
- })}
+ });
 }
 
 async function applyMagic(side,c){strategicVoidMageOnMagic(side);
