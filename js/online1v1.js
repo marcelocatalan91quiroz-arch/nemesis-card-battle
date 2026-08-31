@@ -58,7 +58,7 @@ function onlineHome(name='Jugador'){
     <p class="online-msg" id="olMsg"></p>
    </article>
   </main>
-  <footer class="online-foot">ONLINE MULTIMAZO · SERVIDOR AUTORITATIVO · DM / MAGO ROJO / IMPERIO DRAGÓN</footer>
+  <footer class="online-foot">ONLINE MULTIMAZO · SERVIDOR AUTORITATIVO · DUEL MASTER / MAGO ROJO / IMPERIO DRAGÓN / OLIMPO / CABALLEROS</footer>
  </section>`;
  document.getElementById('olBack').onclick=()=>location.reload();
  document.getElementById('olCreate').onclick=async()=>{const n=document.getElementById('olName').value.trim()||'Jugador';busy(true);try{const j=await api({action:'create',name:n,...activeDeckPayload()});current={code:j.room.code,token:j.token,name:n};saveSession();renderRoom(j.room)}catch(e){msg(errorText(e.message))}finally{busy(false)}};
@@ -66,7 +66,7 @@ function onlineHome(name='Jugador'){
 }
 function busy(v){document.querySelectorAll('.online-console button').forEach(b=>b.disabled=v)}
 function msg(t){const e=document.getElementById('olMsg');if(e)e.textContent=t}
-function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',OWNER_AUTH_REQUIRED:'Este mazo requiere autenticación real del propietario.',ONLINE_DECK_ENGINE_PENDING:'Este mazo privado aún no tiene motor online habilitado.',ONLINE_DECK_INVALID_CARD:'El mazo contiene una carta que este motor Online todavía no admite.',ONLINE_DECK_EMPTY:'El mazo Online no puede estar vacío.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
+function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',OWNER_AUTH_REQUIRED:'Este mazo requiere autenticación real del propietario.',ONLINE_DECK_ENGINE_PENDING:'Este mazo privado aún no tiene motor online habilitado.',ONLINE_DECK_INVALID_CARD:'El mazo contiene una carta que este motor Online todavía no admite.',ONLINE_DECK_EMPTY:'El mazo Online no puede estar vacío.',SOLAR_SHIELD:'El Escudo Solar del Olimpo bloquea el ataque directo.',FUSION_REQUIREMENT:'Faltan materiales para la Fusión Divina.',SACRIFICE_REQUIRED:'La habilidad requiere sacrificar otro Caballero.',GRAVE_REQUIREMENT:'Faltan Caballeros del Submundo en el Cementerio.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
 
 async function resume(s){
  current={code:s.code,token:s.token,name:s.name||'Jugador'};
@@ -105,7 +105,7 @@ function renderRoom(room){
 
 function dmCardHtml(card,extra=''){
  if(!card)return '<div class="dm-empty"></div>';
- const st=card.state||{},eq=st.equipment||{},eqTxt=[eq.weapon,eq.relic].filter(Boolean).join(' · ');
+ const st=card.state||{},eq=st.equipment||{},eqTxt=[eq.weapon,eq.armor,eq.relic].filter(Boolean).join(' · ');
  const realArt=window.nemesisRealCardArt?.(card.id,card.img||'')||card.img||'';
  return `<article class="dm-card ${extra}" data-card="${esc(card.id)}"><img src="${esc(realArt)}" alt="${esc(card.name||card.id)}"><div><b>${esc(card.name||card.id)}</b><span>ATK ${Number(card.atk||0).toLocaleString('es-CL')} · DEF ${Number(card.def||0).toLocaleString('es-CL')}</span>${card.kind==='MONSTER'?'<small>ENERGÍA '+Number(st.energy??card.energy??0)+' · USOS '+Number(st.uses||0)+'</small>':''}${eqTxt?'<em>'+esc(eqTxt)+'</em>':''}</div></article>`;
 }
