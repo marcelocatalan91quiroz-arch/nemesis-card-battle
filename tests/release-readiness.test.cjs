@@ -62,7 +62,7 @@ A('cámara cinematográfica',game.includes('pcCinematicCamera')&&game.includes('
 A('pantalla completa',game.includes('requestNemesisFullscreen'));
 
 // 8) Online 1v1.
-A('online cliente cargado',html.includes('js/online1v1.js'));
+A('online cliente diferido fuera del arranque',!html.includes('<script src="js/online1v1.js"')&&game.includes("nemesisLoadOptionalScript('js/online1v1.js','online1v1')"));
 A('online servidor autoritativo y Redis',api.includes("authority:'server'")&&api.includes('REDIS_URL')&&api.includes('storageReady'));
 A('online 2 jugadores, turnos y reconexión',api.includes('ROOM_FULL')&&api.includes('NOT_YOUR_TURN')&&api.includes("action==='heartbeat'"));
 A('online Duel Master 20 efectos',api.includes('DM_EFFECT_HANDLERS')&&api.includes("'DM-020'"));

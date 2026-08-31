@@ -71,7 +71,7 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
     const map=window.NEMESIS_CARD_ART||{};
     const sources=ids.map(id=>window.nemesisRealCardArt?.(id,'')||'');
     const loaded=await Promise.all(sources.map(src=>new Promise(resolve=>{
-      if(!/^data:image\//i.test(src))return resolve(false);
+      if(!src)return resolve(false);
       const img=new Image();
       img.onload=()=>resolve(img.naturalWidth>0&&img.naturalHeight>0);
       img.onerror=()=>resolve(false);
@@ -79,12 +79,12 @@ test('colección usa arte real en los mazos recientes', async ({ page }) => {
     })));
     return {
       expected:ids.length,
-      mapped:ids.filter(id=>typeof map[id]==='string'&&map[id].startsWith('data:image/')).length,
-      dataImages:sources.filter(src=>/^data:image\//i.test(src)).length,
+      mapped:ids.filter(id=>typeof map[id]==='string'&&map[id].endsWith('.avif')).length,
+      pathImages:sources.filter(src=>/\.avif(?:$|\?)/i.test(src)).length,
       decoded:loaded.filter(Boolean).length
     };
   });
-  expect(audit).toEqual({expected:50,mapped:50,dataImages:50,decoded:50});
+  expect(audit).toEqual({expected:50,mapped:50,pathImages:50,decoded:50});
 });
 
 
