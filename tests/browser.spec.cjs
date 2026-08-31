@@ -171,7 +171,7 @@ test('colección, tesoros y santuario están cableados al catálogo real', async
     cards:window.NEMESIS_FULL_CARD_AUDIT?.()||[],
     collection:!!window.NEMESIS_COLLECTION,
     treasure:!!window.NEMESIS_TREASURE_AUDIT?.(),
-    sanctuary:!!window.NEMESIS_SANCTUARY_AUDIT?.()
+    sanctuary:!!window.NEMESIS_SANCTUARY&&Array.isArray(window.NEMESIS_SANCTUARY.cards)&&window.NEMESIS_SANCTUARY.cards.length===3
   }));
   expect(audit.cards.length).toBeGreaterThan(0);
   expect(audit.cards.filter(c=>!c.img)).toEqual([]);
