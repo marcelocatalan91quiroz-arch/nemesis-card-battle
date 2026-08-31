@@ -107,11 +107,13 @@ test('arte autoritativo 65/65 y colección de mazos recientes', async ({ page })
       img.src=src;
     })));
     const owned=window.NEMESIS_COLLECTION?.owned||[];
-    const recentIds=ids.filter(id=>!id.startsWith('TN-'));
+    const publicIds=ids.filter(id=>id.startsWith('IDR-')||id.startsWith('MGR-'));
+    const privateDm=ids.filter(id=>id.startsWith('DM-'));
     return {
       artAudit,
       badImages:decoded.filter(x=>!x.ok),
-      missingOwned:recentIds.filter(id=>!owned.includes(id)),
+      missingPublicOwned:publicIds.filter(id=>!owned.includes(id)),
+      privateDmOwned:privateDm.filter(id=>owned.includes(id)),
       treasures:window.NEMESIS_TREASURE_AUDIT?.()
     };
   });
@@ -119,7 +121,8 @@ test('arte autoritativo 65/65 y colección de mazos recientes', async ({ page })
   expect(audit.artAudit.count).toBeGreaterThanOrEqual(65);
   expect(audit.artAudit.missing).toEqual([]);
   expect(audit.badImages).toEqual([]);
-  expect(audit.missingOwned).toEqual([]);
+  expect(audit.missingPublicOwned).toEqual([]);
+  expect(audit.privateDmOwned).toEqual([]);
   expect(audit.treasures.count).toBe(5);
   expect(audit.treasures.unique).toBeTruthy();
 });
