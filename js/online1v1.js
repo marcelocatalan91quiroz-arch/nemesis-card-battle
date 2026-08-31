@@ -66,7 +66,7 @@ function onlineHome(name='Jugador'){
 }
 function busy(v){document.querySelectorAll('.online-console button').forEach(b=>b.disabled=v)}
 function msg(t){const e=document.getElementById('olMsg');if(e)e.textContent=t}
-function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',OWNER_AUTH_REQUIRED:'Este mazo requiere autenticación real del propietario.',ONLINE_DECK_ENGINE_PENDING:'Este mazo privado aún no tiene motor online habilitado.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
+function errorText(e){return ({ROOM_NOT_FOUND:'Sala no encontrada.',ROOM_FULL:'La sala ya tiene 2 jugadores.',INVALID_SESSION:'La sesión ya no es válida.',OWNER_AUTH_REQUIRED:'Este mazo requiere autenticación real del propietario.',ONLINE_DECK_ENGINE_PENDING:'Este mazo privado aún no tiene motor online habilitado.',ONLINE_DECK_INVALID_CARD:'El mazo contiene una carta que este motor Online todavía no admite.',ONLINE_DECK_EMPTY:'El mazo Online no puede estar vacío.',SERVER_ERROR:'El servidor no pudo completar la operación.'})[e]||e}
 
 async function resume(s){
  current={code:s.code,token:s.token,name:s.name||'Jugador'};
