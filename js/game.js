@@ -716,6 +716,19 @@ async function nemesisEnsureOwnerAuth(){
  await nemesisLoadOptionalScript('js/owner-auth.js','owner-auth');
  return window.NEMESIS_OWNER_AUTH||null
 }
+
+async function nemesisShowDiosFantasmaIntroLazy(options={}){
+ try{
+  if(typeof window.showDiosFantasmaIntro!=='function')await nemesisLoadOptionalScript('js/dios-fantasma-intro.js','dios-fantasma-intro');
+  if(typeof window.showDiosFantasmaIntro==='function'){window.showDiosFantasmaIntro(options);return true}
+ }catch(e){console.warn('[NÉMESIS dios-fantasma intro lazy]',e)}
+ options.onFight?.();return false
+}
+async function nemesisEnsureAresModule(){
+ if(window.NEMESIS_ARES&&typeof window.nemesisShowAresIntro==='function')return window.NEMESIS_ARES;
+ try{await nemesisLoadOptionalScript('campaign3-ares.js','campaign3-ares')}catch(e){console.warn('[NÉMESIS Ares lazy]',e)}
+ return window.NEMESIS_ARES||null
+}
 async function nemesisOwnerVerify(){
  try{const auth=await nemesisEnsureOwnerAuth();if(typeof auth?.refresh==='function')await auth.refresh();return nemesisOwnerSessionActive()}catch{return false}
 }
@@ -1047,7 +1060,7 @@ function campaign2Hub(){
  app.innerHTML=`<section class="deck campaign-two-hub spectral-hub" style="background-image:linear-gradient(#09031299,#090312dd),url('${AS.caballeroAlmasBg}')"><div class="deckbar"><div><div class="logo" style="font-size:38px">NÉMESIS<small>CAMPAÑA II · DIOS FANTASMA</small></div><small>REINO DE LAS ALMAS</small></div><b>★ ${state.stars||0}</b></div><div class="campaign-progress-card complete"><small>MEMORY CARD ACTIVA</small><b>CAMPAÑA I ✓ · CAMPAÑA II</b><span>Caballero de las Almas ${state.caballeroAlmasDefeated?'✓':'○'} · Rey Espectral ${state.reyEspectralDefeated?'✓':'○'} · Dios Fantasma ○</span><em>${state.owned.length} CARTAS CONSERVADAS</em></div><div class="menu-panel campaign-two-panel"><h2>${reyUnlocked?'REY ESPECTRAL':'CABALLERO DE LAS ALMAS'}</h2><p>${reyUnlocked?'Segundo soberano del Reino Espectral. 25.000 HP, Almas Reales, Decreto del Rey y Corona de la Eternidad. Mazo Modo Bestia activo: primeras 5 cartas definitivas, Almas Reales, resurrección y combos inteligentes.':'Primer guardián del Reino Espectral. Su mazo convierte el Cementerio en un recurso: revive criaturas, acumula almas y se fortalece con cada caída.'}</p></div><div class="menu-actions"><button class="btn" id="campaign2Challenge" ${state.reyEspectralDefeated?'disabled':''}>${state.reyEspectralDefeated?'REY ESPECTRAL DERROTADO':reyUnlocked?'DESAFIAR AL REY ESPECTRAL':state.caballeroAlmasDefeated?'CAMINO AL REY ABIERTO':'ENTRAR AL REINO ESPECTRAL'}</button><button class="btn" id="campaign2Deck">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="campaign2Home">VOLVER AL INICIO</button></div></section>`;
  if(campaign2Challenge){
  campaign2Challenge.disabled=false;
- if(ghostUnlocked){campaign2Challenge.textContent='DESAFIAR AL DIOS FANTASMA';campaign2Challenge.onclick=()=>{if(typeof window.showDiosFantasmaIntro==='function')window.showDiosFantasmaIntro({onWorld:campaign2Hub,onFight:()=>battle('dios-fantasma')});else battle('dios-fantasma')}}
+ if(ghostUnlocked){campaign2Challenge.textContent='DESAFIAR AL DIOS FANTASMA';campaign2Challenge.onclick=()=>nemesisShowDiosFantasmaIntroLazy({onWorld:campaign2Hub,onFight:()=>battle('dios-fantasma')})}
  else campaign2Challenge.onclick=reyUnlocked?reyEspectralScene:caballeroAlmasScene;
 }campaign2Deck.onclick=collectionScene;campaign2Home.onclick=menuScene;
 }
@@ -1082,7 +1095,8 @@ async function hadesAfterAresCinematic(){
 }
 window.nemesisHadesAfterAres=hadesAfterAresCinematic;
 
-function aresCampaign3Scene(){
+async function aresCampaign3Scene(){
+ await nemesisEnsureAresModule();
  if(typeof window.nemesisUnlockCampaign3Ares==='function')window.nemesisUnlockCampaign3Ares();
  if(typeof window.nemesisShowAresIntro==='function'){window.nemesisShowAresIntro({onWorld:menuScene});return}
  story('ARES — DIOS DE LA GUERRA',`CAMPAÑA III · GUERRA DE LOS DIOSES<br><b>30.000 HP · 3 FASES · FURIA DE GUERRA · IA MODO DIOS</b>`,`<button class="btn" id="challengeAres">RETAR A ARES</button>`, 'assets/images/campaign3/ares/ares-arena-pc-ultra.png','assets/images/campaign3/ares/ares-personaje.png');challengeAres.onclick=()=>battle('ares')
@@ -1097,6 +1111,7 @@ window.__mgrP={seals:0,flames:0,magicUses:0,mirrorDamageTurn:-1,_battle:Date.now
 window.__mgrE={seals:0,flames:0,magicUses:0,mirrorDamageTurn:-1,_battle:Date.now(),_resetPending:false};
 const duelKey=['ra','dragon','caballero-almas','rey-espectral','dios-fantasma','ares','hades'].includes(opponent)?opponent:'guardian';
 const isDragon=duelKey==='dragon',isRa=duelKey==='ra',isSoulKnight=duelKey==='caballero-almas',isSpectralKing=duelKey==='rey-espectral',isGhostGod=duelKey==='dios-fantasma',isAres=duelKey==='ares',isHades=duelKey==='hades';
+if(isAres)await nemesisEnsureAresModule();
 window.NEMESIS_ARES_DUEL_ACTIVE=isAres;if(isAres&&window.NEMESIS_ARES){window.NEMESIS_ARES.fury=0;window.NEMESIS_ARES.hp=30000;}
 const enemyDisplayName=isHades?'HADES · REY DEL INFRAMUNDO':isAres?'ARES · DIOS DE LA GUERRA':isGhostGod?'DIOS FANTASMA':isSpectralKing?'REY ESPECTRAL':isSoulKnight?'CABALLERO DE LAS ALMAS':isRa?'IRA DE RA':isDragon?'DRAGÓN OJO DEL DIABLO':'GUARDIÁN DE LOS DRAGONES';
 const enemyTurnName=isHades?'HADES':isAres?'ARES':isGhostGod?'DIOS FANTASMA':isSpectralKing?'REY ESPECTRAL':isSoulKnight?'CABALLERO':isRa?'IRA DE RA':isDragon?'DRAGÓN OJO DEL DIABLO':'GUARDIÁN';
@@ -5105,12 +5120,10 @@ function finish(win,reason=''){clearInterval(nemesisFlowSupervisorTimer);clearIn
  app.appendChild(d);if(win&&isDragon)preloadIraRaCinematic();d.querySelector('#again').onclick=()=>{
  if(!win)return battle(duelKey);
  if(isSpectralKing){
-  if(typeof window.showDiosFantasmaIntro==='function'){
-   window.showDiosFantasmaIntro({
-    onWorld:()=>campaign2Hub(),
-    onFight:()=>battle('dios-fantasma')
-   });
-  }else campaign2Hub();
+  nemesisShowDiosFantasmaIntroLazy({
+   onWorld:()=>campaign2Hub(),
+   onFight:()=>battle('dios-fantasma')
+  });
   return;
  }
  if(isHades)return menuScene();

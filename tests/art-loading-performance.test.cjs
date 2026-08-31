@@ -15,6 +15,12 @@ for(const name of legacy)assert(!html.includes(name),'No debe cargarse '+name+' 
 assert(html.includes('js/card-art/card-art-paths.js'),'Debe cargarse el manifiesto ligero de arte.');
 assert(!html.includes('<script src="js/owner-auth.js"'),'Owner Auth debe ser opcional/diferido.');
 assert(!html.includes('<script src="js/online1v1.js"'),'Online debe ser opcional/diferido.');
+assert(!html.includes('<script src="js/dios-fantasma-intro.js"'),'Intro Dios Fantasma no debe bloquear el menú.');
+assert(!html.includes('<script src="dios-fantasma-mazo-completo.js"'),'Mazo legado Dios Fantasma no debe bloquear el menú.');
+assert(!html.includes('<script src="campaign3-ares.js"'),'Ares no debe bloquear el menú.');
+assert(game.includes("nemesisLoadOptionalScript('js/dios-fantasma-intro.js','dios-fantasma-intro')"),'Intro Dios Fantasma debe cargarse bajo demanda.');
+assert(game.includes("nemesisLoadOptionalScript('campaign3-ares.js','campaign3-ares')"),'Ares debe cargarse bajo demanda.');
+assert(game.includes('if(isAres)await nemesisEnsureAresModule();'),'El duelo de Ares debe garantizar su módulo antes de usarlo.');
 assert(game.includes("nemesisLoadOptionalScript('js/owner-auth.js','owner-auth')"),'Owner Auth debe tener cargador bajo demanda.');
 assert(game.includes("nemesisLoadOptionalScript('js/online1v1.js','online1v1')"),'Online debe tener cargador bajo demanda.');
 assert(!art.includes('data:image/'),'El manifiesto no debe incrustar imágenes Base64.');
