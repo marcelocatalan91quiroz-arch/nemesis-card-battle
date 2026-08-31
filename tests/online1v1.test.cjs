@@ -24,7 +24,7 @@ must('mazo Duel Master 20/20 online',api.includes("const DM_DECK=Object.keys(DM_
 must('mano inicial 5',api.includes("hand=deck.splice(0,5)"));
 must('estado rival oculta mano',api.includes("handCount:p.hand.length")&&!api.includes("opponent:{hand:"));
 must('ataques autoritativos',api.includes("duelAction==='attack'")&&api.includes("NOT_YOUR_TURN"));
-must('cliente renderiza arena avanzada',client.includes('renderDuelMasterBoard')&&client.includes('DUEL MASTER ONLINE'));
+must('cliente renderiza arena avanzada multideck',client.includes('renderDuelMasterBoard')&&client.includes('ONLINE MULTIMAZO'));
 must('zonas soporte y monstruo cliente',client.includes('dmSupportZones')&&client.includes('dmMonsterZones'));
 must('20/20 efectos autoritativos declarados',api.includes('DM_EFFECT_HANDLERS')&&api.includes("Object.fromEntries(DM_DECK.map(id=>[id,true]))"));
 must('habilidades Duel Master en servidor',api.includes('resolveDmAbility')&&api.includes("duelAction==='ability'")&&api.includes("duelAction==='ultimate'"));
@@ -37,5 +37,11 @@ must('cliente controla habilidad ultimate soporte',client.includes('dmAbility')&
 must('cliente envía mazo activo',client.includes('activeDeckPayload')&&client.includes('deckName')&&client.includes('deckIds'));
 must('servidor registra mazo por jugador',api.includes('playerDeckMeta')&&api.includes('deckClass'));
 must('online reconoce Mago Rojo e Imperio Dragón',api.includes("'MAGO_ROJO'")&&api.includes("'IMPERIO_DRAGON'"));
+must('autenticación real propietario con HMAC',api.includes('NEMESIS_OWNER_KEY')&&api.includes('NEMESIS_OWNER_SIGNING_SECRET')&&api.includes('verifyOwnerToken')&&api.includes("action==='owner_login'"));
+must('token propietario viaja desde cliente',client.includes('ownerToken')&&client.includes('nemesis_owner_token_v1'));
+must('motor multideck autoritativo',api.includes("mode:'MULTI_DECK'")&&api.includes('ONLINE_EFFECT_HANDLERS'));
+must('Mago Rojo 20/20 online',api.includes('MGR_CATALOG')&&api.includes('resolveMgrAbility')&&api.includes('resolveMgrSupport')&&api.includes('MGR_MIRROR')&&api.includes('GRIMORIO_NEGATE'));
+must('Imperio Dragón 20/20 online',api.includes('IDR_CATALOG')&&api.includes('resolveIdrAbility')&&api.includes('resolveIdrSupport')&&api.includes('IDR_TRANSFORM')&&api.includes('IDR_FUSION'));
+must('auditoría online 60 cartas',api.includes('onlineEngineAudit')&&api.includes("action==='engine_audit'"));
 if(process.exitCode)process.exit(process.exitCode);
 console.log('NÉMESIS ONLINE 1V1 BASE: PASS');
