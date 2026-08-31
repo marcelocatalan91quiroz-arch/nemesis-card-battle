@@ -121,7 +121,7 @@ for(const [id,name,img] of [
  must(id+' arte físico',fs.existsSync(path.join(root,'assets/images/caballeros-submundo/'+img)));
 }
 must('armas usan equipamiento central',game.includes("c?.family==='caballeros-submundo'&&c?.subtype==='weapon'")&&game.includes("nemesisEquip(side,idx,'weapon',c"));
-must('Sentencia conserva afinidad Venuz',game.includes("c.id==='CS-012'&&['CS-006','CS-007'].includes(arr[idx].id)"));
+must('Sentencia conserva afinidad Venuz',game.includes("eq?.sourceId==='CS-012'&&['CS-006','CS-007'].includes(t.id)"));
 must('armas Submundo tienen motor especializado',game.includes('function csSubworldWeaponMagic(')&&game.includes('function csSubworldWeaponBeforeCombat(')&&game.includes('function csSubworldWeaponAfterKill('));
 must('Luz de Ares ruptura/contraofensiva/ultimate',game.includes("eq.sourceId==='CS-011'")&&game.includes('_csAresRuptureLoss')&&game.includes('_csAresCounterPierce')&&game.includes('weaponAresUltimate'));
 must('Sentencia de Venuz reducción/protección/ultimate',game.includes("eq.sourceId==='CS-012'")&&game.includes('_csVenuzSentenceLoss')&&game.includes('VOLUNTAD DE VENUZ')&&game.includes('weaponVenuzUltimate'));
