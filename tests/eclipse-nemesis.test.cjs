@@ -9,8 +9,8 @@ A('tipo Mágica universal secreta',game.includes("type:'magic',subtype:'spell',f
 A('solo canje estratégico',game.includes("strategicRedeem:true,shopExclusive:true,priceStars:5000"));
 A('no se entrega automáticamente',!game.includes("INITIAL_OWNED")||!(/INITIAL_OWNED[^;]*MS-001/.test(game)));
 A('arte registrado y físico',game.includes("img:'"+art+"'")&&fs.existsSync(path.join(root,art))&&fs.statSync(path.join(root,art)).size>1000);
-A('Mago Rojo usa mazo completo 20',game.includes("MAGO_ROJO:MAGO_ROJO_DECK_IDS")&&game.includes("return Array.isArray(official)&&official.length?official.length:20"));
-A('Imperio Dragón usa mazo completo 20',game.includes("IMPERIO_DRAGON:IMPERIO_DRAGON_DECK_IDS")&&game.includes("return Array.isArray(official)&&official.length?official.length:20"));
+A('Mago Rojo usa mazo completo 20',game.includes("MAGO_ROJO:MAGO_ROJO_DECK_IDS")&&game.includes("k==='MAGO_ROJO'?MAGO_ROJO_DECK_IDS")&&game.includes("return Array.isArray(official)&&official.length?official.length:20"));
+A('Imperio Dragón usa mazo completo 20',game.includes("IMPERIO_DRAGON:IMPERIO_DRAGON_DECK_IDS")&&game.includes("k==='IMPERIO_DRAGON'?IMPERIO_DRAGON_DECK_IDS")&&game.includes("return Array.isArray(official)&&official.length?official.length:20"));
 A('Olimpo conserva su tamaño real 11',game.includes("OLIMPO:OLIMPO_DECK_IDS")&&game.includes("function nemesisDeckLimit"));
 A('duelo local consume mazo completo',game.includes("const deckQueue=state.deck.slice(0,nemesisActiveDeckLimit())"));
 A('usable por cualquier mazo tras canje',!(/NEMESIS_PRIVATE_CARD_IDS[^;]*MS-001/.test(game))&&game.includes("function nemesisCardAllowedForUser(id){return !NEMESIS_PRIVATE_CARD_IDS.has(id)||nemesisOwnerSessionActive()}")&&game.includes("state.deck.filter(id=>state.owned.includes(id)&&card(id)&&nemesisCardAllowedForUser(id))"));
