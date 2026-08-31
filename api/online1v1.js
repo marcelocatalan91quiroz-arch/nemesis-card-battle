@@ -63,12 +63,56 @@ const MGR_CATALOG=Object.fromEntries(MGR_DATA.cards.map(c=>[c.id,normalizeDeckCa
 const IDR_CATALOG=Object.fromEntries(IDR_DATA.cards.map(c=>[c.id,normalizeDeckCard(c,'IMPERIO_DRAGON')]));
 const MGR_DECK=MGR_DATA.deck_ids.slice();
 const IDR_DECK=IDR_DATA.deck_ids.slice();
-const ALL_ONLINE_CATALOG=Object.freeze({...DM_CATALOG,...MGR_CATALOG,...IDR_CATALOG});
-const ONLINE_DECK_IDS=Object.freeze({DUEL_MASTER:DM_DECK,MAGO_ROJO:MGR_DECK,IMPERIO_DRAGON:IDR_DECK});
+
+// V19.7.4 · OLIMPO + CABALLEROS DEL SUBMUNDO · CATÁLOGOS ONLINE AUTORITATIVOS
+const mkOnlineCard=(id,name,atk,def,kind,img,extra={})=>({id,name,atk,def,kind,energy:0,img,...extra});
+const OLIMPO_CATALOG=Object.freeze(Object.fromEntries([
+ ['dios-jupiter','Dios Júpiter',8500,3000,'MONSTER','assets/images/dios-jupiter.png',{tags:['DIVINA','OLIMPO']}],
+ ['zeus-emperador-rayo','Zeus — Emperador del Rayo',10000,6000,'MONSTER','assets/images/zeus-emperador-rayo.png',{tags:['DIVINA','OLIMPO']}],
+ ['kronos-devorador-tiempo','Kronos — Devorador del Tiempo',7500,8500,'MONSTER','assets/images/kronos-devorador-tiempo.png',{tags:['DIVINA','OLIMPO']}],
+ ['apolo-guardian-solar','Apolo — Guardián Solar del Olimpo',6500,8500,'MONSTER','assets/images/apolo-guardian-solar-olimpo.png',{tags:['DIVINA','OLIMPO']}],
+ ['olimpo-atenea','Atenea — Guardiana del Olimpo',6500,8500,'MONSTER','assets/images/olimpo/05.png',{tags:['DIVINA','OLIMPO']}],
+ ['olimpo-poseidon','Poseidón — Señor de los Mares',8500,7000,'MONSTER','assets/images/olimpo/06.png',{tags:['DIVINA','OLIMPO']}],
+ ['olimpo-hermes','Hermes — Mensajero Divino',5000,4500,'MONSTER','assets/images/olimpo/07.png',{tags:['DIVINA','OLIMPO']}],
+ ['olimpo-egida','Égida del Olimpo',0,0,'SUPPORT','assets/images/olimpo/08.png',{supportType:'ARMOR',tags:['OLIMPO']}],
+ ['olimpo-rayo-maestro','Rayo Maestro del Olimpo',0,0,'SUPPORT','assets/images/olimpo/09.png',{supportType:'WEAPON',tags:['OLIMPO']}],
+ ['olimpo-consejo','Consejo de los Dioses',0,0,'SUPPORT','assets/images/olimpo/10.png',{supportType:'SPELL',tags:['OLIMPO']}],
+ ['olimpo-ascension','Ascensión del Olimpo',0,0,'SUPPORT','assets/images/olimpo/11.png',{supportType:'SPELL',tags:['OLIMPO']}],
+ ['titan-del-olimpo','Titán del Olimpo',20000,15000,'MONSTER','assets/images/titan-del-olimpo.png',{tags:['DIVINA','OLIMPO'],specialOnly:true}]
+].map(([id,name,atk,def,kind,img,extra])=>[id,mkOnlineCard(id,name,atk,def,kind,img,extra)])));
+const OLIMPO_DECK=['dios-jupiter','zeus-emperador-rayo','kronos-devorador-tiempo','apolo-guardian-solar','olimpo-atenea','olimpo-poseidon','olimpo-hermes','olimpo-egida','olimpo-rayo-maestro','olimpo-consejo','olimpo-ascension'];
+
+const CS_DATA=[
+ ['CS-001','Caballero Demonio',7000,6000,'MONSTER','assets/images/caballeros-submundo/caballero-demonio.webp'],
+ ['CS-002','Caballero de Alas de Oro',10000,8500,'MONSTER','assets/images/caballeros-submundo/caballero-alas-oro.png'],
+ ['CS-003','Caballero de Alas de Oro Shiny',12500,10500,'MONSTER','assets/images/caballeros-submundo/caballero-alas-oro-shiny.webp'],
+ ['CS-004','Caballero Luz de Horus',9500,11000,'MONSTER','assets/images/caballeros-submundo/caballero-luz-horus.webp'],
+ ['CS-005','Caballero Rose',10000,8500,'MONSTER','assets/images/caballeros-submundo/caballero-rose.webp'],
+ ['CS-006','Caballero Sombra de Venuz',15000,13000,'MONSTER','assets/images/caballeros-submundo/caballero-sombra-de-venuz.webp'],
+ ['CS-007','Caballero Sombra de Venuz Shiny',18000,16000,'MONSTER','assets/images/caballeros-submundo/caballero-sombra-de-venuz-shiny.webp'],
+ ['CS-008','Caballero Meteoro',11500,15000,'MONSTER','assets/images/caballeros-submundo/caballero-meteoro.webp'],
+ ['CS-009','Cerberus Oscuro',14500,11500,'MONSTER','assets/images/caballeros-submundo/cerberus-oscuro.webp'],
+ ['CS-010','Pegasus Negro',15000,12500,'MONSTER','assets/images/caballeros-submundo/pegasus-negro.webp'],
+ ['CS-011','Luz de Ares',0,0,'SUPPORT','assets/images/caballeros-submundo/luz-de-ares.webp','WEAPON'],
+ ['CS-012','Sentencia de Venuz',0,0,'SUPPORT','assets/images/caballeros-submundo/sentencia-de-venuz.webp','WEAPON'],
+ ['CS-013','Aguijón de Escorpión',0,0,'SUPPORT','assets/images/caballeros-submundo/aguijon-de-escorpion.webp','WEAPON'],
+ ['CS-014','Agujero Negro',0,0,'SUPPORT','assets/images/caballeros-submundo/agujero-negro.webp','WEAPON'],
+ ['CS-015','Armadura Olvidada',0,0,'SUPPORT','assets/images/caballeros-submundo/armadura-olvidada.webp','ARMOR'],
+ ['CS-016','Armadura Forjada de Plutón',0,0,'SUPPORT','assets/images/caballeros-submundo/armadura-forjada-pluton.webp','ARMOR'],
+ ['CS-017','Corazón del Tártaro',0,0,'SUPPORT','assets/images/caballeros-submundo/corazon-del-tartaro.webp','RELIC'],
+ ['CS-018','Trono de las Almas Perdidas',0,0,'SUPPORT','assets/images/caballeros-submundo/trono-almas-perdidas.webp','RELIC'],
+ ['CS-019','Escudo de Luna',0,0,'SUPPORT','assets/images/caballeros-submundo/escudo-de-luna.webp','SPELL'],
+ ['CS-020','Rayo del Submundo',0,0,'SUPPORT','assets/images/caballeros-submundo/rayo-del-submundo.webp','SPELL']
+];
+const CS_CATALOG=Object.freeze(Object.fromEntries(CS_DATA.map(([id,name,atk,def,kind,img,supportType])=>[id,mkOnlineCard(id,name,atk,def,kind,img,{supportType:supportType||null,tags:['CABALLEROS_SUBMUNDO','OSCURIDAD']})])));
+const CABALLEROS_SUBMUNDO_DECK=CS_DATA.map(x=>x[0]);
+
+const ALL_ONLINE_CATALOG=Object.freeze({...DM_CATALOG,...MGR_CATALOG,...IDR_CATALOG,...OLIMPO_CATALOG,...CS_CATALOG});
+const ONLINE_DECK_IDS=Object.freeze({DUEL_MASTER:DM_DECK,MAGO_ROJO:MGR_DECK,IMPERIO_DRAGON:IDR_DECK,OLIMPO:OLIMPO_DECK,CABALLEROS_SUBMUNDO:CABALLEROS_SUBMUNDO_DECK});
 function catalogCard(id){return ALL_ONLINE_CATALOG[id]||null}
 function canonicalOnlineDeck(name){
  name=cleanDeckName(name);
- if(name==='MAGO_ROJO'||name==='IMPERIO_DRAGON'||name==='DUEL_MASTER')return name;
+ if(['MAGO_ROJO','IMPERIO_DRAGON','DUEL_MASTER','OLIMPO','CABALLEROS_SUBMUNDO'].includes(name))return name;
  return 'DUEL_MASTER'
 }
 
@@ -98,7 +142,9 @@ const DM_EFFECT_HANDLERS=Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,tr
 const ONLINE_EFFECT_HANDLERS=Object.freeze({
  DUEL_MASTER:Object.freeze(Object.fromEntries(DM_DECK.map(id=>[id,true]))),
  MAGO_ROJO:Object.freeze(Object.fromEntries(MGR_DECK.map(id=>[id,true]))),
- IMPERIO_DRAGON:Object.freeze(Object.fromEntries(IDR_DECK.map(id=>[id,true])))
+ IMPERIO_DRAGON:Object.freeze(Object.fromEntries(IDR_DECK.map(id=>[id,true]))),
+ OLIMPO:Object.freeze(Object.fromEntries(OLIMPO_DECK.map(id=>[id,true]))),
+ CABALLEROS_SUBMUNDO:Object.freeze(Object.fromEntries(CABALLEROS_SUBMUNDO_DECK.map(id=>[id,true])))
 });
 function onlineEngineAudit(){return Object.fromEntries(Object.entries(ONLINE_EFFECT_HANDLERS).map(([deck,h])=>[deck,{count:Object.keys(h).length,all:Object.values(h).every(Boolean),ids:Object.keys(h)}]))}
 
