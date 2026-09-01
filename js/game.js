@@ -1009,6 +1009,7 @@ function menuScene(){
 if(typeof sanctuaryBtn!=='undefined'&&sanctuaryBtn)sanctuaryBtn.onclick=sanctuaryScene;
 if(typeof retryBtn!=='undefined'&&retryBtn)retryBtn.onclick=nemesisRetryScene;
 if(typeof ownerBtn!=='undefined'&&ownerBtn)ownerBtn.onclick=()=>nemesisOwnerSessionActive()?nemesisOwnerLogout():nemesisOwnerLogin();
+nemesisNextFrame(()=>{try{window.NEMESIS_ONLINE_INJECT?.()}catch{}try{window.NEMESIS_OWNER_AUTH_INJECT?.()}catch{}});
 const renderMenuMiniDeck=()=>{const host=document.getElementById('menuMiniDeck');if(!host)return;host.innerHTML=state.deck.slice(0,6).map(id=>{const c=card(id);if(!c)return '';const src=window.nemesisRealCardArt?.(c.id,c.img||'')||c.img||'';return `<img src="${src}" loading="lazy" decoding="async" fetchpriority="low" alt="${esc(c.name)}" title="${esc(c.name)}">`}).join('')+(state.deck.length>6?`<span class="mini-deck-more">+${state.deck.length-6} CARTAS</span>`:'')};
 if('requestIdleCallback'in window)requestIdleCallback(renderMenuMiniDeck,{timeout:800});else setTimeout(renderMenuMiniDeck,0);
 menuFullscreen.onclick=requestNemesisFullscreen;startStory.onclick=()=>{const next=nemesisValidPlayerName(nm.value)||nemesisValidPlayerName(state.name);if(!next){nemesisCreateProfileScene();return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}if(state.campaign1Completed&&!state.campaign2Started){state.campaign2Started=true;state.campaignStage='campaign2-intro';state.campaign2Stage='intro'}save();startStory.disabled=true;startStory.textContent='CARGANDO…';nemesisNextFrame(()=>continueCampaign())};
@@ -1133,6 +1134,27 @@ async function aresCampaign3Scene(){
 window.nemesisCampaign3Ares=aresCampaign3Scene;
 
 async function battle(opponent='guardian'){
+try{window.__NEMESIS_ACTIVE_BATTLE_DISPOSE?.()}catch(e){console.warn('[NÉMESIS previous battle dispose]',e)}
+let battleLoopActive=true,battleRafId=0,battleResizeHandler=null;
+const stopBattleRuntime=(hard=false)=>{
+ if(!battleLoopActive&& !hard)return;
+ battleLoopActive=false;
+ try{if(battleRafId)cancelAnimationFrame(battleRafId)}catch{}
+ try{if(battleResizeHandler)removeEventListener('resize',battleResizeHandler)}catch{}
+ try{clearInterval(nemesisFlowSupervisorTimer)}catch{}
+ try{clearInterval(spectralKingRecoveryTimer)}catch{}
+ try{clearInterval(ghostRecoveryTimer)}catch{}
+ try{clearInterval(pcMusicTimer)}catch{}
+ try{removeEventListener('keydown',pcShortcutHandler)}catch{}
+ if(hard){
+  try{r?.setAnimationLoop?.(null)}catch{}
+  try{r?.dispose?.()}catch{}
+  try{r?.domElement?.remove?.()}catch{}
+ }
+ if(window.__NEMESIS_ACTIVE_BATTLE_DISPOSE===disposeActiveBattle)window.__NEMESIS_ACTIVE_BATTLE_DISPOSE=null;
+};
+const disposeActiveBattle=()=>stopBattleRuntime(true);
+window.__NEMESIS_ACTIVE_BATTLE_DISPOSE=disposeActiveBattle;
 nemesisSyncActiveDeck();const activePlayerDeck=nemesisDeckForMode('campaign');
 if(activePlayerDeck.access?.ownerOnly&&!await nemesisAuthorizeActiveDeck()){menuScene();return}
 window.__NEMESIS_LAST_CAMPAIGN_DECK={name:activePlayerDeck.name,ids:activePlayerDeck.ids.slice()};
@@ -5103,7 +5125,7 @@ function grantRandomBossCard(duelKey){
  state.owned=[...new Set([...state.owned,id])];
  return card(id);
 }
-function finish(win,reason=''){clearInterval(nemesisFlowSupervisorTimer);clearInterval(spectralKingRecoveryTimer);clearInterval(ghostRecoveryTimer);clearInterval(pcMusicTimer);removeEventListener('keydown',pcShortcutHandler);v185HardResetCamera();v172ClosePicker();v171HideAttackConfirm();if(phase==='END')return;
+function finish(win,reason=''){stopBattleRuntime(false);v185HardResetCamera();v172ClosePicker();v171HideAttackConfirm();if(phase==='END')return;
  setPhase('END',win?'VICTORIA':'DERROTA');battleActions.classList.add('hidden');busy=false;document.body.classList.remove('v14-target-turn','v14-player-turn');
  let rewardCard=null;
  if(win){
@@ -5164,13 +5186,13 @@ function finish(win,reason=''){clearInterval(nemesisFlowSupervisorTimer);clearIn
  return dragonOjoScene();
  }
 }
-let fpsFrames=0,fpsSample=performance.now(),fpsLowSamples=0;let last=performance.now(),pcLastRendered=0;function loop(now){requestAnimationFrame(loop);const cap=Number(pcFpsLimit);if(cap&&now-pcLastRendered<1000/cap)return;pcLastRendered=now;const dt=Math.min(.04,(now-last)/1000);last=now;fpsFrames++;if(now-fpsSample>=1000){const fps=Math.round(fpsFrames*1000/(now-fpsSample)),fpsEl=document.getElementById("graphicsFps"),memEl=document.getElementById('pcGpuMemory');if(fpsEl)fpsEl.textContent=`FPS: ${fps}`;if(memEl){const info=r.info.memory,estimated=Math.round(info.textures*5.5+info.geometries*.35);memEl.textContent=`MEMORIA GRÁFICA APROX.: ${estimated} MB · ${info.textures} TEXTURAS`;}if(fps<38)fpsLowSamples++;else fpsLowSamples=0;if(fpsLowSamples>=4&&localStorage.getItem("nemesis_pc_auto")!=="off"){const next=graphicsMode==="ULTRA"?"ALTA":graphicsMode==="ALTA"?"MEDIA":null;if(next){applyGraphicsProfile(next);toast(`Rendimiento ajustado automáticamente a ${next}.`)}fpsLowSamples=0}fpsFrames=0;fpsSample=now}updatePcEnvironment(now,dt);updatePcElementSystems(now,dt);center.rotation.z+=dt*.22;center2.rotation.z-=dt*.3;portal.rotation.z+=dt*.16;violet.intensity=66+Math.sin(now*.002)*12;red.intensity=58+Math.cos(now*.0023)*10;if(enAnimacionGSAP){
+let fpsFrames=0,fpsSample=performance.now(),fpsLowSamples=0;let last=performance.now(),pcLastRendered=0;function loop(now){if(!battleLoopActive)return;battleRafId=requestAnimationFrame(loop);const cap=Number(pcFpsLimit);if(cap&&now-pcLastRendered<1000/cap)return;pcLastRendered=now;const dt=Math.min(.04,(now-last)/1000);last=now;fpsFrames++;if(now-fpsSample>=1000){const fps=Math.round(fpsFrames*1000/(now-fpsSample)),fpsEl=document.getElementById("graphicsFps"),memEl=document.getElementById('pcGpuMemory');if(fpsEl)fpsEl.textContent=`FPS: ${fps}`;if(memEl){const info=r.info.memory,estimated=Math.round(info.textures*5.5+info.geometries*.35);memEl.textContent=`MEMORIA GRÁFICA APROX.: ${estimated} MB · ${info.textures} TEXTURAS`;}if(fps<38)fpsLowSamples++;else fpsLowSamples=0;if(fpsLowSamples>=4&&localStorage.getItem("nemesis_pc_auto")!=="off"){const next=graphicsMode==="ULTRA"?"ALTA":graphicsMode==="ALTA"?"MEDIA":null;if(next){applyGraphicsProfile(next);toast(`Rendimiento ajustado automáticamente a ${next}.`)}fpsLowSamples=0}fpsFrames=0;fpsSample=now}updatePcEnvironment(now,dt);updatePcElementSystems(now,dt);center.rotation.z+=dt*.22;center2.rotation.z-=dt*.3;portal.rotation.z+=dt*.16;violet.intensity=66+Math.sin(now*.002)*12;red.intensity=58+Math.cos(now*.0023)*10;if(enAnimacionGSAP){
  cam.lookAt(camTargetGSAP);
 }else{
  cam.position.lerp(camGoal,.075);
  look.lerp(lookGoal,.1);
  cam.lookAt(look);
-}for(let i=tweens.length-1;i>=0;i--){const t=tweens[i],q=Math.min(1,(now-t.start)/t.d),k=q*q*(3-2*q);if(t.kind==='v')t.obj.lerpVectors(t.from,t.to,k);else t.obj[t.k]=t.from+(t.to-t.from)*k;if(q>=1){tweens.splice(i,1);t.res()}}for(let i=particles.length-1;i>=0;i--){const p=particles[i],age=(now-p.userData.birth)/850;p.material.opacity=1-age;p.position.y+=dt*.65;if(age>=1){scene.remove(p);p.geometry.dispose();p.material.dispose();particles.splice(i,1)}}for(const side of ['p','e'])for(let i=0;i<5;i++){const g=board[side]?.[i];Object.values(g?.userData?.equipment||{}).forEach((eq,j)=>{if(eq?.userData?.halo)eq.userData.halo.rotation.z=now*.0012+j;if(eq?.userData?.item)eq.userData.item.position.y=.42+Math.sin(now*.003+j)*.055})}updatePcBonusBadges();pcUpdateEquipmentHud();r.render(scene,cam)}loop(performance.now());addEventListener('resize',()=>{cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight)});update();busy=true;setPhase('ENEMY',`${enemyDisplayName} PREPARA SU CAMPO`);try{await enemyPlace()}catch(err){console.error('[NÉMESIS] Error preparando campo rival',err);toast('El campo rival se recuperó automáticamente.')}finally{busy=false}if(phpv<=0)return finish(false);setPhase('PLACE','TU TURNO 1 · COLOCAR');hint3d.textContent='Selecciona una carta de tu mano y colócala en un espacio libre.';await v16PlayerTurnCamera();}
+}for(let i=tweens.length-1;i>=0;i--){const t=tweens[i],q=Math.min(1,(now-t.start)/t.d),k=q*q*(3-2*q);if(t.kind==='v')t.obj.lerpVectors(t.from,t.to,k);else t.obj[t.k]=t.from+(t.to-t.from)*k;if(q>=1){tweens.splice(i,1);t.res()}}for(let i=particles.length-1;i>=0;i--){const p=particles[i],age=(now-p.userData.birth)/850;p.material.opacity=1-age;p.position.y+=dt*.65;if(age>=1){scene.remove(p);p.geometry.dispose();p.material.dispose();particles.splice(i,1)}}for(const side of ['p','e'])for(let i=0;i<5;i++){const g=board[side]?.[i];Object.values(g?.userData?.equipment||{}).forEach((eq,j)=>{if(eq?.userData?.halo)eq.userData.halo.rotation.z=now*.0012+j;if(eq?.userData?.item)eq.userData.item.position.y=.42+Math.sin(now*.003+j)*.055})}updatePcBonusBadges();pcUpdateEquipmentHud();r.render(scene,cam)}battleRafId=requestAnimationFrame(loop);battleResizeHandler=()=>{if(!battleLoopActive)return;cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();r.setSize(innerWidth,innerHeight)};addEventListener('resize',battleResizeHandler,{passive:true});update();busy=true;setPhase('ENEMY',`${enemyDisplayName} PREPARA SU CAMPO`);try{await enemyPlace()}catch(err){console.error('[NÉMESIS] Error preparando campo rival',err);toast('El campo rival se recuperó automáticamente.')}finally{busy=false}if(phpv<=0)return finish(false);setPhase('PLACE','TU TURNO 1 · COLOCAR');hint3d.textContent='Selecciona una carta de tu mano y colócala en un espacio libre.';await v16PlayerTurnCamera();}
 
 
 
@@ -5309,28 +5331,25 @@ window.nemesisIntegrityAudit=function(){
  console.info('[NÉMESIS INTEGRITY]',result);return result
 };
 function nemesisScheduleBootMaintenance(){
- const run=()=>{
-  try{
-   nemesisMigrateCompletedCampaignRewards();
-   if(typeof state!=='undefined'&&state){
-    nemesisEnsureSanctuary();
-    if(state.hadesDefeated)state.sanctuary.awake=true;
-    v18918SaveMemoryCard();
-   }
-   window.nemesisIntegrityAudit?.();
-  }catch(e){console.warn('[NÉMESIS boot maintenance]',e)}
+ const tasks=[
+  ()=>nemesisMigrateCompletedCampaignRewards(),
+  ()=>{if(typeof state!=='undefined'&&state){nemesisEnsureSanctuary();if(state.hadesDefeated)state.sanctuary.awake=true;save()}},
+  ()=>window.nemesisIntegrityAudit?.()
+ ];
+ let i=0;
+ const next=()=>{
+  if(i>=tasks.length)return;
+  const run=()=>{try{tasks[i++]()}catch(e){console.warn('[NÉMESIS boot maintenance]',e)}setTimeout(next,60)};
+  if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:8000});
+  else setTimeout(run,0);
  };
- if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:1200});
- else setTimeout(run,40);
+ setTimeout(next,2500);
 }
 
 function nemesisScheduleOptionalModules(){
- const run=()=>{
-  nemesisEnsureOwnerAuth().catch(e=>console.warn('[NÉMESIS owner lazy]',e));
-  nemesisLoadOptionalScript('js/online1v1.js','online1v1').catch(e=>console.warn('[NÉMESIS online lazy]',e));
- };
- if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:1800});
- else setTimeout(run,120);
+ const idle=(fn,delay)=>setTimeout(()=>{if(typeof requestIdleCallback==='function')requestIdleCallback(fn,{timeout:8000});else setTimeout(fn,0)},delay);
+ idle(()=>nemesisEnsureOwnerAuth().catch(e=>console.warn('[NÉMESIS owner lazy]',e)),1500);
+ idle(()=>nemesisLoadOptionalScript('js/online1v1.js','online1v1').catch(e=>console.warn('[NÉMESIS online lazy]',e)),4000);
 }
 
 title();
@@ -5411,6 +5430,4 @@ window.nemesisExternal33Audit=function(){
 };
 
 // V19.6.2 owner session bootstrap: la cookie HttpOnly se valida en js/owner-auth.js.
-addEventListener('DOMContentLoaded',()=>{nemesisOwnerVerify().then(ok=>{if(ok&&document.querySelector('.menu-home'))menuScene()}).catch(()=>{})});
-
 window.addEventListener('nemesis-owner-auth',()=>{try{nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();if(document.querySelector('.menu-home'))menuScene();else if(document.querySelector('.collection-global'))collectionScene()}catch(e){console.warn('NÉMESIS owner refresh',e)}});

@@ -34,7 +34,7 @@ function injectEntry(){
   try{const s=JSON.parse(raw);if(s.code&&s.token){const badge=document.createElement('button');badge.className='btn online1v1-resume';badge.textContent='REANUDAR SALA '+s.code;badge.onclick=()=>resume(s);host.appendChild(badge)}}catch(_){}
  }
 }
-new MutationObserver(injectEntry).observe(document.documentElement,{childList:true,subtree:true});
+window.NEMESIS_ONLINE_INJECT=injectEntry;
 if(document.readyState==='loading')addEventListener('DOMContentLoaded',injectEntry,{once:true});else injectEntry();
 
 function onlineHome(name='Jugador'){

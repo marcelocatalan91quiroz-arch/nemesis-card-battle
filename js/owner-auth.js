@@ -33,7 +33,7 @@ function inject(){
 }
 Object.defineProperties(state,{canUseDeck:{value:canUseDeck},refresh:{value:refresh},login:{value:login},logout:{value:logout}});
 window.NEMESIS_OWNER_AUTH=state;
-new MutationObserver(inject).observe(document.documentElement,{childList:true,subtree:true});
+window.NEMESIS_OWNER_AUTH_INJECT=inject;
 const boot=()=>{inject();refresh()};
 if(document.readyState==='loading')addEventListener('DOMContentLoaded',boot,{once:true});else boot();
 })();
