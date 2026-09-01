@@ -1,0 +1,77 @@
+{
+  "schema": "NEMESIS_RUNTIME_CLEAN_DATA_SNAPSHOT_V1",
+  "source": {
+    "repository": "marcelocatalan91quiroz-arch/nemesis-card-battle",
+    "branch": "main",
+    "commit": "7c9a1781e50dc40f460624ef296303126f82dfee"
+  },
+  "count": 13,
+  "totalBytes": 169593,
+  "files": [
+    {
+      "path": "data/boss-profiles-v1.json",
+      "sha": "83e0dd0b9780e3b9afe7a93d1e52df9a3066450b",
+      "size": 2654
+    },
+    {
+      "path": "data/campaign-isolation-global-collection-v1.json",
+      "sha": "530330c8f2d8bb926865a45cd829d8e3dea80d69",
+      "size": 1256
+    },
+    {
+      "path": "data/heroic-battlefield-v1.json",
+      "sha": "d417c1d92f15e601b445f1cbc0981506652a7f05",
+      "size": 670
+    },
+    {
+      "path": "data/imperio_dragon_deck_v1.json",
+      "sha": "9e5335be2ee76d8c698aa4307d76f89f90caec5e",
+      "size": 26041
+    },
+    {
+      "path": "data/inventory-regression-contract-v1.json",
+      "sha": "0ac1711905308227471272912f815f4f0659d50e",
+      "size": 566
+    },
+    {
+      "path": "data/mago_rojo_deck_v1.json",
+      "sha": "936d2371ff838c0942b4d199084a390161b065a9",
+      "size": 17856
+    },
+    {
+      "path": "data/nemesis_card_schema_v1.json",
+      "sha": "01ae1b68db1d29dbbdffac44b14fbe7d4721b039",
+      "size": 3083
+    },
+    {
+      "path": "data/nemesis_collection_33_cards.json",
+      "sha": "67dd37615a9ebab90e741fdb8038f10298151aeb",
+      "size": 99132
+    },
+    {
+      "path": "data/nemesis_master_card_catalog_v1.json",
+      "sha": "4688f9a762d104455f9742a6fb0824a89fe6c397",
+      "size": 5350
+    },
+    {
+      "path": "data/nemesis_treasures_5_cards.json",
+      "sha": "63b7d7305d154a88005635d677427b2fe6573dd9",
+      "size": 10496
+    },
+    {
+      "path": "data/regression-contract-v1.json",
+      "sha": "47eb4de13a2d6fdb300b881c4914a6f2a3f0692b",
+      "size": 1113
+    },
+    {
+      "path": "data/v19-1-sanctuary-contract.json",
+      "sha": "7bbd6acba19f1ba2694fd28f28410d598692cba9",
+      "size": 663
+    },
+    {
+      "path": "data/v19-stable-restoration-contract.json",
+      "sha": "2da012c346fa99c1b0463e1673c7cef15f9522a5",
+      "size": 713
+    }
+  ]
+}
