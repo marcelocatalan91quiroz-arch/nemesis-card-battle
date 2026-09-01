@@ -14,3 +14,7 @@ export{normalizeCard,normalizeDeckFile}from'./cards/CardNormalizer.js';
 export{DeckRegistry}from'./decks/DeckRegistry.js';
 export{DeckService}from'./decks/DeckService.js';
 export{registerMagoRojo}from'./decks/registerMagoRojo.js';
+export{registerImperioDragon}from'./decks/registerImperioDragon.js';
+export{DrawService}from'./services/DrawService.js';
+export{TurnService}from'./services/TurnService.js';
+export{DuelSession}from'./core/DuelSession.js';
