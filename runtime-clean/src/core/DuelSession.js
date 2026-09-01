@@ -13,9 +13,9 @@ import{CombatService}from'../services/CombatService.js';
 export class DuelSession{
   constructor({cardRegistry,deckRegistry,players=['player','enemy'],uidFactory,monsterZoneLimit=Infinity,startingHp}={}){
     if(!cardRegistry||!deckRegistry)throw new Error('DUEL_REGISTRIES_REQUIRED');
-    if(!Number.isInteger(startingHp)||startingHp<=0)throw new Error('STARTING_HP_REQUIRED');
+    if(startingHp!==undefined&&startingHp!==null&&(!Number.isInteger(startingHp)||startingHp<=0))throw new Error('INVALID_STARTING_HP');
     this.state=new GameState();this.events=new EventBus();this.players=[...players];
-    this.hp=Object.fromEntries(this.players.map(p=>[p,startingHp]));
+    this.hp=Object.fromEntries(this.players.map(p=>[p,startingHp??null]));
     this.decks=new DeckService({cardRegistry,deckRegistry,state:this.state,uidFactory});
     this.draws=new DrawService({deckService:this.decks,eventBus:this.events});
     this.turns=new TurnService({players,eventBus:this.events});
