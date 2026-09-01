@@ -4,6 +4,6 @@
   "type": "module",
   "version": "0.1.0",
   "scripts": {
-    "test": "node tests/phase1.test.mjs && node tests/lab.test.mjs && node tests/resilience.test.mjs && node tests/mago-rojo-deck.test.mjs && node tests/imperio-dragon-deck.test.mjs && node tests/duel-start.test.mjs && node tests/phase-action.test.mjs && node tests/combat.test.mjs"
+    "test": "node tests/phase1.test.mjs && node tests/lab.test.mjs && node tests/resilience.test.mjs && node tests/mago-rojo-deck.test.mjs && node tests/imperio-dragon-deck.test.mjs && node tests/duel-start.test.mjs && node tests/phase-action.test.mjs && node tests/combat.test.mjs && node tests/main-integration-bridge.test.mjs"
   }
 }
