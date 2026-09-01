@@ -1,1 +1,16 @@
-export{CardRegistry}from'./core/CardRegistry.js';export{createCardInstance}from'./core/CardInstance.js';export{GameState}from'./core/GameState.js';export{EventBus}from'./core/EventBus.js';export{GraveyardService}from'./services/GraveyardService.js';export{RendererGuard}from'./renderer/RendererGuard.js';
+export{CardRegistry}from'./core/CardRegistry.js';
+export{createCardInstance}from'./core/CardInstance.js';
+export{GameState}from'./core/GameState.js';
+export{EventBus}from'./core/EventBus.js';
+export{GraveyardService}from'./services/GraveyardService.js';
+export{RendererGuard}from'./renderer/RendererGuard.js';
+export{AssetResolver}from'./assets/AssetResolver.js';
+export{buildCardViewModel}from'./viewmodel/CardViewModel.js';
+export{CardRenderer,applyImageFallback}from'./renderer/CardRenderer.js';
+export{FrozenDataLoader}from'./data/FrozenDataLoader.js';
+export{DataRepository}from'./data/DataRepository.js';
+export{loadFrozenGameData}from'./data/loadFrozenGameData.js';
+export{normalizeCard,normalizeDeckFile}from'./cards/CardNormalizer.js';
+export{DeckRegistry}from'./decks/DeckRegistry.js';
+export{DeckService}from'./decks/DeckService.js';
+export{registerMagoRojo}from'./decks/registerMagoRojo.js';
