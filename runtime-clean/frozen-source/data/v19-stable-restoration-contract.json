@@ -1,0 +1,32 @@
+{
+  "version": "19.0.0",
+  "base": "18.12.00",
+  "goal": "restauración estable sin pérdida de contenido",
+  "preserve": [
+    "Campaña I",
+    "Campaña II",
+    "Campaña III",
+    "OLIMPO",
+    "Fusión Divina",
+    "Ares",
+    "Hades",
+    "Colección Global",
+    "Memory Card",
+    "Campo Heroico",
+    "armas",
+    "armaduras",
+    "reliquias",
+    "Cementerio",
+    "respuestas",
+    "fases",
+    "IA"
+  ],
+  "rules": [
+    "No agregar contenido nuevo en V19.0",
+    "No eliminar mazos, cartas o jefes existentes",
+    "Un error de IA no puede congelar el flujo del turno",
+    "ACTION siempre debe ser jugable",
+    "TARGET requiere un objetivo válido",
+    "Cada jefe conserva su motor privado"
+  ]
+}
