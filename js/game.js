@@ -768,8 +768,37 @@ async function nemesisOwnerVerify(){
  try{const auth=await nemesisEnsureOwnerAuth();if(typeof auth?.refresh==='function')await auth.refresh();return nemesisOwnerSessionActive()}catch{return false}
 }
 async function nemesisOwnerLogin(){
- const ownerKey=prompt('CLAVE DEL PROPIETARIO NÉMESIS');if(!ownerKey)return false;
- try{const auth=await nemesisEnsureOwnerAuth();const ok=await auth?.login?.(ownerKey);if(ok){toast('MODO PROPIETARIO AUTENTICADO');nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();nemesisOwnerPanelScene();return true}return false}catch{alert('Clave de propietario incorrecta o servidor no disponible.');return false}
+ const ownerKey=prompt('CLAVE DEL PROPIETARIO NÉMESIS');
+ if(ownerKey===null||ownerKey==='')return false;
+ try{
+  const auth=await nemesisEnsureOwnerAuth();
+  if(!auth){alert('ERROR MODO PROPIETARIO\n\nEl módulo owner-auth.js no está disponible.');return false}
+  const ok=await auth.login(ownerKey);
+  if(ok){toast('MODO PROPIETARIO AUTENTICADO');nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();nemesisOwnerPanelScene();return true}
+  return false
+ }catch(err){
+  const code=err?.code||err?.message||'OWNER_AUTH_UNKNOWN';
+  const status=Number(err?.status)||0;
+  if(status===403&&code==='OWNER_AUTH_INVALID'){
+   const raw=String(ownerKey),notes=[];
+   if(raw.length!==raw.trimStart().length)notes.push('espacio/caracter invisible al inicio');
+   if(raw.length!==raw.trimEnd().length)notes.push('espacio/caracter invisible al final');
+   alert('MODO PROPIETARIO · CLAVE RECHAZADA\n\nHTTP: 403 FORBIDDEN\nCódigo: OWNER_AUTH_INVALID\n\nEl backend SÍ está configurado.\nLa comparación exacta de la clave falló.\n\nCaracteres enviados: '+raw.length+'\n'+(notes.length?'Advertencia: '+notes.join(' y ')+'.\n\n':'')+'Este error ocurre ANTES de crear o validar la cookie de sesión.');
+   console.warn('[NÉMESIS OWNER]',{status,code,submittedLength:raw.length,hasLeadingWhitespace:raw.length!==raw.trimStart().length,hasTrailingWhitespace:raw.length!==raw.trimEnd().length});
+   return false
+  }
+  if(status===503&&code==='OWNER_AUTH_NOT_CONFIGURED'){
+   alert('MODO PROPIETARIO · SERVIDOR NO CONFIGURADO\n\nHTTP: 503\nCódigo: OWNER_AUTH_NOT_CONFIGURED\n\nEl backend no detecta correctamente NEMESIS_OWNER_KEY y/o NEMESIS_OWNER_SIGNING_SECRET.');
+   return false
+  }
+  if(code==='OWNER_AUTH_NETWORK_ERROR'){
+   alert('MODO PROPIETARIO · ERROR DE RED\n\nNo fue posible comunicarse con /api/owner-auth.');return false
+  }
+  if(code==='OWNER_AUTH_BAD_RESPONSE'){
+   alert('MODO PROPIETARIO · RESPUESTA INVÁLIDA\n\nEl endpoint /api/owner-auth respondió, pero no devolvió JSON válido.');return false
+  }
+  alert('MODO PROPIETARIO · ERROR DESCONOCIDO\n\nHTTP: '+(status||'N/D')+'\nCódigo: '+code);return false
+ }
 }
 async function nemesisOwnerLogout(){
  try{await window.NEMESIS_OWNER_AUTH?.logout?.()}catch{}

@@ -2,20 +2,47 @@
 'use strict';
 const API='/api/owner-auth';
 const PRIVATE=new Set(['OLIMPO','DUEL_MASTER','CABALLEROS_SUBMUNDO']);
-const state={ready:false,isOwner:false,configured:false};
+const state={ready:false,isOwner:false,configured:false,lastError:null};
 const canon=v=>String(v||'').trim().toUpperCase().replaceAll(' ','_').replace('DRAGÓN','DRAGON').replace('CABALLEROS_DEL_SUBMUNDO','CABALLEROS_SUBMUNDO');
+class OwnerAuthError extends Error{
+ constructor(code,status=0,payload=null){
+  super(code||'OWNER_AUTH_UNKNOWN');this.name='OwnerAuthError';this.code=code||'OWNER_AUTH_UNKNOWN';this.status=Number(status)||0;this.payload=payload
+ }
+}
 async function call(body=null){
- const opt=body?{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify(body)}:{cache:'no-store',credentials:'same-origin'};
- const r=await fetch(API,opt);const j=await r.json().catch(()=>({ok:false}));
- if(!r.ok&&!j.owner)throw new Error(j.error||('HTTP_'+r.status));return j
+ const opt=body?{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',cache:'no-store',body:JSON.stringify(body)}:{method:'GET',cache:'no-store',credentials:'same-origin'};
+ let r;
+ try{r=await fetch(API,opt)}catch(err){throw new OwnerAuthError('OWNER_AUTH_NETWORK_ERROR',0,{message:String(err?.message||err)})}
+ let j;
+ try{j=await r.json()}catch{throw new OwnerAuthError('OWNER_AUTH_BAD_RESPONSE',r.status,null)}
+ if(!r.ok&&!j?.owner)throw new OwnerAuthError(j?.error||('HTTP_'+r.status),r.status,j);
+ return j
 }
 async function refresh(){
+ state.lastError=null;
  try{const j=await call();state.isOwner=!!j.owner;state.configured=!!j.configured}
- catch{state.isOwner=false}
+ catch(err){state.isOwner=false;state.configured=false;state.lastError={code:err?.code||err?.message||'UNKNOWN',status:Number(err?.status)||0};console.warn('[NÉMESIS OWNER AUTH · REFRESH]',state.lastError)}
  state.ready=true;window.dispatchEvent(new CustomEvent('nemesis-owner-auth',{detail:{...state}}));inject();return state.isOwner
 }
 async function login(key){
- const j=await call({action:'login',key:String(key||'')});state.isOwner=!!j.owner;state.ready=true;state.configured=true;window.dispatchEvent(new CustomEvent('nemesis-owner-auth',{detail:{...state}}));inject();return state.isOwner
+ const candidate=String(key??'');state.lastError=null;
+ try{
+  const j=await call({action:'login',key:candidate});state.isOwner=!!j.owner;state.ready=true;state.configured=true;
+  window.dispatchEvent(new CustomEvent('nemesis-owner-auth',{detail:{...state}}));inject();return state.isOwner
+ }catch(err){
+  state.isOwner=false;state.ready=true;
+  if(err?.status===403&&err?.code==='OWNER_AUTH_INVALID')state.configured=true;
+  if(err?.status===503&&err?.code==='OWNER_AUTH_NOT_CONFIGURED')state.configured=false;
+  state.lastError={
+   code:err?.code||err?.message||'UNKNOWN',
+   status:Number(err?.status)||0,
+   submittedLength:candidate.length,
+   hasLeadingWhitespace:candidate.length!==candidate.trimStart().length,
+   hasTrailingWhitespace:candidate.length!==candidate.trimEnd().length
+  };
+  console.warn('[NÉMESIS OWNER AUTH · LOGIN]',state.lastError);
+  window.dispatchEvent(new CustomEvent('nemesis-owner-auth',{detail:{...state}}));throw err
+ }
 }
 async function logout(){
  await call({action:'logout'}).catch(()=>{});state.isOwner=false;state.ready=true;window.dispatchEvent(new CustomEvent('nemesis-owner-auth',{detail:{...state}}));inject();return true
