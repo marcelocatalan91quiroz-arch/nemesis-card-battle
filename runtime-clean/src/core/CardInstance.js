@@ -1,0 +1,1 @@
+let seq=0;export function createCardInstance(cardId,{uid}={}){if(!cardId)throw new Error('CARD_ID_REQUIRED');return{uid:uid||('card-'+(++seq)),cardId,zone:'deck',owner:null,controller:null,modifiers:[],equipment:[],status:[]}}
