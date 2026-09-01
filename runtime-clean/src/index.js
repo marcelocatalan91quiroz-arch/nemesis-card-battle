@@ -20,3 +20,6 @@ export{TurnService}from'./services/TurnService.js';
 export{DuelSession}from'./core/DuelSession.js';
 export{PhaseService}from'./services/PhaseService.js';
 export{ActionService}from'./services/ActionService.js';
+export{StatService}from'./services/StatService.js';
+export{VictoryService}from'./services/VictoryService.js';
+export{CombatService}from'./services/CombatService.js';
