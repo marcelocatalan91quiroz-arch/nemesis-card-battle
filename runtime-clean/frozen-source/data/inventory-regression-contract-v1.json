@@ -1,0 +1,15 @@
+{
+  "version": "18.12.00",
+  "mandatory": [
+    "all campaign boss registry contracts present",
+    "all boss deck IDs resolve",
+    "campaign-private adapters remain isolated",
+    "boss defeat still grants random reward",
+    "campaign completion unlocks all remaining campaign boss cards",
+    "owned cards persist in Memory Card",
+    "savedDecks and activeDeckName persist in Memory Card",
+    "switching deck does not alter owned inventory",
+    "OLIMPO remains saved and Fusion Divina remains registered",
+    "campaign I-II-III progress fields persist"
+  ]
+}
