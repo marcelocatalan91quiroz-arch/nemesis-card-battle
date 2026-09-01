@@ -1,0 +1,30 @@
+{
+  "version": "19.1.0",
+  "base": "19.0.0",
+  "feature": "Santuario de las Tres Únicas",
+  "isolation": "El Santuario no modifica motores privados de Campañas I-III.",
+  "cards": [
+    {
+      "id": "nemesis-primigenio",
+      "status": "sealed",
+      "trial": "Juicio Primordial"
+    },
+    {
+      "id": "aion-unico",
+      "status": "sealed",
+      "trial": "Desafío del Tiempo"
+    },
+    {
+      "id": "azathiel-unico",
+      "status": "sealed",
+      "trial": "Sello del Vacío"
+    }
+  ],
+  "rules": [
+    "1/1 real",
+    "máximo una ÚNICA por mazo",
+    "sin entrega automática",
+    "despierta tras Hades",
+    "desafíos todavía sellados"
+  ]
+}
