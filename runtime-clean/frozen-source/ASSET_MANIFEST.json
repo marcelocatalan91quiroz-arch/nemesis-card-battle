@@ -1,0 +1,1767 @@
+{
+  "schema": "NEMESIS_RUNTIME_CLEAN_ASSET_SNAPSHOT_V1",
+  "source": {
+    "repository": "marcelocatalan91quiroz-arch/nemesis-card-battle",
+    "branch": "main",
+    "commit": "7c9a1781e50dc40f460624ef296303126f82dfee"
+  },
+  "count": 351,
+  "totalBytes": 299998848,
+  "files": [
+    {
+      "path": "assets/card-art/dm/DM-001.avif",
+      "sha": "c6425817bc4939041ccf7961732f4d6450bd8c1e",
+      "size": 9785
+    },
+    {
+      "path": "assets/card-art/dm/DM-002.avif",
+      "sha": "0d097f840e3c38ec0e2628a202ab2d4ce703143d",
+      "size": 11850
+    },
+    {
+      "path": "assets/card-art/dm/DM-003.avif",
+      "sha": "a8bd64d49bc2375b3ca8ae228315a57c448b71d1",
+      "size": 10839
+    },
+    {
+      "path": "assets/card-art/dm/DM-004.avif",
+      "sha": "c4f9bfedc32de9aedab1bcdfd6b3719f04f7e1cc",
+      "size": 10953
+    },
+    {
+      "path": "assets/card-art/dm/DM-005.avif",
+      "sha": "216d1ec35bb47a759a12c7c32ab0c5438151201d",
+      "size": 10259
+    },
+    {
+      "path": "assets/card-art/dm/DM-006.avif",
+      "sha": "cc848df9774a1be75deef97983055c44c524281f",
+      "size": 8770
+    },
+    {
+      "path": "assets/card-art/dm/DM-007.avif",
+      "sha": "0033366a8c96e0d49f0686b8a4b6106d208f8bb8",
+      "size": 10910
+    },
+    {
+      "path": "assets/card-art/dm/DM-008.avif",
+      "sha": "1429ef2788a75503115642804765ac27bbf37bd5",
+      "size": 9841
+    },
+    {
+      "path": "assets/card-art/dm/DM-009.avif",
+      "sha": "deeadcbb3d59720876a52033d34913d894827bc6",
+      "size": 8760
+    },
+    {
+      "path": "assets/card-art/dm/DM-010.avif",
+      "sha": "e874c1c43fd6307976552eaf0d8d32b8f52c83ae",
+      "size": 9681
+    },
+    {
+      "path": "assets/card-art/dm/DM-011.avif",
+      "sha": "8fe3321a23bc62cb2728b564023ad153afd8bf96",
+      "size": 12316
+    },
+    {
+      "path": "assets/card-art/dm/DM-012.avif",
+      "sha": "40b2059ab53b5fe592dade34e3a5ee0ffb9ea5ba",
+      "size": 12507
+    },
+    {
+      "path": "assets/card-art/dm/DM-013.avif",
+      "sha": "8c22b6b390513ee10046856b0d6b49fd9901d65c",
+      "size": 12034
+    },
+    {
+      "path": "assets/card-art/dm/DM-014.avif",
+      "sha": "aae47c11840c9c751a6d35d7b008e1a36a348596",
+      "size": 13507
+    },
+    {
+      "path": "assets/card-art/dm/DM-015.avif",
+      "sha": "5dc699559883184139de7ae53bfe441679ba610f",
+      "size": 14713
+    },
+    {
+      "path": "assets/card-art/dm/DM-016.avif",
+      "sha": "26752a2cda782943005e288cca911f323fdc4a38",
+      "size": 13395
+    },
+    {
+      "path": "assets/card-art/dm/DM-017.avif",
+      "sha": "8361ed71ccdb52e5d491c8f2fcdcc52b10b9a949",
+      "size": 14129
+    },
+    {
+      "path": "assets/card-art/dm/DM-018.avif",
+      "sha": "9033a03df08bdaf78f6805b572e95479e833c4c7",
+      "size": 16009
+    },
+    {
+      "path": "assets/card-art/dm/DM-019.avif",
+      "sha": "3947371e39c72c568b926f6a2e7fc799608a41c4",
+      "size": 13926
+    },
+    {
+      "path": "assets/card-art/dm/DM-020.avif",
+      "sha": "84a771123baa40f88e6730b6ddbc2fe50dfe0585",
+      "size": 13969
+    },
+    {
+      "path": "assets/card-art/idr/IDR-001.avif",
+      "sha": "0bd7df61b9734b4cc103f6f8d2b83f62e97ebefd",
+      "size": 11275
+    },
+    {
+      "path": "assets/card-art/idr/IDR-002.avif",
+      "sha": "edfd4b9b7e72f38687404c756e258aaaf9255607",
+      "size": 13004
+    },
+    {
+      "path": "assets/card-art/idr/IDR-003.avif",
+      "sha": "bfac312904fdb360c9e1a23f3763f6afa4179a1b",
+      "size": 11612
+    },
+    {
+      "path": "assets/card-art/idr/IDR-004.avif",
+      "sha": "e00f64082a82f9e4e81212d866058788b2bed081",
+      "size": 11874
+    },
+    {
+      "path": "assets/card-art/idr/IDR-005.avif",
+      "sha": "91308174fa66194c5a69921e9af46c6b0e966a5f",
+      "size": 12762
+    },
+    {
+      "path": "assets/card-art/idr/IDR-006.avif",
+      "sha": "5ae49c3a694a6f33627a715aa1732af2e656ef73",
+      "size": 12377
+    },
+    {
+      "path": "assets/card-art/idr/IDR-007.avif",
+      "sha": "3d931f79c3f510c2db4781d18664ab676d42b8f0",
+      "size": 12614
+    },
+    {
+      "path": "assets/card-art/idr/IDR-008.avif",
+      "sha": "67b337397385f6f21fa42fc70c56feee9fe63505",
+      "size": 13215
+    },
+    {
+      "path": "assets/card-art/idr/IDR-009.avif",
+      "sha": "51e23539e49573aebd60c6f5de44d796a36e5206",
+      "size": 12826
+    },
+    {
+      "path": "assets/card-art/idr/IDR-010.avif",
+      "sha": "aec6a4a82e81d65962d6a5e45c7b717cf4fbd8ab",
+      "size": 13026
+    },
+    {
+      "path": "assets/card-art/idr/IDR-011.avif",
+      "sha": "8b6b97913e56d30f05b09b9cc507a7c4aaee4c8b",
+      "size": 11000
+    },
+    {
+      "path": "assets/card-art/idr/IDR-012.avif",
+      "sha": "1162d78ce6af1dc9a0375f13673cc04f9a01cc7c",
+      "size": 11403
+    },
+    {
+      "path": "assets/card-art/idr/IDR-013.avif",
+      "sha": "b661b7a8275340d3fb81ab77661c5cc313d7e344",
+      "size": 13162
+    },
+    {
+      "path": "assets/card-art/idr/IDR-014.avif",
+      "sha": "8ef744abc1a530f1aca5201d361728dd5f2a14da",
+      "size": 12088
+    },
+    {
+      "path": "assets/card-art/idr/IDR-015.avif",
+      "sha": "dc443fb10a6975d18fa4dc684e2c3e287d0abeb3",
+      "size": 11616
+    },
+    {
+      "path": "assets/card-art/idr/IDR-016.avif",
+      "sha": "977e5cc9b7bf2ccd5b514bd8c3809d3be55af734",
+      "size": 11637
+    },
+    {
+      "path": "assets/card-art/idr/IDR-017.avif",
+      "sha": "e556787000148890ec956d9e7a58864ebb1370fd",
+      "size": 11215
+    },
+    {
+      "path": "assets/card-art/idr/IDR-018.avif",
+      "sha": "bd7ccd8f6d1e8127b26d7677b82ab1582deaa643",
+      "size": 11756
+    },
+    {
+      "path": "assets/card-art/idr/IDR-019.avif",
+      "sha": "20bed0abfdbf84f8ce50781445ed65d4d9049cc5",
+      "size": 12265
+    },
+    {
+      "path": "assets/card-art/idr/IDR-020.avif",
+      "sha": "0076325c6d7e48599d1de16575e3710bb1ab7a4d",
+      "size": 12185
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-001.avif",
+      "sha": "9b173d009c497274da87a3206e587128fb1be529",
+      "size": 11050
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-002.avif",
+      "sha": "15927120f899f26182991040fb22ce073784c539",
+      "size": 9620
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-003.avif",
+      "sha": "9bb06cfe42311cd4e8568fbc2b53ba67252393e6",
+      "size": 9080
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-004.avif",
+      "sha": "82e6d969e7dbdabc8911c4c4984e17a95329329c",
+      "size": 8484
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-005.avif",
+      "sha": "033636fa70311cb63227de854a1daefc9be2ed9e",
+      "size": 8440
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-006.avif",
+      "sha": "a304393623a34980e8a2ff1cd68f0090ad84cdd7",
+      "size": 9140
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-007.avif",
+      "sha": "d2370ac3a370af35d845a7fa61cff5676c1215be",
+      "size": 9155
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-008.avif",
+      "sha": "5ee61f00241346f0fa289342bcbc17d8ca4e70f2",
+      "size": 9224
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-009.avif",
+      "sha": "e3bf755ad864f3856165ca141df1631ef253e479",
+      "size": 10044
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-010.avif",
+      "sha": "c5d445fa99b21e00d341b8e726d021ab293527ef",
+      "size": 9925
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-011.avif",
+      "sha": "2498fa3d40e3bfa9594972bf98a7647ca60812dd",
+      "size": 9153
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-012.avif",
+      "sha": "847b75d4b84e66c292a1920f8a981f4380e9fa03",
+      "size": 9731
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-013.avif",
+      "sha": "295e246fe897dac81acce650eca75c6f37142318",
+      "size": 8751
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-014.avif",
+      "sha": "3ba44df7b8d4a9f9a1af4bb13fc8a5413fd916a8",
+      "size": 9467
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-015.avif",
+      "sha": "96e69fdd872893249fbb5feb67041b2714a3af6e",
+      "size": 9061
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-016.avif",
+      "sha": "f14e65bd1760bb37c9d6ed8c6bdd7a8bdd391200",
+      "size": 8702
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-017.avif",
+      "sha": "ef0a5a8168ae5cafe210c4c4b1f28a70b2939491",
+      "size": 8508
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-018.avif",
+      "sha": "a7927f68867794efc2a68515c82628fd8c0bbb51",
+      "size": 8427
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-019.avif",
+      "sha": "d18d316fed7c5d31831bc014a66a17dd33d31a04",
+      "size": 9207
+    },
+    {
+      "path": "assets/card-art/mgr/MGR-020.avif",
+      "sha": "64b57aabb0ebf90ba6cd788e861dbcb4f20dde86",
+      "size": 8520
+    },
+    {
+      "path": "assets/card-art/treasures/TN-ARM-001.avif",
+      "sha": "2ec1afd1c05a6cb7972d2cbf5a2395f30279853b",
+      "size": 12151
+    },
+    {
+      "path": "assets/card-art/treasures/TN-ARM-002.avif",
+      "sha": "9272245c8b631576f66b6384d4cfe6fdd919ae66",
+      "size": 12071
+    },
+    {
+      "path": "assets/card-art/treasures/TN-MAG-001.avif",
+      "sha": "bc04fcb255792bd4e6f0d79a570fa175911ac9f4",
+      "size": 11643
+    },
+    {
+      "path": "assets/card-art/treasures/TN-MAG-002.avif",
+      "sha": "09060c2b655e82e73177717aded8fc4d1ce04546",
+      "size": 12795
+    },
+    {
+      "path": "assets/card-art/treasures/TN-TRP-001.avif",
+      "sha": "ee4216d65372b3624fda3ce0d340eab3053a27b4",
+      "size": 13047
+    },
+    {
+      "path": "assets/images/ancestral-altar-anubis.png",
+      "sha": "fa76fcfa5213344b41f97f934101d33e006d8994",
+      "size": 2602581
+    },
+    {
+      "path": "assets/images/ancestral-ares.png",
+      "sha": "5a44dd355f0d00b7d96ed325dba9efa5731d7255",
+      "size": 2537057
+    },
+    {
+      "path": "assets/images/ancestral-armadura-ra.png",
+      "sha": "a51620bc6f8fe6b1869017d49f5c0d3c54e7fc56",
+      "size": 2903412
+    },
+    {
+      "path": "assets/images/ancestral-cetro-was.png",
+      "sha": "b5e5e8a1bdb51731b05b17e6839167a3cf24a3e0",
+      "size": 2887479
+    },
+    {
+      "path": "assets/images/ancestral-fragmento-esencia.png",
+      "sha": "7dae02b2e619408d5e0f6d07b8c30d9e701f275b",
+      "size": 2555475
+    },
+    {
+      "path": "assets/images/ancestral-ira-ra.png",
+      "sha": "44234163c7378abc08bb83ae5a6ae3ae5a613f5f",
+      "size": 2745166
+    },
+    {
+      "path": "assets/images/ancestral-jepri.png",
+      "sha": "6572a8195f61de823e1979a6cb28aa74db907ce4",
+      "size": 2770412
+    },
+    {
+      "path": "assets/images/ancestral-lanza-bronce.png",
+      "sha": "97a64a2dea6a389f6f016413facb9296cd438817",
+      "size": 2914332
+    },
+    {
+      "path": "assets/images/ancestral-lanza-solar.png",
+      "sha": "2f5be73240e415abedc676eeb4e668902e9ef454",
+      "size": 2873208
+    },
+    {
+      "path": "assets/images/ancestral-mehen.png",
+      "sha": "a52e03abf2dba3f7ab620300095e582208c7bc68",
+      "size": 2980751
+    },
+    {
+      "path": "assets/images/ancestral-mjolnir.png",
+      "sha": "5df89a64042783cdd5670a968b211a931fad5ed1",
+      "size": 2615654
+    },
+    {
+      "path": "assets/images/ancestral-mnevis.png",
+      "sha": "5a4e23eb33fdaf413017ddb5d3dd63db5f37e513",
+      "size": 2753961
+    },
+    {
+      "path": "assets/images/ancestral-ojo-ra.png",
+      "sha": "503e4b05f6a468ea353bcd76fd505ab1a0d771bb",
+      "size": 2988612
+    },
+    {
+      "path": "assets/images/ancestral-profecia-medusa.png",
+      "sha": "54139e0ad9f8f3023d99d2cdff067929f6480c94",
+      "size": 2686031
+    },
+    {
+      "path": "assets/images/ancestral-sello-oraculo.png",
+      "sha": "813304b4757c79fa566f1d6a7fd6b5bce6846adc",
+      "size": 2600846
+    },
+    {
+      "path": "assets/images/apolo-guardian-solar-olimpo.png",
+      "sha": "c4d9271cb167943bc1f5b34b4d69b403317d38d0",
+      "size": 2868757
+    },
+    {
+      "path": "assets/images/arena-abismo-premium.webp",
+      "sha": "36f6f78dcf8e42819a83ce5cd0f98dd23364d69c",
+      "size": 430814
+    },
+    {
+      "path": "assets/images/arena-llamas-del-caos.webp",
+      "sha": "997c000183d9ec06334fc9d32a5aeeec49a3d95a",
+      "size": 91286
+    },
+    {
+      "path": "assets/images/bestia-llanura.png",
+      "sha": "07c66e2024799403ccbe5a6755b976b9fbe1a7b6",
+      "size": 2356013
+    },
+    {
+      "path": "assets/images/bestia-zombie-infierno.png",
+      "sha": "e14c22274cb99dd5f842aff6bcf7c7a909aa291e",
+      "size": 2281779
+    },
+    {
+      "path": "assets/images/c2-corona-condenado.png",
+      "sha": "3a1da681a2340f673766d78f723696cfe1735379",
+      "size": 2378545
+    },
+    {
+      "path": "assets/images/c2-doncella-tumba.png",
+      "sha": "56268b91886673bec58cefe5978028f179b381cf",
+      "size": 2499978
+    },
+    {
+      "path": "assets/images/c2-dragon-abismo.png",
+      "sha": "2df597d43f50dd0f65f46ec7e3adeaba7467aeff",
+      "size": 2557595
+    },
+    {
+      "path": "assets/images/c2-dragon-espectral.png",
+      "sha": "e7fa03f9af2408a982e12e5fd1726550e756ce49",
+      "size": 2518022
+    },
+    {
+      "path": "assets/images/c2-ejercito-almas.png",
+      "sha": "640967526c9b2f5333e35350ac72348bb8e6c986",
+      "size": 2486793
+    },
+    {
+      "path": "assets/images/c2-espectro-cripta.png",
+      "sha": "950ef1a402f0753ab3109535bb5d2a6699f164ef",
+      "size": 2378294
+    },
+    {
+      "path": "assets/images/c2-guerrero-sepulcro.png",
+      "sha": "e94ea102b73281c6f71fa81f72d142be64a1448b",
+      "size": 2480394
+    },
+    {
+      "path": "assets/images/c2-portal-muertos.png",
+      "sha": "51b1f1442214cf705f4c3c2a75fd014fbd3d7916",
+      "size": 2257486
+    },
+    {
+      "path": "assets/images/c2-segador-vacio.png",
+      "sha": "2f6c9077ca9a09c83fee60fb9432853c278b0bcc",
+      "size": 2495207
+    },
+    {
+      "path": "assets/images/c2-verdugo-almas.png",
+      "sha": "1da084b1f24b185a5aab2e07d874f16c5e739630",
+      "size": 2490113
+    },
+    {
+      "path": "assets/images/caballero-de-las-almas.png",
+      "sha": "13017232b747e151b6bd03c0263af6a7d64ce0eb",
+      "size": 3384319
+    },
+    {
+      "path": "assets/images/caballeros-submundo/aguijon-de-escorpion.webp",
+      "sha": "0b8c26f4340a78f74893f505ed2290fecc22d51f",
+      "size": 4874
+    },
+    {
+      "path": "assets/images/caballeros-submundo/agujero-negro.webp",
+      "sha": "f7986bbf507ba20586b2d5a3a4129834f8f31cae",
+      "size": 4906
+    },
+    {
+      "path": "assets/images/caballeros-submundo/armadura-forjada-pluton.webp",
+      "sha": "6375de4b850d6cb965284d797b21447151410e9e",
+      "size": 8882
+    },
+    {
+      "path": "assets/images/caballeros-submundo/armadura-olvidada.webp",
+      "sha": "c34755a4fd677236c066714a8c9cd1f175b1e65c",
+      "size": 8394
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-alas-oro-shiny.webp",
+      "sha": "143e23b08efcd52e7d8d1c6a1610d17cfd0c801c",
+      "size": 15009
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-alas-oro.png",
+      "sha": "2b1db4e81ca3aaa3e70cfc2e07cef62b0cfb0aa9",
+      "size": 15008
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-demonio.webp",
+      "sha": "20a4c514b0b44d1dd729d7d8c022606ae2d515c0",
+      "size": 14756
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-luz-horus.webp",
+      "sha": "0a3f429e66c9d14c911c293ce9113bdcd2b2480a",
+      "size": 7506
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-meteoro.webp",
+      "sha": "3978183ede2a2f2b2f7deeaf2b88ffb69df1005d",
+      "size": 8180
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-rose.webp",
+      "sha": "746ff982517660ae2fe575356756be4600719676",
+      "size": 6428
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-sombra-de-venuz-shiny.webp",
+      "sha": "4c0869a8cef31a8cf3bc270d91781e8ae6b062a3",
+      "size": 8438
+    },
+    {
+      "path": "assets/images/caballeros-submundo/caballero-sombra-de-venuz.webp",
+      "sha": "b2ee2a97fd58e9b90adb991e618f585b523f9c5f",
+      "size": 7000
+    },
+    {
+      "path": "assets/images/caballeros-submundo/cerberus-oscuro.webp",
+      "sha": "fb79dc6aa00098aa46b726eb9697750f57bf459e",
+      "size": 7511
+    },
+    {
+      "path": "assets/images/caballeros-submundo/corazon-del-tartaro.webp",
+      "sha": "57b031a19c62f09bfa3f0a23520c1d927b8abfa1",
+      "size": 14061
+    },
+    {
+      "path": "assets/images/caballeros-submundo/escudo-de-luna.webp",
+      "sha": "5448fd32ad466fd36f8b719f77fe3b6b5b2ef6b1",
+      "size": 15213
+    },
+    {
+      "path": "assets/images/caballeros-submundo/luz-de-ares.webp",
+      "sha": "ab19e5cc180b5b262d97edb42e01b99cf32c25ef",
+      "size": 4770
+    },
+    {
+      "path": "assets/images/caballeros-submundo/pegasus-negro.webp",
+      "sha": "9186a242ec545d294db7348ddcfc83c372f03757",
+      "size": 7511
+    },
+    {
+      "path": "assets/images/caballeros-submundo/rayo-del-submundo.webp",
+      "sha": "f9abb995e237e97075d992f4f41cc9498cd3dc74",
+      "size": 13403
+    },
+    {
+      "path": "assets/images/caballeros-submundo/sentencia-de-venuz.webp",
+      "sha": "1d4d7e96a535ad66e42e775804864e8e74b90d30",
+      "size": 4712
+    },
+    {
+      "path": "assets/images/caballeros-submundo/trono-almas-perdidas.webp",
+      "sha": "02f6727aa77a2b6b7a5d3d4c3c704afdac32f9c9",
+      "size": 14572
+    },
+    {
+      "path": "assets/images/campaign3/ares/ares-arena-pc-ultra.png",
+      "sha": "d545d80081f3bb92d49b0b18a23ec8b7bdae9fd9",
+      "size": 2737914
+    },
+    {
+      "path": "assets/images/campaign3/ares/ares-personaje.png",
+      "sha": "de4aefc48190037747da674d3d182b4a71f94d3e",
+      "size": 2971251
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/01.png",
+      "sha": "908a1cd3da03c784586ba566da65353202426874",
+      "size": 2128572
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/02.png",
+      "sha": "0177b0b7cd8ddba1177f8f18c83cf51ff35f91a6",
+      "size": 2173542
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/03.png",
+      "sha": "8c46c91264b6f82c1467c29587e234e2e7a318f6",
+      "size": 2137843
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/04.png",
+      "sha": "a0a8a3a52fb01540aa4fd77622e09e3ab1dd5935",
+      "size": 2163290
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/05.png",
+      "sha": "0a3edd8c7337e82145fefa36641d1878785c21c2",
+      "size": 2240966
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/06.png",
+      "sha": "c5e5f5ea8dba7437661d96eb92b520a4508faff7",
+      "size": 2116799
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/07.png",
+      "sha": "bbb450a30a9b2ea4e1bff0ff73d2386e4e54d28d",
+      "size": 2139971
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/08.png",
+      "sha": "29887f5d03678ff924d19a6daf097d1454e28103",
+      "size": 2115954
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/09.png",
+      "sha": "1a2f7fb38a8dfbaf0509e485387f559b0ee63da9",
+      "size": 2216129
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/10.png",
+      "sha": "d8e82e47bf1d157ee1eea819fc0e09861ecd47a3",
+      "size": 2213525
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/11.png",
+      "sha": "051a83f5041f47ed7d3afd2586f677b428261d68",
+      "size": 2174859
+    },
+    {
+      "path": "assets/images/campaign3/ares/cards/12.png",
+      "sha": "5414c16da1591bb1220318642e4665d944c4e218",
+      "size": 2247368
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/01-cerbero.png",
+      "sha": "f4cf39f036cc0d3bfd18dbc3de5073c05e0807cd",
+      "size": 2225551
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/02-caronte.png",
+      "sha": "b2b58564aa9d530dfec8f1d9563489d7978d13c1",
+      "size": 2168991
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/03-persefone.png",
+      "sha": "f42a6bc1d5c0fcd802b2fd0b526942fe78640766",
+      "size": 2320325
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/04-thanatos.png",
+      "sha": "b6474d3f2ce9647e01fcfc4c9a505d8e28b3c3e8",
+      "size": 2221178
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/05-nyx.png",
+      "sha": "2ed8bf1cd661d09cf4f1f1194b5ac1212989e17a",
+      "size": 2113232
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/06-hades-soberano.png",
+      "sha": "37ce8d94f86a3cd3a8c0bf7e3695b35023ac7f63",
+      "size": 2221178
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/07-cadenas-tartaro.png",
+      "sha": "2ad7b47dfecc75336b224747152d4bc30b06bd39",
+      "size": 2429916
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/08-moneda-caronte.png",
+      "sha": "6d28b0b6d582bc0232b341234174efe16ca9910b",
+      "size": 2193028
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/09-cerbero-umbral.png",
+      "sha": "24a6216e1bebf50ed53e87aa1edebbc2f5e76a07",
+      "size": 2293875
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/10-hypnos.png",
+      "sha": "d6c7e0ddc05591d225381527d7baf42d8d6b9cc6",
+      "size": 2271825
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/11-erinias.png",
+      "sha": "6300e8c41df988ca9eaa735a93a69079286872e8",
+      "size": 2260776
+    },
+    {
+      "path": "assets/images/campaign3/hades/cards/12-portal-tartaro.png",
+      "sha": "a66b43c0f42f15fcc90570370d851e24cab291c6",
+      "size": 2338144
+    },
+    {
+      "path": "assets/images/campaign3/hades/hades-personaje.png",
+      "sha": "6ac5e10d200670581a7ae7ba7a428e8777f4a984",
+      "size": 3301258
+    },
+    {
+      "path": "assets/images/campaign3/hades/hades-tartaro-pc-ultra.png",
+      "sha": "6b3dab4935da1dee3c254248748d19cdff44d390",
+      "size": 2772161
+    },
+    {
+      "path": "assets/images/cards/nemesis-card-art-v2.webp",
+      "sha": "cd7bd847416e556ea1c5a60ba74783b081804e82",
+      "size": 758130
+    },
+    {
+      "path": "assets/images/carta-dragon-ojo-del-diablo.png",
+      "sha": "a0cdbc9c4b2ca23fa93dc610831623a0d597989a",
+      "size": 3059510
+    },
+    {
+      "path": "assets/images/castillo-dragon-ojo-diablo.webp",
+      "sha": "188974058d771971623702342618ea1b074c2eb7",
+      "size": 131952
+    },
+    {
+      "path": "assets/images/df-01-angel.png",
+      "sha": "b924f8c4bba45e1c3919b87858ad7c6bd9c7db3b",
+      "size": 2513074
+    },
+    {
+      "path": "assets/images/df-02-arcangel.png",
+      "sha": "6059ea975a5fc5d8003cc5a5871ab4b9d4fd203d",
+      "size": 2446566
+    },
+    {
+      "path": "assets/images/df-03-dragon.png",
+      "sha": "615c8762ee0151047eeb72b69cc07b6caabd7b66",
+      "size": 2451603
+    },
+    {
+      "path": "assets/images/df-04-emperador.png",
+      "sha": "80c43b25a46f4707c48bf8033002de613b23c4e8",
+      "size": 2493995
+    },
+    {
+      "path": "assets/images/df-05-serafin.png",
+      "sha": "5010a9f6e9136f7703f709526b5278262c6d57c9",
+      "size": 2497452
+    },
+    {
+      "path": "assets/images/dios-fantasma/cards/06.png",
+      "sha": "334e1dda70adf1304c884a3888d1679396cbe951",
+      "size": 2542544
+    },
+    {
+      "path": "assets/images/dios-fantasma/cards/07.png",
+      "sha": "64ffdf8373d1fb821a5df02ba43184b66be9f017",
+      "size": 2437953
+    },
+    {
+      "path": "assets/images/dios-fantasma/cards/08.png",
+      "sha": "3f2c394315cbd68f9359a3f5ca2730478325502c",
+      "size": 2520939
+    },
+    {
+      "path": "assets/images/dios-fantasma/cards/09.png",
+      "sha": "6f25080df12db8c3cb81438f36b1b093a954d19a",
+      "size": 2642347
+    },
+    {
+      "path": "assets/images/dios-fantasma/cards/10.png",
+      "sha": "adbf9b9fa08cd9092b7c08441326b8beb4057daa",
+      "size": 2685194
+    },
+    {
+      "path": "assets/images/dios-fantasma/dios-fantasma.png",
+      "sha": "344d1af623ddb753b5f6a91b6729344cade97047",
+      "size": 3791788
+    },
+    {
+      "path": "assets/images/dios-fantasma/fondo-celestial.png",
+      "sha": "91d4f59f9d6685d228aba749e81cda7f18c8067b",
+      "size": 3389634
+    },
+    {
+      "path": "assets/images/dios-jupiter.png",
+      "sha": "311318e3daa3bba553311e2d872e22d9d62d0c11",
+      "size": 725045
+    },
+    {
+      "path": "assets/images/dragon-abisal.webp",
+      "sha": "75bccbdb3c4c43357bad615157c7e38a66babb43",
+      "size": 296644
+    },
+    {
+      "path": "assets/images/dragon-carmesi.webp",
+      "sha": "113865b8b357c585dc8e7753c79b94e8e5ddca73",
+      "size": 257644
+    },
+    {
+      "path": "assets/images/dragon-diamante.png",
+      "sha": "60a548dafe6c402630bf3bfcf3ed58e70b8ef9ae",
+      "size": 3192369
+    },
+    {
+      "path": "assets/images/dragon-dorado.png",
+      "sha": "8599c21cc16afff186d36a5f6d169f3d49a79a19",
+      "size": 2818836
+    },
+    {
+      "path": "assets/images/dragon-escarlata.png",
+      "sha": "be89b663f52c199731f3657a1ef17c1e8a8099ac",
+      "size": 2621889
+    },
+    {
+      "path": "assets/images/dragon-escondido-fuego.png",
+      "sha": "dd1cec26ba866555fdbe7eae7b382bcafeba3bbe",
+      "size": 2663887
+    },
+    {
+      "path": "assets/images/dragon-infernal-sangre.webp",
+      "sha": "ec7c619fa34ac1a66a5513d924e485400f0b72dd",
+      "size": 288974
+    },
+    {
+      "path": "assets/images/dragon-negro-ruinas.webp",
+      "sha": "2bf08cb1ecf157b83bbcf83a631a8ee1abb95c07",
+      "size": 255850
+    },
+    {
+      "path": "assets/images/dragon-ojo-del-diablo.png",
+      "sha": "43f44d49311a46e35547189406b96fe4d50b83a3",
+      "size": 3057696
+    },
+    {
+      "path": "assets/images/dragon-tumba.png",
+      "sha": "64733b7d67e4f3af266ca90983a2a1f713ce08ea",
+      "size": 3036933
+    },
+    {
+      "path": "assets/images/external33/dm-001.svg",
+      "sha": "5ceb9e0e2249a87508acc6ef958885e857c0c711",
+      "size": 244
+    },
+    {
+      "path": "assets/images/external33/dm-002.svg",
+      "sha": "fce8b323d995bc02476822e3ecb279a5607798e3",
+      "size": 247
+    },
+    {
+      "path": "assets/images/external33/dm-003.svg",
+      "sha": "41ce0fd3a0fcdc2c8a3963f7352aa811b8d38f71",
+      "size": 247
+    },
+    {
+      "path": "assets/images/external33/dm-004.svg",
+      "sha": "ceaa3db0b06040e22b03eba8df53850b2e8a9553",
+      "size": 248
+    },
+    {
+      "path": "assets/images/external33/dm-005.svg",
+      "sha": "6d936bf2e510646cc8fc0f828745a1f0a3244022",
+      "size": 248
+    },
+    {
+      "path": "assets/images/external33/dm-006.svg",
+      "sha": "46ec2622cd895a2dde3c8c8fcb71cec43db1da0a",
+      "size": 248
+    },
+    {
+      "path": "assets/images/external33/dm-007.svg",
+      "sha": "4301675e49a959a577f4261ea596be1dd4d4640a",
+      "size": 248
+    },
+    {
+      "path": "assets/images/external33/dm-008.svg",
+      "sha": "7920ecd321ea983bf53e2042a9f8d55f39f75830",
+      "size": 248
+    },
+    {
+      "path": "assets/images/external33/dm-009.svg",
+      "sha": "1eaabaa549edfed632de09558f4636af988b6eb9",
+      "size": 248
+    },
+    {
+      "path": "assets/images/external33/dm-010.svg",
+      "sha": "4ffaac8e53774edcea8ad277bc14301282fd3afb",
+      "size": 248
+    },
+    {
+      "path": "assets/images/external33/dm-011.svg",
+      "sha": "51aead5536a39aa83ddfbb945c20e5d3528374c8",
+      "size": 886
+    },
+    {
+      "path": "assets/images/external33/dm-012.svg",
+      "sha": "a232d7348a860db13ee5499ebafae1a47d6f84f9",
+      "size": 876
+    },
+    {
+      "path": "assets/images/external33/dm-013.svg",
+      "sha": "852974b51b05360129ecd62f42ef7ea665ad5c03",
+      "size": 888
+    },
+    {
+      "path": "assets/images/external33/dm-014.svg",
+      "sha": "19f0de5f3bf1d067beb8a3683f72161b560d6a83",
+      "size": 890
+    },
+    {
+      "path": "assets/images/external33/dm-015.svg",
+      "sha": "897bd848008e01ebde8d59118362c772184c6fcf",
+      "size": 887
+    },
+    {
+      "path": "assets/images/external33/dm-016.svg",
+      "sha": "538588cb82b65f0e0932e25ce85d7a466f3a7ca8",
+      "size": 882
+    },
+    {
+      "path": "assets/images/external33/dm-017.svg",
+      "sha": "5b480ed3d522fa5dd04342404854fff234b65d93",
+      "size": 874
+    },
+    {
+      "path": "assets/images/external33/dm-018.svg",
+      "sha": "aa63f79b154dfc6d289416d0d087b256b8fbea02",
+      "size": 874
+    },
+    {
+      "path": "assets/images/external33/dm-019.svg",
+      "sha": "e80807d924ab7fcf79b45fe4b3a4a352572b772e",
+      "size": 830
+    },
+    {
+      "path": "assets/images/external33/dm-020.svg",
+      "sha": "06dc40c45b41f47290ffdcae509b918cd1f16d86",
+      "size": 835
+    },
+    {
+      "path": "assets/images/external33/duel-master-sprite.webp",
+      "sha": "16048c518151ab9d799a32c29826d1de5129ef42",
+      "size": 22369
+    },
+    {
+      "path": "assets/images/external33/ml-001.svg",
+      "sha": "5a27f32c70dc4d143410cdfe4365ae42b6df1502",
+      "size": 1373
+    },
+    {
+      "path": "assets/images/external33/ml-002.svg",
+      "sha": "d6336ed7f4414a6e8357d1908db4f6dc5dd02579",
+      "size": 1375
+    },
+    {
+      "path": "assets/images/external33/ml-003.svg",
+      "sha": "96bc8df555f6a31f6c3c51657f93c0dc57f07762",
+      "size": 1382
+    },
+    {
+      "path": "assets/images/external33/ml-004.svg",
+      "sha": "a7b55678f41e03f959d1206a5e4569120a4cc6f1",
+      "size": 1379
+    },
+    {
+      "path": "assets/images/external33/ml-005.svg",
+      "sha": "29ad4b53eb977b8d8d3f48256cebf785ebb2937f",
+      "size": 1377
+    },
+    {
+      "path": "assets/images/external33/ml-006.svg",
+      "sha": "c0d1437ed70339a8ad1daa455def3e8c309a37b0",
+      "size": 1372
+    },
+    {
+      "path": "assets/images/external33/ml-007.svg",
+      "sha": "5da6e115d73b558d6fd6812480ae1779a93fabc0",
+      "size": 1382
+    },
+    {
+      "path": "assets/images/external33/ml-008.svg",
+      "sha": "93eb750d6a17dfea450d459ff94abc4b665b9e57",
+      "size": 1381
+    },
+    {
+      "path": "assets/images/external33/ml-009.svg",
+      "sha": "0ffa0dbdb1ce3d6e2763d839d484631676903da1",
+      "size": 1376
+    },
+    {
+      "path": "assets/images/external33/ml-010.svg",
+      "sha": "d8e6985323ccd21b604ed8dbc2571980fa2661bc",
+      "size": 1384
+    },
+    {
+      "path": "assets/images/external33/ml-011.svg",
+      "sha": "7b1782426d81cb5fb493179783b43b42ffd5d261",
+      "size": 1385
+    },
+    {
+      "path": "assets/images/external33/uni-001.svg",
+      "sha": "879de748504451576e4305ed817acce98031a4fc",
+      "size": 1359
+    },
+    {
+      "path": "assets/images/external33/uni-002.svg",
+      "sha": "37e736255fa2808f3fff568a1f4acf3a53948b7b",
+      "size": 1357
+    },
+    {
+      "path": "assets/images/external33/uni-003.svg",
+      "sha": "52fe5e4189ab58a0afb8f7c3c85012bdbc193830",
+      "size": 1357
+    },
+    {
+      "path": "assets/images/external33/uni-004.svg",
+      "sha": "40f708a5bf0aa1b66d17ecb966e601f7c6788b4a",
+      "size": 1352
+    },
+    {
+      "path": "assets/images/external33/uni-005.svg",
+      "sha": "7caffcea0c8b66441a0790ee10452342ac38a616",
+      "size": 1363
+    },
+    {
+      "path": "assets/images/external33/uni-006.svg",
+      "sha": "feabce67c1c860277f09867c7427d72e640390ce",
+      "size": 1351
+    },
+    {
+      "path": "assets/images/external33/uni-007.svg",
+      "sha": "2d8b8494abfc4c23a977c47df909282cfc285eea",
+      "size": 1357
+    },
+    {
+      "path": "assets/images/external33/uni-008.svg",
+      "sha": "09471bb1d710590847f2fafe022dc46e15b49827",
+      "size": 1356
+    },
+    {
+      "path": "assets/images/external33/uni-009.svg",
+      "sha": "4c8499773c7fafcbdfbe8002f1d31fc17ee9c0a6",
+      "size": 1358
+    },
+    {
+      "path": "assets/images/external33/uni-010.svg",
+      "sha": "5b3c9621016b7b7c140bd37554ed887f502dbaed",
+      "size": 1353
+    },
+    {
+      "path": "assets/images/external33/uni-011.svg",
+      "sha": "6fe788f286c4c818f8bef704b2a0d83c1604cf3f",
+      "size": 1354
+    },
+    {
+      "path": "assets/images/external33/uni-012.svg",
+      "sha": "2fd24ab7dcfe8f5910b978f8b96ec1ec3f1c04bd",
+      "size": 1371
+    },
+    {
+      "path": "assets/images/fantasma-del-universo.png",
+      "sha": "c4830c48c648e1ad0af9e4f6e6d5ba7abf9c646c",
+      "size": 684718
+    },
+    {
+      "path": "assets/images/fusion-caotico-supremo.webp",
+      "sha": "eac904a0c747950e06eba0537697a73d95b8bc59",
+      "size": 290024
+    },
+    {
+      "path": "assets/images/fusion-dragon-caos.webp",
+      "sha": "e13b1daee6b532ae2f12ed19864f498b4511b13e",
+      "size": 361886
+    },
+    {
+      "path": "assets/images/guardian-dragones.webp",
+      "sha": "29e225167b70ba83299f1c02e8860983670d60d0",
+      "size": 604802
+    },
+    {
+      "path": "assets/images/img-01.webp",
+      "sha": "40fbe123f5b27cd4e509d5c0f660492e95891b88",
+      "size": 9648
+    },
+    {
+      "path": "assets/images/img-02.webp",
+      "sha": "5abe2ccccd1bbf2b979c96afc9bc3fcb4fe96706",
+      "size": 7882
+    },
+    {
+      "path": "assets/images/img-03.webp",
+      "sha": "7e337c9899addb9128daecbb640b01b0892c3bb9",
+      "size": 7852
+    },
+    {
+      "path": "assets/images/img-04.webp",
+      "sha": "6c5c27a86c80a283e4825b0a4286a47a33e7e13e",
+      "size": 8416
+    },
+    {
+      "path": "assets/images/img-05.webp",
+      "sha": "f7bcda5b65241db069f0de2dbc79fd1795300085",
+      "size": 8872
+    },
+    {
+      "path": "assets/images/img-06.webp",
+      "sha": "66c0346f77670ecedb926b5c242a41ad41d47220",
+      "size": 8102
+    },
+    {
+      "path": "assets/images/img-07.webp",
+      "sha": "13a2eeb27b568c539d06e7926a7c47ae2cf351d2",
+      "size": 9260
+    },
+    {
+      "path": "assets/images/img-08.webp",
+      "sha": "73b15cd4d18c71732f2e579599cb000639f8ad35",
+      "size": 10426
+    },
+    {
+      "path": "assets/images/img-09.webp",
+      "sha": "fe0cec886a7514a0d1a6147ddeb6be359fdb6d97",
+      "size": 7580
+    },
+    {
+      "path": "assets/images/img-10.webp",
+      "sha": "ac2f5ea37d5605d8b39e61783a3eb954b45bc172",
+      "size": 18186
+    },
+    {
+      "path": "assets/images/img-11.webp",
+      "sha": "34bde755eb922fd7748fb0f46272ada64372e522",
+      "size": 23776
+    },
+    {
+      "path": "assets/images/img-12.webp",
+      "sha": "6e191ec20446d97dff632f4d58545eacaebae2e5",
+      "size": 7736
+    },
+    {
+      "path": "assets/images/img-13.webp",
+      "sha": "7159391f35182cb2c4f85079e78d2a28a68900c0",
+      "size": 5710
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-001.svg",
+      "sha": "632cdda7b10320e13f47d5b6192d18c43a18fa31",
+      "size": 1989
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-002.svg",
+      "sha": "d3533c57a68ad43f18c77018d698be19248054f1",
+      "size": 1993
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-003.svg",
+      "sha": "add859677f1d9b2a25e3cb1dd0d2a02087d98b90",
+      "size": 1992
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-004.svg",
+      "sha": "4b952a2554979f8ea4e87079dbd3673269094e72",
+      "size": 2003
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-005.svg",
+      "sha": "82e47a622deefb26ec8f4d8244e6943fe2542fd6",
+      "size": 1994
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-006.svg",
+      "sha": "f0e2e15fa673508d97d2a8e614de6ecd7472028a",
+      "size": 2002
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-007.svg",
+      "sha": "f81c0e98357da34b7ec46d2c98693ffdeb3c2434",
+      "size": 1997
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-008.svg",
+      "sha": "8b753759567fef890e7546754841339ea9fab630",
+      "size": 1998
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-009.svg",
+      "sha": "8c69318dc78dde4abefe502fd44e78146101d559",
+      "size": 2000
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-010.svg",
+      "sha": "65ba4785c5134a53fead170acfb47c61286d00dc",
+      "size": 2013
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-011.svg",
+      "sha": "88f69933a1f96021d53932326a52140f5c1025fd",
+      "size": 1995
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-012.svg",
+      "sha": "0bbedaa638731bb22d423bcc6de0a00a41260006",
+      "size": 1992
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-013.svg",
+      "sha": "ce01df084b930ca372da37da592e875f69fcac87",
+      "size": 1997
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-014.svg",
+      "sha": "147f030729ab45d74f9643cce5c8119311b689b2",
+      "size": 1986
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-015.svg",
+      "sha": "4cf82add27f55d02496263759b8cf00ebd33aefa",
+      "size": 1998
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-016.svg",
+      "sha": "d3acb42771e84d9e1d9d285d43949ba4d229fa86",
+      "size": 1992
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-017.svg",
+      "sha": "c0e4e3ce6f954c5640fd53ebc71d086c203fe064",
+      "size": 1985
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-018.svg",
+      "sha": "68f76fd198200c457aa21215ef8638f0d5e2e3a3",
+      "size": 1993
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-019.svg",
+      "sha": "297738de8eabce8f9e46633dfc2af9c45d37464d",
+      "size": 2001
+    },
+    {
+      "path": "assets/images/imperio-dragon/idr-020.svg",
+      "sha": "0fa53e3320c27672d957121290c11a227d189dcc",
+      "size": 1514
+    },
+    {
+      "path": "assets/images/inicio-castillo-abismo-v189.webp",
+      "sha": "7594f4071bb8e18890e3915cba9c317bd2126d77",
+      "size": 397396
+    },
+    {
+      "path": "assets/images/ira-de-ra-jefe.png",
+      "sha": "9bc0146b3dccdedea5a9632a5f6f59415b5b753c",
+      "size": 3328311
+    },
+    {
+      "path": "assets/images/kronos-devorador-tiempo.png",
+      "sha": "6776a91c455265127f14a92493511ee659ab8402",
+      "size": 2593849
+    },
+    {
+      "path": "assets/images/magica-curandero.webp",
+      "sha": "bf9128b55e4c9a8cc7f77adbae96719628b355ff",
+      "size": 246612
+    },
+    {
+      "path": "assets/images/magica-escudo-caos.webp",
+      "sha": "b3c518c8886489e29102d3a68b91ce2128492f64",
+      "size": 260736
+    },
+    {
+      "path": "assets/images/magica-furia-abismo.webp",
+      "sha": "1c3f3c63f52e27e715c79ca94c360bff26e616d0",
+      "size": 221662
+    },
+    {
+      "path": "assets/images/magica-llama-purificadora.webp",
+      "sha": "268faa1027c00e049b09ff6e4b451d2d88eac2f7",
+      "size": 289102
+    },
+    {
+      "path": "assets/images/magica-locura-dragon.png",
+      "sha": "95e14dfad8408bf0835d3566d7cdb752a707be1c",
+      "size": 2754020
+    },
+    {
+      "path": "assets/images/magica-luz-nemesis.webp",
+      "sha": "eab3b6c2024833eca6f645d1354d87247ee2a06a",
+      "size": 238018
+    },
+    {
+      "path": "assets/images/magica-nosferatu.webp",
+      "sha": "a520577a14ee919d3c90540c3b8fe0303a4cda7d",
+      "size": 244540
+    },
+    {
+      "path": "assets/images/magica-ojo-del-diablo.png",
+      "sha": "4d79145667b34cb7ae0a4579ad2a7cd561abc059",
+      "size": 2549622
+    },
+    {
+      "path": "assets/images/magica-resurreccion-oscura.webp",
+      "sha": "046bb64a7f87cf3d355156b846bbefb8e23649e9",
+      "size": 249802
+    },
+    {
+      "path": "assets/images/mago-del-dragon.png",
+      "sha": "c34f60e018745b14f3c01ff4f3ac80b695f7b0e0",
+      "size": 3158180
+    },
+    {
+      "path": "assets/images/mago-rojo/mago-rojo-shiny.jpg",
+      "sha": "ebcea148976bb841ea02bbf42a376d887d1b75ba",
+      "size": 17581
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-001.svg",
+      "sha": "e5ee9d797f9c6e13362f1215fc938b09482508b3",
+      "size": 1634
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-002.svg",
+      "sha": "d8093705b775c167642b9d63f40621de902c3fb4",
+      "size": 1647
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-003.svg",
+      "sha": "fa09a4d30ad7c30a3d7a0ca56aa9eb8c209a41ac",
+      "size": 1644
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-004.svg",
+      "sha": "bda02c148811c76a40e9d44c765f43bf824f3d36",
+      "size": 1644
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-005.svg",
+      "sha": "d2012c2ed8660437a6c37ed7270c550b93f7f40d",
+      "size": 1648
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-006.svg",
+      "sha": "c4f08371215989ff29ca310f05aa1508e586646a",
+      "size": 1651
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-007.svg",
+      "sha": "06161ff221fc3b0754de8f0b7c75fc4d57747f12",
+      "size": 1640
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-008.svg",
+      "sha": "447a7f6e79937034d577a3a0f721e217d42a4b9e",
+      "size": 1646
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-009.svg",
+      "sha": "ae4ca4acf6fdf4b14c7d14a139e140f98fd77a44",
+      "size": 1648
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-010.svg",
+      "sha": "63f6185eb41938cea362faa3779de159f4cd20d7",
+      "size": 1654
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-011.svg",
+      "sha": "3c9e1ad9d8189c82a4df3710156edad7cde32c17",
+      "size": 1653
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-012.svg",
+      "sha": "d7e0f02c670849c41e9fa6235bc3cfd2641f3e48",
+      "size": 1642
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-013.svg",
+      "sha": "061c01bcfeb3168dbb0c38a3dc40dd4e6557e374",
+      "size": 1646
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-014.svg",
+      "sha": "77a4fc89dc2447533ef0742a25e7d5022df24b7f",
+      "size": 1646
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-015.svg",
+      "sha": "c16ba32ef4e1a6160969d34e69c1ae48d85e6657",
+      "size": 1642
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-016.svg",
+      "sha": "4d96ccd2aebe660e2867ad1e0317d0756a9a38db",
+      "size": 1641
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-017.svg",
+      "sha": "bd3b0e20d827546888d7ecdf29a697c0cc6e633c",
+      "size": 1638
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-018.svg",
+      "sha": "8b093e0c0b351542d8f3d05ed683b9652f6ea07f",
+      "size": 1653
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-019.svg",
+      "sha": "7450a677c3750e51fabd09545fbfbfeadf0a404e",
+      "size": 1655
+    },
+    {
+      "path": "assets/images/mago-rojo/mgr-020.svg",
+      "sha": "5a8d83c87211d386a68a5cc5226d8f27ac1f7133",
+      "size": 1641
+    },
+    {
+      "path": "assets/images/minotauro-caido.png",
+      "sha": "129090147bec044ee4e915d387692476376f4589",
+      "size": 2245992
+    },
+    {
+      "path": "assets/images/mirada-dragon-rojo.png",
+      "sha": "4d568cbfa47ab22d6a13dab6ec1759269b10cfdb",
+      "size": 3021566
+    },
+    {
+      "path": "assets/images/nemesis-celestial.png",
+      "sha": "f8fc61a56c2dd20720fd67f76cc94a68c8aa44aa",
+      "size": 2354292
+    },
+    {
+      "path": "assets/images/olimpo/05.png",
+      "sha": "00dd2756573ad4ecc606a1365fbe0c67ea680b23",
+      "size": 2327477
+    },
+    {
+      "path": "assets/images/olimpo/06.png",
+      "sha": "953355ce9ff0552b6e07d0dbc086431334882aa6",
+      "size": 2400479
+    },
+    {
+      "path": "assets/images/olimpo/07.png",
+      "sha": "c083cb13d103df3a9001a0891af49e01c8388c5d",
+      "size": 2282284
+    },
+    {
+      "path": "assets/images/olimpo/08.png",
+      "sha": "a45d537c905c01b4cfbadb4dff7dbb72ab62494a",
+      "size": 2374622
+    },
+    {
+      "path": "assets/images/olimpo/09.png",
+      "sha": "a48a32d6bf2bfb5a00149a6005becc7acc876943",
+      "size": 2237749
+    },
+    {
+      "path": "assets/images/olimpo/10.png",
+      "sha": "2eb731a478faa4d6abe4706efc1d9af562b22087",
+      "size": 2286688
+    },
+    {
+      "path": "assets/images/olimpo/11.png",
+      "sha": "dcae30416ffa5c75e914786cb60203231a63068e",
+      "size": 2487049
+    },
+    {
+      "path": "assets/images/public23/ml-001.webp",
+      "sha": "20dbd4b180ba8f414bc954d9235563690bbcd086",
+      "size": 2216
+    },
+    {
+      "path": "assets/images/public23/ml-002.webp",
+      "sha": "ecfd0b7a8e5c2a160128c8fbb51c7172c78dd4e7",
+      "size": 2246
+    },
+    {
+      "path": "assets/images/public23/ml-003.webp",
+      "sha": "d1d9f95431f28557c4ce634266738f7a59c0db26",
+      "size": 2838
+    },
+    {
+      "path": "assets/images/public23/ml-004.webp",
+      "sha": "6fa179d0ee08a5b0ff2f8ae2137b73d704dda1de",
+      "size": 2286
+    },
+    {
+      "path": "assets/images/public23/ml-005.webp",
+      "sha": "285aad98a57536e2991fe8535ed5fc0e490b9b02",
+      "size": 2022
+    },
+    {
+      "path": "assets/images/public23/ml-006.webp",
+      "sha": "712daa6791686e03a7c0f55908b1dac80c158c66",
+      "size": 2374
+    },
+    {
+      "path": "assets/images/public23/ml-007.webp",
+      "sha": "3d42bb80051e4b2dd49296c93bfe10b21bb21064",
+      "size": 2344
+    },
+    {
+      "path": "assets/images/public23/ml-008.webp",
+      "sha": "4d168a04287de767170909d27878f3aebf774854",
+      "size": 2262
+    },
+    {
+      "path": "assets/images/public23/ml-009.webp",
+      "sha": "8d89c9469c4acc9c24417782f4b6288a63a2dd01",
+      "size": 2450
+    },
+    {
+      "path": "assets/images/public23/ml-010.webp",
+      "sha": "328ae64cb65258e7afc37ad80ef4dddcb371a460",
+      "size": 2248
+    },
+    {
+      "path": "assets/images/public23/ml-011.webp",
+      "sha": "8166dbb0b03762afc75551127b0cc7269890bfb9",
+      "size": 2236
+    },
+    {
+      "path": "assets/images/public23/uni-001.webp",
+      "sha": "472457c1599367e4727f181dbe2709e330ae534a",
+      "size": 3020
+    },
+    {
+      "path": "assets/images/public23/uni-002.webp",
+      "sha": "e51eec6a56e20a09802010ee58b0f54fbb74af48",
+      "size": 3740
+    },
+    {
+      "path": "assets/images/public23/uni-003.webp",
+      "sha": "8c086cca5847a0a7e55b9e72d84199fe2597b459",
+      "size": 3766
+    },
+    {
+      "path": "assets/images/public23/uni-004.webp",
+      "sha": "76458e2b2bef77420b2fb3229ecf0adf760d2e7f",
+      "size": 2210
+    },
+    {
+      "path": "assets/images/public23/uni-005.webp",
+      "sha": "7732a6ad4d1de5dce26fc86e98c8d09ee5cb5f51",
+      "size": 1954
+    },
+    {
+      "path": "assets/images/public23/uni-008.webp",
+      "sha": "923d6826c853831f9f26d9534054b422d8250446",
+      "size": 1930
+    },
+    {
+      "path": "assets/images/public23/uni-009.webp",
+      "sha": "e9c15d9a9b94ef9d22adcc4384de61b5fa951bc1",
+      "size": 3152
+    },
+    {
+      "path": "assets/images/public23/uni-010.webp",
+      "sha": "61149b452cccefb98deae5e863d8fce780d47ffb",
+      "size": 2392
+    },
+    {
+      "path": "assets/images/public23/uni-011.webp",
+      "sha": "06218fea1e68fc1f03152f8c69f92faa1978b039",
+      "size": 2426
+    },
+    {
+      "path": "assets/images/public23/uni-012.webp",
+      "sha": "f7d21aa4fb28c8cc05372f299d48b2f33ac94f94",
+      "size": 2310
+    },
+    {
+      "path": "assets/images/rayo-del-abismo.png",
+      "sha": "a48cc0eb9f2075a31368461eac42c738a5ae487f",
+      "size": 3101613
+    },
+    {
+      "path": "assets/images/reino-espectral-cinematico.png",
+      "sha": "38d5ee18af97bce5da012f784f89e74aa73a0466",
+      "size": 2804076
+    },
+    {
+      "path": "assets/images/rey-01-heredero.png",
+      "sha": "2abf4200f729d6eba4282fff79a296edefa38629",
+      "size": 2542572
+    },
+    {
+      "path": "assets/images/rey-02-general.png",
+      "sha": "be776464033c1d8a3772cf96e629056333ca89f8",
+      "size": 2497998
+    },
+    {
+      "path": "assets/images/rey-03-devorador.png",
+      "sha": "babe9b4d5ffcf527ed6c81874907b720416da7c3",
+      "size": 2492186
+    },
+    {
+      "path": "assets/images/rey-04-dragon.png",
+      "sha": "fd27dae6f5f7b3c7f854fd12fd6858bb068dd691",
+      "size": 2611054
+    },
+    {
+      "path": "assets/images/rey-05-nigromante.png",
+      "sha": "1a95a07d9afe4fffff7cced5b95efd01fc841648",
+      "size": 2713735
+    },
+    {
+      "path": "assets/images/rey-06-verdugo.png",
+      "sha": "9914821d5c947c82c5993d578fa217cc71b18b61",
+      "size": 2542193
+    },
+    {
+      "path": "assets/images/rey-07-decreto.png",
+      "sha": "0ea83e670500098696c0fcd6c0af1f0a956c5011",
+      "size": 2565217
+    },
+    {
+      "path": "assets/images/rey-08-portal.png",
+      "sha": "718c13e444398c204e5bb91e25eaa55a4f367afc",
+      "size": 2570728
+    },
+    {
+      "path": "assets/images/rey-09-corona.png",
+      "sha": "b40e2a2cade7ed2946baf8dafb8f32e5e717bd45",
+      "size": 2553116
+    },
+    {
+      "path": "assets/images/rey-10-espada.png",
+      "sha": "80d710483cedb4bee115a64ecb3541db43f8b975",
+      "size": 2548218
+    },
+    {
+      "path": "assets/images/rey-espectral.png",
+      "sha": "275f39e09e1fdd2e3906b8cc59b6364419233843",
+      "size": 3507278
+    },
+    {
+      "path": "assets/images/ruinas-piramide-ira-ra.png",
+      "sha": "d8129854cb091f4301bf2a8e4167ed2ece7ad76e",
+      "size": 2509647
+    },
+    {
+      "path": "assets/images/sombra-del-diablo.png",
+      "sha": "11fe90aa88d97043ad9d14af024311bebda13957",
+      "size": 2689291
+    },
+    {
+      "path": "assets/images/strategic/dios-vacio-eterno.jpg",
+      "sha": "8d126f6c014ba1b19c719004904ced1951a8e32d",
+      "size": 13521
+    },
+    {
+      "path": "assets/images/strategic/eclipse-de-nemesis.svg",
+      "sha": "94e756c982701082d3900f5567e7ba414ffa72f2",
+      "size": 5409
+    },
+    {
+      "path": "assets/images/strategic/golem-de-la-muerte.jpg",
+      "sha": "f56fbddfee83c4ba99d7018a7dbe28028054cfb2",
+      "size": 517
+    },
+    {
+      "path": "assets/images/strategic/herrero.webp",
+      "sha": "f8eb10d5771db2786398ba6128bddf171107d83b",
+      "size": 8782
+    },
+    {
+      "path": "assets/images/strategic/mago-del-vacio.jpg",
+      "sha": "f56fbddfee83c4ba99d7018a7dbe28028054cfb2",
+      "size": 517
+    },
+    {
+      "path": "assets/images/strategic/orbe-del-poder.jpg",
+      "sha": "71be7f7ca08dacbe5f6a3fdf4a5924fd2b6f5442",
+      "size": 9922
+    },
+    {
+      "path": "assets/images/strategic/payaso-oscuro.webp",
+      "sha": "db89f1b989c21ade18ffd0356e3dcdb485560152",
+      "size": 10390
+    },
+    {
+      "path": "assets/images/strategic/prometeo.jpg",
+      "sha": "d8729d168356061026a6b9e09179eac65097af58",
+      "size": 14748
+    },
+    {
+      "path": "assets/images/titan-del-olimpo.png",
+      "sha": "1941acc8339df97e488c9ab95d06ceb0f1c695c1",
+      "size": 2738582
+    },
+    {
+      "path": "assets/images/trampa-calavera-muerta.png",
+      "sha": "546ae1e373280436cbde5f6cc29a09603fb31518",
+      "size": 2131872
+    },
+    {
+      "path": "assets/images/treasures/tn-arm-001.webp",
+      "sha": "5e5949fc8c94e5b72733a39c86a4be94704820dd",
+      "size": 7500
+    },
+    {
+      "path": "assets/images/treasures/tn-arm-002.webp",
+      "sha": "63053bd277a7fb87c1850976afbad7d39c5078b3",
+      "size": 13810
+    },
+    {
+      "path": "assets/images/treasures/tn-mag-001.webp",
+      "sha": "d246239fde9d2f3dbfd6ded8d6f626df6102efc1",
+      "size": 7500
+    },
+    {
+      "path": "assets/images/treasures/tn-mag-002.webp",
+      "sha": "4565038f1e3bcaab925084898719f4cff503d989",
+      "size": 7505
+    },
+    {
+      "path": "assets/images/treasures/tn-trp-001.webp",
+      "sha": "5bbc3d7bbbf7f05bbda200018a69eb4fc276ff40",
+      "size": 7497
+    },
+    {
+      "path": "assets/images/unique/aion.png",
+      "sha": "f69d4bc391ece8a2cd9215923d836525cb167ce6",
+      "size": 2756259
+    },
+    {
+      "path": "assets/images/unique/azathiel.png",
+      "sha": "2ec6fc38a29b4db41a37fb29adeca771213ea07d",
+      "size": 2717931
+    },
+    {
+      "path": "assets/images/unique/nemesis-primigenio.png",
+      "sha": "3e8af6f4cfc2921cc4d169b595778c08d0697ef3",
+      "size": 2713108
+    },
+    {
+      "path": "assets/images/zeus-emperador-rayo.png",
+      "sha": "e8a5d910107c893fe1a4c5bb5f574bfb44653d14",
+      "size": 2655805
+    },
+    {
+      "path": "assets/videos/ira-de-ra-entrada.mp4",
+      "sha": "3ae9a772d94571ccc0c209da5302a484fd2a3a12",
+      "size": 2320622
+    }
+  ]
+}
