@@ -384,14 +384,14 @@ function nemesisTreasureScene(){
  const cards=NEMESIS_TREASURE_CARDS;
  app.innerHTML=`<section class="deck"><div class="deckbar"><div><h2>TESOROS NÉMESIS</h2><small>EDICIÓN NÉMESIS · 5 CARTAS ÚNICAS · SOLO CANJE</small></div><b>★ ${state.stars||0}</b></div>
  <p style="max-width:1100px;margin:0 auto 14px">Estas cartas no se obtienen en campañas ni se añaden automáticamente a ningún mazo. Cada una cuesta <b>★ 1000</b> y solo puede canjearse una vez.</p>
- <div class="grid shop-grid">${cards.map(c=>{const owned=nemesisTreasureOwned(c.id);return `<article class="card shop-card ${owned?'owned':''}"><img src="${c.img}" alt="${esc(c.name)}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${c.description}</small><button class="btn treasure-buy" data-id="${c.id}" ${owned?'disabled':''}>${owned?'YA LA TIENES':'★ 1000 · CANJEAR'}</button></article>`}).join('')}</div>
+ <div class="grid shop-grid">${cards.map(c=>{const owned=nemesisTreasureOwned(c.id);return `<article class="card shop-card ${owned?'owned':''}"><img data-card-id="${c.id}" src="${nemesisCardArt(c)}" alt="${esc(c.name)}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${c.description}</small><button class="btn treasure-buy" data-id="${c.id}" ${owned?'disabled':''}>${owned?'YA LA TIENES':'★ 1000 · CANJEAR'}</button></article>`}).join('')}</div>
  <div class="deckbar"><button class="btn" id="treasureBack">VOLVER</button></div></section>`;
  document.querySelectorAll('.treasure-buy:not([disabled])').forEach(b=>b.onclick=()=>{if(nemesisTreasureRedeem(b.dataset.id))nemesisTreasureScene()});
  treasureBack.onclick=menuScene
 }
 window.nemesisTreasureScene=nemesisTreasureScene;
 
-const INITIAL_OWNED=SHOP_CARDS.slice(0,20).map(c=>c.id);
+const INITIAL_OWNED=SHOP_CARDS.filter(c=>!GUARDIAN_BOSS_CARD_IDS.includes(c.id)).slice(0,20).map(c=>c.id);
 let state={name:'',profileCreated:false,battlesPlayed:0,lastBattleResult:null,lastBattleKey:null,lastAutosaveAt:0,dialog:0,fear:null,stars:0,retryBattle:null,campaignStage:'guardian',guardianDefeated:false,dragonDefeated:false,raDefeated:false,campaign1Completed:false,campaign2Unlocked:false,campaign2Started:false,campaign2Stage:'intro',caballeroAlmasDefeated:false,reyEspectralDefeated:false,diosFantasmaDefeated:false,campaign3Unlocked:false,campaign3Started:false,campaign3Stage:'locked',aresDefeated:false,hadesIntroSeen:false,hadesDefeated:false,savedDecks:{},activeDeckName:'MAGO_ROJO',owned:INITIAL_OWNED.slice(),deck:INITIAL_OWNED.slice(0,20)};
 
 
@@ -765,8 +765,49 @@ async function nemesisOwnerLogin(){
 }
 async function nemesisOwnerLogout(){
  try{await window.NEMESIS_OWNER_AUTH?.logout?.()}catch{}
+ localStorage.removeItem('nemesis_owner_panel_open');
  state.activeDeckName='MAGO_ROJO';nemesisSyncActiveDeck();save();menuScene();return true
 }
+function nemesisOwnerAssert(){if(!nemesisOwnerSessionActive()){toast('MODO PROPIETARIO REQUIERE AUTORIZACIÓN');return false}return true}
+function nemesisOwnerJump(target){
+ if(!nemesisOwnerAssert())return false;
+ const t=String(target||'');
+ if(t==='guardian'){state.campaign3Started=false;state.campaign2Started=false;state.campaignStage='guardian'}
+ else if(t==='dragon'){state.campaign3Started=false;state.campaign2Started=false;state.campaignStage='dragon-ojo-diablo'}
+ else if(t==='ra'){state.campaign3Started=false;state.campaign2Started=false;state.campaignStage='ira-ra'}
+ else if(t==='campaign2'){state.campaign3Started=false;state.campaign2Unlocked=true;state.campaign2Started=true;state.campaignStage='campaign2-hub';state.campaign2Stage='caballero-almas'}
+ else if(t==='ares'){state.campaign3Unlocked=true;state.campaign3Started=true;state.campaign3Stage='ares-intro'}
+ else if(t==='hades'){state.campaign3Unlocked=true;state.campaign3Started=true;state.aresDefeated=true;state.campaign3Stage='hades-intro-complete';state.hadesIntroSeen=true}
+ else return false;
+ save();toast('PROPIETARIO · SALTO DE FASE: '+t.toUpperCase());menuScene();return true
+}
+function nemesisOwnerGrantCard(id){
+ if(!nemesisOwnerAssert())return false;const c=card(String(id||'').trim());if(!c){toast('ID DE CARTA NO EXISTE');return false}
+ if(!state.owned.includes(c.id))state.owned.push(c.id);save();toast('PROPIETARIO · CARTA INYECTADA: '+c.name);return true
+}
+function nemesisOwnerPanelScene(){
+ if(!nemesisOwnerSessionActive()){nemesisOwnerLogin();return}
+ localStorage.setItem('nemesis_owner_panel_open','1');
+ const assetAudit=window.NEMESIS_CARD_ART_AUDIT?.()||{missing:[]};
+ app.innerHTML=`<section class="deck menu-home owner-control-panel"><div class="deckbar"><div><div class="logo" style="font-size:38px">NÉMESIS<small>CONTROL DEL PROPIETARIO</small></div><small>SESIÓN AUTORIZADA · NO MODIFICA LA PROGRESIÓN DE OTROS JUGADORES</small></div><b>★ ${state.stars||0}</b></div>
+ <div class="menu-panel"><h2>RECURSOS DE PRUEBA</h2><div class="menu-actions"><button class="btn" id="ownerStars1">+1.000 ★</button><button class="btn" id="ownerStars10">+10.000 ★</button><button class="btn" id="ownerGrantCard">INYECTAR CARTA POR ID</button></div></div>
+ <div class="menu-panel"><h2>SALTOS DE CAMPAÑA</h2><p>Solo cambian el punto de entrada del propietario; no conceden cartas de campaña.</p><div class="menu-actions"><button class="btn" data-owner-jump="guardian">GUARDIÁN</button><button class="btn" data-owner-jump="dragon">DRAGÓN</button><button class="btn" data-owner-jump="ra">IRA DE RA</button><button class="btn" data-owner-jump="campaign2">CAMPAÑA II</button><button class="btn" data-owner-jump="ares">ARES</button><button class="btn" data-owner-jump="hades">HADES</button></div></div>
+ <div class="menu-panel"><h2>DIAGNÓSTICO</h2><p>Arte registrado: ${Object.keys(window.NEMESIS_CARD_ART||{}).length} · faltantes del registro: ${assetAudit.missing?.length||0} · cartas en inventario: ${state.owned.length}</p></div>
+ <div class="deckbar"><button class="btn" id="ownerBack">VOLVER AL MENÚ</button><button class="btn" id="ownerLogout">CERRAR MODO PROPIETARIO</button></div></section>`;
+ ownerStars1.onclick=()=>{state.stars=(state.stars||0)+1000;save();nemesisOwnerPanelScene()};
+ ownerStars10.onclick=()=>{state.stars=(state.stars||0)+10000;save();nemesisOwnerPanelScene()};
+ ownerGrantCard.onclick=()=>{const id=prompt('ID exacto de la carta');if(id&&nemesisOwnerGrantCard(id))nemesisOwnerPanelScene()};
+ document.querySelectorAll('[data-owner-jump]').forEach(b=>b.onclick=()=>nemesisOwnerJump(b.dataset.ownerJump));
+ ownerBack.onclick=()=>{localStorage.removeItem('nemesis_owner_panel_open');menuScene()};
+ ownerLogout.onclick=nemesisOwnerLogout;
+}
+window.NEMESIS_OWNER_CONTROL=Object.freeze({
+ panel:nemesisOwnerPanelScene,
+ addStars:n=>{if(!nemesisOwnerAssert())return false;state.stars=Math.max(0,(state.stars||0)+Math.floor(Number(n)||0));save();return state.stars},
+ grantCard:nemesisOwnerGrantCard,
+ jump:nemesisOwnerJump,
+ unlockCampaign:nemesisUnlockCampaignDecks
+});
 async function nemesisAuthorizeActiveDeck(){
  const d=nemesisDeckForMode('campaign');if(!d.access?.ownerOnly)return true;
  const ok=await nemesisOwnerVerify();if(!ok){alert('Este mazo es privado del propietario. Autentícate para usarlo.');return false}return true
@@ -850,18 +891,45 @@ const NEMESIS_CAMPAIGN_PROFILES=Object.freeze({
 });
 window.NEMESIS_CAMPAIGN_PROFILES=NEMESIS_CAMPAIGN_PROFILES;
 
+const NEMESIS_CAMPAIGN_BOSS_FLAGS=Object.freeze({
+ guardian:'guardianDefeated',dragon:'dragonDefeated',ra:'raDefeated',
+ 'caballero-almas':'caballeroAlmasDefeated','rey-espectral':'reyEspectralDefeated','dios-fantasma':'diosFantasmaDefeated',
+ ares:'aresDefeated',hades:'hadesDefeated'
+});
+function nemesisCampaignBossDefeated(boss){const flag=NEMESIS_CAMPAIGN_BOSS_FLAGS[boss];return !!(flag&&state[flag]===true)}
 function nemesisUnlockCampaignDecks(campaignId,silent=false){
+ if(!nemesisOwnerSessionActive()){if(!silent)toast('CONTROL DE CAMPAÑA · SOLO PROPIETARIO');return 0}
  const profile=NEMESIS_CAMPAIGN_PROFILES[campaignId];if(!profile)return 0;
  let total=0;
  for(const boss of profile.bosses)total+=nemesisUnlockCards(nemesisBossDeckIds(boss),`${profile.name} · ${boss}`);
- if(total&&!silent)toast(`${profile.name} COMPLETADA · ${total} cartas nuevas guardadas en tu inventario.`);
+ if(total&&!silent)toast(`PROPIETARIO · ${profile.name}: ${total} cartas inyectadas para pruebas.`);
  save();return total;
 }
+function nemesisRepairCampaignOwnership(){
+ if(state.campaignOwnershipFixedV2===true)return 0;
+ let removed=0;
+ for(const boss of Object.keys(NEMESIS_CAMPAIGN_BOSS_FLAGS)){
+  const ids=nemesisBossDeckIds(boss),owned=ids.filter(id=>state.owned.includes(id));
+  if(!owned.length)continue;
+  if(!nemesisCampaignBossDefeated(boss)){
+   const rm=new Set(ids);const before=state.owned.length;
+   state.owned=state.owned.filter(id=>!rm.has(id));state.deck=state.deck.filter(id=>!rm.has(id));
+   removed+=before-state.owned.length;continue;
+  }
+  // La versión defectuosa concedía el mazo COMPLETO. Si detectamos exactamente ese patrón,
+  // conservamos una sola recompensa histórica (la regla real: una carta por victoria de campaña).
+  if(owned.length===ids.length&&ids.length>1){
+   const keep=owned[0],rm=new Set(ids.filter(id=>id!==keep)),before=state.owned.length;
+   state.owned=state.owned.filter(id=>!rm.has(id));state.deck=state.deck.filter(id=>!rm.has(id));
+   removed+=before-state.owned.length;
+  }
+ }
+ state.campaignOwnershipFixedV2=true;save();return removed;
+}
 function nemesisMigrateCompletedCampaignRewards(){
- if(state.campaign1Completed||state.raDefeated)nemesisUnlockCampaignDecks('campaign1',true);
- if(state.diosFantasmaDefeated)nemesisUnlockCampaignDecks('campaign2',true);
- if(state.hadesDefeated)nemesisUnlockCampaignDecks('campaign3',true);
+ const removed=nemesisRepairCampaignOwnership();
  nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();save();
+ if(removed)console.warn('[NÉMESIS] Se corrigieron',removed,'cartas de campaña concedidas por el desbloqueo masivo defectuoso.');
 }
 window.NEMESIS_COLLECTION=Object.freeze({
  unlockCampaign:nemesisUnlockCampaignDecks,
@@ -881,6 +949,17 @@ function cardStats(c){
  return labels[c.effect]||'CARTA MÁGICA';
 }
 function esc(v=''){return String(v).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+function nemesisCardArt(c){
+ if(!c)return '';
+ const direct=window.NEMESIS_CARD_ART?.[String(c.id)]||'';
+ return direct||window.nemesisRealCardArt?.(c.id,c.img||'')||c.img||'';
+}
+window.NEMESIS_CARD_ASSET_AUDIT=()=>CARDS.map(c=>({id:c.id,name:c.name,img:nemesisCardArt(c),fallback:c.img||''}));
+document.addEventListener('error',e=>{
+ const img=e.target;if(!(img instanceof HTMLImageElement)||img.dataset.nemesisFallback==='1')return;
+ const id=img.dataset.cardId;if(!id)return;const c=card(id),fallback=c?.img||'';
+ if(fallback&&img.src!==new URL(fallback,document.baseURI).href){img.dataset.nemesisFallback='1';img.src=fallback}
+},{capture:true});
 function title(){menuScene()}
 function continueCampaign(){
  state.dialog=0;state.fear=null;
@@ -899,7 +978,7 @@ function continueCampaign(){
  else if(state.campaignStage==='dragon-ojo-diablo')dragonOjoScene();
  else tirano();
 }
-function guardianCardsUnlocked(){return state.guardianDefeated===true||state.campaignStage!=='guardian'||state.dragonDefeated===true||state.raDefeated===true}
+function guardianCardsUnlocked(){return state.guardianDefeated===true}
 function unlockedShopCards(){
  const list=SHOP_CARDS.filter(c=>!GUARDIAN_BOSS_CARD_IDS.includes(c.id)||guardianCardsUnlocked());
  if(state.dragonDefeated)list.push(...DRAGON_OJO_CARDS);
@@ -1001,14 +1080,14 @@ function menuScene(){
  app.innerHTML=`<section class="deck menu-home"><div class="deckbar"><div><div class="logo" style="font-size:42px">NÉMESIS<small>CARD BATTLE</small></div><small>PREPARA TU MAZO ANTES DE ENTRAR AL REINO</small></div><b>★ ${state.stars||0}</b></div>
  ${campaignStatus}
  <div class="menu-panel"><h2>JUGADOR</h2><div class="name-row"><input id="nm" maxlength="24" placeholder="NOMBRE DEL JUGADOR" value="${esc(state.name||'')}"><button class="btn" id="changeName">CAMBIAR</button></div><small>Tu nombre aparecerá en la historia y en los duelos.</small></div>
- <div class="menu-actions"><button class="btn" id="shopBtn">INTERCAMBIAR CARTAS · ${unlockedCount}</button><button class="btn" id="deckBtn">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="treasureBtn">TESOROS NÉMESIS · ★1000</button><button class="btn retry-entry" id="retryBtn">RETOS · REVANCHA ★</button><button class="btn sanctuary-entry" id="sanctuaryBtn">SANTUARIO · 3 ÚNICAS</button><button class="btn owner-entry" id="ownerBtn">${nemesisOwnerSessionActive()?'PROPIETARIO ✓ · CERRAR':'MODO PROPIETARIO · BLOQUEADO'}</button><button class="btn" id="menuFullscreen">⛶ PANTALLA COMPLETA</button></div>
+ <div class="menu-actions"><button class="btn" id="shopBtn">INTERCAMBIAR CARTAS · ${unlockedCount}</button><button class="btn" id="deckBtn">MI COLECCIÓN · ${state.owned.length}/${INVENTORY_CAPACITY}</button><button class="btn" id="treasureBtn">TESOROS NÉMESIS · ★1000</button><button class="btn retry-entry" id="retryBtn">RETOS · REVANCHA ★</button><button class="btn sanctuary-entry" id="sanctuaryBtn">SANTUARIO · 3 ÚNICAS</button><button class="btn owner-entry" id="ownerBtn">${nemesisOwnerSessionActive()?'PROPIETARIO ✓ · PANEL':'MODO PROPIETARIO · BLOQUEADO'}</button><button class="btn" id="menuFullscreen">⛶ PANTALLA COMPLETA</button></div>
  <div class="menu-panel"><h2>MAZO DE BATALLA</h2><p>Elige hasta <b>11 cartas</b> de tu colección para usar en batalla.</p><div class="mini-deck" id="menuMiniDeck"><span class="mini-deck-more">CARGANDO MAZO…</span></div><b>${state.deck.length}/11 seleccionadas</b></div>
  <div class="deckbar"><span>Tu colección, estrellas, cartas ganadas y mazo se conservan entre campañas. <small class="mc-safe">MEMORY CARD · AUTO-GUARDADO · ${state.battlesPlayed||0} PELEAS</small></span><button class="btn big-start" id="startStory">${campaignButton}</button></div></section>`;
  changeName.onclick=()=>{const next=nemesisValidPlayerName(nm.value);if(!next){alert('Escribe un nombre válido.');return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();save();changeName.textContent='GUARDADO ✓';setTimeout(()=>menuScene(),500)};
  shopBtn.onclick=shopScene;deckBtn.onclick=collectionScene;if(typeof treasureBtn!=='undefined'&&treasureBtn)treasureBtn.onclick=nemesisTreasureScene;
 if(typeof sanctuaryBtn!=='undefined'&&sanctuaryBtn)sanctuaryBtn.onclick=sanctuaryScene;
 if(typeof retryBtn!=='undefined'&&retryBtn)retryBtn.onclick=nemesisRetryScene;
-if(typeof ownerBtn!=='undefined'&&ownerBtn)ownerBtn.onclick=()=>nemesisOwnerSessionActive()?nemesisOwnerLogout():nemesisOwnerLogin();
+if(typeof ownerBtn!=='undefined'&&ownerBtn)ownerBtn.onclick=()=>nemesisOwnerSessionActive()?nemesisOwnerPanelScene():nemesisOwnerLogin();
 nemesisNextFrame(()=>{try{window.NEMESIS_ONLINE_INJECT?.()}catch{}try{window.NEMESIS_OWNER_AUTH_INJECT?.()}catch{}});
 const renderMenuMiniDeck=()=>{const host=document.getElementById('menuMiniDeck');if(!host)return;host.innerHTML=state.deck.slice(0,6).map(id=>{const c=card(id);if(!c)return '';const src=window.nemesisRealCardArt?.(c.id,c.img||'')||c.img||'';return `<img src="${src}" loading="lazy" decoding="async" fetchpriority="low" alt="${esc(c.name)}" title="${esc(c.name)}">`}).join('')+(state.deck.length>6?`<span class="mini-deck-more">+${state.deck.length-6} CARTAS</span>`:'')};
 if('requestIdleCallback'in window)requestIdleCallback(renderMenuMiniDeck,{timeout:800});else setTimeout(renderMenuMiniDeck,0);
@@ -1018,7 +1097,7 @@ function shopPrice(c,i){if(Number.isFinite(Number(c?.priceStars)))return Number(
 function shopScene(){
  const available=unlockedShopCards();
  const locks=[];if(!guardianCardsUnlocked())locks.push('Vence al GUARDIÁN para desbloquear sus cartas');if(!state.dragonDefeated)locks.push('Vence al DRAGÓN OJO DEL DIABLO para desbloquear su mazo');if(!state.raDefeated)locks.push('Vence a IRA DE RA para desbloquear su mazo ancestral');
- app.innerHTML=`<section class="deck"><div class="deckbar"><div><h2>INTERCAMBIO NÉMESIS</h2><small>${available.length} cartas desbloqueadas${locks.length?` · ${locks.join(' · ')}`:''}</small></div><b>★ ${state.stars||0}</b></div><div class="grid shop-grid">${available.map((c,i)=>{const owned=state.owned.includes(c.id),price=shopPrice(c,i);return `<article class="card shop-card ${owned?'owned':''}"><img src="${c.img}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${cardStats(c)}</small><button class="btn buy" data-id="${c.id}" data-price="${price}" ${owned?'disabled':''}>${owned?'YA LA TIENES':`★ ${price} · CANJEAR`}</button></article>`}).join('')}</div><div class="deckbar"><button class="btn" id="backMenu">VOLVER AL MENÚ</button></div></section>`;
+ app.innerHTML=`<section class="deck"><div class="deckbar"><div><h2>INTERCAMBIO NÉMESIS</h2><small>${available.length} cartas desbloqueadas${locks.length?` · ${locks.join(' · ')}`:''}</small></div><b>★ ${state.stars||0}</b></div><div class="grid shop-grid">${available.map((c,i)=>{const owned=state.owned.includes(c.id),price=shopPrice(c,i);return `<article class="card shop-card ${owned?'owned':''}"><img data-card-id="${c.id}" src="${nemesisCardArt(c)}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${cardStats(c)}</small><button class="btn buy" data-id="${c.id}" data-price="${price}" ${owned?'disabled':''}>${owned?'YA LA TIENES':`★ ${price} · CANJEAR`}</button></article>`}).join('')}</div><div class="deckbar"><button class="btn" id="backMenu">VOLVER AL MENÚ</button></div></section>`;
  document.querySelectorAll('.buy:not([disabled])').forEach(b=>b.onclick=()=>{const id=b.dataset.id,price=Number(b.dataset.price)||0;if((state.stars||0)<price){alert(`Necesitas ${price} estrellas.`);return}state.stars-=price;state.owned.push(id);state.owned=[...new Set(state.owned)];save();shopScene()});backMenu.onclick=menuScene;
 }
 function collectionScene(){
@@ -1040,7 +1119,7 @@ function collectionScene(){
  app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${state.owned.length}/${INVENTORY_CAPACITY} obtenidas · ${catalogCards.length} cartas registradas · fuente única de arte</small></div><b>MAZO ${state.deck.length}/${nemesisActiveDeckLimit()}</b></div>
  <div class="saved-deck-console"><div><small>MAZO ACTIVO</small><select id="savedDeckSelect">${deckNames.map(n=>`<option ${n===state.activeDeckName?'selected':''}>${n}</option>`).join('')}</select></div><div><button class="btn" id="createSavedDeck">NUEVO MAZO</button><button class="btn" id="saveCurrentDeck">GUARDAR MAZO</button></div></div>
  <p style="max-width:1100px;margin:0 auto 14px">Imperio Dragón, Mago Rojo, Duel Master, Caballeros del Submundo y las cartas universales quedan disponibles en la misma colección. Los <b>Tesoros NÉMESIS</b> se muestran aquí, pero solo pasan al mazo después de canjearlos.</p>
- <div class="grid inventory-grid">${catalogCards.map(c=>{const owned=state.owned.includes(c.id),inDeck=state.deck.includes(c.id),treasure=c.treasure===true;const status=inDeck?'EN MAZO · TOCA PARA QUITAR':owned?'CANJEAR AL MAZO':treasure?'TESORO · ★1000 EN TESOROS':'BLOQUEADA';return `<button class="card ${inDeck?'sel':''} ${owned?'owned-card':'locked-card'}" ${owned?`data-id="${c.id}" data-owned="1"`:'disabled'}><img src="${c.img}" alt="${esc(c.name)}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${cardStats(c)}</small><small>${status}</small></button>`}).join('')}${emptySlots}</div>
+ <div class="grid inventory-grid">${catalogCards.map(c=>{const owned=state.owned.includes(c.id),inDeck=state.deck.includes(c.id),treasure=c.treasure===true;const status=inDeck?'EN MAZO · TOCA PARA QUITAR':owned?'CANJEAR AL MAZO':treasure?'TESORO · ★1000 EN TESOROS':'BLOQUEADA';return `<button class="card ${inDeck?'sel':''} ${owned?'owned-card':'locked-card'}" ${owned?`data-id="${c.id}" data-owned="1"`:'disabled'}><img data-card-id="${c.id}" src="${nemesisCardArt(c)}" alt="${esc(c.name)}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${cardStats(c)}</small><small>${status}</small></button>`}).join('')}${emptySlots}</div>
  <div class="deckbar"><button class="btn" id="backMenu">VOLVER</button><button class="btn" id="startFromDeck">EMPEZAR · ${state.deck.length}/${nemesisActiveDeckLimit()}</button></div></section>`;
  document.querySelectorAll('.card[data-owned="1"][data-id]').forEach(b=>b.onclick=()=>{
    const id=b.dataset.id;
@@ -1146,6 +1225,7 @@ const stopBattleRuntime=(hard=false)=>{
  try{clearInterval(ghostRecoveryTimer)}catch{}
  try{clearInterval(pcMusicTimer)}catch{}
  try{removeEventListener('keydown',pcShortcutHandler)}catch{}
+ try{document.getElementById('nemesisOwnerBattleTools')?.remove()}catch{}
  if(hard){
   try{r?.setAnimationLoop?.(null)}catch{}
   try{r?.dispose?.()}catch{}
@@ -2087,6 +2167,14 @@ async function fusionAnim(a,b,result,slot){
  const v184FusionBurst=true;try{v184CrearChispas(new THREE.Vector3(0,2,0),0xc85cff,54)}catch(e){}
 const ga=board.p[a],gb=board.p[b];if(!ga||!gb)return;const tag=document.createElement('div');tag.className='fusiontag';tag.innerHTML=`FUSIÓN NÉMESIS<br><small>${result.name}</small>`;app.appendChild(tag);sfx('fusion');await camTo(new THREE.Vector3(0,12,18),new THREE.Vector3(0,1,0),430);await Promise.all([twVec(ga.position,new THREE.Vector3(-1.3,4,0),520),twVec(gb.position,new THREE.Vector3(1.3,4,0),520)]);await Promise.all([twNum(ga.rotation,'z',ga.rotation.z+Math.PI*2,650),twNum(gb.rotation,'z',gb.rotation.z-Math.PI*2,650)]);burst(new THREE.Vector3(0,3.5,0),0xe269ff,70);scene.remove(ga);scene.remove(gb);board.p[a]=board.p[b]=null;await wait(260);await place('p',slot,result);await flip('p',slot);setTimeout(()=>tag.remove(),500);await overview()}
 let phpv=playerMaxHp,ehpv=enemyMaxHp,selectedHand=-1,active=-1,enemySlot=-1,busy=false,phase='PLACE',turnNo=1;
+if(nemesisOwnerSessionActive()){
+ const oldTools=document.getElementById('nemesisOwnerBattleTools');oldTools?.remove();
+ const tools=document.createElement('div');tools.id='nemesisOwnerBattleTools';
+ tools.style.cssText='position:fixed;right:10px;bottom:10px;z-index:2147483000;display:flex;gap:6px;flex-wrap:wrap;max-width:360px;padding:8px;background:#090b12e8;border:1px solid #d8b65a;border-radius:8px';
+ tools.innerHTML='<button class="btn" data-admin="enemy1">RIVAL 1 HP</button><button class="btn" data-admin="win">FORZAR VICTORIA</button><button class="btn" data-admin="player">TURNO JUGADOR</button>';
+ tools.onclick=e=>{const a=e.target?.dataset?.admin;if(!a)return;if(a==='enemy1'){ehpv=1;update();toast('PROPIETARIO · RIVAL A 1 HP')}else if(a==='win'){ehpv=0;nemesisResolveHpTerminal('owner')}else if(a==='player'){busy=false;setPhase(playerCards.some(Boolean)?'ACTION':'PLACE','PROPIETARIO · TURNO JUGADOR',{force:true})}};
+ document.body.appendChild(tools);
+}
 let busySince=0;setInterval(()=>{if(busy&&!busySince)busySince=Date.now();if(!busy)busySince=0;if(busySince&&Date.now()-busySince>12000&&phase!=='END'){console.warn('NEMESIS watchdog: desbloqueando duelo');busy=false;busySince=0;battleActions.classList.add('hidden');const canPlace=handState?.length>0&&playerCards?.some(c=>!c);setPhase(canPlace?'PLACE':'ACTION',canPlace?`TU TURNO ${turnNo} · COLOCAR`:`TU TURNO ${turnNo} · ACCIÓN`);toast('Duelo desbloqueado automáticamente. Continúa jugando.')}} ,1000);
 const playerCards=Array(5).fill(null),enemyCards=Array(5).fill(null),enemyRevealed=Array(5).fill(false),playerModes=Array(5).fill(null),enemyModes=Array(5).fill(null);
 
@@ -3882,7 +3970,7 @@ async function useCreatureSkill(side,i){const arr=side==='p'?playerCards:enemyCa
  else if(sk.kind==='dmThorShiny'){const rival=side==='p'?enemyCards:playerCards;rival.filter(Boolean).forEach(t=>{t.atk=Math.max(0,t.atk-1500)});if(side==='p'){ehpv=Math.max(0,ehpv-2500);damageFx(2500,'e')}else{phpv=Math.max(0,phpv-2500);damageFx(2500,'p')}c.atk+=1000;toast('THOR SHINY: TRUENO ETERNO desatado.');}
  else if(sk.kind==='dmMedusa'){const rival=side==='p'?enemyCards:playerCards,t=rival.filter(Boolean).sort((a,b)=>(b.atk||0)-(a.atk||0))[0];if(t){t._dmPetrifiedUntil=turnNo+1;t._attackDisabledUntil=turnNo+1;c.atk+=500;c.def+=500;c._dmStoneBonus=Math.min(2000,(c._dmStoneBonus||0)+500);toast('MIRADA PETRIFICANTE: '+t.name+' queda petrificada.')}}else if(sk.kind==='attack'){c.atk+=sk.value;olympusNotifyAttackIncrease(side,sk.value);const key=side==='p'?'_skillAtkBonus':'_enemySkillAtkBonus';c[key]=(c[key]||0)+sk.value}else if(sk.kind==='shield'){c._shieldBonus=(c._shieldBonus||0)+sk.value;c._shieldPending=true}else if(sk.kind==='heal'){if(side==='p')phpv=Math.min(playerMaxHp,phpv+sk.value);else ehpv=Math.min(enemyMaxHp,ehpv+sk.value)}else if(sk.kind==='damage'){if(side==='p')ehpv=Math.max(0,ehpv-sk.value);else phpv=Math.max(0,phpv-sk.value);damageFx(sk.value,side==='p'?'e':'p')}else if(sk.kind==='solarShield'){if(side==='p'){playerDirectShieldUntil=Math.max(playerDirectShieldUntil,turnNo+1);toast(`${c.name}: Escudo Solar protege tus HP de ataques directos durante 2 turnos.`)}else{toast(`${c.name}: Escudo Solar activado.`)}}else if(sk.kind==='debuff'){const rivals=side==='p'?enemyCards:playerCards,target=rivals.map((x,j)=>({c:x,j})).filter(x=>x.c).sort((a,b)=>b.c.atk-a.c.atk)[0];if(target){const defendedSide=side==='p'?'e':'p',eye=csHorusEye(defendedSide,target.c,sk.value),tc=eye.target,val=eye.amount;if(!orbPowerDominion(tc)){tc.atk=Math.max(0,tc.atk-val);tc._skillDebuff=(tc._skillDebuff||0)+val;}toast(`${tc.name} pierde ${val} ATK durante este turno.`)}}else if(sk.kind==='stopTime'){if(side==='p'){enemySkipTurns=Math.max(enemySkipTurns,1);toast('KRONOS DETIENE EL TIEMPO: el rival perderá su siguiente turno completo.')}else{playerAttackBlockedUntil=Math.max(playerAttackBlockedUntil,turnNo+1)}}else if(sk.kind==='destroyEquipment'){await destroyEnemyEquipment(side,sk.value||1,c)}else if(sk.kind==='strategicBlacksmith'){await strategicBlacksmithUse(side,i,c)}else if(sk.kind==='strategicDarkClown'){await strategicDarkClownUse(side,i,c)}else if(sk.kind==='strategicDeathGolem'){await strategicDeathGolemUse(side,i,c)}else if(sk.kind==='strategicVoidMage'){await strategicVoidMageUse(side,i,c)}else if(sk.kind==='eternalVoidGod'){await eternalVoidGodUse(side,i,c)}update();updateSkillButtons();await wait(280);return true}
 function clearSkillTurnEffects(){csSubworldWeaponClearTurn();csClearTurn();mgrClearTurn();strategicVoidMageExpire();eternalVoidGodExpire();nemesisEclipseExpire();for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(c?._strategicClownOriginal&&c._strategicClownSwapTurn<=turnNo){c.atk=c._strategicClownOriginal.atk;c.def=c._strategicClownOriginal.def;delete c._strategicClownOriginal;delete c._strategicClownSwapTurn;}});for(const arr of [playerCards,enemyCards])arr.forEach(c=>{if(!c)return;if(c._idrVortexBonus){c.atk=Math.max(0,c.atk-c._idrVortexBonus);delete c._idrVortexBonus}if(c._idrApocalypseBonus){c.atk=Math.max(0,c.atk-c._idrApocalypseBonus);delete c._idrApocalypseBonus}});playerCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._skillDebuff){c.atk+=c._skillDebuff;delete c._skillDebuff}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}});enemyCards.forEach(c=>{if(c?._idrBreathBonus){c.atk=Math.max(0,c.atk-c._idrBreathBonus);delete c._idrBreathBonus}if(c?._idrFuryBonus){c.atk=Math.max(0,c.atk-c._idrFuryBonus);delete c._idrFuryBonus}if(c?._enemySkillAtkBonus){c.atk=Math.max(0,c.atk-c._enemySkillAtkBonus);delete c._enemySkillAtkBonus}if(c?._treasureHungerBonus){c.atk=Math.max(0,c.atk-c._treasureHungerBonus);delete c._treasureHungerBonus}})}
-function update(){csSync();strategicSyncBlacksmithAura();mgrSync();idrStormSync();treasureSyncEquipmentBonuses();pub23Sync();nemesisDmSync();heroicSync();const hp=document.getElementById('heroicP'),he=document.getElementById('heroicE'),hpt=document.getElementById('heroicPT'),het=document.getElementById('heroicET'),hf=document.getElementById('heroicFormation'),hi=document.getElementById('heroicIntent'),hw=document.getElementById('heroicWeather');if(hp)hp.style.width=HEROIC.climaxP+'%';if(he)he.style.width=HEROIC.climaxE+'%';if(hpt)hpt.textContent=HEROIC.climaxP+'%';if(het)het.textContent=HEROIC.climaxE+'%';if(hf)hf.textContent=heroicFormation()?.name||'SIN FORMACIÓN';if(hi)hi.textContent='IA: '+heroicIntent();if(hw)hw.textContent=HEROIC.weather;if(aresIsBoss())aresSyncPhase();if(hadesIsBoss())hadesSyncPhase();applyTitanDominion();v188UpdateHUD();applyDragonRage();applyBossPhases();olympusEvaluateSynergies();olympusUpdateZone();updatePcStrategicHud();updateSkillButtons()}
+function update(){csSync();strategicSyncBlacksmithAura();mgrSync();idrStormSync();treasureSyncEquipmentBonuses();pub23Sync();nemesisDmSync();heroicSync();const hp=document.getElementById('heroicP'),he=document.getElementById('heroicE'),hpt=document.getElementById('heroicPT'),het=document.getElementById('heroicET'),hf=document.getElementById('heroicFormation'),hi=document.getElementById('heroicIntent'),hw=document.getElementById('heroicWeather');if(hp)hp.style.width=HEROIC.climaxP+'%';if(he)he.style.width=HEROIC.climaxE+'%';if(hpt)hpt.textContent=HEROIC.climaxP+'%';if(het)het.textContent=HEROIC.climaxE+'%';if(hf)hf.textContent=heroicFormation()?.name||'SIN FORMACIÓN';if(hi)hi.textContent='IA: '+heroicIntent();if(hw)hw.textContent=HEROIC.weather;if(aresIsBoss())aresSyncPhase();if(hadesIsBoss())hadesSyncPhase();applyTitanDominion();v188UpdateHUD();applyDragonRage();applyBossPhases();olympusEvaluateSynergies();olympusUpdateZone();updatePcStrategicHud();updateSkillButtons();nemesisResolveHpTerminal('update')}
 const NEMESIS_PHASES=Object.freeze(['DRAW','PLACE','ACTION','TARGET','ENEMY','END']);
 const NEMESIS_PHASE_TRANSITIONS=Object.freeze({
  DRAW:['PLACE','ACTION','ENEMY','END'],
@@ -4998,8 +5086,26 @@ nemesisBossTurnStart();endPlayerMagicTurn();v172ClosePicker();v171HideAttackConf
 
 
 
+let nemesisHpResolving=false;
+function nemesisResolveHpTerminal(source='runtime'){
+ if(nemesisHpResolving||phase==='END')return phase==='END';
+ if(Number(phpv)>0&&Number(ehpv)>0)return false;
+ nemesisHpResolving=true;
+ try{
+  if(Number(phpv)<=0){phpv=0;finish(false,'Tus HP llegaron a 0.');return true}
+  if(Number(ehpv)<=0){
+   ehpv=0;
+   if(ghostGodFinalFormSave())return false;
+   if(spectralKingCrownSave())return false;
+   finish(true,enemyDisplayName+' llegó a 0 HP.');return true
+  }
+ }finally{nemesisHpResolving=false}
+ return false
+}
 function nemesisFlowSupervisor(){
- if(phase==='END'||busy)return;
+ if(phase==='END')return;
+ if(nemesisResolveHpTerminal('supervisor'))return;
+ if(busy)return;
  // TARGET no puede sobrevivir si ya no existe objetivo.
  if(phase==='TARGET'&&!enemyCards.some(Boolean)){
    try{v172ClosePicker?.();v171HideAttackConfirm?.()}catch(e){}
@@ -5125,7 +5231,7 @@ function grantRandomBossCard(duelKey){
  state.owned=[...new Set([...state.owned,id])];
  return card(id);
 }
-function finish(win,reason=''){stopBattleRuntime(false);v185HardResetCamera();v172ClosePicker();v171HideAttackConfirm();if(phase==='END')return;
+let nemesisFinishLocked=false;function finish(win,reason=''){if(nemesisFinishLocked||phase==='END')return;nemesisFinishLocked=true;stopBattleRuntime(false);v185HardResetCamera();v172ClosePicker();v171HideAttackConfirm();
  setPhase('END',win?'VICTORIA':'DERROTA');battleActions.classList.add('hidden');busy=false;document.body.classList.remove('v14-target-turn','v14-player-turn');
  let rewardCard=null;
  if(win){
@@ -5144,9 +5250,6 @@ function finish(win,reason=''){stopBattleRuntime(false);v185HardResetCamera();v1
   else if(isDragon){state.dragonDefeated=true;state.campaignStage='ira-ra'}
   else{state.guardianDefeated=true;state.campaignStage='dragon-ojo-diablo'}
   rewardCard=retryReward?null:grantRandomBossCard(duelKey);
-  if(!retryReward&&isRa)nemesisUnlockCampaignDecks('campaign1');
-  if(!retryReward&&isGhostGod)nemesisUnlockCampaignDecks('campaign2');
-  if(!retryReward&&isHades)nemesisUnlockCampaignDecks('campaign3');
   save();
  }
  state.battlesPlayed=Math.max(0,Math.floor(Number(state.battlesPlayed)||0))+1;
@@ -5156,7 +5259,7 @@ function finish(win,reason=''){stopBattleRuntime(false);v185HardResetCamera();v1
  save();
  let d=document.createElement('div');d.className='result';
  const retryHtml=retryReward?`<div class="retry-win-reward"><b>REVANCHA GANADA</b><span>${retryReward.role} · ★ +${starsWon} ESTRELLAS</span><small>${retryReward.role==='JEFE'?'BONO JEFE · RECOMPENSA DOBLE':'RECOMPENSA GUARDIÁN'}</small></div>`:'';
- const rewardHtml=rewardCard?`<div class="boss-card-reward"><small>CARTA GANADA AL AZAR DEL MAZO RIVAL</small><img src="${rewardCard.img}" alt="${esc(rewardCard.name)}"><b>${esc(rewardCard.name)}</b><span>${cardStats(rewardCard)}</span><em>AGREGADA A MI COLECCIÓN</em></div>`:`<p class="boss-card-reward-complete">Mazo rival ya completado en tu colección.</p>`;
+ const rewardHtml=rewardCard?`<div class="boss-card-reward"><small>CARTA GANADA AL AZAR DEL MAZO RIVAL</small><img data-card-id="${rewardCard.id}" src="${nemesisCardArt(rewardCard)}" alt="${esc(rewardCard.name)}"><b>${esc(rewardCard.name)}</b><span>${cardStats(rewardCard)}</span><em>AGREGADA A MI COLECCIÓN</em></div>`:`<p class="boss-card-reward-complete">Mazo rival ya completado en tu colección.</p>`;
  if(win){
   d.classList.add('guardian-defeat');
   if(isHades)d.innerHTML=`<div class="guardian-defeat-card spectral-victory"><img src="assets/images/campaign3/hades/hades-personaje.png" alt="Hades"><div class="guardian-defeat-dialog"><h2>HADES DERROTADO</h2><p>El Tártaro se cierra.</p><p>★ +${starsWon} ESTRELLAS</p>${retryHtml}${rewardHtml}<button class="btn" id="again">VOLVER AL INICIO</button></div></div>`;
