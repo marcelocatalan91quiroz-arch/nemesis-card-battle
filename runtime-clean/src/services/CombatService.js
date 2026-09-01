@@ -14,6 +14,7 @@ export class CombatService{
   attack(player,attackerUid,targetUid){
     this.phases.assert(player,'BATTLE');
     if(this.victory.result)throw new Error('DUEL_ALREADY_FINISHED');
+    for(const p of this.turns.players)if(!Number.isFinite(this.hp[p])||this.hp[p]<=0)throw new Error('COMBAT_HP_NOT_CONFIGURED:'+p);
     if(attackerUid===targetUid)throw new Error('ATTACK_TARGET_MUST_DIFFER');
     const attacker=this.#fieldCreature(attackerUid),target=this.#fieldCreature(targetUid);
     if(attacker.instance.controller!==player)throw new Error('ATTACKER_NOT_CONTROLLED_BY_PLAYER:'+attackerUid);
