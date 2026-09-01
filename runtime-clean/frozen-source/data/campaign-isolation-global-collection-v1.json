@@ -1,0 +1,60 @@
+{
+  "version": "18.12.00",
+  "architecture": "Campaign Isolation + Global Collection",
+  "campaigns": {
+    "campaign1": {
+      "bosses": [
+        "guardian",
+        "dragon",
+        "ra"
+      ],
+      "completionUnlock": "all Campaign I boss decks"
+    },
+    "campaign2": {
+      "bosses": [
+        "caballero-almas",
+        "rey-espectral",
+        "dios-fantasma"
+      ],
+      "completionUnlock": "all Campaign II boss decks"
+    },
+    "campaign3": {
+      "bosses": [
+        "ares",
+        "hades"
+      ],
+      "completionUnlock": "all Campaign III boss decks"
+    }
+  },
+  "privatePerCampaign": [
+    "boss characters",
+    "enemy decks",
+    "boss AI",
+    "strategies",
+    "phases",
+    "resources",
+    "weapons",
+    "armor",
+    "relics",
+    "special effects",
+    "transitions"
+  ],
+  "shared": [
+    "turn flow",
+    "damage",
+    "graveyard",
+    "equipment slots",
+    "responses",
+    "fusion",
+    "heroic battlefield",
+    "Memory Card",
+    "global collection"
+  ],
+  "inventory": {
+    "persistent": true,
+    "savedDecks": true,
+    "deckLimit": 11,
+    "exchange": "Owned cards can be added/removed from any saved deck without deleting the card from collection.",
+    "OLIMPO": "preserved as official saved deck"
+  }
+}
