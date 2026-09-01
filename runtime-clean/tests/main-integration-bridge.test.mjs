@@ -11,7 +11,9 @@ ok(manifest.enabledDecks.length===2&&manifest.enabledDecks.includes('MAGO_ROJO')
 ok(index.includes('./app/main.js'),'root index loads clean module entry');
 ok(!index.includes('game.js')&&!index.includes('css/game.css'),'root index has no legacy runtime');
 ok(main.includes("./MainIntegrationBridge.js")&&!main.includes('game.js'),'main module only boots bridge');
-ok(bridge.includes("from'../src/index.js'")&&!bridge.includes('game.js'),'bridge imports clean runtime only');
+const bridgeImports=[...bridge.matchAll(/from\s*['"]([^'"]+)['"]/g)].map(m=>m[1]);
+ok(bridgeImports.length===1&&bridgeImports[0]==='../src/index.js','bridge imports clean runtime only');
+ok(!bridgeImports.some(x=>x.includes('game.js')),'bridge has zero legacy game imports');
 ok(bridge.includes('FrozenDataLoader.browser().loadAll()'),'bridge loads frozen data');
 ok(bridge.includes("registerMagoRojo")&&bridge.includes("registerImperioDragon"),'bridge registers both migrated decks');
 ok(bridge.includes("cards.size!==40")&&bridge.includes("decks.size!==2")&&bridge.includes("data.size!==13"),'boot integrity gate present');
@@ -22,6 +24,8 @@ const forbidden=['../js/game.js','/js/game.js','css/game.css','js/card-art-real-
 for(const f of forbidden)ok(!index.includes(f)&&!main.includes(f)&&!bridge.includes(f),'forbidden legacy reference absent: '+f);
 const appFiles=['index.html','app/main.js','app/MainIntegrationBridge.js','app/app.css','vercel.json','integration/INTEGRATION_MANIFEST.json'];
 for(const f of appFiles)ok((await fs.stat(path.join(root,f))).isFile(),'integration file exists: '+f);
+const importTargets=[...main.matchAll(/from\s*['"]([^'"]+)['"]/g),...bridge.matchAll(/from\s*['"]([^'"]+)['"]/g)].map(m=>m[1]);
+for(const spec of importTargets){const base=spec.startsWith('../')?'app/MainIntegrationBridge.js':'app/main.js';const resolved=path.resolve(root,path.dirname(base),spec);ok(resolved.startsWith(root+path.sep),'import remains inside runtime-clean: '+spec);ok((await fs.stat(resolved)).isFile(),'import target exists: '+spec)}
 const frozen=JSON.parse(await read('frozen-source/DATA_MANIFEST.json'));ok(frozen.count===13,'13 frozen data sources remain');
 const asset=JSON.parse(await read('frozen-source/ASSET_MANIFEST.json'));ok(asset.count===351,'351 source assets remain inventoried');
 console.log('NEMESIS RUNTIME CLEAN MAIN INTEGRATION BRIDGE: PASS — '+pass+'/'+pass);
