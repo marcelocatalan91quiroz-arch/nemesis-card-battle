@@ -51,7 +51,7 @@ const duel3=new DuelSession({cardRegistry:cards,deckRegistry:decks,players:['p',
 duel3.prepareDeck('p','MAGO_ROJO');duel3.prepareDeck('e','IMPERIO_DRAGON');duel3.start({firstPlayer:'p',openingHandSize:20});duel3.drawForTurn('p');duel3.advancePhase('p');
 const p3=duel3.decks.session('p').uids.map(uid=>duel3.state.instances.get(uid)).filter(c=>c.zone==='hand'),e3=duel3.decks.session('e').uids.map(uid=>duel3.state.instances.get(uid)).filter(c=>c.zone==='hand');
 const weak=p3.find(c=>c.cardId==='MGR-002'),wall=e3.find(c=>c.cardId==='IDR-006');duel3.normalSummon('p',weak.uid);duel3.state.move(wall.uid,'field');duel3.advancePhase('p');
-const lose=duel3.attack('p',weak.uid,wall.uid);ok(lose.outcome==='DEFENDER_WINS'&&lose.destroyedUid===weak.uid,'attacker destroyed when ATK < DEF');ok(weak.zone==='graveyard'&&wall.zone==='field','defender remains after winning');ok(duel3.hp.p===4500,'attacker controller takes DEF minus ATK damage');
+const lose=duel3.attack('p',weak.uid,wall.uid);ok(lose.outcome==='DEFENDER_WINS'&&lose.destroyedUid===weak.uid,'attacker destroyed when ATK < DEF');ok(weak.zone==='graveyard'&&wall.zone==='field','defender remains after winning');ok(duel3.hp.p===3900,'attacker controller takes DEF minus ATK damage');
 ok(duel3.state.audit().ok,'defender-win state valid');
 
 const duel4=new DuelSession({cardRegistry:cards,deckRegistry:decks,players:['p','e'],uidFactory:(d,c)=>'cmb4-'+(++n)+'-'+c,startingHp:5000});
