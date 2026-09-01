@@ -1,0 +1,3 @@
+export class CardRenderer{
+  render(vm,host){if(!host)throw new Error('RENDER_HOST_REQUIRED');const el=document.createElement('article');el.className='clean-card';el.dataset.uid=vm.uid;el.dataset.cardId=vm.cardId;el.innerHTML='<div class="clean-card__title"></div><img class="clean-card__image" alt=""><div class="clean-card__stats"></div><div class="clean-card__meta"></div>';el.querySelector('.clean-card__title').textContent=vm.name;const img=el.querySelector('.clean-card__image');img.src=vm.imageUrl;img.alt=vm.name;img.dataset.uid=vm.uid;el.querySelector('.clean-card__stats').textContent='ATK '+vm.atk+' / DEF '+vm.def;el.querySelector('.clean-card__meta').textContent=vm.type+' · '+(vm.rarity||'SIN RAREZA')+' · '+vm.zone;host.replaceChildren(el);return el}
+}
