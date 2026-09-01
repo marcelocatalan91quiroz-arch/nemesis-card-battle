@@ -1,0 +1,10 @@
+{
+  "repository": "marcelocatalan91quiroz-arch/nemesis-card-battle",
+  "branch": "main",
+  "commit": "7c9a1781e50dc40f460624ef296303126f82dfee",
+  "assetCount": 351,
+  "dataFileCount": 13,
+  "assetBytes": 299998848,
+  "dataBytes": 169593,
+  "rule": "runtime-clean must never import or execute js/game.js"
+}
