@@ -18,3 +18,5 @@ export{registerImperioDragon}from'./decks/registerImperioDragon.js';
 export{DrawService}from'./services/DrawService.js';
 export{TurnService}from'./services/TurnService.js';
 export{DuelSession}from'./core/DuelSession.js';
+export{PhaseService}from'./services/PhaseService.js';
+export{ActionService}from'./services/ActionService.js';
