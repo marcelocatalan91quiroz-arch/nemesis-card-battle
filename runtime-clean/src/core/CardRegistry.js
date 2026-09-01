@@ -1,0 +1,1 @@
+export class CardRegistry{#m=new Map();register(def){if(!def?.id)throw new Error('CARD_ID_REQUIRED');if(this.#m.has(def.id))throw new Error('DUPLICATE_CARD_ID:'+def.id);const x=Object.freeze(structuredClone(def));this.#m.set(def.id,x);return x}get(id){return this.#m.get(id)||null}get size(){return this.#m.size}}
