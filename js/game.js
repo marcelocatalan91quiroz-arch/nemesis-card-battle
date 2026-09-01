@@ -529,10 +529,23 @@ if(!state.v18942DivineCardsGranted){
 state.v18949OlympusCardsGranted=true;
 v18918SanitizeMemoryCard();
 
-const save=()=>{
- localStorage.setItem('nemesis_visible_v2',JSON.stringify(state));
- v18918SaveMemoryCard();
+let __nemesisSaveQueued=false;
+const __nemesisPersistStateNow=()=>{
+ try{localStorage.setItem('nemesis_visible_v2',JSON.stringify(state))}catch(e){console.warn('[NÉMESIS save]',e)}
+ try{v18918SaveMemoryCard()}catch(e){console.warn('[NÉMESIS memory save]',e)}
 };
+const save=()=>{
+ if(__nemesisSaveQueued)return;
+ __nemesisSaveQueued=true;
+ const run=()=>{__nemesisSaveQueued=false;__nemesisPersistStateNow()};
+ if(typeof requestIdleCallback==='function')requestIdleCallback(run,{timeout:700});
+ else setTimeout(run,0);
+};
+addEventListener('pagehide',()=>{if(__nemesisSaveQueued){__nemesisSaveQueued=false;__nemesisPersistStateNow()}},{capture:true});
+function nemesisNextFrame(fn){
+ const raf=typeof requestAnimationFrame==='function'?requestAnimationFrame:(cb=>setTimeout(cb,0));
+ raf(()=>raf(()=>{try{fn()}catch(e){console.error('[NÉMESIS transition]',e)}}));
+}
 
 // V19.6.2 — arranque público seguro.
 // Los mazos privados NO se conceden antes de validar la sesión del propietario.
@@ -712,8 +725,15 @@ function nemesisLoadOptionalScript(src,key){
  if(existing?.__nemesisPromise)return existing.__nemesisPromise;
  const s=existing||document.createElement('script');s.src=src;s.defer=true;s.dataset.nemesisModule=key;
  s.__nemesisPromise=new Promise((resolve,reject)=>{
-  s.addEventListener('load',()=>{s.dataset.loaded='1';resolve(s)},{once:true});
-  s.addEventListener('error',()=>reject(new Error('No se pudo cargar '+src)),{once:true});
+  let settled=false;
+  const finish=(ok,err)=>{
+   if(settled)return;settled=true;clearTimeout(timer);
+   if(ok){s.dataset.loaded='1';resolve(s)}
+   else{try{delete s.__nemesisPromise}catch{};reject(err||new Error('No se pudo cargar '+src))}
+  };
+  const timer=setTimeout(()=>finish(false,new Error('Timeout cargando '+src)),5000);
+  s.addEventListener('load',()=>finish(true),{once:true});
+  s.addEventListener('error',()=>finish(false,new Error('No se pudo cargar '+src)),{once:true});
  });
  if(!existing)document.head.appendChild(s);
  return s.__nemesisPromise
@@ -991,7 +1011,7 @@ if(typeof retryBtn!=='undefined'&&retryBtn)retryBtn.onclick=nemesisRetryScene;
 if(typeof ownerBtn!=='undefined'&&ownerBtn)ownerBtn.onclick=()=>nemesisOwnerSessionActive()?nemesisOwnerLogout():nemesisOwnerLogin();
 const renderMenuMiniDeck=()=>{const host=document.getElementById('menuMiniDeck');if(!host)return;host.innerHTML=state.deck.slice(0,6).map(id=>{const c=card(id);if(!c)return '';const src=window.nemesisRealCardArt?.(c.id,c.img||'')||c.img||'';return `<img src="${src}" loading="lazy" decoding="async" fetchpriority="low" alt="${esc(c.name)}" title="${esc(c.name)}">`}).join('')+(state.deck.length>6?`<span class="mini-deck-more">+${state.deck.length-6} CARTAS</span>`:'')};
 if('requestIdleCallback'in window)requestIdleCallback(renderMenuMiniDeck,{timeout:800});else setTimeout(renderMenuMiniDeck,0);
-menuFullscreen.onclick=requestNemesisFullscreen;startStory.onclick=()=>{const next=nemesisValidPlayerName(nm.value)||nemesisValidPlayerName(state.name);if(!next){nemesisCreateProfileScene();return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}if(state.campaign1Completed&&!state.campaign2Started){state.campaign2Started=true;state.campaignStage='campaign2-intro';state.campaign2Stage='intro'}save();continueCampaign()};
+menuFullscreen.onclick=requestNemesisFullscreen;startStory.onclick=()=>{const next=nemesisValidPlayerName(nm.value)||nemesisValidPlayerName(state.name);if(!next){nemesisCreateProfileScene();return}state.name=next;state.profileCreated=true;state.lastAutosaveAt=Date.now();if(!state.deck.length){alert('Selecciona al menos 1 carta para tu mazo.');return}if(state.campaign1Completed&&!state.campaign2Started){state.campaign2Started=true;state.campaignStage='campaign2-intro';state.campaign2Stage='intro'}save();startStory.disabled=true;startStory.textContent='CARGANDO…';nemesisNextFrame(()=>continueCampaign())};
 }
 function shopPrice(c,i){if(Number.isFinite(Number(c?.priceStars)))return Number(c.priceStars);return Math.max(50,Math.round((c.atk+c.def)/20/10)*10 + (i%5)*20)}
 function shopScene(){
