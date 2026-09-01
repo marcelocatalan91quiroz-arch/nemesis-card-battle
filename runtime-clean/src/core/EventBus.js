@@ -1,0 +1,1 @@
+export class EventBus{#m=new Map();on(t,f){const a=this.#m.get(t)||[];a.push(f);this.#m.set(t,a);return()=>this.off(t,f)}off(t,f){this.#m.set(t,(this.#m.get(t)||[]).filter(x=>x!==f))}emit(t,p){for(const f of this.#m.get(t)||[])f(p)}}
