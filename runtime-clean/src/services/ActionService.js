@@ -26,6 +26,7 @@ export class ActionService{
   }
   authorizeSpecialSummon({player,uid,source,phases=['MAIN1','MAIN2']}={}){
     if(!player||!uid||!source)throw new Error('SPECIAL_SUMMON_AUTHORIZATION_INCOMPLETE');
+    this.turns.assertPriority(player);
     const token='special-'+(++this.#permitSeq);
     const permit=Object.freeze({token,player,uid,source,phases:Object.freeze([...phases]),turnNumber:this.turns.turnNumber,used:false});
     this.#permits.set(token,{...permit,used:false});return permit;
