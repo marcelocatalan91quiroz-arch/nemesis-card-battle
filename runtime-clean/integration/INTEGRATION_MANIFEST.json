@@ -1,0 +1,46 @@
+{
+  "schema": "NEMESIS_MAIN_INTEGRATION_BRIDGE_V1",
+  "deployRoot": "runtime-clean",
+  "entry": "index.html",
+  "moduleEntry": "app/main.js",
+  "legacyRuntimeImports": [],
+  "forbidden": [
+    "../js/game.js",
+    "/js/game.js",
+    "css/game.css",
+    "js/card-art-real-sprite.js",
+    "js/universal-cards-33.js"
+  ],
+  "enabledDecks": [
+    "MAGO_ROJO",
+    "IMPERIO_DRAGON"
+  ],
+  "enabledSystems": [
+    "FrozenDataLoader",
+    "DataRepository",
+    "CardRegistry",
+    "DeckRegistry",
+    "DeckService",
+    "GameState",
+    "EventBus",
+    "TurnService",
+    "DrawService",
+    "PhaseService",
+    "ActionService",
+    "GraveyardService",
+    "StatService",
+    "CombatService",
+    "VictoryService",
+    "AssetResolver",
+    "CardViewModel",
+    "CardRenderer",
+    "RendererGuard",
+    "DuelSession"
+  ],
+  "productionMode": "CLEAN_ROOT_ONLY",
+  "notes": [
+    "Deploy runtime-clean/ as Vercel Root Directory.",
+    "Do not serve legacy root index.html for the clean deployment.",
+    "Only migrated features are exposed by the bridge."
+  ]
+}
