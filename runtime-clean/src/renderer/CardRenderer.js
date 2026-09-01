@@ -1,3 +1,8 @@
+export function applyImageFallback(img,placeholder){
+  if(!img||!placeholder)return false;
+  if(img.src===placeholder||String(img.src||'').endsWith(placeholder))return false;
+  img.src=placeholder;return true;
+}
 export class CardRenderer{
   constructor({placeholder='../public/assets/placeholder.svg'}={}){this.placeholder=placeholder}
   render(vm,host){
@@ -9,7 +14,7 @@ export class CardRenderer{
     el.querySelector('.clean-card__title').textContent=vm.name;
     const img=el.querySelector('.clean-card__image');
     img.src=vm.imageUrl;img.alt=vm.name;img.dataset.uid=vm.uid;
-    img.onerror=()=>{if(img.src&&!img.src.endsWith(this.placeholder))img.src=this.placeholder};
+    img.onerror=()=>applyImageFallback(img,this.placeholder);
     el.querySelector('.clean-card__stats').textContent='ATK '+vm.atk+' / DEF '+vm.def;
     el.querySelector('.clean-card__meta').textContent=vm.type+' · '+(vm.rarity||'SIN RAREZA')+' · '+vm.zone;
     host.replaceChildren(el);return el;
