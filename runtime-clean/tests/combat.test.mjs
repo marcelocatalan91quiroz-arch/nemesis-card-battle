@@ -13,8 +13,9 @@ const pHand=duel.decks.session('player').uids.map(uid=>duel.state.instances.get(
 const eHand=duel.decks.session('enemy').uids.map(uid=>duel.state.instances.get(uid)).filter(c=>c.zone==='hand');
 const atk=pHand.find(c=>c.cardId==='MGR-001'),def=eHand.find(c=>c.cardId==='IDR-001');
 duel.normalSummon('player',atk.uid);const permit=duel.authorizeSpecialSummon({player:'player',uid:pHand.find(c=>c.cardId==='MGR-002').uid,source:'TEST'});duel.specialSummon('player',permit.uid,permit);
+fails(()=>duel.attack('player',atk.uid,def.uid),'ACTION_NOT_ALLOWED_IN_PHASE:MAIN1','attack blocked outside BATTLE');
+duel.advancePhase('player');
 fails(()=>duel.attack('player',atk.uid,def.uid),'BATTLE_REQUIRES_FIELD','target must be on field');
-for(const p of ['BATTLE'])duel.advancePhase('player');
 const ePermit=duel.actions.authorizeSpecialSummon.bind(duel.actions);
 fails(()=>ePermit({player:'enemy',uid:def.uid,source:'TEST'}),'NO_TURN_PRIORITY','enemy cannot summon out of turn');
 duel.state.move(def.uid,'field');
@@ -27,6 +28,10 @@ ok(atk.zone==='field','attacker remains on field');
 ok(duel.hp.enemy===2800,'enemy HP reduced');
 ok(cards.get('MGR-001').atk===baseA&&cards.get('IDR-001').def===baseD,'base stats unchanged');
 ok(duel.state.audit().ok,'state valid after battle');
+const boosted=pHand.find(c=>c.cardId==='MGR-002');boosted.modifiers.push({atk:300,def:200,source:'TEST'});
+const derived=duel.stats.derived(boosted);
+ok(derived.atk===cards.get('MGR-002').atk+300&&derived.def===cards.get('MGR-002').def+200,'derived modifiers applied');
+ok(cards.get('MGR-002').atk!==derived.atk&&cards.get('MGR-002').def!==derived.def,'modifiers do not mutate base stats');
 fails(()=>duel.attack('player',atk.uid,pHand.find(c=>c.cardId==='MGR-002').uid),'TARGET_MUST_BE_OPPONENT','own target blocked');
 fails(()=>duel.attack('player',atk.uid,atk.uid),'ATTACK_TARGET_MUST_DIFFER','self target blocked');
 fails(()=>duel.attack('player',atk.uid,def.uid),'BATTLE_REQUIRES_FIELD','graveyard target blocked');
@@ -41,5 +46,18 @@ ok(duel2.hp.e===0,'HP clamps to zero');
 fails(()=>duel2.attack('p',pa.uid,ed.uid),'DUEL_ALREADY_FINISHED','attack blocked after victory');
 fails(()=>duel2.endTurn('p'),'DUEL_ALREADY_FINISHED','turn cannot continue after victory');
 ok(duel2.state.audit().ok,'victory state valid');
+
+const duel3=new DuelSession({cardRegistry:cards,deckRegistry:decks,players:['p','e'],uidFactory:(d,c)=>'cmb3-'+(++n)+'-'+c,startingHp:5000});
+duel3.prepareDeck('p','MAGO_ROJO');duel3.prepareDeck('e','IMPERIO_DRAGON');duel3.start({firstPlayer:'p',openingHandSize:20});duel3.drawForTurn('p');duel3.advancePhase('p');
+const p3=duel3.decks.session('p').uids.map(uid=>duel3.state.instances.get(uid)).filter(c=>c.zone==='hand'),e3=duel3.decks.session('e').uids.map(uid=>duel3.state.instances.get(uid)).filter(c=>c.zone==='hand');
+const weak=p3.find(c=>c.cardId==='MGR-002'),wall=e3.find(c=>c.cardId==='IDR-006');duel3.normalSummon('p',weak.uid);duel3.state.move(wall.uid,'field');duel3.advancePhase('p');
+const lose=duel3.attack('p',weak.uid,wall.uid);ok(lose.outcome==='DEFENDER_WINS'&&lose.destroyedUid===weak.uid,'attacker destroyed when ATK < DEF');ok(weak.zone==='graveyard'&&wall.zone==='field','defender remains after winning');ok(duel3.hp.p===4500,'attacker controller takes DEF minus ATK damage');
+ok(duel3.state.audit().ok,'defender-win state valid');
+
+const duel4=new DuelSession({cardRegistry:cards,deckRegistry:decks,players:['p','e'],uidFactory:(d,c)=>'cmb4-'+(++n)+'-'+c,startingHp:5000});
+duel4.prepareDeck('p','MAGO_ROJO');duel4.prepareDeck('e','IMPERIO_DRAGON');duel4.start({firstPlayer:'p',openingHandSize:20});duel4.drawForTurn('p');duel4.advancePhase('p');
+const p4=duel4.decks.session('p').uids.map(uid=>duel4.state.instances.get(uid)).filter(c=>c.zone==='hand'),e4=duel4.decks.session('e').uids.map(uid=>duel4.state.instances.get(uid)).filter(c=>c.zone==='hand');
+const tieA=p4.find(c=>c.cardId==='MGR-001'),tieD=e4.find(c=>c.cardId==='IDR-001');duel4.normalSummon('p',tieA.uid);duel4.state.move(tieD.uid,'field');tieA.modifiers.push({atk:-1200});duel4.advancePhase('p');
+const tie=duel4.attack('p',tieA.uid,tieD.uid);ok(tie.outcome==='TIE'&&tie.damage===0&&tie.destroyedUid===null,'equal ATK and DEF causes tie');ok(tieA.zone==='field'&&tieD.zone==='field','tie destroys neither card');ok(duel4.hp.p===5000&&duel4.hp.e===5000,'tie changes no HP');ok(duel4.state.audit().ok,'tie state valid');
 
 console.log('NEMESIS RUNTIME CLEAN COMBAT: PASS — '+pass+'/'+pass);
