@@ -4,7 +4,7 @@ import{createCardInstance}from'../src/core/CardInstance.js';
 import{GameState}from'../src/core/GameState.js';
 import{GraveyardService}from'../src/services/GraveyardService.js';
 import{RendererGuard}from'../src/renderer/RendererGuard.js';
-import{buildCardViewModel}from'../src/viewmodel/CardViewModel.js';
+import{buildCardViewModel}from'../src/viewmodel/CardViewModel.js';\nimport{applyImageFallback}from'../src/renderer/CardRenderer.js';
 let pass=0;const ok=(x,m)=>{assert.ok(x,m);pass++};
 
 const reg=new CardRegistry();
@@ -57,4 +57,11 @@ grave.resurrect(idr.uid);
 ok(idr.uid==='lab-idr-001-copy-1'&&idr.zone==='field','second card preserves uid through cycle');
 ok(state.audit().ok,'final state valid');
 
+const beforeBrokenImage=JSON.stringify({uid:mgr.uid,zone:mgr.zone,cardId:mgr.cardId,zones:state.zones});
+const fakeImg={src:'../public/assets/cards/NO-EXISTE.svg'};
+ok(applyImageFallback(fakeImg,'../public/assets/placeholder.svg')===true,'broken image switches to placeholder');
+ok(fakeImg.src==='../public/assets/placeholder.svg','placeholder path applied');
+ok(JSON.stringify({uid:mgr.uid,zone:mgr.zone,cardId:mgr.cardId,zones:state.zones})===beforeBrokenImage,'image failure cannot mutate state');
+ok(state.instances.get(mgr.uid)===mgr&&mgr.uid===beforeUid,'card survives broken image with same uid');
+ok(applyImageFallback(fakeImg,'../public/assets/placeholder.svg')===false,'placeholder loop prevented');
 console.log('NEMESIS RUNTIME CLEAN RESILIENCE: PASS — '+pass+'/'+pass);
