@@ -1,0 +1,1 @@
+Trigger de despliegue limpio para Vercel. Root esperado: runtime-clean. Entrada: index.html.
