@@ -1,0 +1,643 @@
+{
+  "schema": "NEMESIS_CARD_V1",
+  "catalogo_maestro": "NEMESIS_MASTER_CARD_CATALOG_V1",
+  "set": "MAGO_ROJO",
+  "version": "19.4.2",
+  "estado": "MAZO_COMPLETO_20_DE_20__REGISTRADO_EN_RUNTIME",
+  "mecanica": "SELLOS_ARCANOS",
+  "composicion_objetivo": {
+    "total": 20,
+    "criaturas": 10,
+    "magicas": 4,
+    "trampas": 3,
+    "reliquias": 1,
+    "fusiones": 1,
+    "armas": 1
+  },
+  "deck_ids": [
+    "MGR-001",
+    "MGR-002",
+    "MGR-003",
+    "MGR-004",
+    "MGR-005",
+    "MGR-006",
+    "MGR-007",
+    "MGR-008",
+    "MGR-009",
+    "MGR-010",
+    "MGR-011",
+    "MGR-012",
+    "MGR-013",
+    "MGR-014",
+    "MGR-015",
+    "MGR-016",
+    "MGR-017",
+    "MGR-018",
+    "MGR-019",
+    "MGR-020"
+  ],
+  "cards": [
+    {
+      "id": "MGR-001",
+      "nombre": "Mago Rojo",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "CIRCULO_ARCANO",
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": 5,
+      "atk": 2800,
+      "def": 2400,
+      "copias_max": 3,
+      "habilidad": "DOMINIO ESCARLATA",
+      "estrategia": "Motor central del arquetipo; convierte la activación de Mágicas en Sellos Arcanos y reutiliza hechizos.",
+      "efectos": [
+        "Cada vez que activas una Mágica del arquetipo Mago Rojo, coloca 1 Sello Arcano en esta carta (máx. 3).",
+        "Una vez por turno, puedes consumir 3 Sellos Arcanos; recupera 1 Mágica del arquetipo desde tu Cementerio a tu mano.",
+        "Mientras tenga 3 Sellos Arcanos, gana 500 ATK."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-001.svg",
+      "img_game": "assets/images/mago-rojo/mgr-001.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-002",
+      "nombre": "Aprendiz de las Brasas",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "CIRCULO_ARCANO",
+        "MAGO_ROJO"
+      ],
+      "rareza": "COMUN",
+      "nivel": 3,
+      "atk": 1700,
+      "def": 1900,
+      "copias_max": 3,
+      "habilidad": "MEMORIA DE FUEGO",
+      "estrategia": "Recuperación temprana de Mágicas y soporte directo para Mago Rojo.",
+      "efectos": [
+        "Cuando esta carta es Invocada Normalmente, puedes seleccionar 1 Mágica del arquetipo Mago Rojo en tu Cementerio y añadirla a tu mano; esa Mágica sólo puede ser activada una vez más durante este duelo.",
+        "Si esta carta en el Campo fuera a ser destruida, puedes descartar 1 carta; esta carta no es destruida.",
+        "Mientras controles a Mago Rojo, esta carta gana 300 ATK."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-002.svg",
+      "img_game": "assets/images/mago-rojo/mgr-002.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-003",
+      "nombre": "Salamandra de Rubí",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "RARA",
+      "nivel": 3,
+      "atk": 2100,
+      "def": 1800,
+      "copias_max": 3,
+      "habilidad": "PIEL INCANDESCENTE",
+      "estrategia": "Generador defensivo de Sellos Arcanos mediante supervivencia en combate.",
+      "efectos": [
+        "Cuando esta carta recibe daño de batalla y sobrevive, coloca 1 Sello Arcano en 1 carta Mago Rojo que controles. Este efecto sólo puede activarse una vez por turno.",
+        "Esta carta no puede ser seleccionada como objetivo de efectos de cartas del adversario, excepto por ataques.",
+        "Mientras controles 1 o más Sellos Arcanos, gana 300 DEF."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-003.svg",
+      "img_game": "assets/images/mago-rojo/mgr-003.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-004",
+      "nombre": "Caballero de Ceniza",
+      "tipo": "CRIATURA",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": 4,
+      "atk": 2600,
+      "def": 2600,
+      "copias_max": 3,
+      "habilidad": "GUARDIA ARDIENTE",
+      "estrategia": "Defensor del arquetipo; protege criaturas y trampas mientras aprovecha Sellos Arcanos.",
+      "efectos": [
+        "Una vez por turno, puedes seleccionar 1 criatura del arquetipo Mago Rojo que controles; esa carta no puede ser destruida por efectos de cartas hasta el final del turno.",
+        "Si esa criatura fuera a ser destruida por batalla, gana 1000 DEF durante ese cálculo de daño.",
+        "Mientras controles 2 o más Sellos Arcanos, esta carta gana 300 ATK.",
+        "Mientras esta carta esté en el Campo, las Trampas Mago Rojo que controles no pueden ser destruidas por efectos del adversario."
+      ],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-004.svg",
+      "img_game": "assets/images/mago-rojo/mgr-004.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-005",
+      "nombre": "Bruja de la Llama Negra",
+      "tipo": "CRIATURA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 2700,
+      "def": 2200,
+      "copias_max": 3,
+      "habilidad": "PACTO DE LLAMAS",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-005.svg",
+      "img_game": "assets/images/mago-rojo/mgr-005.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-006",
+      "nombre": "Guardián de la Forja Roja",
+      "tipo": "CRIATURA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 2500,
+      "def": 3200,
+      "copias_max": 3,
+      "habilidad": "FORJA PROTECTORA",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-006.svg",
+      "img_game": "assets/images/mago-rojo/mgr-006.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-007",
+      "nombre": "Fénix Carmesí",
+      "tipo": "CRIATURA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "LEGENDARIA",
+      "nivel": null,
+      "atk": 3400,
+      "def": 2500,
+      "copias_max": 3,
+      "habilidad": "RENACER DE LAS CENIZAS",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-007.svg",
+      "img_game": "assets/images/mago-rojo/mgr-007.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-008",
+      "nombre": "Hechicero del Eclipse",
+      "tipo": "CRIATURA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 3200,
+      "def": 2600,
+      "copias_max": 3,
+      "habilidad": "ECLIPSE ARDIENTE",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-008.svg",
+      "img_game": "assets/images/mago-rojo/mgr-008.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-009",
+      "nombre": "Dragón Rubí Ancestral",
+      "tipo": "CRIATURA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "LEGENDARIA",
+      "nivel": null,
+      "atk": 5500,
+      "def": 4200,
+      "copias_max": 3,
+      "habilidad": "HERENCIA ANCESTRAL",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-009.svg",
+      "img_game": "assets/images/mago-rojo/mgr-009.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-010",
+      "nombre": "Archimago de las Siete Llamas",
+      "tipo": "CRIATURA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "LEGENDARIA",
+      "nivel": null,
+      "atk": 4800,
+      "def": 3600,
+      "copias_max": 3,
+      "habilidad": "LEGADO DE LAS SIETE LLAMAS",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-010.svg",
+      "img_game": "assets/images/mago-rojo/mgr-010.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-011",
+      "nombre": "Círculo de Invocación Roja",
+      "tipo": "MAGICA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "CÍRCULO DE INVOCACIÓN",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-011.svg",
+      "img_game": "assets/images/mago-rojo/mgr-011.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-012",
+      "nombre": "Ráfaga Escarlata",
+      "tipo": "MAGICA_RAPIDA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "RÁFAGA ESCARLATA",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-012.svg",
+      "img_game": "assets/images/mago-rojo/mgr-012.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-013",
+      "nombre": "Renacer entre Cenizas",
+      "tipo": "MAGICA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "RENACER ENTRE CENIZAS",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-013.svg",
+      "img_game": "assets/images/mago-rojo/mgr-013.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-014",
+      "nombre": "Convergencia Carmesí",
+      "tipo": "MAGICA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "CONVERGENCIA CARMESÍ",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-014.svg",
+      "img_game": "assets/images/mago-rojo/mgr-014.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-015",
+      "nombre": "Prisión de Fuego",
+      "tipo": "TRAMPA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "PRISIÓN DE FUEGO",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-015.svg",
+      "img_game": "assets/images/mago-rojo/mgr-015.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-016",
+      "nombre": "Espejo de Brasas",
+      "tipo": "TRAMPA_RESPUESTA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "EPICA",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "ESPEJO DE BRASAS",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-016.svg",
+      "img_game": "assets/images/mago-rojo/mgr-016.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-017",
+      "nombre": "Última Llama",
+      "tipo": "TRAMPA_RESPUESTA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "MITICA",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "ÚLTIMA LLAMA",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-017.svg",
+      "img_game": "assets/images/mago-rojo/mgr-017.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-018",
+      "nombre": "Grimorio de las Siete Llamas",
+      "tipo": "RELIQUIA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "ANCESTRAL",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "SIETE LLAMAS",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-018.svg",
+      "img_game": "assets/images/mago-rojo/mgr-018.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-019",
+      "nombre": "Archimago del Dragón Carmesí",
+      "tipo": "FUSION",
+      "subtipo": "EFECTO",
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "ANCESTRAL",
+      "nivel": null,
+      "atk": 7500,
+      "def": 6500,
+      "copias_max": 1,
+      "habilidad": "CONVERGENCIA ESCARLATA",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-019.svg",
+      "img_game": "assets/images/mago-rojo/mgr-019.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    },
+    {
+      "id": "MGR-020",
+      "nombre": "Bastón de Ignis",
+      "tipo": "ARMA",
+      "subtipo": null,
+      "afinidades": [
+        "FUEGO"
+      ],
+      "arquetipos": [
+        "MAGO_ROJO"
+      ],
+      "rareza": "ANCESTRAL",
+      "nivel": null,
+      "atk": 0,
+      "def": 0,
+      "copias_max": 3,
+      "habilidad": "IGNIS",
+      "estrategia": "Sinergia oficial del arquetipo Mago Rojo mediante Sellos Arcanos.",
+      "efectos": [],
+      "transformacion": null,
+      "img": "assets/images/mago-rojo/mgr-020.svg",
+      "img_game": "assets/images/mago-rojo/mgr-020.svg",
+      "imagen_estado": "OPERATIVA_EN_REPO__VISUAL_UNICO_POR_ID"
+    }
+  ],
+  "plan_20": [
+    [
+      "MGR-001",
+      "Mago Rojo",
+      "CRIATURA"
+    ],
+    [
+      "MGR-002",
+      "Aprendiz de las Brasas",
+      "CRIATURA"
+    ],
+    [
+      "MGR-003",
+      "Salamandra de Rubí",
+      "CRIATURA"
+    ],
+    [
+      "MGR-004",
+      "Caballero de Ceniza",
+      "CRIATURA"
+    ],
+    [
+      "MGR-005",
+      "Bruja de la Llama Negra",
+      "CRIATURA"
+    ],
+    [
+      "MGR-006",
+      "Guardián de la Forja Roja",
+      "CRIATURA"
+    ],
+    [
+      "MGR-007",
+      "Fénix Carmesí",
+      "CRIATURA"
+    ],
+    [
+      "MGR-008",
+      "Hechicero del Eclipse",
+      "CRIATURA"
+    ],
+    [
+      "MGR-009",
+      "Dragón Rubí Ancestral",
+      "CRIATURA"
+    ],
+    [
+      "MGR-010",
+      "Archimago de las Siete Llamas",
+      "CRIATURA"
+    ],
+    [
+      "MGR-011",
+      "Círculo de Invocación Roja",
+      "MAGICA"
+    ],
+    [
+      "MGR-012",
+      "Ráfaga Escarlata",
+      "MAGICA_RAPIDA"
+    ],
+    [
+      "MGR-013",
+      "Renacer entre Cenizas",
+      "MAGICA"
+    ],
+    [
+      "MGR-014",
+      "Convergencia Carmesí",
+      "MAGICA"
+    ],
+    [
+      "MGR-015",
+      "Prisión de Fuego",
+      "TRAMPA"
+    ],
+    [
+      "MGR-016",
+      "Espejo de Brasas",
+      "TRAMPA_RESPUESTA"
+    ],
+    [
+      "MGR-017",
+      "Última Llama",
+      "TRAMPA_RESPUESTA"
+    ],
+    [
+      "MGR-018",
+      "Grimorio de las Siete Llamas",
+      "RELIQUIA"
+    ],
+    [
+      "MGR-019",
+      "Archimago del Dragón Carmesí",
+      "FUSION"
+    ],
+    [
+      "MGR-020",
+      "Bastón de Ignis",
+      "ARMA"
+    ]
+  ],
+  "regla_operativa": "20 cartas definidas y registradas en runtime. Mantener integración aislada y validar assets/efectos con pruebas antes de fusionar a main."
+}
