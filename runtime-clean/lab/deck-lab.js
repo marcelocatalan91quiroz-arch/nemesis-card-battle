@@ -1,0 +1,10 @@
+import{FrozenDataLoader,DataRepository,CardRegistry,GameState,DeckRegistry,DeckService,registerMagoRojo,AssetResolver,buildCardViewModel,CardRenderer,RendererGuard}from'../src/index.js';
+let data,cards,decks,state,service,session;
+const summary=document.getElementById('deck-summary'),list=document.getElementById('deck-list');
+const assetMap=Object.fromEntries(Array.from({length:20},(_,i)=>{const id='MGR-'+String(i+1).padStart(3,'0');return[id,'../public/assets/cards/'+id+'.svg']}));
+const resolver=new AssetResolver({map:assetMap,placeholder:'../public/assets/placeholder.svg'}),renderer=new CardRenderer({placeholder:'../public/assets/placeholder.svg'}),guard=new RendererGuard();
+async function load(){
+ const loader=FrozenDataLoader.browser({base:'../../'});const entries=await loader.loadAll();data=new DataRepository(entries);cards=new CardRegistry();decks=new DeckRegistry();state=new GameState();registerMagoRojo({dataRepository:data,cardRegistry:cards,deckRegistry:decks});let n=0;service=new DeckService({cardRegistry:cards,deckRegistry:decks,state,uidFactory:(d,c)=>'mago-'+(++n)+'-'+c});session=service.instantiate('MAGO_ROJO',{owner:'player'});render('CARGADO');
+}
+function render(event){if(!session)return;list.replaceChildren();for(const uid of session.uids){const inst=state.instances.get(uid),def=cards.get(inst.cardId),box=document.createElement('section');box.className='panel';const vm=buildCardViewModel({definition:def,instance:inst,imageUrl:resolver.resolve(def)});guard.render(renderer,vm,box);list.appendChild(box)}summary.textContent=event+'\nJSON='+data.size+' · CARTAS='+cards.size+' · DECK='+service.count('player','deck')+' · MANO='+service.count('player','hand')+'\n'+JSON.stringify(state.audit(),null,2)}
+document.getElementById('load').onclick=load;document.getElementById('shuffle').onclick=()=>{if(service){service.shuffle('player');render('BARAJADO')}};document.getElementById('draw').onclick=()=>{if(service){service.draw('player',5);render('ROBÓ 5')}};
