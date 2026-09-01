@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="1075" viewBox="0 0 768 1075">
+ <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="hsl(158,70%,14%)"/><stop offset=".5" stop-color="#12051d"/><stop offset="1" stop-color="hsl(213,75%,10%)"/></linearGradient><radialGradient id="a"><stop stop-color="#ffb347" stop-opacity=".85"/><stop offset="1" stop-color="#5d0a7a" stop-opacity="0"/></radialGradient></defs>
+ <rect width="768" height="1075" rx="34" fill="#05030a"/><rect x="18" y="18" width="732" height="1039" rx="28" fill="url(#g)" stroke="#d39b38" stroke-width="7"/>
+ <text x="384" y="70" text-anchor="middle" fill="#ffd77a" font-family="serif" font-weight="700" font-size="42">NÉMESIS</text>
+ <text x="384" y="118" text-anchor="middle" fill="#fff" font-family="serif" font-weight="700" font-size="28">Contraataque de Escamas</text>
+ <rect x="56" y="155" width="656" height="560" rx="24" fill="#090713" stroke="#8d43bc" stroke-width="4"/>
+ <circle cx="384" cy="430" r="235" fill="url(#a)"/><path d="M170 530 Q250 235 384 315 Q520 235 600 530 Q535 465 480 520 Q435 465 384 590 Q330 465 285 520 Q230 465 170 530Z" fill="none" stroke="#ff6738" stroke-width="18"/><path d="M300 410 Q384 335 468 410 L430 525 L384 585 L338 525Z" fill="none" stroke="#b75cff" stroke-width="16"/>
+ <text x="384" y="660" text-anchor="middle" fill="#f7d16b" font-family="sans-serif" font-size="26">TRAMPA · EPICA</text>
+ <rect x="56" y="745" width="656" height="185" rx="18" fill="#08070d" stroke="#5e3a77" stroke-width="3"/>
+ <text x="82" y="790" fill="#e8b7ff" font-family="sans-serif" font-weight="700" font-size="25">ESCAMAS REACTIVAS</text>
+ <text x="82" y="842" fill="#fff" font-family="sans-serif" font-size="24">ATK 0   DEF 0</text>
+ <text x="82" y="890" fill="#ccc" font-family="sans-serif" font-size="20">IMPERIO DRAGÓN · CARTA OFICIAL</text>
+ <text x="384" y="1015" text-anchor="middle" fill="#ffd77a" font-family="monospace" font-size="28">IDR-014</text></svg>
