@@ -15,8 +15,12 @@ export class FrozenDataLoader{
     if(entries.length!==manifest.count)throw new Error('DATA_COUNT_MISMATCH');
     return Object.freeze(entries);
   }
-  static browser({base='../../../'}={}){
-    const readJson=async p=>{const r=await fetch(new URL(base+p,import.meta.url));if(!r.ok)throw new Error('DATA_FETCH_FAILED:'+p+':'+r.status);return r.json()};
+  static browser(){
+    const readJson=async p=>{
+      const local=p.startsWith('runtime-clean/')?p.slice('runtime-clean/'.length):p;
+      const url=new URL('../../'+local,import.meta.url);
+      const r=await fetch(url);if(!r.ok)throw new Error('DATA_FETCH_FAILED:'+p+':'+r.status);return r.json()
+    };
     return new FrozenDataLoader({readJson});
   }
 }
