@@ -1,0 +1,48 @@
+import assert from'node:assert/strict';
+import fs from'node:fs/promises';import path from'node:path';import{fileURLToPath}from'node:url';
+import{FrozenDataLoader,DataRepository,CardRegistry,DeckRegistry,registerMagoRojo,registerImperioDragon,DuelSession}from'../src/index.js';
+const here=path.dirname(fileURLToPath(import.meta.url)),repoRoot=path.resolve(here,'../..');let pass=0;
+const ok=(x,m)=>{assert.ok(x,m);pass++};const fails=(fn,part,m)=>{let e=null;try{fn()}catch(err){e=err}ok(!!e&&String(e.message).includes(part),m)};
+const readJson=async p=>JSON.parse(await fs.readFile(path.join(repoRoot,p),'utf8'));
+const data=new DataRepository(await new FrozenDataLoader({readJson}).loadAll()),cards=new CardRegistry(),decks=new DeckRegistry();
+registerMagoRojo({dataRepository:data,cardRegistry:cards,deckRegistry:decks});registerImperioDragon({dataRepository:data,cardRegistry:cards,deckRegistry:decks});
+let n=0;const duel=new DuelSession({cardRegistry:cards,deckRegistry:decks,players:['player','enemy'],uidFactory:(d,c)=>'act-'+(++n)+'-'+c,monsterZoneLimit:5});
+duel.prepareDeck('player','MAGO_ROJO');duel.prepareDeck('enemy','IMPERIO_DRAGON');duel.start({firstPlayer:'player',openingHandSize:5});
+ok(duel.phases.phase==='DRAW','duel starts in DRAW');
+const playerHand=duel.decks.session('player').uids.map(uid=>duel.state.instances.get(uid)).filter(c=>c.zone==='hand');
+const mgr1=playerHand.find(c=>c.cardId==='MGR-001'),mgr2=playerHand.find(c=>c.cardId==='MGR-002');
+ok(!!mgr1&&!!mgr2,'two summonable Mago creatures in opening hand');
+fails(()=>duel.normalSummon('player',mgr1.uid),'ACTION_NOT_ALLOWED_IN_PHASE:DRAW','normal summon blocked in DRAW');
+const td=duel.drawForTurn('player');ok(td.length===1,'one turn draw');
+fails(()=>duel.drawForTurn('player'),'TURN_DRAW_ALREADY_USED','second turn draw blocked');
+ok(duel.advancePhase('player').phase==='MAIN1','advance to MAIN1');
+const summoned=duel.normalSummon('player',mgr1.uid);ok(summoned.uid===mgr1.uid&&summoned.zone==='field','normal summon hand to field');
+ok(duel.state.instances.get(mgr1.uid)===mgr1,'normal summon preserves instance');
+fails(()=>duel.normalSummon('player',mgr2.uid),'NORMAL_SUMMON_ALREADY_USED','second normal summon blocked');
+fails(()=>duel.specialSummon('player',mgr2.uid,null),'SPECIAL_SUMMON_PERMIT_REQUIRED','special summon requires permit');
+const permit=duel.authorizeSpecialSummon({player:'player',uid:mgr2.uid,source:'TEST_EFFECT'});
+ok(Object.isFrozen(permit)&&permit.uid===mgr2.uid,'special summon permit issued');
+const special=duel.specialSummon('player',mgr2.uid,permit);ok(special.uid===mgr2.uid&&special.zone==='field','special summon hand to field');
+ok(duel.state.instances.get(mgr2.uid)===mgr2,'special summon preserves instance');
+fails(()=>duel.specialSummon('player',mgr2.uid,permit),'SPECIAL_SUMMON_PERMIT_INVALID','special permit single use');
+fails(()=>duel.authorizeSpecialSummon({player:'enemy',uid:'anything',source:'X'}),'NO_TURN_PRIORITY','enemy cannot authorize out of turn');
+ok(duel.state.audit().ok,'state valid after both summons');
+
+for(const expected of ['BATTLE','MAIN2','END'])ok(duel.advancePhase('player').phase===expected,'advance '+expected);
+const ended=duel.endTurn('player');ok(ended.turn.currentPlayer==='enemy'&&ended.phase.phase==='DRAW','enemy turn begins in DRAW');
+const enemyHand=duel.decks.session('enemy').uids.map(uid=>duel.state.instances.get(uid)).filter(c=>c.zone==='hand'),idr1=enemyHand.find(c=>c.cardId==='IDR-001');
+fails(()=>duel.normalSummon('enemy',idr1.uid),'ACTION_NOT_ALLOWED_IN_PHASE:DRAW','enemy summon blocked in DRAW');
+duel.drawForTurn('enemy');duel.advancePhase('enemy');
+const es=duel.normalSummon('enemy',idr1.uid);ok(es.uid===idr1.uid&&es.zone==='field','enemy normal summon works in MAIN1');
+ok(duel.actions.normalSummonAvailable('enemy')===false,'enemy normal summon consumed');
+ok(duel.state.audit().ok,'final action state valid');
+
+const separate=new DuelSession({cardRegistry:cards,deckRegistry:decks,players:['p','e'],uidFactory:(d,c)=>'neg-'+(++n)+'-'+c});
+separate.prepareDeck('p','MAGO_ROJO');separate.prepareDeck('e','IMPERIO_DRAGON');separate.start({firstPlayer:'p',openingHandSize:20});separate.drawForTurn('p');separate.advancePhase('p');
+const spell=separate.decks.session('p').uids.map(uid=>separate.state.instances.get(uid)).find(c=>c.cardId==='MGR-011');
+ok(spell?.zone==='hand','MGR-011 is in hand');
+fails(()=>separate.normalSummon('p',spell.uid),'CARD_NOT_NORMAL_SUMMONABLE:MGR-011','magic cannot use summon route');
+ok(spell.zone==='hand','rejected magic remains in hand');
+ok(separate.state.audit().ok,'rejected action does not corrupt state');
+
+console.log('NEMESIS RUNTIME CLEAN PHASE + ACTION: PASS — '+pass+'/'+pass);
