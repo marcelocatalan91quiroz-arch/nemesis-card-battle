@@ -5,16 +5,26 @@ import{DrawService}from'../services/DrawService.js';
 import{TurnService}from'../services/TurnService.js';
 import{PhaseService}from'../services/PhaseService.js';
 import{ActionService}from'../services/ActionService.js';
+import{GraveyardService}from'../services/GraveyardService.js';
+import{StatService}from'../services/StatService.js';
+import{VictoryService}from'../services/VictoryService.js';
+import{CombatService}from'../services/CombatService.js';
 
 export class DuelSession{
-  constructor({cardRegistry,deckRegistry,players=['player','enemy'],uidFactory,monsterZoneLimit=Infinity}={}){
+  constructor({cardRegistry,deckRegistry,players=['player','enemy'],uidFactory,monsterZoneLimit=Infinity,startingHp}={}){
     if(!cardRegistry||!deckRegistry)throw new Error('DUEL_REGISTRIES_REQUIRED');
+    if(!Number.isInteger(startingHp)||startingHp<=0)throw new Error('STARTING_HP_REQUIRED');
     this.state=new GameState();this.events=new EventBus();this.players=[...players];
+    this.hp=Object.fromEntries(this.players.map(p=>[p,startingHp]));
     this.decks=new DeckService({cardRegistry,deckRegistry,state:this.state,uidFactory});
     this.draws=new DrawService({deckService:this.decks,eventBus:this.events});
     this.turns=new TurnService({players,eventBus:this.events});
     this.phases=new PhaseService({turnService:this.turns,eventBus:this.events});
     this.actions=new ActionService({state:this.state,cardRegistry,turnService:this.turns,phaseService:this.phases,eventBus:this.events,monsterZoneLimit});
+    this.graveyard=new GraveyardService(this.state);
+    this.stats=new StatService({cardRegistry});
+    this.victory=new VictoryService({players,eventBus:this.events});
+    this.combat=new CombatService({state:this.state,cardRegistry,turnService:this.turns,phaseService:this.phases,graveyardService:this.graveyard,statService:this.stats,victoryService:this.victory,hp:this.hp,eventBus:this.events});
     this.started=false;
   }
   prepareDeck(player,deckId){if(this.started)throw new Error('DUEL_ALREADY_STARTED');return this.decks.instantiate(deckId,{owner:player})}
@@ -24,15 +34,17 @@ export class DuelSession{
     for(const p of this.players)if(!this.decks.session(p))throw new Error('PLAYER_DECK_MISSING:'+p);
     const opening={};for(const p of this.players)opening[p]=this.draws.openingHand(p,openingHandSize);
     const turn=this.turns.start({firstPlayer});this.phases.startTurn(turn.currentPlayer);this.started=true;
-    this.events.emit('duel:started',{firstPlayer:turn.currentPlayer,openingHandSize,phase:this.phases.phase});
-    return{turn,phase:this.phases.snapshot(),opening,state:this.state.audit()};
+    this.events.emit('duel:started',{firstPlayer:turn.currentPlayer,openingHandSize,phase:this.phases.phase,hp:{...this.hp}});
+    return{turn,phase:this.phases.snapshot(),opening,hp:Object.freeze({...this.hp}),state:this.state.audit()};
   }
   drawForTurn(player){this.phases.assert(player,'DRAW');return this.draws.drawTurnCard(player,this.turns.turnNumber)}
   advancePhase(player){return this.phases.advance(player)}
   normalSummon(player,uid){return this.actions.normalSummon(player,uid)}
   authorizeSpecialSummon(options){return this.actions.authorizeSpecialSummon(options)}
   specialSummon(player,uid,permit){return this.actions.specialSummon(player,uid,permit)}
+  attack(player,attackerUid,targetUid){return this.combat.attack(player,attackerUid,targetUid)}
   endTurn(player){
+    if(this.victory.result)throw new Error('DUEL_ALREADY_FINISHED');
     this.phases.assert(player,'END');
     const next=this.turns.endTurn();this.phases.resetForNextTurn(next.currentPlayer);return{turn:next,phase:this.phases.snapshot()};
   }
