@@ -1,0 +1,9 @@
+{
+  "name": "nemesis-runtime-clean",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "scripts": {
+    "test": "node tests/phase1.test.mjs"
+  }
+}
