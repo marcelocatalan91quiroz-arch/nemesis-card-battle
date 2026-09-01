@@ -4,7 +4,8 @@ import{createCardInstance}from'../src/core/CardInstance.js';
 import{GameState}from'../src/core/GameState.js';
 import{GraveyardService}from'../src/services/GraveyardService.js';
 import{RendererGuard}from'../src/renderer/RendererGuard.js';
-import{buildCardViewModel}from'../src/viewmodel/CardViewModel.js';\nimport{applyImageFallback}from'../src/renderer/CardRenderer.js';
+import{buildCardViewModel}from'../src/viewmodel/CardViewModel.js';
+import{applyImageFallback}from'../src/renderer/CardRenderer.js';
 let pass=0;const ok=(x,m)=>{assert.ok(x,m);pass++};
 
 const reg=new CardRegistry();
