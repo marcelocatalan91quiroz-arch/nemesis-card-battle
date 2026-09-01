@@ -1,0 +1,2 @@
+import{FrozenDataLoader}from'./FrozenDataLoader.js';import{DataRepository}from'./DataRepository.js';
+export async function loadFrozenGameData(options){const loader=options instanceof FrozenDataLoader?options:new FrozenDataLoader(options);const entries=await loader.loadAll();return new DataRepository(entries)}
