@@ -616,7 +616,15 @@ function nemesisCanonicalDeckName(name){
 function nemesisOwnerSessionActive(){return window.NEMESIS_OWNER_AUTH?.isOwner===true}
 function nemesisOwnerDeckAllowed(name){const access=NEMESIS_DECK_ACCESS[nemesisCanonicalDeckName(name)];return !access?.ownerOnly||nemesisOwnerSessionActive()}
 const NEMESIS_PRIVATE_CARD_IDS=new Set([...OLIMPO_DECK_IDS,...NEMESIS_DUEL_MASTER_IDS,...CABALLEROS_SUBMUNDO_DECK_IDS]);
+window.NEMESIS_OWNER_EXCLUSIVE_CARD_IDS=Object.freeze([...NEMESIS_PRIVATE_CARD_IDS]);
 function nemesisCardAllowedForUser(id){return !NEMESIS_PRIVATE_CARD_IDS.has(id)||nemesisOwnerSessionActive()}
+window.NEMESIS_OWNER_CARD_AUDIT=()=>({
+ authenticated:nemesisOwnerSessionActive(),
+ total:NEMESIS_PRIVATE_CARD_IDS.size,
+ available:[...NEMESIS_PRIVATE_CARD_IDS].filter(id=>nemesisCardAllowedForUser(id)&&state.owned.includes(id)&&!!card(id)),
+ missing:[...NEMESIS_PRIVATE_CARD_IDS].filter(id=>!card(id)),
+ blocked:[...NEMESIS_PRIVATE_CARD_IDS].filter(id=>!nemesisCardAllowedForUser(id))
+});
 
 function nemesisMergeDeckIds(saved,official){
  const out=[],seen=new Set();
@@ -761,7 +769,7 @@ async function nemesisOwnerVerify(){
 }
 async function nemesisOwnerLogin(){
  const ownerKey=prompt('CLAVE DEL PROPIETARIO NÉMESIS');if(!ownerKey)return false;
- try{const auth=await nemesisEnsureOwnerAuth();const ok=await auth?.login?.(ownerKey);if(ok){toast('MODO PROPIETARIO AUTENTICADO');nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();menuScene();return true}return false}catch{alert('Clave de propietario incorrecta o servidor no disponible.');return false}
+ try{const auth=await nemesisEnsureOwnerAuth();const ok=await auth?.login?.(ownerKey);if(ok){toast('MODO PROPIETARIO AUTENTICADO');nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();nemesisOwnerPanelScene();return true}return false}catch{alert('Clave de propietario incorrecta o servidor no disponible.');return false}
 }
 async function nemesisOwnerLogout(){
  try{await window.NEMESIS_OWNER_AUTH?.logout?.()}catch{}
@@ -803,6 +811,8 @@ function nemesisOwnerPanelScene(){
 }
 window.NEMESIS_OWNER_CONTROL=Object.freeze({
  panel:nemesisOwnerPanelScene,
+ login:nemesisOwnerLogin,
+ logout:nemesisOwnerLogout,
  addStars:n=>{if(!nemesisOwnerAssert())return false;state.stars=Math.max(0,(state.stars||0)+Math.floor(Number(n)||0));save();return state.stars},
  grantCard:nemesisOwnerGrantCard,
  jump:nemesisOwnerJump,
@@ -951,14 +961,16 @@ function cardStats(c){
 function esc(v=''){return String(v).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
 function nemesisCardArt(c){
  if(!c)return '';
- const direct=window.NEMESIS_CARD_ART?.[String(c.id)]||'';
- return direct||window.nemesisRealCardArt?.(c.id,c.img||'')||c.img||'';
+ return window.nemesisRealCardArt?.(c.id,c.img||'')||c.img||'';
 }
 window.NEMESIS_CARD_ASSET_AUDIT=()=>CARDS.map(c=>({id:c.id,name:c.name,img:nemesisCardArt(c),fallback:c.img||''}));
 document.addEventListener('error',e=>{
- const img=e.target;if(!(img instanceof HTMLImageElement)||img.dataset.nemesisFallback==='1')return;
- const id=img.dataset.cardId;if(!id)return;const c=card(id),fallback=c?.img||'';
- if(fallback&&img.src!==new URL(fallback,document.baseURI).href){img.dataset.nemesisFallback='1';img.src=fallback}
+ const img=e.target;if(!(img instanceof HTMLImageElement))return;
+ const id=img.dataset.cardId;if(!id)return;const c=card(id);if(!c)return;
+ const candidates=window.nemesisCardArtCandidates?.(id,c.img||'')||[c.img||''];
+ const tried=new Set((img.dataset.nemesisTried||'').split('|').filter(Boolean));tried.add(img.currentSrc||img.src);
+ const next=candidates.find(src=>{try{return !tried.has(new URL(src,document.baseURI).href)&&!tried.has(src)}catch{return !tried.has(src)}});
+ if(next){img.dataset.nemesisTried=[...tried].join('|');img.src=next}
 },{capture:true});
 function title(){menuScene()}
 function continueCampaign(){
@@ -1119,7 +1131,7 @@ function collectionScene(){
  app.innerHTML=`<section class="deck collection-global"><div class="deckbar"><div><h2>COLECCIÓN NÉMESIS GLOBAL</h2><small>${state.owned.length}/${INVENTORY_CAPACITY} obtenidas · ${catalogCards.length} cartas registradas · fuente única de arte</small></div><b>MAZO ${state.deck.length}/${nemesisActiveDeckLimit()}</b></div>
  <div class="saved-deck-console"><div><small>MAZO ACTIVO</small><select id="savedDeckSelect">${deckNames.map(n=>`<option ${n===state.activeDeckName?'selected':''}>${n}</option>`).join('')}</select></div><div><button class="btn" id="createSavedDeck">NUEVO MAZO</button><button class="btn" id="saveCurrentDeck">GUARDAR MAZO</button></div></div>
  <p style="max-width:1100px;margin:0 auto 14px">Imperio Dragón, Mago Rojo, Duel Master, Caballeros del Submundo y las cartas universales quedan disponibles en la misma colección. Los <b>Tesoros NÉMESIS</b> se muestran aquí, pero solo pasan al mazo después de canjearlos.</p>
- <div class="grid inventory-grid">${catalogCards.map(c=>{const owned=state.owned.includes(c.id),inDeck=state.deck.includes(c.id),treasure=c.treasure===true;const status=inDeck?'EN MAZO · TOCA PARA QUITAR':owned?'CANJEAR AL MAZO':treasure?'TESORO · ★1000 EN TESOROS':'BLOQUEADA';return `<button class="card ${inDeck?'sel':''} ${owned?'owned-card':'locked-card'}" ${owned?`data-id="${c.id}" data-owned="1"`:'disabled'}><img data-card-id="${c.id}" src="${nemesisCardArt(c)}" alt="${esc(c.name)}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${cardStats(c)}</small><small>${status}</small></button>`}).join('')}${emptySlots}</div>
+ <div class="grid inventory-grid">${catalogCards.map(c=>{const access=nemesisCardAllowedForUser(c.id),owned=state.owned.includes(c.id)&&access,inDeck=state.deck.includes(c.id)&&access,treasure=c.treasure===true,ownerOnly=NEMESIS_PRIVATE_CARD_IDS.has(c.id);const status=!access&&ownerOnly?'SOLO PROPIETARIO':inDeck?'EN MAZO · TOCA PARA QUITAR':owned?'CANJEAR AL MAZO':treasure?'TESORO · ★1000 EN TESOROS':'BLOQUEADA';return `<button class="card ${inDeck?'sel':''} ${owned?'owned-card':'locked-card'}" ${owned?`data-id="${c.id}" data-owned="1"`:'disabled'}><img data-card-id="${c.id}" src="${nemesisCardArt(c)}" alt="${esc(c.name)}" loading="lazy" decoding="async" fetchpriority="low"><b>${c.name}</b><small>${cardStats(c)}</small><small>${status}</small></button>`}).join('')}${emptySlots}</div>
  <div class="deckbar"><button class="btn" id="backMenu">VOLVER</button><button class="btn" id="startFromDeck">EMPEZAR · ${state.deck.length}/${nemesisActiveDeckLimit()}</button></div></section>`;
  document.querySelectorAll('.card[data-owned="1"][data-id]').forEach(b=>b.onclick=()=>{
    const id=b.dataset.id;
@@ -1434,7 +1446,7 @@ function pcApplyCardEquipment(side,i,c){const g=board[side]?.[i];if(!g||!c)retur
 
 
 const loader=new THREE.TextureLoader();function backTexture(){const c=document.createElement('canvas');c.width=256;c.height=356;const x=c.getContext('2d'),g=x.createLinearGradient(0,0,256,356);g.addColorStop(0,'#07020e');g.addColorStop(.5,'#2e084d');g.addColorStop(1,'#07020e');x.fillStyle=g;x.fillRect(0,0,256,356);x.strokeStyle='#b05bff';x.lineWidth=8;x.strokeRect(10,10,236,336);x.font='900 27px Georgia';x.textAlign='center';x.fillStyle='#f0dfff';x.shadowBlur=14;x.shadowColor='#9b3cff';x.fillText('NÉMESIS',128,178);x.font='700 13px Georgia';x.fillStyle='#c38ae9';x.fillText('CARD BATTLE',128,201);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t}const backTex=backTexture();
-function cardMesh(c){const g=new THREE.Group();g.userData.card=c;g.userData.faceDown=true;const geo=new THREE.PlaneGeometry(2.62,3.72),frontTex=loader.load(c.img);frontTex.colorSpace=THREE.SRGBColorSpace;frontTex.anisotropy=Math.min(graphicsAnisotropy,r.capabilities.getMaxAnisotropy());const frontMat=new THREE.MeshPhysicalMaterial({map:frontTex,side:THREE.FrontSide,roughness:.3,metalness:.08,clearcoat:.72,clearcoatRoughness:.16,emissive:0x110916,emissiveIntensity:.12}),backMat=new THREE.MeshStandardMaterial({map:backTex,side:THREE.FrontSide,roughness:.38,metalness:.08});const front=new THREE.Mesh(geo,frontMat);front.position.z=.07;front.castShadow=true;const back=new THREE.Mesh(geo,backMat);back.position.z=-.07;back.rotation.y=Math.PI;back.castShadow=true;const frameMat=new THREE.MeshPhysicalMaterial({color:0x4a1b66,emissive:0x6a23a0,emissiveIntensity:.45,metalness:.72,roughness:.2,clearcoat:.8});const topF=new THREE.Mesh(new THREE.BoxGeometry(2.76,.07,.12),frameMat),botF=topF.clone(),leftF=new THREE.Mesh(new THREE.BoxGeometry(.07,3.88,.12),frameMat),rightF=leftF.clone();topF.position.y=1.94;botF.position.y=-1.94;leftF.position.x=-1.36;rightF.position.x=1.36;[topF,botF,leftF,rightF].forEach(x=>{x.castShadow=true;g.add(x)});g.add(front,back);g.rotation.x=Math.PI/2;g.rotation.y=0;g.rotation.z=0;g.userData.front=front;g.userData.back=back;const rare=c.ancestral||c.special||c.rarity==='epic'||c.type==='fusion';if(rare){const aura=new THREE.Mesh(new THREE.PlaneGeometry(2.96,4.08),new THREE.MeshBasicMaterial({color:c.ancestral?0xffbf4a:0xb657ff,transparent:true,opacity:.52,wireframe:true,depthTest:false,blending:THREE.AdditiveBlending}));aura.position.z=.2;aura.renderOrder=11;g.add(aura);g.userData.aura=aura;const glow=new THREE.PointLight(c.ancestral?0xffbd55:0xb657ff,12,4,2);glow.position.z=.28;g.add(glow);g.userData.glow=glow}return g}
+function cardMesh(c){const g=new THREE.Group();g.userData.card=c;g.userData.faceDown=true;const geo=new THREE.PlaneGeometry(2.62,3.72),artCandidates=window.nemesisCardArtCandidates?.(c.id,c.img||'')||[nemesisCardArt(c)],frontTex=loader.load(artCandidates[0]||c.img,undefined,undefined,()=>{const next=artCandidates.find(x=>x&&x!==artCandidates[0]);if(next)loader.load(next,t=>{t.colorSpace=THREE.SRGBColorSpace;frontMat.map=t;frontMat.needsUpdate=true})});frontTex.colorSpace=THREE.SRGBColorSpace;frontTex.anisotropy=Math.min(graphicsAnisotropy,r.capabilities.getMaxAnisotropy());const frontMat=new THREE.MeshPhysicalMaterial({map:frontTex,side:THREE.FrontSide,roughness:.3,metalness:.08,clearcoat:.72,clearcoatRoughness:.16,emissive:0x110916,emissiveIntensity:.12}),backMat=new THREE.MeshStandardMaterial({map:backTex,side:THREE.FrontSide,roughness:.38,metalness:.08});const front=new THREE.Mesh(geo,frontMat);front.position.z=.07;front.castShadow=true;const back=new THREE.Mesh(geo,backMat);back.position.z=-.07;back.rotation.y=Math.PI;back.castShadow=true;const frameMat=new THREE.MeshPhysicalMaterial({color:0x4a1b66,emissive:0x6a23a0,emissiveIntensity:.45,metalness:.72,roughness:.2,clearcoat:.8});const topF=new THREE.Mesh(new THREE.BoxGeometry(2.76,.07,.12),frameMat),botF=topF.clone(),leftF=new THREE.Mesh(new THREE.BoxGeometry(.07,3.88,.12),frameMat),rightF=leftF.clone();topF.position.y=1.94;botF.position.y=-1.94;leftF.position.x=-1.36;rightF.position.x=1.36;[topF,botF,leftF,rightF].forEach(x=>{x.castShadow=true;g.add(x)});g.add(front,back);g.rotation.x=Math.PI/2;g.rotation.y=0;g.rotation.z=0;g.userData.front=front;g.userData.back=back;const rare=c.ancestral||c.special||c.rarity==='epic'||c.type==='fusion';if(rare){const aura=new THREE.Mesh(new THREE.PlaneGeometry(2.96,4.08),new THREE.MeshBasicMaterial({color:c.ancestral?0xffbf4a:0xb657ff,transparent:true,opacity:.52,wireframe:true,depthTest:false,blending:THREE.AdditiveBlending}));aura.position.z=.2;aura.renderOrder=11;g.add(aura);g.userData.aura=aura;const glow=new THREE.PointLight(c.ancestral?0xffbd55:0xb657ff,12,4,2);glow.position.z=.28;g.add(glow);g.userData.glow=glow}return g}
 const tweens=[];
 function twVec(obj,to,d=450){return new Promise(res=>{let done=false;const finish=()=>{if(done)return;done=true;try{obj.copy(to)}catch{}res()};tweens.push({kind:'v',obj,from:obj.clone(),to:to.clone(),start:performance.now(),d,res:finish});setTimeout(finish,d+900)})}
 function twNum(obj,k,to,d=450){return new Promise(res=>{let done=false;const finish=()=>{if(done)return;done=true;try{obj[k]=to}catch{}res()};tweens.push({kind:'n',obj,k,from:obj[k],to,start:performance.now(),d,res:finish});setTimeout(finish,d+900)})}
@@ -5533,4 +5545,4 @@ window.nemesisExternal33Audit=function(){
 };
 
 // V19.6.2 owner session bootstrap: la cookie HttpOnly se valida en js/owner-auth.js.
-window.addEventListener('nemesis-owner-auth',()=>{try{nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();if(document.querySelector('.menu-home'))menuScene();else if(document.querySelector('.collection-global'))collectionScene()}catch(e){console.warn('NÉMESIS owner refresh',e)}});
+window.addEventListener('nemesis-owner-auth',e=>{try{const was=window.__nemesisOwnerLastState,now=!!e.detail?.isOwner;window.__nemesisOwnerLastState=now;nemesisEnsureDeckLibrary();nemesisSyncActiveDeck();if(was!==undefined&&was!==now){if(document.querySelector('.collection-global'))collectionScene();else if(document.querySelector('.menu-home'))menuScene()}nemesisNextFrame(()=>window.NEMESIS_OWNER_AUTH_INJECT?.())}catch(err){console.warn('NÉMESIS owner refresh',err)}});

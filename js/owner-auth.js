@@ -23,12 +23,19 @@ async function logout(){
 function canUseDeck(name){return !PRIVATE.has(canon(name))||state.isOwner}
 function inject(){
  const b=document.getElementById('ownerBtn');if(!b)return;
- b.textContent=state.isOwner?'PROPIETARIO ✓ · CERRAR':'MODO PROPIETARIO · BLOQUEADO';
+ b.textContent=state.isOwner?'PROPIETARIO ✓ · PANEL':'MODO PROPIETARIO · BLOQUEADO';
  b.onclick=async()=>{
-  if(state.isOwner){await logout();location.reload();return}
+  if(state.isOwner){
+   if(typeof window.NEMESIS_OWNER_CONTROL?.panel==='function')return window.NEMESIS_OWNER_CONTROL.panel();
+   window.dispatchEvent(new CustomEvent('nemesis-owner-open'));return;
+  }
+  if(typeof window.NEMESIS_OWNER_CONTROL?.login==='function')return window.NEMESIS_OWNER_CONTROL.login();
   if(!state.configured){alert('La autenticación de propietario aún no está configurada en el servidor.');return}
   const key=prompt('CLAVE PRIVADA DEL PROPIETARIO');if(!key)return;
-  try{await login(key);location.reload()}catch(e){alert(e.message==='OWNER_AUTH_INVALID'?'Clave de propietario incorrecta.':'No se pudo autenticar al propietario.')}
+  try{
+   const ok=await login(key);
+   if(ok&&typeof window.NEMESIS_OWNER_CONTROL?.panel==='function')window.NEMESIS_OWNER_CONTROL.panel();
+  }catch(e){alert(e.message==='OWNER_AUTH_INVALID'?'Clave de propietario incorrecta.':'No se pudo autenticar al propietario.')}
  };
 }
 Object.defineProperties(state,{canUseDeck:{value:canUseDeck},refresh:{value:refresh},login:{value:login},logout:{value:logout}});

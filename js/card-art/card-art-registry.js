@@ -1,6 +1,8 @@
 (function(){
  const art=()=>window.NEMESIS_CARD_ART||{};
- window.nemesisRealCardArt=(id,fallback='')=>art()[String(id)]||fallback||'';
+ const sprite=id=>{try{return window.nemesisSpriteCardArt?.(String(id))||''}catch{return ''}};
+ window.nemesisCardArtCandidates=(id,fallback='')=>[sprite(id),art()[String(id)]||'',fallback||''].filter((v,i,a)=>v&&a.indexOf(v)===i);
+ window.nemesisRealCardArt=(id,fallback='')=>window.nemesisCardArtCandidates(id,fallback)[0]||'';
  window.nemesisApplyRealCardArt=(cards=[])=>{
    for(const card of cards){
      if(card?.id){
@@ -19,7 +21,9 @@
  window.NEMESIS_CARD_ART_AUDIT=()=>({
    count:Object.keys(art()).length,
    ids:Object.keys(art()),
-   missing:required.filter(id=>!art()[id]),
+   spriteLoaded:typeof window.nemesisSpriteCardArt==='function',
+   spritePath:window.NEMESIS_REAL_CARD_ART_SPRITE||null,
+   missing:required.filter(id=>!window.nemesisRealCardArt(id,'')),
    required:required.length
  });
 })();

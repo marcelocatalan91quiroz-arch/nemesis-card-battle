@@ -20,8 +20,9 @@
  window.NEMESIS_REAL_CARD_ART_INDEX=MAP;
  window.NEMESIS_REAL_CARD_ART_SPRITE=SPRITE_PATH;
  window.NEMESIS_REAL_CARD_ART_VERSION='v2-192x272-65';
- window.nemesisRealCardArt=function(id,fallback=''){return buildArt(id)||fallback||''};
- window.nemesisApplyRealCardArt=function(cards){
+ window.nemesisSpriteCardArt=buildArt;
+ if(typeof window.nemesisRealCardArt!=='function')window.nemesisRealCardArt=function(id,fallback=''){return buildArt(id)||fallback||''};
+ window.nemesisApplySpriteCardArt=function(cards){
    for(const c of cards||[]){const art=buildArt(c?.id);if(art)c.img=art}
    return cards;
  };
