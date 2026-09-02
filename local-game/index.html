@@ -79,16 +79,17 @@ function fresh(){
 }
 function mkPlayer(deck,hp){
   const order=[...deck.ids];shuffle(order);
-  return{deck:order,hand:[],field:[],grave:[],banished:[],hp,fatigue:0,normalUsed:false,positionChanged:new Set(),summonedTurn:new Map(),attackedTurn:new Map()};
+  return{deck:order,hand:[],field:[],grave:[],banished:[],hp,fatigue:0,normalUsed:false,normalDrawTurn:0,positionChanged:new Set(),summonedTurn:new Map(),attackedTurn:new Map()};
 }
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function p(k=S.current){return S.players[k]} function opp(k=S.current){return k==="P"?"E":"P"}
 function log(x){S.log.unshift("T"+S.turn+" "+(phases[S.phase]||"")+" · "+x);S.log=S.log.slice(0,80)}
 function drawOne(k,normal=false){
   const pl=p(k);
-  if(normal && pl.hand.length>=RULES.handDrawCap){log((k==="P"?"Jugador":"IA")+": robo normal omitido por mano 7+");return null}
+  if(normal&&pl.normalDrawTurn===S.turn){log((k==="P"?"Jugador":"IA")+": robo normal ya usado");return null}
+  if(normal && pl.hand.length>=RULES.handDrawCap){pl.normalDrawTurn=S.turn;log((k==="P"?"Jugador":"IA")+": robo normal omitido por mano 7+");return null}
   if(!pl.deck.length){pl.fatigue++;const dmg=RULES.fatigueStart+(pl.fatigue-1)*RULES.fatigueStep;pl.hp=Math.max(0,pl.hp-dmg);log((k==="P"?"Jugador":"IA")+" FATIGA "+dmg);checkWin();return null}
-  const id=pl.deck.shift();pl.hand.push(id);return id;
+  const id=pl.deck.shift();pl.hand.push(id);if(normal)pl.normalDrawTurn=S.turn;return id;
 }
 function start(){
   if(S.started)return;S.started=true;S.turn=1;S.current="P";S.phase=0;
@@ -102,8 +103,7 @@ function nextPhase(){
   if(!S.started||S.winner||S.current!=="P")return;
   if(S.phase>=phases.length-1)return;
   S.phase++;
-  if(S.phase===1 && S.turn!==1)drawOne("P",true);
-  if(S.phase===1 && S.turn===1)log("Primer jugador: sin robo normal en turno 1");
+  if(S.phase===1 && S.turn===1){p("P").normalDrawTurn=S.turn;log("Primer jugador: sin robo normal en turno 1");}
   render();
 }
 function isCreature(c){return c && (c.type==="CRIATURA"||c.type==="TRANSFORMACION"||c.type==="FUSION")}
@@ -198,7 +198,7 @@ function render(){
   document.getElementById("log").textContent=S.log.join("\n");
   const playerTurn=S.started&&!S.winner&&S.current==="P";
   document.getElementById("start").disabled=S.started;
-  document.getElementById("draw").disabled=!playerTurn||S.phase!==1||S.turn===1;
+  document.getElementById("draw").disabled=!playerTurn||S.phase!==1||S.turn===1||p("P").normalDrawTurn===S.turn;
   document.getElementById("next").disabled=!playerTurn||S.phase>=5;
   document.getElementById("summon").disabled=!playerTurn||![2,4].includes(S.phase);
   document.getElementById("position").disabled=!playerTurn||![2,4].includes(S.phase);
