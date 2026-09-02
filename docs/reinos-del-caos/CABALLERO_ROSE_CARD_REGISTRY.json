@@ -42,6 +42,35 @@
         }
       ],
       "flavor": "Mientras una rosa permanezca en pie, la luz no desaparecerá."
+    },
+    {
+      "slot": 2,
+      "name": "Espadachín de Pétalos",
+      "type": "MONSTRUO",
+      "attribute": "LUZ",
+      "rarity": "COMÚN",
+      "atk": 2000,
+      "def": 1500,
+      "visualApproval": "APPROVED",
+      "assetSpec": {
+        "format": "webp",
+        "width": 1024,
+        "height": 1434,
+        "maxKB": 300,
+        "actualKB": 294.9,
+        "status": "APPROVED_BINARY_PENDING_REPO_UPLOAD"
+      },
+      "abilities": [
+        {
+          "name": "Corte de Rosas",
+          "text": "Al destruir una criatura rival en combate, otra criatura LUZ obtiene +500 ATQ hasta el final del turno."
+        },
+        {
+          "name": "Guardia Floral",
+          "text": "1 vez por turno, si otra criatura LUZ es objetivo de ataque, Espadachín de Pétalos puede convertirse en el objetivo."
+        }
+      ],
+      "flavor": "Cada pétalo que cae, es una promesa de protección y victoria."
     }
   ]
 }
