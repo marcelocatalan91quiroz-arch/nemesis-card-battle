@@ -346,6 +346,15 @@ body[data-quality="high"] .hero:before{animation-duration:18s}
 .island-ui{position:relative;z-index:2;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:14px}.exchange-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.empty-state{min-height:220px;display:grid;place-items:center;text-align:center;border:1px dashed #59647a;background:#080c14}
 @media(max-width:1000px){.menu{grid-template-columns:repeat(2,1fr)}.home-actions,.island-ui,.exchange-grid{grid-template-columns:1fr}.playerbar{align-items:flex-start;flex-direction:column}}
 
+
+/* Island encounter assets */
+.island-stage{background-image:linear-gradient(180deg,#02040a22,#02040ad9),url("assets/fondo_isla_reino_del_caos.png");background-size:cover;background-position:center}
+.rose-encounter{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(320px,1.2fr);align-items:end;gap:20px;min-height:620px;width:100%;position:relative;z-index:2}
+.rose-character{align-self:end;justify-self:center;max-height:590px;max-width:100%;object-fit:contain;filter:drop-shadow(0 15px 24px #000) drop-shadow(0 0 18px #ff4fb844)}
+.dialogue-box{align-self:end;margin-bottom:28px;border:2px solid #aab1c2;background:linear-gradient(180deg,#121827ee,#060910f2);box-shadow:inset 1px 1px #fff5,inset -2px -2px #000,0 12px 32px #000b;padding:18px}
+.dialogue-name{font:900 24px Georgia,serif;color:#ff9bc8;text-shadow:1px 2px #000}.dialogue-text{font-size:17px;line-height:1.55;min-height:82px}.challenge-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:900px){.rose-encounter{grid-template-columns:1fr}.rose-character{max-height:430px}.dialogue-box{margin-bottom:8px}}
+
 </style>
 </head>
 <body>
@@ -364,9 +373,9 @@ body[data-quality="high"] .hero:before{animation-duration:18s}
 </div>
 </section>
 
-<section id="campaign" class="view"><div class="panel island-stage"><div class="island-ui">
-<div class="panel level"><div class="boss">🌹</div><h3>Nivel 1 · Caballero Rose</h3><p>Rival de la Isla · Líder N1 · 10.000 HP · LUZ</p><p class="rewards">Mazo rival aprobado 20/20. Antes del reto se prepara el mazo del jugador.</p><button class="btn" id="campaignRose">RETAR A CABALLERO ROSE</button></div>
-<div class="panel level locked"><div class="boss">🌑</div><h3>Nivel 2 · Caballero Oscuro de Gaia</h3><p>Líder N3 · 10.000 HP · OSCURIDAD</p><p class="locked-note">BLOQUEADO: su mazo aún no está definido. No se inventan cartas.</p><button class="btn" disabled>BLOQUEADO</button></div>
+<section id="campaign" class="view"><div class="panel island-stage"><div class="rose-encounter">
+<img class="rose-character" src="assets/caballero_rose.png" alt="Caballero Rose">
+<div class="dialogue-box"><div class="dialogue-name">CABALLERO ROSE</div><div class="dialogue-text" id="roseDialogue">Has llegado al Reino del Caos. Si deseas avanzar, tendrás que demostrar que tu mazo merece cruzar estas puertas.</div><div class="small">Rival de la Isla · Nivel 1 · Líder 10.000 HP · LUZ · Mazo 20/20</div><div class="challenge-actions"><button class="btn" id="campaignRose">RETAR</button><button class="btn" id="roseNextDialogue">SIGUIENTE DIÁLOGO</button></div></div>
 </div></div></section>
 
 <section id="collection" class="view"><div class="panel"><div class="deckbar"><div><h2>Cartas Coleccionables</h2><div class="small">Aquí se registran todas las cartas incorporadas al sistema: obtenidas, desconocidas y cartas adquiridas mediante Canje. El mazo de un rival no se convierte automáticamente en propiedad del jugador.</div></div><div><b id="colCount">20 registradas</b></div></div><div class="warning">Actualmente están registradas las 20 cartas canónicas de Caballero Rose como catálogo del juego. La propiedad del jugador y las cartas de canje se añadirán sin regalar cartas ni saltarse el sistema de obtención.</div><div class="cards" id="cards"></div></div></section>
@@ -603,6 +612,9 @@ function renderDuel(){
  document.getElementById("startDuel").disabled=G.started;document.getElementById("draw").disabled=!cp||G.phase!==1||G.turn===1||G.P.drawTurn===G.turn;document.getElementById("nextPhase").disabled=!cp||G.phase>=5;document.getElementById("summon").disabled=!cp||![2,4].includes(G.phase)||!isMonster(id);document.getElementById("setSupport").disabled=!cp||![2,4].includes(G.phase)||!id||isMonster(id);document.getElementById("ability").disabled=!cp||![2,4].includes(G.phase)||!id||!G.P.field.some(x=>x.id===id);document.getElementById("position").disabled=!cp||![2,4].includes(G.phase)||!id;document.getElementById("attack").disabled=!cp||G.phase!==3||!id;document.getElementById("endTurn").disabled=!cp||G.phase!==5;
 }
 function openDuel(){showView("duelView");newGame()}
+const ROSE_DIALOGUES=["Has llegado al Reino del Caos. Si deseas avanzar, tendrás que demostrar que tu mazo merece cruzar estas puertas.","Mis rosas no son adornos. Cada una protege un juramento, y cada juramento puede destruir a quien lo subestime.","Prepara tus veinte cartas. Cuando pulses RETAR, no habrá vuelta atrás."];
+let roseDialogueIndex=0;
+document.getElementById("roseNextDialogue").onclick=()=>{roseDialogueIndex=(roseDialogueIndex+1)%ROSE_DIALOGUES.length;document.getElementById("roseDialogue").textContent=ROSE_DIALOGUES[roseDialogueIndex]};
 document.getElementById("enterIsland").onclick=()=>showView("campaign");document.getElementById("homeIsland").onclick=()=>showView("campaign");
 document.getElementById("savePlayer").onclick=()=>{const v=document.getElementById("playerNameInput").value.trim();if(!v){document.getElementById("profileMsg").textContent="Escribe un nombre de jugador.";return}PERSIST.playerName=v;savePersist();document.getElementById("profileMsg").textContent="Usuario guardado: "+v};
 document.getElementById("campaignRose").onclick=()=>{if(!PERSIST.playerName){showView("home");document.getElementById("profileMsg").textContent="Primero crea tu usuario.";return}if((PERSIST.myDeck||[]).length!==20){showView("decks");return}openDuel()};document.getElementById("startDuel").onclick=startGame;document.getElementById("draw").onclick=()=>{if(canPlayer()&&G.phase===1){drawCard("P",true);renderDuel()}};document.getElementById("nextPhase").onclick=nextPhase;document.getElementById("summon").onclick=()=>{summon("P",G.P.selected);renderDuel()};document.getElementById("setSupport").onclick=()=>{useSupport("P",G.P.selected);renderDuel()};document.getElementById("ability").onclick=()=>{useAbility("P",G.P.selected);renderDuel()};document.getElementById("position").onclick=()=>{changePos("P",G.P.selected);renderDuel()};document.getElementById("attack").onclick=()=>{attack("P",G.P.selected);G.P.selected=null;renderDuel()};document.getElementById("endTurn").onclick=endTurn;document.getElementById("leaveDuel").onclick=()=>showView("home");
