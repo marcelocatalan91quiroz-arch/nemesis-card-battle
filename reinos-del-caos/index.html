@@ -20,11 +20,194 @@ button{font:inherit;color:inherit}.app{max-width:1500px;margin:auto;padding:18px
 .modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:20px;z-index:50}.modal.show{display:grid}.modalbox{max-width:620px;width:100%;max-height:85vh;overflow:auto}.ability{border-left:3px solid #b77e9c;padding-left:10px;margin:10px 0}.warning{border:1px solid #73585b;background:#24161a;border-radius:12px;padding:10px;color:#ffd1d1}
 @media(max-width:1000px){.menu{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.duel{grid-template-columns:1fr}.duel .center{order:-1}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.cards{grid-template-columns:1fr}.app{padding:10px}.top{align-items:flex-start;flex-direction:column}}
+
+/* === RETRO CONSOLE DUEL PRESENTATION v1 === */
+:root{--ps1-blue:#18233d;--ps1-deep:#080b13;--ps1-metal:#69718a;--ps1-hi:#c9d0df;--ps1-shadow:#02030a}
+html{background:#000}
+body{
+  background:
+    radial-gradient(circle at 50% 0,#312544 0,#11131c 34%,#030407 78%),
+    #000;
+  font-family:"Trebuchet MS","Arial Narrow",Arial,sans-serif;
+  letter-spacing:.01em;
+}
+body:after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:.16;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,#000 3px 4px);
+  mix-blend-mode:multiply;
+}
+.app{max-width:1040px;padding:12px}
+.top{
+  border-radius:2px;border:2px solid #8991a6;
+  box-shadow:inset 2px 2px #d2d6df,inset -3px -3px #131827,0 5px 18px #000a;
+  background:linear-gradient(180deg,#30384e,#151a29 55%,#0a0d16);
+  text-shadow:2px 2px #000;
+}
+.brand b{
+  font-family:Georgia,"Times New Roman",serif;
+  color:#f6e5ac;text-shadow:0 2px #5c3914,2px 3px #000;
+  letter-spacing:.12em
+}
+.tag,.pill{
+  border-radius:2px;
+  background:linear-gradient(180deg,#3b4257,#171c29);
+  box-shadow:inset 1px 1px #8790a6,inset -1px -1px #060810;
+}
+.menu{gap:5px}
+.menu button,.btn,.ctrl button{
+  border-radius:1px;border:2px solid #626b83;
+  background:linear-gradient(180deg,#39435e 0,#1d263b 48%,#101624 52%,#202a40 100%);
+  box-shadow:inset 1px 1px #a7aec0,inset -2px -2px #070913,2px 2px #000;
+  text-transform:uppercase;font-weight:800;letter-spacing:.04em;text-shadow:1px 1px #000;
+}
+.menu button:hover,.btn:hover,.ctrl button:hover{filter:brightness(1.18)}
+.menu button.active{color:#ffe697;border-color:#c9a95a;box-shadow:inset 1px 1px #fff0a7,inset -2px -2px #4b3311,0 0 8px #d7ad4b88}
+.panel{
+  border-radius:2px;border:2px solid #555e73;
+  background:linear-gradient(180deg,#151a28,#090d16);
+  box-shadow:inset 1px 1px #7e879d,inset -2px -2px #03050a,3px 4px 12px #0008;
+}
+.hero{
+  border-radius:0;
+  background:
+    linear-gradient(180deg,transparent 70%,#000b),
+    radial-gradient(ellipse at center,#7b3a6255 0,#1d1c3b55 28%,transparent 55%),
+    repeating-linear-gradient(90deg,#15192a 0 28px,#111522 29px 30px);
+}
+.hero .sigil{filter:drop-shadow(0 0 9px #f4c95d88)}
+.cards{gap:7px}
+.card{
+  border-radius:2px;border:2px solid #5c6477;
+  box-shadow:inset 1px 1px #a9afbb,inset -2px -2px #0a0c12,2px 3px 6px #0009;
+  background:linear-gradient(180deg,#2a2d38,#111521);
+  image-rendering:pixelated;
+}
+.card:hover{transform:translateY(-3px);filter:brightness(1.08)}
+.card .art{background:
+  radial-gradient(circle at 50% 40%,#f4d3dfaa 0,#7b314e55 22%,transparent 54%),
+  repeating-linear-gradient(45deg,#1b2030 0 8px,#131827 8px 16px);
+  border-bottom:2px ridge #737a8d
+}
+.level{background:
+  linear-gradient(180deg,#191e2cdd,#090c14ee),
+  repeating-linear-gradient(90deg,#151b2a 0 22px,#111725 23px 24px)
+}
+
+/* Duel arena 4:3, consola clásica */
+#duelView.active{
+  display:block;
+  padding:6px;
+  background:#000;
+  border:3px ridge #70798e;
+  box-shadow:0 0 0 3px #10141f,0 10px 30px #000;
+}
+.duel{
+  position:relative;
+  width:min(100%,960px);
+  min-height:700px;
+  margin:auto;
+  padding:14px;
+  grid-template-columns:minmax(0,1fr) 245px minmax(0,1fr);
+  gap:8px;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg,#05081233,#050812cc),
+    radial-gradient(ellipse at 50% 45%,#664b2a33 0,#15213b55 35%,#03050a 75%),
+    repeating-linear-gradient(90deg,#1b2537 0 2px,transparent 2px 84px),
+    repeating-linear-gradient(0deg,#20283a 0 2px,transparent 2px 76px),
+    linear-gradient(180deg,#1b2030,#080b12);
+  border:2px solid #798196;
+  box-shadow:inset 0 0 55px #000, inset 0 0 0 2px #252b39;
+}
+.duel:before{
+  content:"NÉMESIS DUEL FIELD";
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-8deg);
+  color:#d6b56b0c;font:900 56px Georgia,serif;letter-spacing:.12em;white-space:nowrap;pointer-events:none
+}
+.duel .side,.duel .center{position:relative;z-index:1}
+.duel .side{
+  background:linear-gradient(180deg,#111827cc,#070a10e8);
+}
+.duel .enemy{transform:perspective(900px) rotateY(4deg)}
+.duel .side:last-child{transform:perspective(900px) rotateY(-4deg)}
+.duelhead{
+  padding:6px 8px;
+  border:2px ridge #778096;
+  background:linear-gradient(180deg,#29334a,#111827);
+  text-shadow:1px 1px #000;
+}
+.hp{
+  min-width:92px;text-align:right;color:#ffdf73;
+  font-family:"Arial Black",Impact,sans-serif;font-size:22px;
+  text-shadow:2px 2px #4b1200,0 0 6px #ff7b0088
+}
+.zone{
+  border:1px solid #4a5368;
+  padding:5px;
+  background:#03060a80;
+  box-shadow:inset 0 0 16px #000a;
+}
+.zone h4{
+  margin:-5px -5px 6px;padding:3px 5px;
+  color:#d9c58f;background:linear-gradient(90deg,#313a50,#151b28);
+  border-bottom:1px solid #555f72
+}
+.strip{
+  min-height:120px;align-items:end;
+  background:
+    repeating-linear-gradient(90deg,transparent 0 18%,#74809b18 18.5% 19%,transparent 19.5% 20%);
+}
+.mini{
+  min-height:126px;border-radius:1px;border:2px solid #6f7686;
+  background:linear-gradient(135deg,#8a7652 0,#372718 12%,#191310 14%,#281b13 50%,#0c0c10 52%,#1c2230 100%);
+  box-shadow:inset 1px 1px #c8b58a,inset -2px -2px #050608,2px 3px 4px #000b;
+  transform-origin:center bottom;transition:transform .12s,filter .12s;
+  overflow:hidden;
+}
+.mini:hover{transform:translateY(-7px) scale(1.03);filter:brightness(1.15)}
+.mini.sel{
+  outline:3px solid #ffe27a;transform:translateY(-10px) scale(1.05);
+  box-shadow:0 0 14px #ffd75cbb,inset 1px 1px #fff0a9,inset -2px -2px #050608
+}
+.mini .n{
+  margin:-8px -8px 5px;padding:4px 5px;
+  background:#080b10d9;border-bottom:1px solid #8c7952;
+  color:#f4e5bc;font-family:Georgia,serif;font-size:10px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+}
+.mini .m{color:#cbd0dc}.mini .s{color:#ffdf83;text-shadow:1px 1px #000}
+.mini .pos{border-radius:1px;background:#070a10;border:1px solid #b6a76d;color:#ffe49b}
+.center{
+  background:linear-gradient(180deg,#171d2bcc,#090d16ee);
+  border:2px ridge #6c7488!important;
+}
+.phase{
+  margin:-8px -8px 4px;padding:8px;text-align:center;
+  background:linear-gradient(180deg,#4a355e,#241c36);
+  border-bottom:2px ridge #7b668e;
+  color:#ffe594;font-family:Georgia,serif;letter-spacing:.14em;text-shadow:1px 2px #000
+}
+.log{
+  border-radius:0;border:2px inset #424a5e;
+  background:#020409;color:#b9d4bd;
+  font-family:"Courier New",monospace;
+  text-shadow:0 0 3px #52b86644
+}
+.modal{backdrop-filter:none}.modalbox{border-radius:0}
+@keyframes ps1Pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
+.phase{animation:ps1Pulse 2.2s steps(2,end) infinite}
+@media(max-width:1000px){
+  #duelView.active{border-width:2px}
+  .duel{min-height:auto;grid-template-columns:1fr;padding:8px}
+  .duel .enemy,.duel .side:last-child{transform:none}
+  .center{order:-1}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand"><span>NÉMESIS</span><b>REINOS DEL CAOS</b><span>PROTOTIPO LOCAL · RULES_v1</span></div><div class="tag">SIN VERCEL · DATOS LOCALES</div></header>
+<header class="top"><div class="brand"><span>NÉMESIS</span><b>REINOS DEL CAOS</b><span>RETRO DUEL MODE · RULES_v1</span></div><div class="tag">PLAYSTATION-ERA STYLE · LOCAL</div></header>
 <nav class="menu">
 <button data-view="home" class="active">Inicio</button><button data-view="campaign">Campaña</button><button data-view="collection">Colección</button><button data-view="decks">Mazos</button><button data-view="leaders">Líderes</button>
 </nav>
