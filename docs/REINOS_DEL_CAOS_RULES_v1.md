@@ -53,6 +53,107 @@
 - Monstruos y Fusiones: máximo 2 habilidades, cada una con nombre propio + efecto breve; 1 frase corta de ambientación.
 - Mágicas, Trampas, Reliquias, Armas y Armaduras pueden tener más de 2 efectos.
 
+
+## Protocolo obligatorio de generación visual de cartas
+
+Este protocolo se ejecuta **antes de generar cualquier imagen de carta**. Su objetivo es impedir errores de orden, estadísticas, formato, rareza, atributo o habilidades.
+
+### 1. La fuente de verdad es la lista aprobada
+Cuando el usuario pida **“Carta N”**, primero se debe localizar exactamente la entrada N dentro del mazo aprobado correspondiente en este archivo. No se debe inferir por memoria, nombre parecido, conversación previa ni arte anterior.
+
+Antes de generar, verificar obligatoriamente:
+- número de carta;
+- nombre exacto;
+- tipo exacto;
+- atributo exacto;
+- rareza exacta;
+- ATQ/DEF si corresponde;
+- habilidades/efectos exactos;
+- restricciones y edición si corresponde.
+
+Si alguno de estos datos no coincide o está incompleto, **NO generar la imagen** hasta resolver la discrepancia.
+
+### 2. Regla absoluta de HP
+**Las cartas Monstruo y Fusión NO tienen HP.**
+El HP pertenece exclusivamente al **Líder/personaje del jugador**.
+
+Por lo tanto, una carta Monstruo/Fusión puede mostrar ATQ y DEF, pero **nunca HP como estadística propia**.
+
+Si un efecto dice “recupera 500 HP”, significa recuperar **HP del Líder/jugador**, no HP de la carta.
+
+### 3. Formato visual obligatorio
+Todas las cartas usan formato vertical y proporción uniforme.
+
+Especificación de archivo oficial:
+- **1024 × 1434 px**;
+- **WebP**;
+- objetivo/máximo aprobado **≤300 KB**;
+- una sola imagen oficial por ID;
+- ruta objetivo: `assets/cards/CRD-XXXXXX.webp`.
+
+Las cartas deben priorizar legibilidad y arte, sin texto innecesario.
+
+Para Monstruos/Fusiones, mostrar como máximo:
+- nombre;
+- atributo;
+- rareza/edición/restricción cuando corresponda;
+- ilustración principal;
+- **máximo 2 habilidades**, cada una con nombre propio y efecto breve;
+- frase corta de ambientación;
+- ATQ y DEF claramente visibles;
+- **sin HP**.
+
+Mágicas, Trampas, Reliquias, Armas y Armaduras pueden tener más efectos, pero deben mantenerse legibles.
+
+### 4. Identidad visual por atributo
+Usar como guía visual, sin convertirlo en una dependencia rígida del archivo de arte:
+- **LUZ:** blanco/dorado;
+- **OSCURIDAD:** negro/violeta;
+- **FUEGO:** rojo/naranja;
+- **ETERNIDAD:** azul profundo/cósmico.
+
+El estilo debe poder aplicarse desde la interfaz/datos para evitar que una ruta o marco incrustado sea imprescindible para que la carta funcione.
+
+### 5. Orden oficial de producción
+El orden de la lista aprobada es vinculante. No saltar de Carta 1 a Carta 9 ni sustituir una carta por otra aunque pertenezcan al mismo mazo.
+
+Ejemplo Caballero Rose:
+- Carta 1 = **Guardián de la Rosa Blanca**.
+- Carta 9 = **Caballero Rose**.
+
+Si se pide “crea Carta 1”, generar únicamente **Guardián de la Rosa Blanca** con los datos registrados en la entrada 1.
+
+### 6. Regla de rechazo
+Una imagen se considera **inválida y no debe integrarse** si presenta cualquiera de estos errores:
+- nombre distinto al aprobado;
+- tipo incorrecto;
+- atributo incorrecto;
+- rareza incorrecta;
+- ATQ/DEF distintos;
+- HP impreso en Monstruo/Fusión;
+- habilidad adicional no aprobada;
+- habilidad omitida o cambiada;
+- orden de carta equivocado;
+- formato visual incompatible con esta especificación.
+
+Una imagen inválida se descarta/regenera; **nunca se corrige cambiando el catálogo para que coincida con el error visual**.
+
+### 7. Flujo después de aprobar una imagen
+Solo después de que el usuario apruebe visualmente una carta:
+1. asignar/confirmar ID permanente y familia;
+2. optimizar a WebP 1024×1434 ≤300 KB;
+3. guardar en su ruta única por ID;
+4. validar archivo + catálogo;
+5. guardar en rama de trabajo;
+6. no fusionar a `main` hasta pruebas PASS;
+7. no desplegar a Vercel sin autorización explícita.
+
+### 8. Checklist mínimo que el chat debe realizar antes de cada generación
+**NÚMERO → NOMBRE → TIPO → ATRIBUTO → RAREZA → ATQ/DEF → HABILIDADES/EFECTOS → FORMATO → GENERAR.**
+
+Si el checklist falla, detener la generación.
+
+
 ## Identidad, imágenes y catálogo
 - Triple identidad: ID permanente de carta + ID de familia + UID de instancia de duelo.
 - Limitada Numerada: además ID único permanente de copia y número público #NNN/total.
