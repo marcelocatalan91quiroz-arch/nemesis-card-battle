@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>NÉMESIS · Reinos del Caos · Local</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,Arial,sans-serif;background:#05070d;color:#f7f8fc}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#2a173b 0,#10131f 35%,#05070d 75%)}
+button,select{font:inherit}.app{max-width:1500px;margin:auto;padding:18px}.top{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:18px;border:1px solid #3d3352;background:#0b0e18e8;border-radius:18px;position:sticky;top:8px;z-index:20}
+.brand h1{margin:0;font-size:clamp(22px,4vw,42px);letter-spacing:.08em}.brand small{opacity:.65}.hp{display:flex;gap:12px;flex-wrap:wrap}.hp b{font-size:20px}
+.panel{border:1px solid #2d3448;background:#0b101b;border-radius:16px;padding:14px}.grid{display:grid;grid-template-columns:1fr 300px 1fr;gap:14px;margin-top:14px}.side h2{margin:0 0 10px}.zone{margin-top:12px}.zone h3{font-size:13px;letter-spacing:.08em;opacity:.7}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;min-height:115px}.card{border:1px solid #38435d;background:linear-gradient(180deg,#1a2030,#0e1422);border-radius:12px;padding:9px;min-height:108px;cursor:pointer;position:relative}
+.card.selected{outline:2px solid #f4c95d}.card .id{font-size:10px;opacity:.55}.card .name{font-weight:800;font-size:13px;margin:5px 0}.card .meta{font-size:10px;opacity:.7}.card .stats{margin-top:8px;font-weight:800}.card .pos{position:absolute;right:7px;top:7px;font-size:9px;padding:2px 5px;border:1px solid #56627d;border-radius:8px}
+.controls{display:grid;gap:8px}.controls button,.ghost{border:1px solid #43516e;background:#17223a;color:#fff;border-radius:10px;padding:10px;cursor:pointer}.controls button:hover{background:#22304f}.controls button:disabled{opacity:.35;cursor:not-allowed}
+.status{white-space:pre-wrap;font:12px ui-monospace,Consolas,monospace;min-height:130px;background:#070a11;border-radius:10px;padding:10px}.tabs{display:flex;gap:8px;margin:14px 0}.tabs button{border:1px solid #39445e;background:#111827;color:#fff;border-radius:10px;padding:9px 12px}.rules{display:none}.rules.show{display:block}.rules-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.rule{border:1px solid #32384a;border-radius:12px;padding:12px;background:#0d1220}.warn{color:#ffcf7a}.ok{color:#9ef0b0}.log{max-height:220px;overflow:auto}
+@media(max-width:980px){.grid{grid-template-columns:1fr}.top{position:static;align-items:flex-start;flex-direction:column}.rules-grid{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top">
+  <div class="brand"><small>NÉMESIS · REINOS DEL CAOS · LOCAL CLEAN</small><h1>NÉMESIS CARD BATTLE</h1><small>Archivo único · sin Vercel · sin fetch · sin módulos externos</small></div>
+  <div class="hp"><span>MAGO ROJO <b id="hpP">10000</b></span><span>IMPERIO DRAGÓN <b id="hpE">10000</b></span></div>
+</header>
+<div class="tabs">
+  <button id="tabGame">Duelo</button><button id="tabRules">Reglas integradas</button><button id="reset">Reiniciar duelo</button>
+</div>
+<section id="rulesPanel" class="panel rules">
+  <h2>RULES_v1 integradas</h2>
+  <div class="rules-grid" id="rulesGrid"></div>
+  <p class="warn">Esta versión local aplica el núcleo determinista de turnos, robo, fatiga, mano, invocación, posiciones y combate. Los efectos específicos de Mágicas/Trampas/Reliquias/Fusiones todavía no se ejecutan automáticamente; se conservan como datos reales para la siguiente etapa de integración.</p>
+</section>
+<section id="gamePanel">
+<div class="grid">
+  <section class="panel side">
+    <h2>Imperio Dragón · IA local</h2>
+    <div class="zone"><h3>CAMPO</h3><div id="fieldE" class="cards"></div></div>
+    <div class="zone"><h3>MANO (<span id="handCountE">0</span>)</h3><div id="handE" class="cards"></div></div>
+    <div class="zone"><h3>CEMENTERIO (<span id="gyE">0</span>)</h3></div>
+  </section>
+  <aside class="panel">
+    <h3 id="turn">PREPARADO</h3>
+    <div class="status" id="status"></div>
+    <div class="controls">
+      <button id="start">Iniciar duelo</button>
+      <button id="draw">Robar</button>
+      <button id="next">Siguiente fase</button>
+      <button id="summon">Invocación Normal</button>
+      <button id="position">Cambiar posición</button>
+      <button id="attack">Atacar</button>
+      <button id="end">Finalizar turno</button>
+    </div>
+    <h3>Registro</h3><div class="status log" id="log"></div>
+  </aside>
+  <section class="panel side">
+    <h2>Mago Rojo · Jugador</h2>
+    <div class="zone"><h3>CAMPO</h3><div id="fieldP" class="cards"></div></div>
+    <div class="zone"><h3>MANO (<span id="handCountP">0</span>)</h3><div id="handP" class="cards"></div></div>
+    <div class="zone"><h3>CEMENTERIO (<span id="gyP">0</span>)</h3></div>
+  </section>
+</div>
+</section>
+</div>
+<script>
+"use strict";
+const DATA={"MAGO_ROJO":{"id":"MAGO_ROJO","name":"Mago Rojo","mechanic":"SELLOS_ARCANOS","ids":["MGR-001","MGR-002","MGR-003","MGR-004","MGR-005","MGR-006","MGR-007","MGR-008","MGR-009","MGR-010","MGR-011","MGR-012","MGR-013","MGR-014","MGR-015","MGR-016","MGR-017","MGR-018","MGR-019","MGR-020"],"cards":[{"id":"MGR-001","name":"Mago Rojo","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":2800,"def":2400,"ability":"DOMINIO ESCARLATA","effects":["Cada vez que activas una Mágica del arquetipo Mago Rojo, coloca 1 Sello Arcano en esta carta (máx. 3).","Una vez por turno, puedes consumir 3 Sellos Arcanos; recupera 1 Mágica del arquetipo desde tu Cementerio a tu mano.","Mientras tenga 3 Sellos Arcanos, gana 500 ATK."],"affinities":["FUEGO"]},{"id":"MGR-002","name":"Aprendiz de las Brasas","type":"CRIATURA","subtype":"EFECTO","rarity":"COMUN","atk":1700,"def":1900,"ability":"MEMORIA DE FUEGO","effects":["Cuando esta carta es Invocada Normalmente, puedes seleccionar 1 Mágica del arquetipo Mago Rojo en tu Cementerio y añadirla a tu mano; esa Mágica sólo puede ser activada una vez más durante este duelo.","Si esta carta en el Campo fuera a ser destruida, puedes descartar 1 carta; esta carta no es destruida.","Mientras controles a Mago Rojo, esta carta gana 300 ATK."],"affinities":["FUEGO"]},{"id":"MGR-003","name":"Salamandra de Rubí","type":"CRIATURA","subtype":"EFECTO","rarity":"RARA","atk":2100,"def":1800,"ability":"PIEL INCANDESCENTE","effects":["Cuando esta carta recibe daño de batalla y sobrevive, coloca 1 Sello Arcano en 1 carta Mago Rojo que controles. Este efecto sólo puede activarse una vez por turno.","Esta carta no puede ser seleccionada como objetivo de efectos de cartas del adversario, excepto por ataques.","Mientras controles 1 o más Sellos Arcanos, gana 300 DEF."],"affinities":["FUEGO"]},{"id":"MGR-004","name":"Caballero de Ceniza","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":2600,"def":2600,"ability":"GUARDIA ARDIENTE","effects":["Una vez por turno, puedes seleccionar 1 criatura del arquetipo Mago Rojo que controles; esa carta no puede ser destruida por efectos de cartas hasta el final del turno.","Si esa criatura fuera a ser destruida por batalla, gana 1000 DEF durante ese cálculo de daño.","Mientras controles 2 o más Sellos Arcanos, esta carta gana 300 ATK.","Mientras esta carta esté en el Campo, las Trampas Mago Rojo que controles no pueden ser destruidas por efectos del adversario."],"affinities":["FUEGO"]},{"id":"MGR-005","name":"Bruja de la Llama Negra","type":"CRIATURA","subtype":null,"rarity":"EPICA","atk":2700,"def":2200,"ability":"PACTO DE LLAMAS","effects":[],"affinities":["FUEGO"]},{"id":"MGR-006","name":"Guardián de la Forja Roja","type":"CRIATURA","subtype":null,"rarity":"EPICA","atk":2500,"def":3200,"ability":"FORJA PROTECTORA","effects":[],"affinities":["FUEGO"]},{"id":"MGR-007","name":"Fénix Carmesí","type":"CRIATURA","subtype":null,"rarity":"LEGENDARIA","atk":3400,"def":2500,"ability":"RENACER DE LAS CENIZAS","effects":[],"affinities":["FUEGO"]},{"id":"MGR-008","name":"Hechicero del Eclipse","type":"CRIATURA","subtype":null,"rarity":"EPICA","atk":3200,"def":2600,"ability":"ECLIPSE ARDIENTE","effects":[],"affinities":["FUEGO"]},{"id":"MGR-009","name":"Dragón Rubí Ancestral","type":"CRIATURA","subtype":null,"rarity":"LEGENDARIA","atk":5500,"def":4200,"ability":"HERENCIA ANCESTRAL","effects":[],"affinities":["FUEGO"]},{"id":"MGR-010","name":"Archimago de las Siete Llamas","type":"CRIATURA","subtype":null,"rarity":"LEGENDARIA","atk":4800,"def":3600,"ability":"LEGADO DE LAS SIETE LLAMAS","effects":[],"affinities":["FUEGO"]},{"id":"MGR-011","name":"Círculo de Invocación Roja","type":"MAGICA","subtype":null,"rarity":"EPICA","atk":0,"def":0,"ability":"CÍRCULO DE INVOCACIÓN","effects":[],"affinities":["FUEGO"]},{"id":"MGR-012","name":"Ráfaga Escarlata","type":"MAGICA_RAPIDA","subtype":null,"rarity":"EPICA","atk":0,"def":0,"ability":"RÁFAGA ESCARLATA","effects":[],"affinities":["FUEGO"]},{"id":"MGR-013","name":"Renacer entre Cenizas","type":"MAGICA","subtype":null,"rarity":"EPICA","atk":0,"def":0,"ability":"RENACER ENTRE CENIZAS","effects":[],"affinities":["FUEGO"]},{"id":"MGR-014","name":"Convergencia Carmesí","type":"MAGICA","subtype":null,"rarity":"EPICA","atk":0,"def":0,"ability":"CONVERGENCIA CARMESÍ","effects":[],"affinities":["FUEGO"]},{"id":"MGR-015","name":"Prisión de Fuego","type":"TRAMPA","subtype":null,"rarity":"EPICA","atk":0,"def":0,"ability":"PRISIÓN DE FUEGO","effects":[],"affinities":["FUEGO"]},{"id":"MGR-016","name":"Espejo de Brasas","type":"TRAMPA_RESPUESTA","subtype":null,"rarity":"EPICA","atk":0,"def":0,"ability":"ESPEJO DE BRASAS","effects":[],"affinities":["FUEGO"]},{"id":"MGR-017","name":"Última Llama","type":"TRAMPA_RESPUESTA","subtype":null,"rarity":"MITICA","atk":0,"def":0,"ability":"ÚLTIMA LLAMA","effects":[],"affinities":["FUEGO"]},{"id":"MGR-018","name":"Grimorio de las Siete Llamas","type":"RELIQUIA","subtype":null,"rarity":"ANCESTRAL","atk":0,"def":0,"ability":"SIETE LLAMAS","effects":[],"affinities":["FUEGO"]},{"id":"MGR-019","name":"Archimago del Dragón Carmesí","type":"FUSION","subtype":"EFECTO","rarity":"ANCESTRAL","atk":7500,"def":6500,"ability":"CONVERGENCIA ESCARLATA","effects":[],"affinities":["FUEGO"]},{"id":"MGR-020","name":"Bastón de Ignis","type":"ARMA","subtype":null,"rarity":"ANCESTRAL","atk":0,"def":0,"ability":"IGNIS","effects":[],"affinities":["FUEGO"]}]},"IMPERIO_DRAGON":{"id":"IMPERIO_DRAGON","name":"Imperio Dragón","mechanic":"ASCENSION_DRACONICA","ids":["IDR-001","IDR-002","IDR-003","IDR-004","IDR-005","IDR-006","IDR-007","IDR-008","IDR-009","IDR-010","IDR-011","IDR-012","IDR-013","IDR-014","IDR-015","IDR-016","IDR-017","IDR-018","IDR-019","IDR-020"],"cards":[{"id":"IDR-001","name":"Dragón Carmesí Joven","type":"CRIATURA","subtype":"EFECTO","rarity":"COMUN","atk":1800,"def":1600,"ability":"SANGRE IMPERIAL","effects":["Cada vez que ataca gana 1 Marca de Ascensión (máx. 2).","Si destruye un monstruo en batalla, inflige 300 de daño directo y permite buscar 1 carta Imperio Dragón del Deck."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-002","name":"Dragón Guerrero Escarlata","type":"CRIATURA","subtype":"EFECTO","rarity":"RARA","atk":2300,"def":1900,"ability":"FURIA ESCARLATA","effects":["Una vez por turno, si destruye un monstruo en batalla, gana 500 ATK y puede atacar nuevamente.","Al ser Invocada de Modo Normal, busca 1 carta Imperio Dragón del Deck.","Si Dragón Carmesí Joven está en Campo o Cementerio, gana 300 ATK."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-003","name":"Dragón Llamasangre","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":2300,"def":2000,"ability":"ALIENTO INCINERADOR","effects":["Al declarar un ataque, puede destruir 1 Mágica o Trampa rival; si lo hace, ese ataque gana 500 ATK.","Si es destruida en batalla, puede Invocar de Modo Especial 1 Dragón Carmesí Joven desde mano, Deck o Cementerio."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-004","name":"Dragón Obsidiana Escamarreal","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":2400,"def":1800,"ability":"LANZA DEL CATACLISMO","effects":["Al atacar, inflige 400 de daño por cada monstruo que controle el adversario.","Si ese ataque destruye una carta, gana 1 Marca de Ascensión.","Si es destruida en batalla, puede Invocar de Modo Especial 1 Dragón Carmesí Joven desde el Cementerio; el invocado gana 1 Marca de Ascensión."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-005","name":"Dragón Ala de Tormenta","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":2600,"def":2100,"ability":"DOMINIO DEL CLIMA","effects":["Una vez por turno puede cambiar el clima a Tormenta de Fuego; mientras esté activo, todas tus cartas Imperio Dragón ganan 300 ATK y 300 DEF.","Si es Invocada de Modo Especial, puede destruir hasta 2 cartas en el Campo rival."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-006","name":"Dragón Guardián de la Forja","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":2500,"def":2800,"ability":"ESCAMAS DE LA FORJA","effects":["Una vez por turno, protege 1 carta Imperio Dragón en el Campo de la destrucción por efectos de cartas durante ese turno.","Si esa carta hubiera sido destruida, en su lugar gana 1 Marca de Ascensión.","Mientras esta carta esté en el Campo, todas tus criaturas Imperio Dragón ganan 300 DEF."],"affinities":["FUEGO","DRAGON","TIERRA"]},{"id":"IDR-007","name":"Dragón Azoth del Abismo","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":3200,"def":2000,"ability":"VÓRTICE DEL ABISMO","effects":["Una vez por turno, puedes destruir 1 carta que controle el adversario; si lo haces, esta carta gana ATK igual al ATK original de esa carta destruida hasta el final del turno.","Si esta carta es Invocada de Modo Especial, puedes destruir 1 carta Mágica o Trampa en el Campo.","ALMA DEL CAOS: mientras tenga 2 o más Marcas de Ascensión, no puede ser objetivo de efectos de cartas del adversario."],"affinities":["FUEGO","DRAGON","OSCURIDAD"]},{"id":"IDR-008","name":"Dragón Emperador Infernal","type":"CRIATURA","subtype":"EFECTO","rarity":"EPICA","atk":3500,"def":3000,"ability":"INFIERNO DOMINANTE","effects":["Una vez por turno, puedes destruir 1 carta en el Campo; si lo haces, esta carta gana 500 ATK y tu adversario pierde 500 LP.","Si esta carta fuera a ser destruida, puedes desterrar 1 carta Imperio Dragón de tu Cementerio en su lugar.","AURA INFERNAL: todas tus criaturas Imperio Dragón ganan 200 ATK por cada Marca de Ascensión que tengan."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-009","name":"Dragón Carmesí Imperial","type":"TRANSFORMACION","subtype":"ASCENSION","rarity":"MITICA","atk":3200,"def":2600,"ability":"CORONA CARMESÍ","effects":["Solo puede aparecer transformando a Dragón Carmesí Joven con 2 Marcas de Ascensión.","Al transformarse, inflige 800 de daño directo.","Una vez por turno, si destruye una carta en batalla, gana 500 ATK permanente."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-010","name":"Emperador Dragón NÉMESIS","type":"TRANSFORMACION","subtype":"ASCENSION_SUPREMA","rarity":"ANCESTRAL","atk":4800,"def":4200,"ability":"TRONO DE LOS MIL DRAGONES","effects":["Solo puede aparecer transformando a Dragón Primogénito del Imperio con 4 Marcas de Ascensión.","Al transformarse, todas tus cartas Imperio Dragón ganan 700 ATK/DEF.","Una vez por duelo, destruye hasta 2 cartas rivales y este turno puede realizar un segundo ataque."],"affinities":["FUEGO","DRAGON","DIVINA"]},{"id":"IDR-011","name":"Llamado de la Sangre Imperial","type":"MAGICA","subtype":"NORMAL","rarity":"EPICA","atk":0,"def":0,"ability":"CONVOCATORIA IMPERIAL","effects":["Busca 1 criatura Imperio Dragón de Nivel 6 o menor y añádela a tu mano.","Si controlas una carta transformada, puedes además colocar 1 Marca de Ascensión en un dragón aliado."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-012","name":"Rugido de Ascensión","type":"MAGICA_RAPIDA","subtype":"RESPUESTA","rarity":"EPICA","atk":0,"def":0,"ability":"ASCENSIÓN INMEDIATA","effects":["Selecciona 1 dragón aliado; gana 1 Marca de Ascensión.","Si con esa marca alcanza el requisito de transformación, puede transformarse inmediatamente antes de resolver la acción rival."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-013","name":"Cielo del Imperio Ardiente","type":"MAGICA_CAMPO","subtype":"CAMPO","rarity":"MITICA","atk":0,"def":0,"ability":"DOMINIO DRACÓNICO","effects":["Todos tus dragones ganan 400 ATK/DEF.","La primera vez por turno que un dragón tuyo ataca, gana 1 Marca de Ascensión después del combate.","Si esta carta es destruida, roba 1 carta."],"affinities":["FUEGO","DRAGON","VIENTO"]},{"id":"IDR-014","name":"Contraataque de Escamas","type":"TRAMPA","subtype":"NORMAL","rarity":"EPICA","atk":0,"def":0,"ability":"ESCAMAS REACTIVAS","effects":["Cuando un dragón aliado es atacado, gana 1200 DEF hasta el final del combate.","Si sobrevive, el atacante pierde 600 ATK hasta el final de su próximo turno."],"affinities":["DRAGON","FUEGO"]},{"id":"IDR-015","name":"Ira del Último Dragón","type":"TRAMPA_RESPUESTA","subtype":"RESPUESTA","rarity":"LEGENDARIA","atk":0,"def":0,"ability":"ÚLTIMO RUGIDO","effects":["Cuando una carta Imperio Dragón fuera a ser destruida por un efecto rival, niega esa destrucción.","Luego destruye 1 carta rival. Si la carta protegida estaba transformada, roba 1 carta."],"affinities":["FUEGO","DRAGON","CAOS"]},{"id":"IDR-016","name":"Espada Colmillo del Emperador","type":"ARMA","subtype":"ESPADA_DRACONICA","rarity":"MITICA","atk":0,"def":0,"ability":"FILO DEL EMPERADOR","effects":["La criatura equipada gana 1400 ATK.","Cuando destruye una criatura en batalla, gana 1 Marca de Ascensión.","Una vez por duelo, su ataque ignora 50% de la DEF del objetivo."],"affinities":["FUEGO","DRAGON"]},{"id":"IDR-017","name":"Lanza de Ala Carmesí","type":"ARMA","subtype":"LANZA_DRACONICA","rarity":"LEGENDARIA","atk":0,"def":0,"ability":"PICADO IMPERIAL","effects":["La criatura equipada gana 1000 ATK y 400 DEF.","Si tiene afinidad Viento o está transformada, puede atacar una segunda vez una vez por duelo.","El segundo ataque inflige como máximo 1500 de daño directo."],"affinities":["FUEGO","VIENTO","DRAGON"]},{"id":"IDR-018","name":"Corona del Primer Dragón","type":"RELIQUIA","subtype":"IMPERIAL","rarity":"ANCESTRAL","atk":0,"def":0,"ability":"HERENCIA DEL TRONO","effects":["Una vez por turno, cuando coloques una Marca de Ascensión, puedes colocar una segunda marca en otra criatura distinta.","Tus cartas transformadas no pueden perder Marcas de Ascensión.","Si esta reliquia deja el Campo, recupera 1 carta Imperio Dragón del Cementerio a la mano."],"affinities":["DIVINA","DRAGON"]},{"id":"IDR-019","name":"Dragón Eclipse de la Corona","type":"FUSION","subtype":"DRAGON_SUPREMO","rarity":"ANCESTRAL","atk":5200,"def":3800,"ability":"ECLIPSE DRACÓNICO","effects":["Materiales: IDR-003 + IDR-004.","Al ser Invocada por Fusión, destruye todas las Mágicas y Trampas rivales.","Gana 300 ATK por cada Marca de Ascensión que tenían sus materiales al fusionarse.","Una vez por duelo, puede atacar a todos los monstruos rivales una vez cada uno."],"affinities":["FUEGO","OSCURIDAD","DRAGON"]},{"id":"IDR-020","name":"NÉMESIS Dracónico — Emperador del Fin","type":"FUSION","subtype":"FUSION_NEMESIS","rarity":"NEMESIS_UNICA","atk":6500,"def":5500,"ability":"APOCALIPSIS IMPERIAL","effects":["Materiales: 1 carta transformada Imperio Dragón + IDR-008.","Al ser Invocada, coloca el Campo Cielo del Imperio Ardiente desde Deck o Cementerio.","Una vez por duelo, destruye hasta 3 cartas rivales; por cada una destruida gana 500 ATK hasta el final del turno.","Si fuera destruida, puedes retirar 3 Marcas de Ascensión de tu Campo para evitarlo."],"affinities":["FUEGO","DRAGON","DIVINA","CAOS"]}]}};
+const RULES={"deckMain":20,"fusionMax":5,"openingHand":5,"normalDraw":1,"handDrawCap":7,"fatigueStart":500,"fatigueStep":500,"normalSummonPerTurn":1,"monsterZones":5,"supportZones":3,"relicZones":2,"fieldMagicZones":1,"leaderHp":10000,"phases":["INICIO","ROBO","PRINCIPAL","COMBATE","PRINCIPAL 2","FINAL"],"attributes":["LUZ","OSCURIDAD","FUEGO","ETERNIDAD"],"statuses":["Aturdido","Sellado","Congelado","Envenenado","Debilitado","Protegido"]};
+const CARD=new Map([...DATA.MAGO_ROJO.cards,...DATA.IMPERIO_DRAGON.cards].map(c=>[c.id,c]));
+const S={started:false,turn:0,current:"P",phase:0,selected:null,winner:null,log:[],players:{}};
+const phases=RULES.phases;
+function fresh(){
+  S.started=false;S.turn=0;S.current="P";S.phase=0;S.selected=null;S.winner=null;S.log=[];
+  S.players={
+    P:mkPlayer(DATA.MAGO_ROJO,RULES.leaderHp),
+    E:mkPlayer(DATA.IMPERIO_DRAGON,RULES.leaderHp)
+  };
+  render();
+}
+function mkPlayer(deck,hp){
+  const order=[...deck.ids];shuffle(order);
+  return{deck:order,hand:[],field:[],grave:[],banished:[],hp,fatigue:0,normalUsed:false,positionChanged:new Set(),summonedTurn:new Map(),attackedTurn:new Map()};
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function p(k=S.current){return S.players[k]} function opp(k=S.current){return k==="P"?"E":"P"}
+function log(x){S.log.unshift("T"+S.turn+" "+(phases[S.phase]||"")+" · "+x);S.log=S.log.slice(0,80)}
+function drawOne(k,normal=false){
+  const pl=p(k);
+  if(normal && pl.hand.length>=RULES.handDrawCap){log((k==="P"?"Jugador":"IA")+": robo normal omitido por mano 7+");return null}
+  if(!pl.deck.length){pl.fatigue++;const dmg=RULES.fatigueStart+(pl.fatigue-1)*RULES.fatigueStep;pl.hp=Math.max(0,pl.hp-dmg);log((k==="P"?"Jugador":"IA")+" FATIGA "+dmg);checkWin();return null}
+  const id=pl.deck.shift();pl.hand.push(id);return id;
+}
+function start(){
+  if(S.started)return;S.started=true;S.turn=1;S.current="P";S.phase=0;
+  for(const k of["P","E"])for(let i=0;i<RULES.openingHand;i++)drawOne(k,false);
+  log("Duelo iniciado · mano inicial 5 · el primer jugador no roba en su primer turno");render();
+}
+function beginTurn(k){
+  const pl=p(k);pl.normalUsed=false;pl.positionChanged.clear();S.phase=0;log("Inicio de turno de "+(k==="P"?"Jugador":"IA"));
+}
+function nextPhase(){
+  if(!S.started||S.winner||S.current!=="P")return;
+  if(S.phase>=phases.length-1)return;
+  S.phase++;
+  if(S.phase===1 && S.turn!==1)drawOne("P",true);
+  if(S.phase===1 && S.turn===1)log("Primer jugador: sin robo normal en turno 1");
+  render();
+}
+function isCreature(c){return c && (c.type==="CRIATURA"||c.type==="TRANSFORMACION"||c.type==="FUSION")}
+function summon(){
+  if(!S.started||S.winner||S.current!=="P"||![2,4].includes(S.phase))return;
+  const pl=p("P");if(pl.normalUsed||pl.field.length>=RULES.monsterZones)return;
+  let id=S.selected&&pl.hand.includes(S.selected)?S.selected:pl.hand.find(x=>isCreature(CARD.get(x)));
+  if(!id||!isCreature(CARD.get(id)))return;
+  pl.hand.splice(pl.hand.indexOf(id),1);pl.field.push({id,pos:"ATQ"});pl.normalUsed=true;pl.summonedTurn.set(id,S.turn);S.selected=null;log("Invocación Normal: "+CARD.get(id).name);render();
+}
+function changePosition(){
+  if(!S.started||S.winner||S.current!=="P"||![2,4].includes(S.phase))return;
+  const pl=p("P");const item=pl.field.find(x=>x.id===S.selected);if(!item)return;
+  if(pl.positionChanged.has(item.id)||pl.summonedTurn.get(item.id)===S.turn)return;
+  item.pos=item.pos==="ATQ"?"DEF":"ATQ";pl.positionChanged.add(item.id);log("Posición: "+CARD.get(item.id).name+" → "+item.pos);render();
+}
+function resolveBattle(aItem,dItem,atkK,defK){
+  const A=CARD.get(aItem.id),D=CARD.get(dItem.id),atk=A.atk,defStat=dItem.pos==="ATQ"?D.atk:D.def;
+  const pa=p(atkK),pd=p(defK);
+  if(dItem.pos==="ATQ"){
+    if(atk>defStat){destroy(defK,dItem.id);pd.hp=Math.max(0,pd.hp-(atk-defStat));log(A.name+" destruye "+D.name+" y causa "+(atk-defStat))}
+    else if(atk<defStat){destroy(atkK,aItem.id);pa.hp=Math.max(0,pa.hp-(defStat-atk));log(D.name+" vence a "+A.name+" · daño "+(defStat-atk))}
+    else{destroy(atkK,aItem.id);destroy(defK,dItem.id);log("Empate: ambas criaturas destruidas")}
+  }else{
+    if(atk>defStat){destroy(defK,dItem.id);pd.hp=Math.max(0,pd.hp-(atk-defStat));log(A.name+" supera DEF de "+D.name+" · daño "+(atk-defStat))}
+    else if(atk<defStat){pa.hp=Math.max(0,pa.hp-(defStat-atk));log(A.name+" no supera DEF · daño al atacante "+(defStat-atk))}
+    else{destroy(atkK,aItem.id);destroy(defK,dItem.id);log("ATQ=DEF: ambas destruidas")}
+  }
+  checkWin();
+}
+function destroy(k,id){const pl=p(k),i=pl.field.findIndex(x=>x.id===id);if(i>=0){pl.field.splice(i,1);pl.grave.push(id)}}
+function attack(){
+  if(!S.started||S.winner||S.current!=="P"||S.phase!==3)return;
+  const pl=p("P"),en=p("E");
+  const a=pl.field.find(x=>x.id===S.selected)||pl.field.find(x=>x.pos==="ATQ"&&pl.summonedTurn.get(x.id)!==S.turn&&pl.attackedTurn.get(x.id)!==S.turn);
+  if(!a||a.pos!=="ATQ"||pl.summonedTurn.get(a.id)===S.turn||pl.attackedTurn.get(a.id)===S.turn)return;
+  pl.attackedTurn.set(a.id,S.turn);
+  if(!en.field.length){en.hp=Math.max(0,en.hp-CARD.get(a.id).atk);log("Ataque directo de "+CARD.get(a.id).name+" · "+CARD.get(a.id).atk);checkWin()}
+  else{
+    let d=en.field.find(x=>x.id===S.selected && x.id!==a.id)||en.field[0];resolveBattle(a,d,"P","E");
+  }
+  S.selected=null;render();
+}
+function checkWin(){
+  if(p("P").hp<=0||p("E").hp<=0){S.winner=p("P").hp<=0?"E":"P";log("FIN DEL DUELO · ganador "+(S.winner==="P"?"Mago Rojo":"Imperio Dragón"))}
+}
+function endTurn(){
+  if(!S.started||S.winner||S.current!=="P")return;
+  S.current="E";S.turn++;beginTurn("E");render();setTimeout(aiTurn,250);
+}
+function aiTurn(){
+  if(S.winner)return;
+  const ai=p("E");
+  S.phase=1;drawOne("E",true);
+  S.phase=2;
+  if(!ai.normalUsed&&ai.field.length<RULES.monsterZones){
+    const idx=ai.hand.findIndex(x=>isCreature(CARD.get(x)));
+    if(idx>=0){const id=ai.hand.splice(idx,1)[0];ai.field.push({id,pos:"ATQ"});ai.normalUsed=true;ai.summonedTurn.set(id,S.turn);log("IA invoca "+CARD.get(id).name)}
+  }
+  S.phase=3;
+  const targets=[...ai.field].filter(x=>x.pos==="ATQ"&&ai.summonedTurn.get(x.id)!==S.turn&&ai.attackedTurn.get(x.id)!==S.turn);
+  for(const a of targets){
+    if(S.winner)break;ai.attackedTurn.set(a.id,S.turn);
+    const human=p("P");
+    if(!human.field.length){human.hp=Math.max(0,human.hp-CARD.get(a.id).atk);log("IA ataque directo "+CARD.get(a.id).name+" · "+CARD.get(a.id).atk);checkWin()}
+    else{const d=human.field.reduce((best,x)=>CARD.get(x.id).def<CARD.get(best.id).def?x:best,human.field[0]);resolveBattle(a,d,"E","P")}
+  }
+  if(!S.winner){S.current="P";S.turn++;beginTurn("P")}
+  render();
+}
+function select(id){S.selected=S.selected===id?null:id;render()}
+function cardEl(item,k,zone){
+  const id=typeof item==="string"?item:item.id,c=CARD.get(id),d=document.createElement("div");d.className="card"+(S.selected===id?" selected":"");d.onclick=()=>select(id);
+  const pos=typeof item==="string"?"":'<span class="pos">'+item.pos+'</span>';
+  d.innerHTML=pos+'<div class="id">'+c.id+' · '+c.rarity+'</div><div class="name">'+escapeHtml(c.name)+'</div><div class="meta">'+escapeHtml(c.type)+(c.ability?' · '+escapeHtml(c.ability):'')+'</div>'+(isCreature(c)?'<div class="stats">ATQ '+c.atk+' / DEF '+c.def+'</div>':'<div class="stats">SOPORTE</div>');
+  return d;
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function renderZone(k,zone,hostId){
+  const host=document.getElementById(hostId);host.replaceChildren();
+  for(const x of p(k)[zone])host.appendChild(cardEl(x,k,zone));
+}
+function render(){
+  document.getElementById("hpP").textContent=p("P")?.hp??RULES.leaderHp;document.getElementById("hpE").textContent=p("E")?.hp??RULES.leaderHp;
+  if(S.players.P){renderZone("P","hand","handP");renderZone("P","field","fieldP");renderZone("E","hand","handE");renderZone("E","field","fieldE")}
+  document.getElementById("handCountP").textContent=p("P")?.hand.length??0;document.getElementById("handCountE").textContent=p("E")?.hand.length??0;
+  document.getElementById("gyP").textContent=p("P")?.grave.length??0;document.getElementById("gyE").textContent=p("E")?.grave.length??0;
+  document.getElementById("turn").textContent=S.winner?"GANADOR: "+(S.winner==="P"?"MAGO ROJO":"IMPERIO DRAGÓN"):(S.started?"Turno "+S.turn+" · "+(S.current==="P"?"Jugador":"IA")+" · "+phases[S.phase]:"PREPARADO");
+  document.getElementById("status").textContent="Integridad: "+(CARD.size===40?"40/40 cartas OK":"ERROR")+
+    "\nMazo Mago Rojo: "+DATA.MAGO_ROJO.ids.length+"/20\nMazo Imperio Dragón: "+DATA.IMPERIO_DRAGON.ids.length+"/20"+
+    "\nSeleccionada: "+(S.selected||"ninguna")+"\nCampo jugador: "+(p("P")?.field.length??0)+"/5 · Campo IA: "+(p("E")?.field.length??0)+"/5";
+  document.getElementById("log").textContent=S.log.join("\n");
+  const playerTurn=S.started&&!S.winner&&S.current==="P";
+  document.getElementById("start").disabled=S.started;
+  document.getElementById("draw").disabled=!playerTurn||S.phase!==1||S.turn===1;
+  document.getElementById("next").disabled=!playerTurn||S.phase>=5;
+  document.getElementById("summon").disabled=!playerTurn||![2,4].includes(S.phase);
+  document.getElementById("position").disabled=!playerTurn||![2,4].includes(S.phase);
+  document.getElementById("attack").disabled=!playerTurn||S.phase!==3;
+  document.getElementById("end").disabled=!playerTurn;
+}
+function renderRules(){
+  const rows=[
+    ["Mazo","20 cartas principales; Fusión 0–5 separadas."],
+    ["Zonas","5 criaturas · 3 soporte · 2 Reliquias · 1 Mágica de Campo."],
+    ["Inicio","5 cartas; primer jugador no roba en su primer turno."],
+    ["Robo","1 normal/turno; con 7+ cartas no hay robo normal."],
+    ["Fatiga","500, 1000, 1500… si el mazo está vacío."],
+    ["Invocación","1 Normal/turno; recién invocada no ataca salvo texto."],
+    ["Posición","ATQ/DEF; cambio 1 vez/turno, no en turno de invocación."],
+    ["Combate","ATQ vs ATQ/DEF según RULES_v1; diferencia causa daño."],
+    ["Fases",RULES.phases.join(" → ")],
+    ["Atributos","LUZ · OSCURIDAD · FUEGO · ETERNIDAD"],
+    ["Estados",RULES.statuses.join(", ")],
+    ["HP","Pertenece al Líder; monstruos y Fusiones no tienen HP propio."]
+  ];
+  document.getElementById("rulesGrid").innerHTML=rows.map(x=>'<div class="rule"><b>'+x[0]+'</b><p>'+x[1]+'</p></div>').join("");
+}
+document.getElementById("start").onclick=start;
+document.getElementById("draw").onclick=()=>{if(S.current==="P"&&S.phase===1){drawOne("P",true);render()}};
+document.getElementById("next").onclick=nextPhase;
+document.getElementById("summon").onclick=summon;
+document.getElementById("position").onclick=changePosition;
+document.getElementById("attack").onclick=attack;
+document.getElementById("end").onclick=endTurn;
+document.getElementById("reset").onclick=fresh;
+document.getElementById("tabRules").onclick=()=>{document.getElementById("rulesPanel").classList.add("show");document.getElementById("gamePanel").style.display="none"};
+document.getElementById("tabGame").onclick=()=>{document.getElementById("rulesPanel").classList.remove("show");document.getElementById("gamePanel").style.display=""};
+renderRules();fresh();
+</script>
+</body>
+</html>
