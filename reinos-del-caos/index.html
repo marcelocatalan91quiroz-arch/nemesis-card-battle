@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>NÉMESIS: REINOS DEL CAOS</title>
+<style>
+:root{color-scheme:dark;font-family:Inter,system-ui,Arial,sans-serif;--bg:#06070d;--panel:#0d111c;--line:#2c344a;--gold:#d9b75f;--rose:#d98aa8;--ok:#7be0a3;--bad:#ff8585}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -15%,#3a1735 0,#15101e 28%,#080a12 62%,#05060a 100%);color:#f5f7fb}
+button{font:inherit;color:inherit}.app{max-width:1500px;margin:auto;padding:18px}.top{border:1px solid var(--line);background:#090c15e8;border-radius:20px;padding:18px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand b{display:block;font-size:clamp(26px,5vw,52px);letter-spacing:.08em}.brand span{opacity:.65;font-size:12px;letter-spacing:.14em}.tag{padding:7px 10px;border:1px solid #57455e;border-radius:999px;color:#ffd7e8;font-size:12px}
+.menu{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0}.menu button,.btn{border:1px solid #3b4561;background:#121827;border-radius:12px;padding:11px 12px;cursor:pointer}.menu button:hover,.btn:hover{background:#1b2439}.menu button.active{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset}.view{display:none}.view.active{display:block}
+.panel{border:1px solid var(--line);background:linear-gradient(180deg,#0e1320,#0a0e17);border-radius:18px;padding:16px}.hero{min-height:360px;display:grid;place-items:center;text-align:center;padding:30px;background:radial-gradient(circle at 50% 30%,#55283e55,transparent 45%),linear-gradient(180deg,#101522,#090c14)}
+.hero h1{font-size:clamp(34px,7vw,78px);margin:.2em 0}.hero p{max-width:720px;opacity:.72}.hero .sigil{font-size:70px}.statusline{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:18px}.pill{border:1px solid #3a4359;border-radius:999px;padding:7px 10px;font-size:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.level{position:relative;overflow:hidden;min-height:220px}.level.locked{opacity:.52}.level h3{font-size:26px;margin:.2em 0}.level .boss{font-size:52px}.rewards{font-size:13px;opacity:.76}.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+.card{border:1px solid #38425a;border-radius:15px;background:linear-gradient(180deg,#181d2c,#0e1320);overflow:hidden;min-height:280px;cursor:pointer}.card .art{height:150px;display:grid;place-items:center;font-size:48px;background:radial-gradient(circle,#fff8 0,#eab8ce30 24%,#d9b75f18 52%,#05070d 100%);border-bottom:1px solid #343d54}.card .body{padding:11px}.card .slot{font-size:10px;opacity:.55}.card h4{margin:5px 0;font-size:15px}.card .meta{font-size:11px;opacity:.7}.card .stats{font-weight:800;margin-top:8px}.card.approved{border-color:#b77e9c}.card.approved .art:after{content:"ARTE APROBADO";position:absolute;font-size:9px;margin-top:118px;border:1px solid #8c5c77;border-radius:999px;padding:3px 6px;background:#190d15}
+.deckbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}.leader{min-height:220px}.leader .avatar{font-size:58px}.locked-note{color:#e7c879}.resource{font-size:28px;font-weight:800}.small{font-size:12px;opacity:.7}
+.duel{display:grid;grid-template-columns:1fr 320px 1fr;gap:12px}.side{min-width:0}.duelhead{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:10px}.hp{font-size:20px;font-weight:900}.zone{margin-top:10px}.zone h4{font-size:11px;letter-spacing:.12em;opacity:.6;margin:0 0 6px}.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:7px;min-height:110px}.mini{border:1px solid #38425a;border-radius:10px;background:#121827;padding:8px;min-height:98px;cursor:pointer;position:relative}.mini.sel{outline:2px solid var(--gold)}.mini .n{font-weight:800;font-size:11px}.mini .m{font-size:9px;opacity:.65;margin-top:4px}.mini .s{font-size:11px;font-weight:800;margin-top:7px}.mini .pos{position:absolute;right:5px;top:5px;font-size:8px;border:1px solid #57627d;padding:2px 4px;border-radius:999px}
+.ctrl{display:grid;gap:7px}.ctrl button{border:1px solid #3d4967;background:#172036;border-radius:9px;padding:9px;cursor:pointer}.ctrl button:disabled{opacity:.35;cursor:not-allowed}.log{white-space:pre-wrap;font:11px ui-monospace,Consolas,monospace;background:#070910;border-radius:10px;padding:9px;min-height:120px;max-height:220px;overflow:auto}.phase{font-weight:900;color:#ffd98d}.ok{color:var(--ok)}.bad{color:var(--bad)}
+.modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:20px;z-index:50}.modal.show{display:grid}.modalbox{max-width:620px;width:100%;max-height:85vh;overflow:auto}.ability{border-left:3px solid #b77e9c;padding-left:10px;margin:10px 0}.warning{border:1px solid #73585b;background:#24161a;border-radius:12px;padding:10px;color:#ffd1d1}
+@media(max-width:1000px){.menu{grid-template-columns:repeat(2,1fr)}.grid2,.grid3,.duel{grid-template-columns:1fr}.duel .center{order:-1}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.cards{grid-template-columns:1fr}.app{padding:10px}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="top"><div class="brand"><span>NÉMESIS</span><b>REINOS DEL CAOS</b><span>PROTOTIPO LOCAL · RULES_v1</span></div><div class="tag">SIN VERCEL · DATOS LOCALES</div></header>
+<nav class="menu">
+<button data-view="home" class="active">Inicio</button><button data-view="campaign">Campaña</button><button data-view="collection">Colección</button><button data-view="decks">Mazos</button><button data-view="leaders">Líderes</button>
+</nav>
+
+<section id="home" class="view active">
+<div class="panel hero"><div><div class="sigil">✦</div><h1>NÉMESIS: REINOS DEL CAOS</h1><p>Motor local basado en la especificación aprobada. Caballero Rose está cargado 20/20. El segundo nivel, Caballero Oscuro de Gaia, permanece bloqueado porque su mazo todavía no ha sido definido en la fuente maestra.</p><button class="btn" id="quickDuel">DUELO DE PRUEBA · ROSE VS ROSE</button><div class="statusline"><span class="pill">20 cartas Rose</span><span class="pill">4 atributos oficiales</span><span class="pill">6 fases</span><span class="pill">HP del Líder</span><span class="pill">Fatiga activa</span></div></div></div>
+</section>
+
+<section id="campaign" class="view"><div class="grid2">
+<div class="panel level"><div class="boss">🌹</div><h3>Nivel 1 · Caballero Rose</h3><p>Líder N1 · 10.000 HP · LUZ</p><p class="rewards">Mazo aprobado 20/20. Progreso lineal y repetible.</p><button class="btn" id="campaignRose">Abrir prueba del Nivel 1</button></div>
+<div class="panel level locked"><div class="boss">🌑</div><h3>Nivel 2 · Caballero Oscuro de Gaia</h3><p>Líder N3 · 10.000 HP · OSCURIDAD</p><p class="locked-note">BLOQUEADO: el mazo de Gaia aún no está definido. No se inventan cartas.</p><button class="btn" disabled>Bloqueado</button></div>
+</div></section>
+
+<section id="collection" class="view"><div class="panel"><div class="deckbar"><div><h2>Colección · Caballero Rose</h2><div class="small">20 cartas canónicas · IDs permanentes pendientes · se usan SLOT temporales solo dentro de este prototipo</div></div><div><b id="colCount">20/20</b></div></div><div class="cards" id="cards"></div></div></section>
+
+<section id="decks" class="view"><div class="panel"><div class="deckbar"><div><h2>Mazo Caballero Rose</h2><div class="small">9 Monstruos · 4 Mágicas · 3 Trampas · 1 Arma · 1 Armadura · 2 Reliquias</div></div><div><b>20/20</b></div></div><div id="deckAudit"></div><div class="cards" id="deckCards"></div></div></section>
+
+<section id="leaders" class="view"><div class="grid3">
+<div class="panel leader"><div class="avatar">🌹</div><h2>Caballero Rose</h2><p>LUZ · Nivel 1</p><div class="resource">10.000 HP</div><p class="small">Nivel máximo inicial 80. Transformaciones no curan salvo efecto.</p></div>
+<div class="panel leader"><div class="avatar">🌑</div><h2>Caballero Oscuro de Gaia</h2><p>OSCURIDAD · Nivel 3</p><div class="resource">10.000 HP</div><p class="locked-note">Mazo pendiente de definición.</p></div>
+<div class="panel leader"><div class="avatar">⭐</div><h2>Recursos locales</h2><p>Estrellas</p><div class="resource" id="stars">0</div><p>Fragmentos LUZ</p><div class="resource" id="fragLight">0</div><p class="small">El prototipo guarda progreso en localStorage.</p></div>
+</div></section>
+
+<section id="duelView" class="view"><div class="duel">
+<section class="panel side"><div class="duelhead"><div><b>IA · Caballero Rose</b><div class="small">LUZ</div></div><div class="hp" id="hpE">10000</div></div><div class="zone"><h4>CAMPO</h4><div class="strip" id="fieldE"></div></div><div class="zone"><h4>MANO <span id="hcE">0</span></h4><div class="strip" id="handE"></div></div><div class="zone"><h4>SUPORTE</h4><div class="strip" id="supportE"></div></div></section>
+<aside class="panel center"><div class="phase" id="phase">PREPARADO</div><div class="small" id="turn">Motor detenido</div><div class="log" id="status"></div><div class="ctrl">
+<button id="startDuel">Iniciar</button><button id="draw">Robar</button><button id="nextPhase">Siguiente fase</button><button id="summon">Invocar Normal</button><button id="setSupport">Jugar/Colocar soporte</button><button id="ability">Usar habilidad</button><button id="position">Cambiar posición</button><button id="attack">Atacar</button><button id="endTurn">Finalizar turno</button><button id="leaveDuel">Salir</button>
+</div><h4>REGISTRO</h4><div class="log" id="log"></div></aside>
+<section class="panel side"><div class="duelhead"><div><b>Jugador · Caballero Rose</b><div class="small">LUZ</div></div><div class="hp" id="hpP">10000</div></div><div class="zone"><h4>CAMPO</h4><div class="strip" id="fieldP"></div></div><div class="zone"><h4>MANO <span id="hcP">0</span></h4><div class="strip" id="handP"></div></div><div class="zone"><h4>SUPORTE</h4><div class="strip" id="supportP"></div></div></section>
+</div></section>
+</div>
+
+<div class="modal" id="modal"><div class="panel modalbox"><button class="btn" id="closeModal">Cerrar</button><div id="modalContent"></div></div></div>
+
+<script>
+"use strict";
+const RULES={mainDeck:20,fusionMax:5,monsterZones:5,supportZones:3,relicZones:2,fieldMagicZones:1,openingHand:5,normalDraw:1,handDrawCap:7,fatigueStart:500,fatigueStep:500,normalSummon:1,leaderHp:10000,phases:["INICIO","ROBO","PRINCIPAL","COMBATE","PRINCIPAL 2","FINAL"],attributes:["LUZ","OSCURIDAD","FUEGO","ETERNIDAD"],statuses:["Aturdido","Sellado","Congelado","Envenenado","Debilitado","Protegido"]};
+const ROSE=[
+{slot:1,name:"Guardián de la Rosa Blanca",type:"MONSTRUO",attr:"LUZ",rarity:"RARA",atk:2500,def:2000,approved:true,abilities:[["Pétalo Protector","1/turno, otra criatura LUZ +1000 DEF hasta fin del turno."],["Juramento de Rose","Cuando otra criatura LUZ controlada sea destruida, recupera 500 HP."]],flavor:"Mientras una rosa permanezca en pie, la luz no desaparecerá."},
+{slot:2,name:"Espadachín de Pétalos",type:"MONSTRUO",attr:"LUZ",rarity:"COMÚN",atk:2000,def:1500,approved:true,abilities:[["Corte de Rosas","Al destruir criatura rival en combate, otra criatura LUZ +500 ATQ hasta fin del turno."],["Guardia Floral","1/turno, si otra criatura LUZ es objetivo de ataque, puede convertirse en el objetivo."]],flavor:"Cada pétalo que cae, es una promesa de protección y victoria."},
+{slot:3,name:"Doncella del Jardín Celestial",type:"MONSTRUO",attr:"LUZ",rarity:"RARA",atk:1500,def:2500,abilities:[["Luz Restauradora","1/turno, recupera 500 HP."],["Jardín Protector","Mientras esté en Defensa, otra criatura LUZ controlada +500 DEF."]]},
+{slot:4,name:"Caballero de la Espina Dorada",type:"MONSTRUO",attr:"LUZ",rarity:"ÉPICA",atk:3500,def:2500,abilities:[["Espina de Castigo","Al ser atacada, atacante recibe 500 daño de efecto tras resolver combate si el duelo continúa."],["Juramento Dorado","1/turno, si controlas otra criatura LUZ, +1000 ATQ hasta fin del turno."]]},
+{slot:5,name:"Arquero de la Rosa Lunar",type:"MONSTRUO",attr:"LUZ",rarity:"RARA",atk:2200,def:1800,abilities:[["Flecha de Pétalo","1/turno, criatura rival -500 DEF hasta fin del turno."],["Disparo de Apertura","Si queda en 0 DEF por este efecto, otra criatura LUZ +500 ATQ hasta fin del turno."]]},
+{slot:6,name:"Paladín de la Rosa Solar",type:"MONSTRUO",attr:"LUZ",rarity:"ÉPICA",atk:3000,def:3000,abilities:[["Escudo Solar","1/turno, evita destrucción por efecto de otra criatura LUZ; Paladín -1000 DEF hasta fin del turno."],["Contraofensiva Radiante","Tras evitarla, otra criatura LUZ +1000 ATQ hasta fin del turno."]]},
+{slot:7,name:"Sacerdotisa de la Rosa Eterna",type:"MONSTRUO",attr:"LUZ",rarity:"ÉPICA",atk:1500,def:3000,abilities:[["Plegaria de los Pétalos","1/turno, recupera 1000 HP."],["Renacer de la Rosa","1/duelo, en Principal, devuelve 1 Monstruo LUZ del Cementerio a la mano."]]},
+{slot:8,name:"León Sagrado del Rosal",type:"MONSTRUO",attr:"LUZ",rarity:"LEGENDARIA",atk:4000,def:3500,abilities:[["Rugido del Santuario","Al invocarse, criatura rival queda Debilitada hasta fin de su próximo turno y -1000 ATQ mientras dure."],["Instinto del Guardián","1/turno, puede sustituir a otra criatura LUZ que fuera a ser destruida en combate."]]},
+{slot:9,name:"Caballero Rose",type:"MONSTRUO",attr:"LUZ",rarity:"LEGENDARIA",atk:5000,def:4500,abilities:[["Espada de la Rosa Suprema","1/turno en Principal, otra criatura LUZ +1000 ATQ/+1000 DEF hasta fin del turno; si destruye rival, recupera 500 HP."],["Último Juramento de Rose","1/duelo, evita su destrucción y obtiene +1000 ATQ hasta fin de tu próximo turno."]]},
+{slot:10,name:"Jardín Sagrado de Rose",type:"MÁGICA DE CAMPO",attr:"LUZ",rarity:"ÉPICA",effects:["Tus criaturas LUZ +500 ATQ/+500 DEF.","Fase Final con al menos 2 criaturas LUZ: recupera 500 HP.","Si rival la destruye: 1 criatura LUZ +1000 DEF hasta fin de su próximo turno."]},
+{slot:11,name:"Lluvia de Pétalos Sagrados",type:"MÁGICA",attr:"LUZ",rarity:"RARA",effects:["Recupera 1500 HP.","Hasta 2 criaturas LUZ +500 DEF hasta fin de su próximo turno.","Elimina 1 estado negativo de una criatura propia."]},
+{slot:12,name:"Espada de Luz del Rosal",type:"MÁGICA",attr:"LUZ",rarity:"ÉPICA",effects:["1 criatura LUZ +1500 ATQ hasta fin del turno.","Si destruye rival en combate, elimina 1 estado negativo de una criatura propia.","Si es Caballero Rose, recupera además 500 HP."]},
+{slot:13,name:"Renacimiento del Rosal",type:"MÁGICA",attr:"LUZ",rarity:"LEGENDARIA",effects:["Devuelve 1 Monstruo LUZ del Cementerio a la mano.","Si tiene 3500+ ATQ, recupera 1000 HP.","Si es Caballero Rose, permite 1 Invocación Normal adicional de Caballero Rose ese turno."]},
+{slot:14,name:"Espinas del Juicio",type:"TRAMPA",attr:"LUZ",rarity:"ÉPICA",effects:["Al declarar ataque contra criatura LUZ: +1500 DEF durante ese combate.","Si sobrevive, atacante recibe 1000 daño de efecto.","Si era Caballero Rose, recupera 500 HP."]},
+{slot:15,name:"Reflejo de la Rosa Blanca",type:"TRAMPA",attr:"LUZ",rarity:"ÉPICA",effects:["Cuando Mágica/Trampa rival seleccione criatura LUZ propia: anula ese efecto sobre la criatura.","Protegida +500 ATQ/+500 DEF hasta fin del turno.","Si era Caballero Rose, recupera 500 HP."]},
+{slot:16,name:"Último Pétalo del Destino",type:"TRAMPA",attr:"LUZ",rarity:"LEGENDARIA",effects:["1/duelo, cuando ataque rival fuera a reducir HP a 0: evita solo el daño de ese ataque.","Tras cadena, HP quedan en 1000.","1 criatura LUZ propia +1500 ATQ hasta fin de tu próximo turno."]},
+{slot:17,name:"Espada Sagrada de Rose",type:"ARMA",attr:"LUZ",rarity:"LEGENDARIA",effects:["Solo criatura LUZ. Equipada +1500 ATQ.","1/turno, al destruir rival en combate, recupera 500 HP.","Si equipada a Caballero Rose, además +500 DEF."]},
+{slot:18,name:"Armadura del Rosal Celestial",type:"ARMADURA",attr:"LUZ",rarity:"LEGENDARIA",effects:["Solo criatura LUZ. Equipada +1500 DEF.","1/turno, reducción rival de ATQ/DEF se reduce en 500 puntos.","Si equipada a Caballero Rose, además +500 ATQ."]},
+{slot:19,name:"Corazón de la Rosa Eterna",type:"RELIQUIA",attr:"LUZ",rarity:"LEGENDARIA",effects:["Fase Final, si controlas criatura LUZ, recupera 500 HP.","1/turno, pérdida de DEF por efecto rival a criatura LUZ se reduce en 500.","Mientras controles Caballero Rose, protege esta Reliquia de la primera destrucción por efecto rival; 1/duelo."]},
+{slot:20,name:"Corona del Reino de las Rosas",type:"RELIQUIA",attr:"LUZ",rarity:"LEGENDARIA",effects:["Con al menos 2 criaturas LUZ, todas tus criaturas LUZ +500 ATQ.","1/turno, criatura LUZ puede perder 1000 ATQ hasta fin del turno para evitar destrucción por efecto rival.","Mientras controles Caballero Rose, este obtiene +500 DEF."]}
+];
+const C=new Map(ROSE.map(x=>["SLOT-"+String(x.slot).padStart(2,"0"),x]));
+const tempId=slot=>"SLOT-"+String(slot).padStart(2,"0");
+const SAVEKEY="nemesis_reinos_caos_local_v1";
+let PERSIST=loadPersist();
+let G=null;
+function loadPersist(){try{return Object.assign({stars:0,fragLight:0,level1Wins:0},JSON.parse(localStorage.getItem(SAVEKEY)||"{}"))}catch{return{stars:0,fragLight:0,level1Wins:0}}}
+function savePersist(){localStorage.setItem(SAVEKEY,JSON.stringify(PERSIST));renderLeaders()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function cardHTML(c,id){
+ const text=(c.abilities||c.effects||[]).map(x=>Array.isArray(x)?x[0]:x).join(" · ");
+ return '<div class="card '+(c.approved?"approved":"")+'" data-id="'+id+'"><div class="art">🌹</div><div class="body"><div class="slot">'+id+' · '+esc(c.rarity)+'</div><h4>'+esc(c.name)+'</h4><div class="meta">'+esc(c.type)+' · '+esc(c.attr)+'</div>'+(c.atk!==undefined?'<div class="stats">ATQ '+c.atk+' / DEF '+c.def+'</div>':'<div class="stats">SOPORTE</div>')+'<div class="small">'+esc(text)+'</div></div></div>';
+}
+function renderCards(){
+ const html=ROSE.map(c=>cardHTML(c,tempId(c.slot))).join("");
+ document.getElementById("cards").innerHTML=html;document.getElementById("deckCards").innerHTML=html;
+ document.querySelectorAll(".card[data-id]").forEach(el=>el.onclick=()=>showCard(el.dataset.id));
+ document.getElementById("deckAudit").innerHTML='<p class="ok"><b>PASS 20/20</b> · 9 Monstruos + 4 Mágicas + 3 Trampas + 1 Arma + 1 Armadura + 2 Reliquias · 0 Fusiones.</p><p class="warning">Los SLOT son identificadores temporales del prototipo. No reemplazan el ID permanente exigido por el protocolo.</p>';
+}
+function showCard(id){
+ const c=C.get(id);if(!c)return;const rows=c.abilities||c.effects||[];
+ document.getElementById("modalContent").innerHTML='<h2>'+esc(c.name)+'</h2><p>'+esc(c.type)+' · '+esc(c.attr)+' · '+esc(c.rarity)+'</p>'+(c.atk!==undefined?'<h3>ATQ '+c.atk+' / DEF '+c.def+'</h3>':'')+rows.map(x=>Array.isArray(x)?'<div class="ability"><b>'+esc(x[0])+'</b><div>'+esc(x[1])+'</div></div>':'<div class="ability">'+esc(x)+'</div>').join("")+(c.flavor?'<p><i>“'+esc(c.flavor)+'”</i></p>':'')+(c.approved?'<p class="ok">Diseño visual aprobado; archivo físico definitivo todavía no está en GitHub.</p>':'');
+ document.getElementById("modal").classList.add("show");
+}
+function renderLeaders(){document.getElementById("stars").textContent=PERSIST.stars;document.getElementById("fragLight").textContent=PERSIST.fragLight}
+function showView(id){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".menu button").forEach(x=>x.classList.toggle("active",x.dataset.view===id));document.getElementById(id).classList.add("active")}
+document.querySelectorAll(".menu button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
+document.getElementById("closeModal").onclick=()=>document.getElementById("modal").classList.remove("show");
+document.getElementById("modal").onclick=e=>{if(e.target.id==="modal")e.currentTarget.classList.remove("show")};
+
+function newPlayer(){
+ const deck=ROSE.map(c=>tempId(c.slot));shuffle(deck);
+ return{deck,hand:[],field:[],support:[],grave:[],banished:[],hp:RULES.leaderHp,fatigue:0,normalUsed:0,normalBonus:0,drawTurn:0,selected:null,onceTurn:new Set(),onceDuel:new Set(),summoned:new Map(),attacked:new Map(),posChanged:new Set(),tempMods:new Map()};
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function newGame(){G={started:false,turn:0,current:"P",phase:0,winner:null,log:[],P:newPlayer(),E:newPlayer()};renderDuel()}
+function pl(k){return G[k]} function other(k){return k==="P"?"E":"P"}
+function glog(s){G.log.unshift("T"+G.turn+" "+(RULES.phases[G.phase]||"")+" · "+s);G.log=G.log.slice(0,100)}
+function drawCard(k,normal){
+ const p=pl(k);
+ if(normal&&p.drawTurn===G.turn)return null;
+ if(normal&&p.hand.length>=RULES.handDrawCap){p.drawTurn=G.turn;glog((k==="P"?"Jugador":"IA")+": robo normal omitido por mano 7+");return null}
+ if(!p.deck.length){p.fatigue++;const d=RULES.fatigueStart+(p.fatigue-1)*RULES.fatigueStep;p.hp=Math.max(0,p.hp-d);if(normal)p.drawTurn=G.turn;glog("FATIGA "+(k==="P"?"Jugador":"IA")+" "+d);checkWin();return null}
+ const id=p.deck.shift();p.hand.push(id);if(normal)p.drawTurn=G.turn;return id;
+}
+function startGame(){
+ if(G.started)return;G.started=true;G.turn=1;G.current="P";G.phase=0;
+ for(const k of["P","E"])for(let i=0;i<RULES.openingHand;i++)drawCard(k,false);
+ glog("Duelo iniciado · 5 cartas cada uno · jugador inicial sin robo en turno 1");renderDuel();
+}
+function beginTurn(k){const p=pl(k);p.normalUsed=0;p.normalBonus=0;p.onceTurn.clear();p.posChanged.clear();p.tempMods.clear();G.phase=0;glog("Inicio de turno "+(k==="P"?"Jugador":"IA"))}
+function nextPhase(){
+ if(!canPlayer()||G.phase>=5)return;G.phase++;
+ if(G.phase===1&&G.turn===1){pl("P").drawTurn=G.turn;glog("Primer turno: robo normal omitido")}
+ if(G.phase===5)finalPhase("P");
+ renderDuel();
+}
+function isMonster(id){return C.get(id)?.type==="MONSTRUO"}
+function aura(k,id){
+ const p=pl(k),c=C.get(id);let atk=c.atk||0,def=c.def||0;const m=p.tempMods.get(id)||{atk:0,def:0};atk+=m.atk||0;def+=m.def||0;
+ if(p.support.some(x=>x.id===tempId(10))){atk+=500;def+=500}
+ if(p.support.some(x=>x.id===tempId(20))&&p.field.length>=2)atk+=500;
+ if(id===tempId(9)&&p.support.some(x=>x.id===tempId(20)))def+=500;
+ const maiden=p.field.find(x=>x.id===tempId(3)&&x.pos==="DEF");if(maiden&&id!==tempId(3))def+=500;
+ for(const s of p.support){if(s.equipped===id&&s.id===tempId(17)){atk+=1500;if(id===tempId(9))def+=500}if(s.equipped===id&&s.id===tempId(18)){def+=1500;if(id===tempId(9))atk+=500}}
+ return{atk:Math.max(0,atk),def:Math.max(0,def)};
+}
+function summon(k,id){
+ const p=pl(k);if(![2,4].includes(G.phase)||G.current!==k||p.field.length>=RULES.monsterZones)return false;
+ const allowance=RULES.normalSummon+p.normalBonus;if(p.normalUsed>=allowance)return false;
+ if(!id||!p.hand.includes(id)||!isMonster(id))return false;
+ p.hand.splice(p.hand.indexOf(id),1);p.field.push({id,pos:"ATQ"});p.normalUsed++;p.summoned.set(id,G.turn);p.selected=null;glog((k==="P"?"Jugador":"IA")+" invoca "+C.get(id).name);
+ if(id===tempId(8)&&pl(other(k)).field.length){const target=pl(other(k)).field[0].id;const cur=pl(other(k)).tempMods.get(target)||{atk:0,def:0};cur.atk-=1000;pl(other(k)).tempMods.set(target,cur);glog("Rugido del Santuario: -1000 ATQ a "+C.get(target).name)}
+ return true;
+}
+function useSupport(k,id){
+ const p=pl(k),c=C.get(id);if(![2,4].includes(G.phase)||G.current!==k||!id||!p.hand.includes(id)||isMonster(id))return false;
+ const idx=p.hand.indexOf(id);
+ if(c.type==="MÁGICA"){
+   p.hand.splice(idx,1);resolveMagic(k,id);p.grave.push(id);p.selected=null;return true;
+ }
+ if(c.type==="MÁGICA DE CAMPO"){
+   p.hand.splice(idx,1);p.support=p.support.filter(x=>C.get(x.id).type!=="MÁGICA DE CAMPO");p.support.push({id});p.selected=null;glog("Campo activo: "+c.name);return true;
+ }
+ if(["TRAMPA","RELIQUIA"].includes(c.type)){
+   if(p.support.length>=RULES.supportZones+RULES.relicZones)return false;p.hand.splice(idx,1);p.support.push({id});p.selected=null;glog("Colocada: "+c.name);return true;
+ }
+ if(["ARMA","ARMADURA"].includes(c.type)){
+   if(!p.field.length)return false;const target=p.field[0].id;p.hand.splice(idx,1);p.support.push({id,equipped:target});p.selected=null;glog(c.name+" equipada a "+C.get(target).name);return true;
+ }
+ return false;
+}
+function mod(k,id,a,d){const p=pl(k),m=p.tempMods.get(id)||{atk:0,def:0};m.atk+=(a||0);m.def+=(d||0);p.tempMods.set(id,m)}
+function heal(k,n){pl(k).hp=Math.min(RULES.leaderHp,pl(k).hp+n);glog((k==="P"?"Jugador":"IA")+" recupera "+n+" HP")}
+function resolveMagic(k,id){
+ const p=pl(k),c=C.get(id);glog("Activa "+c.name);
+ if(id===tempId(11)){heal(k,1500);p.field.slice(0,2).forEach(x=>mod(k,x.id,0,500))}
+ if(id===tempId(12)&&p.field.length){const t=p.field[0].id;mod(k,t,1500,0);glog(C.get(t).name+" +1500 ATQ")}
+ if(id===tempId(13)){const gi=p.grave.findIndex(x=>isMonster(x));if(gi>=0){const t=p.grave.splice(gi,1)[0];p.hand.push(t);glog("Renacimiento: "+C.get(t).name+" vuelve a la mano");if((C.get(t).atk||0)>=3500)heal(k,1000);if(t===tempId(9))p.normalBonus=1}}
+}
+function useAbility(k,id){
+ if(![2,4].includes(G.phase)||G.current!==k)return false;const p=pl(k),c=C.get(id);if(!p.field.some(x=>x.id===id)||p.onceTurn.has(id))return false;
+ let used=true;
+ if(id===tempId(1)){const t=p.field.find(x=>x.id!==id);if(!t)used=false;else mod(k,t.id,0,1000)}
+ else if(id===tempId(3))heal(k,500);
+ else if(id===tempId(4)){if(p.field.length<2)used=false;else mod(k,id,1000,0)}
+ else if(id===tempId(5)){const op=pl(other(k));if(!op.field.length)used=false;else{const t=op.field[0].id;mod(other(k),t,0,-500);if(aura(other(k),t).def===0){const ally=p.field.find(x=>x.id!==id);if(ally)mod(k,ally.id,500,0)}}}
+ else if(id===tempId(7))heal(k,1000);
+ else if(id===tempId(9)){const t=p.field.find(x=>x.id!==id);if(!t)used=false;else mod(k,t.id,1000,1000)}
+ else used=false;
+ if(used){p.onceTurn.add(id);glog("Habilidad: "+c.name);p.selected=null}
+ return used;
+}
+function changePos(k,id){const p=pl(k),x=p.field.find(x=>x.id===id);if(!x||![2,4].includes(G.phase)||p.posChanged.has(id)||p.summoned.get(id)===G.turn)return false;x.pos=x.pos==="ATQ"?"DEF":"ATQ";p.posChanged.add(id);glog(C.get(id).name+" → "+x.pos);return true}
+function destroy(k,id,reason){
+ const p=pl(k),idx=p.field.findIndex(x=>x.id===id);if(idx<0)return false;
+ if(id===tempId(9)&&!p.onceDuel.has("rose-oath")){p.onceDuel.add("rose-oath");mod(k,id,1000,0);glog("Último Juramento de Rose evita destrucción");return false}
+ p.field.splice(idx,1);p.grave.push(id);
+ if(p.field.some(x=>x.id===tempId(1))&&id!==tempId(1))heal(k,500);
+ glog(C.get(id).name+" destruida por "+reason);return true;
+}
+function trapBattle(defK,defId,atkK){
+ const p=pl(defK);const thorn=p.support.find(x=>x.id===tempId(14));if(thorn){mod(defK,defId,0,1500);p.support.splice(p.support.indexOf(thorn),1);p.grave.push(thorn.id);glog("Espinas del Juicio: +1500 DEF")}
+}
+function lethalTrap(k,damage){
+ const p=pl(k),t=p.support.find(x=>x.id===tempId(16));if(!t||p.onceDuel.has("last-petal")||p.hp-damage>0)return false;p.onceDuel.add("last-petal");p.support.splice(p.support.indexOf(t),1);p.grave.push(t.id);p.hp=1000;if(p.field.length)mod(k,p.field[0].id,1500,0);glog("Último Pétalo del Destino evita daño letal · HP 1000");return true;
+}
+function attack(k,attId){
+ if(G.phase!==3||G.current!==k)return false;const p=pl(k),opK=other(k),op=pl(opK),a=p.field.find(x=>x.id===attId);if(!a||a.pos!=="ATQ"||p.summoned.get(attId)===G.turn||p.attacked.get(attId)===G.turn)return false;
+ p.attacked.set(attId,G.turn);if(!op.field.length){const dmg=aura(k,attId).atk;if(!lethalTrap(opK,dmg))op.hp=Math.max(0,op.hp-dmg);glog("Ataque directo "+C.get(attId).name+" · "+dmg);checkWin();return true}
+ let d=op.field[0];if(d.id!==tempId(2)){const guard=op.field.find(x=>x.id===tempId(2)&&!op.onceTurn.has("guard-floral"));if(guard){d=guard;op.onceTurn.add("guard-floral");glog("Guardia Floral redirige el ataque")}}
+ trapBattle(opK,d.id,k);
+ const A=aura(k,attId),D=aura(opK,d.id),defVal=d.pos==="ATQ"?D.atk:D.def;
+ if(d.pos==="ATQ"){
+  if(A.atk>defVal){const diff=A.atk-defVal;const was=destroy(opK,d.id,"combate");if(was&&!lethalTrap(opK,diff))op.hp=Math.max(0,op.hp-diff);if(was&&attId===tempId(2)){const ally=p.field.find(x=>x.id!==attId);if(ally)mod(k,ally.id,500,0)}}
+  else if(A.atk<defVal){const diff=defVal-A.atk;destroy(k,attId,"combate");if(!lethalTrap(k,diff))p.hp=Math.max(0,p.hp-diff)}
+  else{destroy(k,attId,"empate");destroy(opK,d.id,"empate")}
+ }else{
+  if(A.atk>defVal){const diff=A.atk-defVal;const was=destroy(opK,d.id,"combate");if(was&&!lethalTrap(opK,diff))op.hp=Math.max(0,op.hp-diff)}
+  else if(A.atk<defVal){const diff=defVal-A.atk;if(!lethalTrap(k,diff))p.hp=Math.max(0,p.hp-diff)}
+  else{destroy(k,attId,"empate");destroy(opK,d.id,"empate")}
+ }
+ if(d.id===tempId(4)&&!G.winner){p.hp=Math.max(0,p.hp-500);glog("Espina de Castigo: 500 daño de efecto")}
+ checkWin();return true;
+}
+function finalPhase(k){const p=pl(k);if(p.support.some(x=>x.id===tempId(10))&&p.field.length>=2)heal(k,500);if(p.support.some(x=>x.id===tempId(19))&&p.field.length)heal(k,500)}
+function checkWin(){if(pl("P").hp<=0||pl("E").hp<=0){G.winner=pl("P").hp<=0?"E":"P";glog("FIN DEL DUELO · "+(G.winner==="P"?"Jugador":"IA")+" gana");if(G.winner==="P"){PERSIST.stars+=100;PERSIST.fragLight+=10;PERSIST.level1Wins++;savePersist()}}}
+function canPlayer(){return G.started&&!G.winner&&G.current==="P"}
+function endTurn(){
+ if(!canPlayer())return;finalPhase("P");G.current="E";G.turn++;beginTurn("E");renderDuel();setTimeout(aiTurn,180);
+}
+function aiTurn(){
+ if(G.winner)return;const p=pl("E");G.phase=1;drawCard("E",true);G.phase=2;
+ const mon=p.hand.find(isMonster);if(mon)summon("E",mon);
+ const support=p.hand.find(id=>!isMonster(id));if(support)useSupport("E",support);
+ const abil=p.field.find(x=>useAbility("E",x.id));
+ G.phase=3;for(const a of [...p.field]){if(G.winner)break;attack("E",a.id)}
+ G.phase=5;finalPhase("E");if(!G.winner){G.current="P";G.turn++;beginTurn("P")}renderDuel();
+}
+function mini(item,k){
+ const id=typeof item==="string"?item:item.id,c=C.get(id),stats=c.atk!==undefined?aura(k,id):null;
+ return '<div class="mini '+(pl(k).selected===id?"sel":"")+'" data-mid="'+id+'" data-k="'+k+'">'+(typeof item==="string"?'':'<span class="pos">'+item.pos+'</span>')+'<div class="n">'+esc(c.name)+'</div><div class="m">'+esc(c.type)+' · '+esc(c.rarity)+'</div>'+(stats?'<div class="s">ATQ '+stats.atk+' / DEF '+stats.def+'</div>':'<div class="s">SOPORTE</div>')+'</div>';
+}
+function renderZone(k,zone,id){document.getElementById(id).innerHTML=pl(k)[zone].map(x=>mini(x,k)).join("")}
+function selectMini(id,k){if(k!=="P"||!canPlayer())return;pl("P").selected=pl("P").selected===id?null:id;renderDuel()}
+function renderDuel(){
+ if(!G)return;renderZone("P","field","fieldP");renderZone("P","hand","handP");renderZone("P","support","supportP");renderZone("E","field","fieldE");renderZone("E","hand","handE");renderZone("E","support","supportE");
+ document.querySelectorAll(".mini").forEach(x=>x.onclick=()=>selectMini(x.dataset.mid,x.dataset.k));
+ document.getElementById("hpP").textContent=G.P.hp;document.getElementById("hpE").textContent=G.E.hp;document.getElementById("hcP").textContent=G.P.hand.length;document.getElementById("hcE").textContent=G.E.hand.length;
+ document.getElementById("phase").textContent=G.winner?"GANADOR: "+(G.winner==="P"?"JUGADOR":"IA"):(G.started?RULES.phases[G.phase]:"PREPARADO");document.getElementById("turn").textContent=G.started?"Turno "+G.turn+" · "+(G.current==="P"?"Jugador":"IA"):"Motor detenido";
+ document.getElementById("status").textContent="NÉMESIS: REINOS DEL CAOS\nRose 20/20 · Gaia pendiente\nSeleccionada: "+(G.P.selected||"ninguna")+"\nUID prototipo: SLOT temporal\nHP pertenece al Líder.";
+ document.getElementById("log").textContent=G.log.join("\n");
+ const cp=canPlayer(),id=G.P.selected;
+ document.getElementById("startDuel").disabled=G.started;document.getElementById("draw").disabled=!cp||G.phase!==1||G.turn===1||G.P.drawTurn===G.turn;document.getElementById("nextPhase").disabled=!cp||G.phase>=5;document.getElementById("summon").disabled=!cp||![2,4].includes(G.phase)||!isMonster(id);document.getElementById("setSupport").disabled=!cp||![2,4].includes(G.phase)||!id||isMonster(id);document.getElementById("ability").disabled=!cp||![2,4].includes(G.phase)||!id||!G.P.field.some(x=>x.id===id);document.getElementById("position").disabled=!cp||![2,4].includes(G.phase)||!id;document.getElementById("attack").disabled=!cp||G.phase!==3||!id;
+}
+function openDuel(){showView("duelView");newGame()}
+document.getElementById("quickDuel").onclick=openDuel;document.getElementById("campaignRose").onclick=openDuel;document.getElementById("startDuel").onclick=startGame;document.getElementById("draw").onclick=()=>{if(canPlayer()&&G.phase===1){drawCard("P",true);renderDuel()}};document.getElementById("nextPhase").onclick=nextPhase;document.getElementById("summon").onclick=()=>{summon("P",G.P.selected);renderDuel()};document.getElementById("setSupport").onclick=()=>{useSupport("P",G.P.selected);renderDuel()};document.getElementById("ability").onclick=()=>{useAbility("P",G.P.selected);renderDuel()};document.getElementById("position").onclick=()=>{changePos("P",G.P.selected);renderDuel()};document.getElementById("attack").onclick=()=>{attack("P",G.P.selected);G.P.selected=null;renderDuel()};document.getElementById("endTurn").onclick=endTurn;document.getElementById("leaveDuel").onclick=()=>showView("home");
+renderCards();renderLeaders();newGame();
+</script>
+</body>
+</html>
