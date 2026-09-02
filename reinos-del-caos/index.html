@@ -203,11 +203,142 @@ body:after{
   .center{order:-1}
 }
 
+
+/* === PC EVOLUTION PRESENTATION v1 === */
+:root{--pc-max:1680px;--hud:#0b101aee;--glass:#111827cc;--accent:#e7c76d}
+body{overflow-x:hidden}
+.app{max-width:var(--pc-max);padding:18px 22px 28px}
+.top{
+  min-height:92px;
+  backdrop-filter:blur(10px);
+  background:
+    linear-gradient(180deg,#2f3548dd,#111725ee 55%,#090d16f2),
+    radial-gradient(circle at 75% 10%,#d9b75f20,transparent 38%);
+}
+.brand b{font-size:clamp(34px,4.6vw,64px)}
+.brand span:last-child{color:#d8ddeb}
+.pc-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pc-tools select,.pc-tools button{
+  border:2px solid #626b83;background:linear-gradient(180deg,#39435e,#182033);
+  color:#fff;padding:9px 11px;border-radius:2px;box-shadow:inset 1px 1px #a7aec0,inset -2px -2px #070913;
+  font-weight:800
+}
+.menu{grid-template-columns:repeat(5,minmax(120px,1fr));position:sticky;top:0;z-index:30;background:#05070ddd;padding:6px 0;backdrop-filter:blur(8px)}
+.view{animation:pcFade .22s ease-out}
+@keyframes pcFade{from{opacity:.25;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.hero{
+  min-height:560px;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(180deg,#06081233 20%,#04050acd 100%),
+    radial-gradient(circle at 50% 36%,#74476555 0,#221b3c55 26%,transparent 55%),
+    linear-gradient(135deg,#141a2b 0,#0a0f19 46%,#160e1b 100%);
+}
+.hero:before{
+  content:"";
+  position:absolute;inset:-20%;
+  background:
+    radial-gradient(circle at 25% 30%,#fff3 0 2px,transparent 3px),
+    radial-gradient(circle at 65% 20%,#fff4 0 1px,transparent 2px),
+    radial-gradient(circle at 75% 65%,#d9b75f66 0 1px,transparent 2px);
+  background-size:180px 180px,140px 140px,220px 220px;
+  animation:starsMove 18s linear infinite;
+  pointer-events:none
+}
+@keyframes starsMove{to{transform:translate3d(4%,3%,0) rotate(.5deg)}}
+.hero>div{position:relative;z-index:2}
+.hero h1{text-shadow:0 0 22px #d9b75f33,0 3px #000}
+.hero .sigil{font-size:96px;animation:heroSigil 3.2s ease-in-out infinite}
+@keyframes heroSigil{50%{transform:scale(1.07) rotate(2deg);filter:drop-shadow(0 0 18px #f4c95dbb)}}
+.hero .btn{font-size:18px;padding:14px 24px}
+
+.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.level,.leader{
+  min-height:300px;
+  background:
+    linear-gradient(180deg,#171d2be8,#090d16ee),
+    radial-gradient(circle at 80% 10%,#d9b75f15,transparent 30%)
+}
+.level:not(.locked):hover,.leader:hover{transform:translateY(-3px);transition:.18s;filter:brightness(1.05)}
+
+.cards{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.card{min-height:330px;transition:transform .16s,filter .16s,box-shadow .16s}
+.card:hover{transform:translateY(-8px) scale(1.015);box-shadow:0 14px 28px #0008,0 0 0 1px #d9b75f44}
+.card .art{height:185px}
+.deckbar{position:sticky;top:58px;z-index:12;background:#0b101be8;border:1px solid #30384a;padding:10px;backdrop-filter:blur(8px)}
+
+#duelView.active{
+  width:100%;
+  max-width:1600px;
+  margin:auto;
+  border:0;
+  background:transparent;
+  box-shadow:none
+}
+.duel{
+  width:100%;
+  min-height:820px;
+  grid-template-columns:minmax(300px,1fr) 300px minmax(300px,1fr);
+  gap:12px;
+  padding:18px;
+  border:2px solid #798196;
+  background:
+    linear-gradient(180deg,#03050a22,#020308cc),
+    radial-gradient(ellipse at 50% 50%,#b58b3b16 0,#1b284a33 34%,#02040a 78%),
+    repeating-linear-gradient(90deg,#68758c18 0 1px,transparent 1px 120px),
+    repeating-linear-gradient(0deg,#68758c16 0 1px,transparent 1px 104px),
+    linear-gradient(180deg,#161b28,#05070d);
+  box-shadow:inset 0 0 80px #000,0 18px 50px #000b
+}
+.duel:after{
+  content:"";
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,transparent 40%,#0008 100%)
+}
+.duelhead{min-height:62px}
+.hp{font-size:28px;min-width:130px}
+.strip{min-height:154px}
+.mini{min-height:148px}
+.center{align-self:stretch;display:flex;flex-direction:column}
+.center .ctrl{grid-template-columns:1fr 1fr}
+.center .log{flex:1}
+.phase{font-size:18px;padding:12px}
+.duel .zone{min-height:178px}
+
+.fx-layer{position:fixed;inset:0;pointer-events:none;z-index:100}
+.fx-flash{position:absolute;inset:0;background:#fff0;animation:flashFx .35s ease-out}
+@keyframes flashFx{0%{background:#fff8}100%{background:#fff0}}
+.fx-slash{position:absolute;left:50%;top:50%;width:55vw;height:4px;background:linear-gradient(90deg,transparent,#fff,#ffd46e,transparent);transform:translate(-50%,-50%) rotate(-18deg);box-shadow:0 0 18px #fff;animation:slashFx .38s ease-out forwards}
+@keyframes slashFx{0%{opacity:0;transform:translate(-50%,-50%) scaleX(.1) rotate(-18deg)}40%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scaleX(1.3) rotate(-18deg)}}
+.fx-summon{position:absolute;left:50%;top:50%;width:180px;height:180px;border:3px solid #f6db80;border-radius:50%;transform:translate(-50%,-50%);box-shadow:0 0 40px #f4c95daa,inset 0 0 40px #fff4;animation:summonFx .55s ease-out forwards}
+@keyframes summonFx{0%{opacity:0;transform:translate(-50%,-50%) scale(.2)}60%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.8)}}
+
+body[data-quality="low"] .hero:before,
+body[data-quality="low"] .phase{animation:none!important}
+body[data-quality="low"] *{backdrop-filter:none!important}
+body[data-quality="medium"] .hero:before{animation-duration:28s}
+body[data-quality="high"] .hero:before{animation-duration:18s}
+
+@media(max-width:1180px){
+  .duel{grid-template-columns:1fr 260px 1fr}
+  .center .ctrl{grid-template-columns:1fr}
+}
+@media(max-width:1000px){
+  .app{padding:10px}
+  .menu{position:static;grid-template-columns:repeat(2,1fr)}
+  .duel{grid-template-columns:1fr;min-height:auto}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .deckbar{position:static}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
-<header class="top"><div class="brand"><span>NÉMESIS</span><b>REINOS DEL CAOS</b><span>RETRO DUEL MODE · RULES_v1</span></div><div class="tag">PLAYSTATION-ERA STYLE · LOCAL</div></header>
+<header class="top"><div class="brand"><span>NÉMESIS</span><b>REINOS DEL CAOS</b><span>PC EVOLUTION · RULES_v1</span></div><div class="pc-tools"><span class="tag">LOCAL · SIN VERCEL</span><select id="qualitySelect" title="Calidad visual"><option value="low">Calidad Baja</option><option value="medium">Calidad Media</option><option value="high" selected>Calidad Alta</option></select><button id="fullscreenBtn">Pantalla completa</button></div></header>
 <nav class="menu">
 <button data-view="home" class="active">Inicio</button><button data-view="campaign">Campaña</button><button data-view="collection">Colección</button><button data-view="decks">Mazos</button><button data-view="leaders">Líderes</button>
 </nav>
@@ -239,6 +370,7 @@ body:after{
 <section class="panel side"><div class="duelhead"><div><b>Jugador · Caballero Rose</b><div class="small">LUZ</div></div><div class="hp" id="hpP">10000</div></div><div class="zone"><h4>CAMPO</h4><div class="strip" id="fieldP"></div></div><div class="zone"><h4>MANO <span id="hcP">0</span></h4><div class="strip" id="handP"></div></div><div class="zone"><h4>SUPORTE</h4><div class="strip" id="supportP"></div></div></section>
 </div></section>
 </div>
+<div class="fx-layer" id="fxLayer"></div>
 
 <div class="modal" id="modal"><div class="panel modalbox"><button class="btn" id="closeModal">Cerrar</button><div id="modalContent"></div></div></div>
 
@@ -270,6 +402,10 @@ const ROSE=[
 const C=new Map(ROSE.map(x=>["SLOT-"+String(x.slot).padStart(2,"0"),x]));
 const tempId=slot=>"SLOT-"+String(slot).padStart(2,"0");
 const SAVEKEY="nemesis_reinos_caos_local_v1";
+const QUALITYKEY="nemesis_reinos_caos_quality";
+function setQuality(q){const v=["low","medium","high"].includes(q)?q:"high";document.body.dataset.quality=v;localStorage.setItem(QUALITYKEY,v);const s=document.getElementById("qualitySelect");if(s)s.value=v}
+function fx(type){const host=document.getElementById("fxLayer");if(!host)return;const el=document.createElement("div");el.className=type==="attack"?"fx-slash":type==="summon"?"fx-summon":"fx-flash";host.appendChild(el);setTimeout(()=>el.remove(),700)}
+
 let PERSIST=loadPersist();
 let G=null;
 function loadPersist(){try{return Object.assign({stars:0,fragLight:0,level1Wins:0},JSON.parse(localStorage.getItem(SAVEKEY)||"{}"))}catch{return{stars:0,fragLight:0,level1Wins:0}}}
@@ -337,7 +473,7 @@ function summon(k,id){
  const p=pl(k);if(![2,4].includes(G.phase)||G.current!==k||p.field.length>=RULES.monsterZones)return false;
  const allowance=RULES.normalSummon+p.normalBonus;if(p.normalUsed>=allowance)return false;
  if(!id||!p.hand.includes(id)||!isMonster(id))return false;
- p.hand.splice(p.hand.indexOf(id),1);p.field.push({id,pos:"ATQ"});p.normalUsed++;p.summoned.set(id,G.turn);p.selected=null;glog((k==="P"?"Jugador":"IA")+" invoca "+C.get(id).name);
+ p.hand.splice(p.hand.indexOf(id),1);p.field.push({id,pos:"ATQ"});p.normalUsed++;fx("summon");p.summoned.set(id,G.turn);p.selected=null;glog((k==="P"?"Jugador":"IA")+" invoca "+C.get(id).name);
  if(id===tempId(8)&&pl(other(k)).field.length){const target=pl(other(k)).field[0].id;const cur=pl(other(k)).tempMods.get(target)||{atk:0,def:0};cur.atk-=1000;pl(other(k)).tempMods.set(target,cur);glog("Rugido del Santuario: -1000 ATQ a "+C.get(target).name)}
  return true;
 }
@@ -395,7 +531,7 @@ function lethalTrap(k,damage){
 }
 function attack(k,attId){
  if(G.phase!==3||G.current!==k)return false;const p=pl(k),opK=other(k),op=pl(opK),a=p.field.find(x=>x.id===attId);if(!a||a.pos!=="ATQ"||p.summoned.get(attId)===G.turn||p.attacked.get(attId)===G.turn)return false;
- p.attacked.set(attId,G.turn);if(!op.field.length){const dmg=aura(k,attId).atk;if(!lethalTrap(opK,dmg))op.hp=Math.max(0,op.hp-dmg);glog("Ataque directo "+C.get(attId).name+" · "+dmg);checkWin();return true}
+ p.attacked.set(attId,G.turn);fx("attack");if(!op.field.length){const dmg=aura(k,attId).atk;if(!lethalTrap(opK,dmg))op.hp=Math.max(0,op.hp-dmg);glog("Ataque directo "+C.get(attId).name+" · "+dmg);checkWin();return true}
  let d=op.field[0];if(d.id!==tempId(2)){const guard=op.field.find(x=>x.id===tempId(2)&&!op.onceTurn.has("guard-floral"));if(guard){d=guard;op.onceTurn.add("guard-floral");glog("Guardia Floral redirige el ataque")}}
  trapBattle(opK,d.id,k);
  const A=aura(k,attId),D=aura(opK,d.id),defVal=d.pos==="ATQ"?D.atk:D.def;
@@ -443,6 +579,9 @@ function renderDuel(){
 }
 function openDuel(){showView("duelView");newGame()}
 document.getElementById("quickDuel").onclick=openDuel;document.getElementById("campaignRose").onclick=openDuel;document.getElementById("startDuel").onclick=startGame;document.getElementById("draw").onclick=()=>{if(canPlayer()&&G.phase===1){drawCard("P",true);renderDuel()}};document.getElementById("nextPhase").onclick=nextPhase;document.getElementById("summon").onclick=()=>{summon("P",G.P.selected);renderDuel()};document.getElementById("setSupport").onclick=()=>{useSupport("P",G.P.selected);renderDuel()};document.getElementById("ability").onclick=()=>{useAbility("P",G.P.selected);renderDuel()};document.getElementById("position").onclick=()=>{changePos("P",G.P.selected);renderDuel()};document.getElementById("attack").onclick=()=>{attack("P",G.P.selected);G.P.selected=null;renderDuel()};document.getElementById("endTurn").onclick=endTurn;document.getElementById("leaveDuel").onclick=()=>showView("home");
+document.getElementById("qualitySelect").onchange=e=>setQuality(e.target.value);
+document.getElementById("fullscreenBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
+setQuality(localStorage.getItem(QUALITYKEY)||"high");
 renderCards();renderLeaders();newGame();
 </script>
 </body>
