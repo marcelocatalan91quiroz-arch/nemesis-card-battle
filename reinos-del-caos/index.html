@@ -334,29 +334,48 @@ body[data-quality="high"] .hero:before{animation-duration:18s}
   .deckbar{position:static}
 }
 
+
+/* === MAIN MENU / PROFILE / ISLAND / EXCHANGE FLOW v2 === */
+.menu{grid-template-columns:repeat(6,minmax(120px,1fr))}
+.playerbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:12px 0;padding:10px 14px;border:1px solid #4d5870;background:#090d16d9;box-shadow:inset 1px 1px #6e778b}
+.playerbar strong{color:#ffe18a}.home-actions{display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin-top:14px}
+.profile-create{display:grid;grid-template-columns:1fr auto;gap:8px}.profile-create input{min-width:0;border:2px inset #4d5870;background:#050810;color:#fff;padding:12px;font:inherit}
+.menu-portal{min-height:230px;display:flex;flex-direction:column;justify-content:flex-end;background:linear-gradient(180deg,#07101a33,#05070ddd),radial-gradient(circle at 50% 30%,#1d6f7d44,transparent 55%)}
+.menu-portal h3{font-size:28px;margin:.2em 0}.island-stage{min-height:560px;display:flex;align-items:flex-end;position:relative;overflow:hidden;background:linear-gradient(180deg,#07111b22,#02050bd9),radial-gradient(circle at 50% 34%,#2b7f7b55,transparent 42%),linear-gradient(135deg,#101b25,#05080d 70%)}
+.island-stage:before{content:"ISLA · REINO DEL CAOS";position:absolute;left:50%;top:15%;transform:translateX(-50%);font:900 clamp(34px,6vw,82px) Georgia,serif;color:#e7d79a1a;white-space:nowrap;letter-spacing:.08em}
+.island-ui{position:relative;z-index:2;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:14px}.exchange-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.empty-state{min-height:220px;display:grid;place-items:center;text-align:center;border:1px dashed #59647a;background:#080c14}
+@media(max-width:1000px){.menu{grid-template-columns:repeat(2,1fr)}.home-actions,.island-ui,.exchange-grid{grid-template-columns:1fr}.playerbar{align-items:flex-start;flex-direction:column}}
+
 </style>
 </head>
 <body>
 <div class="app">
 <header class="top"><div class="brand"><span>NÉMESIS</span><b>REINOS DEL CAOS</b><span>PC EVOLUTION · RULES_v1</span></div><div class="pc-tools"><span class="tag">LOCAL · SIN VERCEL</span><select id="qualitySelect" title="Calidad visual"><option value="low">Calidad Baja</option><option value="medium">Calidad Media</option><option value="high" selected>Calidad Alta</option></select><button id="fullscreenBtn">Pantalla completa</button></div></header>
+<div class="playerbar"><div>JUGADOR: <strong id="playerNameHud">SIN USUARIO</strong></div><div>⭐ <b id="starsHud">0</b> · Fragmentos LUZ <b id="fragHud">0</b></div></div>
 <nav class="menu">
-<button data-view="home" class="active">Inicio</button><button data-view="campaign">Campaña</button><button data-view="collection">Colección</button><button data-view="decks">Mazos</button><button data-view="leaders">Líderes</button>
+<button data-view="home" class="active">Inicio</button><button data-view="campaign">Isla</button><button data-view="collection">Cartas Coleccionables</button><button data-view="decks">Mi Mazo</button><button data-view="exchange">Canje</button><button data-view="leaders">Perfil</button>
 </nav>
 
 <section id="home" class="view active">
-<div class="panel hero"><div><div class="sigil">✦</div><h1>NÉMESIS: REINOS DEL CAOS</h1><p>Motor local basado en la especificación aprobada. Caballero Rose está cargado 20/20. El segundo nivel, Caballero Oscuro de Gaia, permanece bloqueado porque su mazo todavía no ha sido definido en la fuente maestra.</p><button class="btn" id="quickDuel">DUELO DE PRUEBA · ROSE VS ROSE</button><div class="statusline"><span class="pill">20 cartas Rose</span><span class="pill">4 atributos oficiales</span><span class="pill">6 fases</span><span class="pill">HP del Líder</span><span class="pill">Fatiga activa</span></div></div></div>
+<div class="panel hero"><div><div class="sigil">✦</div><h1>NÉMESIS: REINOS DEL CAOS</h1><p>Entra a los Reinos, construye tu colección, prepara un mazo de 20 cartas y desafía a los rivales de cada isla.</p><button class="btn" id="enterIsland">ENTRAR A LA ISLA</button><div class="statusline"><span class="pill">Colección persistente</span><span class="pill">Mazos de 20</span><span class="pill">Sistema de canje</span><span class="pill">Campaña por islas</span></div></div></div>
+<div class="home-actions">
+<div class="panel"><h2>Crear usuario</h2><p class="small">Tu nombre y progreso quedan guardados en este PC.</p><div class="profile-create"><input id="playerNameInput" maxlength="20" placeholder="NOMBRE DEL JUGADOR"><button class="btn" id="savePlayer">CREAR / GUARDAR</button></div><p id="profileMsg" class="small"></p></div>
+<div class="panel menu-portal"><h3>Isla · Reino del Caos</h3><p>Primer destino de campaña. Caballero Rose es el rival del Nivel 1.</p><button class="btn" id="homeIsland">IR A LA ISLA</button></div>
+</div>
 </section>
 
-<section id="campaign" class="view"><div class="grid2">
-<div class="panel level"><div class="boss">🌹</div><h3>Nivel 1 · Caballero Rose</h3><p>Líder N1 · 10.000 HP · LUZ</p><p class="rewards">Mazo aprobado 20/20. Progreso lineal y repetible.</p><button class="btn" id="campaignRose">Abrir prueba del Nivel 1</button></div>
-<div class="panel level locked"><div class="boss">🌑</div><h3>Nivel 2 · Caballero Oscuro de Gaia</h3><p>Líder N3 · 10.000 HP · OSCURIDAD</p><p class="locked-note">BLOQUEADO: el mazo de Gaia aún no está definido. No se inventan cartas.</p><button class="btn" disabled>Bloqueado</button></div>
-</div></section>
+<section id="campaign" class="view"><div class="panel island-stage"><div class="island-ui">
+<div class="panel level"><div class="boss">🌹</div><h3>Nivel 1 · Caballero Rose</h3><p>Rival de la Isla · Líder N1 · 10.000 HP · LUZ</p><p class="rewards">Mazo rival aprobado 20/20. Antes del reto se prepara el mazo del jugador.</p><button class="btn" id="campaignRose">RETAR A CABALLERO ROSE</button></div>
+<div class="panel level locked"><div class="boss">🌑</div><h3>Nivel 2 · Caballero Oscuro de Gaia</h3><p>Líder N3 · 10.000 HP · OSCURIDAD</p><p class="locked-note">BLOQUEADO: su mazo aún no está definido. No se inventan cartas.</p><button class="btn" disabled>BLOQUEADO</button></div>
+</div></div></section>
 
-<section id="collection" class="view"><div class="panel"><div class="deckbar"><div><h2>Colección · Caballero Rose</h2><div class="small">20 cartas canónicas · IDs permanentes pendientes · se usan SLOT temporales solo dentro de este prototipo</div></div><div><b id="colCount">20/20</b></div></div><div class="cards" id="cards"></div></div></section>
+<section id="collection" class="view"><div class="panel"><div class="deckbar"><div><h2>Cartas Coleccionables</h2><div class="small">Aquí se registran todas las cartas incorporadas al sistema: obtenidas, desconocidas y cartas adquiridas mediante Canje. El mazo de un rival no se convierte automáticamente en propiedad del jugador.</div></div><div><b id="colCount">20 registradas</b></div></div><div class="warning">Actualmente están registradas las 20 cartas canónicas de Caballero Rose como catálogo del juego. La propiedad del jugador y las cartas de canje se añadirán sin regalar cartas ni saltarse el sistema de obtención.</div><div class="cards" id="cards"></div></div></section>
 
-<section id="decks" class="view"><div class="panel"><div class="deckbar"><div><h2>Mazo Caballero Rose</h2><div class="small">9 Monstruos · 4 Mágicas · 3 Trampas · 1 Arma · 1 Armadura · 2 Reliquias</div></div><div><b>20/20</b></div></div><div id="deckAudit"></div><div class="cards" id="deckCards"></div></div></section>
+<section id="decks" class="view"><div class="panel"><div class="deckbar"><div><h2>Mi Mazo</h2><div class="small">Constructor del jugador: exactamente 20 cartas válidas para entrar a un duelo. Las cartas deben pertenecer a la colección del usuario.</div></div><div><b id="myDeckCount">0/20</b></div></div><div class="empty-state"><div><h3>Mazo del jugador pendiente</h3><p>Caballero Rose es rival; su mazo no se entrega automáticamente al usuario.</p><p class="small">Cuando incorporemos las cartas iniciales del jugador, aquí se podrán seleccionar, guardar y recargar las mismas 20.</p></div></div></div></section>
 
-<section id="leaders" class="view"><div class="grid3">
+<section id="exchange" class="view"><div class="panel"><div class="deckbar"><div><h2>Canje NÉMESIS</h2><div class="small">Flujo: comprobar Estrellas → canjear → descontar Estrellas → carta pasa a propiedad → aparece en Cartas Coleccionables → puede entrar a Mi Mazo.</div></div><div>⭐ <b id="exchangeStars">0</b></div></div><div class="exchange-grid"><div class="empty-state"><div><h3>Cartas de canje</h3><p>Aún no hay cartas de canje aprobadas físicamente para esta versión de REINOS DEL CAOS.</p><p class="small">No se inventan ni se regalan.</p></div></div><div class="panel"><h3>Reglas del Canje</h3><p>Una carta canjeada queda guardada como propiedad del usuario y persiste en la colección.</p><p>No existe bypass de propiedad: solo las cartas obtenidas pueden incorporarse al mazo del jugador.</p></div></div></div></section>
+
+<section id="leaders" class="view"><div class="panel" style="margin-bottom:14px"><h2>Perfil del jugador</h2><p>Nombre: <b id="profileName">SIN USUARIO</b></p><p class="small">Progreso local, Estrellas, fragmentos, colección y mazos se conservan en este PC.</p></div><div class="grid3">
 <div class="panel leader"><div class="avatar">🌹</div><h2>Caballero Rose</h2><p>LUZ · Nivel 1</p><div class="resource">10.000 HP</div><p class="small">Nivel máximo inicial 80. Transformaciones no curan salvo efecto.</p></div>
 <div class="panel leader"><div class="avatar">🌑</div><h2>Caballero Oscuro de Gaia</h2><p>OSCURIDAD · Nivel 3</p><div class="resource">10.000 HP</div><p class="locked-note">Mazo pendiente de definición.</p></div>
 <div class="panel leader"><div class="avatar">⭐</div><h2>Recursos locales</h2><p>Estrellas</p><div class="resource" id="stars">0</div><p>Fragmentos LUZ</p><div class="resource" id="fragLight">0</div><p class="small">Las cantidades de recompensa del Nivel 1 aún no están fijadas en RULES_v1; este prototipo no inventa premios. Las victorias sí se guardan localmente.</p></div>
@@ -408,7 +427,7 @@ function fx(type){const host=document.getElementById("fxLayer");if(!host)return;
 
 let PERSIST=loadPersist();
 let G=null;
-function loadPersist(){try{return Object.assign({stars:0,fragLight:0,level1Wins:0},JSON.parse(localStorage.getItem(SAVEKEY)||"{}"))}catch{return{stars:0,fragLight:0,level1Wins:0}}}
+function loadPersist(){try{return Object.assign({playerName:"",stars:0,fragLight:0,level1Wins:0,owned:[],myDeck:[]},JSON.parse(localStorage.getItem(SAVEKEY)||"{}"))}catch{return{playerName:"",stars:0,fragLight:0,level1Wins:0,owned:[],myDeck:[]}}}
 function savePersist(){localStorage.setItem(SAVEKEY,JSON.stringify(PERSIST));renderLeaders()}
 function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function cardHTML(c,id){
@@ -426,7 +445,13 @@ function showCard(id){
  document.getElementById("modalContent").innerHTML='<h2>'+esc(c.name)+'</h2><p>'+esc(c.type)+' · '+esc(c.attr)+' · '+esc(c.rarity)+'</p>'+(c.atk!==undefined?'<h3>ATQ '+c.atk+' / DEF '+c.def+'</h3>':'')+rows.map(x=>Array.isArray(x)?'<div class="ability"><b>'+esc(x[0])+'</b><div>'+esc(x[1])+'</div></div>':'<div class="ability">'+esc(x)+'</div>').join("")+(c.flavor?'<p><i>“'+esc(c.flavor)+'”</i></p>':'')+(c.approved?'<p class="ok">Diseño visual aprobado; archivo físico definitivo todavía no está en GitHub.</p>':'');
  document.getElementById("modal").classList.add("show");
 }
-function renderLeaders(){document.getElementById("stars").textContent=PERSIST.stars;document.getElementById("fragLight").textContent=PERSIST.fragLight}
+function renderLeaders(){
+ const n=PERSIST.playerName||"SIN USUARIO";
+ document.getElementById("stars").textContent=PERSIST.stars;document.getElementById("fragLight").textContent=PERSIST.fragLight;
+ document.getElementById("playerNameHud").textContent=n;document.getElementById("profileName").textContent=n;
+ document.getElementById("starsHud").textContent=PERSIST.stars;document.getElementById("fragHud").textContent=PERSIST.fragLight;document.getElementById("exchangeStars").textContent=PERSIST.stars;
+ document.getElementById("myDeckCount").textContent=(PERSIST.myDeck||[]).length+"/20";
+}
 function showView(id){document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".menu button").forEach(x=>x.classList.toggle("active",x.dataset.view===id));document.getElementById(id).classList.add("active")}
 document.querySelectorAll(".menu button").forEach(b=>b.onclick=()=>showView(b.dataset.view));
 document.getElementById("closeModal").onclick=()=>document.getElementById("modal").classList.remove("show");
@@ -578,7 +603,9 @@ function renderDuel(){
  document.getElementById("startDuel").disabled=G.started;document.getElementById("draw").disabled=!cp||G.phase!==1||G.turn===1||G.P.drawTurn===G.turn;document.getElementById("nextPhase").disabled=!cp||G.phase>=5;document.getElementById("summon").disabled=!cp||![2,4].includes(G.phase)||!isMonster(id);document.getElementById("setSupport").disabled=!cp||![2,4].includes(G.phase)||!id||isMonster(id);document.getElementById("ability").disabled=!cp||![2,4].includes(G.phase)||!id||!G.P.field.some(x=>x.id===id);document.getElementById("position").disabled=!cp||![2,4].includes(G.phase)||!id;document.getElementById("attack").disabled=!cp||G.phase!==3||!id;document.getElementById("endTurn").disabled=!cp||G.phase!==5;
 }
 function openDuel(){showView("duelView");newGame()}
-document.getElementById("quickDuel").onclick=openDuel;document.getElementById("campaignRose").onclick=openDuel;document.getElementById("startDuel").onclick=startGame;document.getElementById("draw").onclick=()=>{if(canPlayer()&&G.phase===1){drawCard("P",true);renderDuel()}};document.getElementById("nextPhase").onclick=nextPhase;document.getElementById("summon").onclick=()=>{summon("P",G.P.selected);renderDuel()};document.getElementById("setSupport").onclick=()=>{useSupport("P",G.P.selected);renderDuel()};document.getElementById("ability").onclick=()=>{useAbility("P",G.P.selected);renderDuel()};document.getElementById("position").onclick=()=>{changePos("P",G.P.selected);renderDuel()};document.getElementById("attack").onclick=()=>{attack("P",G.P.selected);G.P.selected=null;renderDuel()};document.getElementById("endTurn").onclick=endTurn;document.getElementById("leaveDuel").onclick=()=>showView("home");
+document.getElementById("enterIsland").onclick=()=>showView("campaign");document.getElementById("homeIsland").onclick=()=>showView("campaign");
+document.getElementById("savePlayer").onclick=()=>{const v=document.getElementById("playerNameInput").value.trim();if(!v){document.getElementById("profileMsg").textContent="Escribe un nombre de jugador.";return}PERSIST.playerName=v;savePersist();document.getElementById("profileMsg").textContent="Usuario guardado: "+v};
+document.getElementById("campaignRose").onclick=()=>{if(!PERSIST.playerName){showView("home");document.getElementById("profileMsg").textContent="Primero crea tu usuario.";return}if((PERSIST.myDeck||[]).length!==20){showView("decks");return}openDuel()};document.getElementById("startDuel").onclick=startGame;document.getElementById("draw").onclick=()=>{if(canPlayer()&&G.phase===1){drawCard("P",true);renderDuel()}};document.getElementById("nextPhase").onclick=nextPhase;document.getElementById("summon").onclick=()=>{summon("P",G.P.selected);renderDuel()};document.getElementById("setSupport").onclick=()=>{useSupport("P",G.P.selected);renderDuel()};document.getElementById("ability").onclick=()=>{useAbility("P",G.P.selected);renderDuel()};document.getElementById("position").onclick=()=>{changePos("P",G.P.selected);renderDuel()};document.getElementById("attack").onclick=()=>{attack("P",G.P.selected);G.P.selected=null;renderDuel()};document.getElementById("endTurn").onclick=endTurn;document.getElementById("leaveDuel").onclick=()=>showView("home");
 document.getElementById("qualitySelect").onchange=e=>setQuality(e.target.value);
 document.getElementById("fullscreenBtn").onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){}};
 setQuality(localStorage.getItem(QUALITYKEY)||"high");
