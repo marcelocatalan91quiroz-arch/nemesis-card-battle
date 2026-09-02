@@ -45,7 +45,7 @@ button{font:inherit;color:inherit}.app{max-width:1500px;margin:auto;padding:18px
 <section id="leaders" class="view"><div class="grid3">
 <div class="panel leader"><div class="avatar">🌹</div><h2>Caballero Rose</h2><p>LUZ · Nivel 1</p><div class="resource">10.000 HP</div><p class="small">Nivel máximo inicial 80. Transformaciones no curan salvo efecto.</p></div>
 <div class="panel leader"><div class="avatar">🌑</div><h2>Caballero Oscuro de Gaia</h2><p>OSCURIDAD · Nivel 3</p><div class="resource">10.000 HP</div><p class="locked-note">Mazo pendiente de definición.</p></div>
-<div class="panel leader"><div class="avatar">⭐</div><h2>Recursos locales</h2><p>Estrellas</p><div class="resource" id="stars">0</div><p>Fragmentos LUZ</p><div class="resource" id="fragLight">0</div><p class="small">El prototipo guarda progreso en localStorage.</p></div>
+<div class="panel leader"><div class="avatar">⭐</div><h2>Recursos locales</h2><p>Estrellas</p><div class="resource" id="stars">0</div><p>Fragmentos LUZ</p><div class="resource" id="fragLight">0</div><p class="small">Las cantidades de recompensa del Nivel 1 aún no están fijadas en RULES_v1; este prototipo no inventa premios. Las victorias sí se guardan localmente.</p></div>
 </div></section>
 
 <section id="duelView" class="view"><div class="duel">
@@ -229,10 +229,10 @@ function attack(k,attId){
  checkWin();return true;
 }
 function finalPhase(k){const p=pl(k);if(p.support.some(x=>x.id===tempId(10))&&p.field.length>=2)heal(k,500);if(p.support.some(x=>x.id===tempId(19))&&p.field.length)heal(k,500)}
-function checkWin(){if(pl("P").hp<=0||pl("E").hp<=0){G.winner=pl("P").hp<=0?"E":"P";glog("FIN DEL DUELO · "+(G.winner==="P"?"Jugador":"IA")+" gana");if(G.winner==="P"){PERSIST.stars+=100;PERSIST.fragLight+=10;PERSIST.level1Wins++;savePersist()}}}
+function checkWin(){if(pl("P").hp<=0||pl("E").hp<=0){G.winner=pl("P").hp<=0?"E":"P";glog("FIN DEL DUELO · "+(G.winner==="P"?"Jugador":"IA")+" gana");if(G.winner==="P"){PERSIST.level1Wins++;savePersist()}}}
 function canPlayer(){return G.started&&!G.winner&&G.current==="P"}
 function endTurn(){
- if(!canPlayer())return;finalPhase("P");G.current="E";G.turn++;beginTurn("E");renderDuel();setTimeout(aiTurn,180);
+ if(!canPlayer()||G.phase!==5)return;G.current="E";G.turn++;beginTurn("E");renderDuel();setTimeout(aiTurn,180);
 }
 function aiTurn(){
  if(G.winner)return;const p=pl("E");G.phase=1;drawCard("E",true);G.phase=2;
@@ -256,7 +256,7 @@ function renderDuel(){
  document.getElementById("status").textContent="NÉMESIS: REINOS DEL CAOS\nRose 20/20 · Gaia pendiente\nSeleccionada: "+(G.P.selected||"ninguna")+"\nUID prototipo: SLOT temporal\nHP pertenece al Líder.";
  document.getElementById("log").textContent=G.log.join("\n");
  const cp=canPlayer(),id=G.P.selected;
- document.getElementById("startDuel").disabled=G.started;document.getElementById("draw").disabled=!cp||G.phase!==1||G.turn===1||G.P.drawTurn===G.turn;document.getElementById("nextPhase").disabled=!cp||G.phase>=5;document.getElementById("summon").disabled=!cp||![2,4].includes(G.phase)||!isMonster(id);document.getElementById("setSupport").disabled=!cp||![2,4].includes(G.phase)||!id||isMonster(id);document.getElementById("ability").disabled=!cp||![2,4].includes(G.phase)||!id||!G.P.field.some(x=>x.id===id);document.getElementById("position").disabled=!cp||![2,4].includes(G.phase)||!id;document.getElementById("attack").disabled=!cp||G.phase!==3||!id;
+ document.getElementById("startDuel").disabled=G.started;document.getElementById("draw").disabled=!cp||G.phase!==1||G.turn===1||G.P.drawTurn===G.turn;document.getElementById("nextPhase").disabled=!cp||G.phase>=5;document.getElementById("summon").disabled=!cp||![2,4].includes(G.phase)||!isMonster(id);document.getElementById("setSupport").disabled=!cp||![2,4].includes(G.phase)||!id||isMonster(id);document.getElementById("ability").disabled=!cp||![2,4].includes(G.phase)||!id||!G.P.field.some(x=>x.id===id);document.getElementById("position").disabled=!cp||![2,4].includes(G.phase)||!id;document.getElementById("attack").disabled=!cp||G.phase!==3||!id;document.getElementById("endTurn").disabled=!cp||G.phase!==5;
 }
 function openDuel(){showView("duelView");newGame()}
 document.getElementById("quickDuel").onclick=openDuel;document.getElementById("campaignRose").onclick=openDuel;document.getElementById("startDuel").onclick=startGame;document.getElementById("draw").onclick=()=>{if(canPlayer()&&G.phase===1){drawCard("P",true);renderDuel()}};document.getElementById("nextPhase").onclick=nextPhase;document.getElementById("summon").onclick=()=>{summon("P",G.P.selected);renderDuel()};document.getElementById("setSupport").onclick=()=>{useSupport("P",G.P.selected);renderDuel()};document.getElementById("ability").onclick=()=>{useAbility("P",G.P.selected);renderDuel()};document.getElementById("position").onclick=()=>{changePos("P",G.P.selected);renderDuel()};document.getElementById("attack").onclick=()=>{attack("P",G.P.selected);G.P.selected=null;renderDuel()};document.getElementById("endTurn").onclick=endTurn;document.getElementById("leaveDuel").onclick=()=>showView("home");
