@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "archetype": {
+    "id": "CABALLERO_ROSE",
+    "name": "Caballero Rose"
+  },
+  "status": "IN_PROGRESS",
+  "idPolicy": {
+    "permanentId": "PENDING",
+    "rule": "No asignar ID permanente hasta implementar/confirmar el catalogo canonico de REINOS DEL CAOS.",
+    "legacyFamiliesNotReused": [
+      "DM",
+      "IDR",
+      "MGR"
+    ]
+  },
+  "cards": [
+    {
+      "slot": 1,
+      "name": "Guardián de la Rosa Blanca",
+      "type": "MONSTRUO",
+      "attribute": "LUZ",
+      "rarity": "RARA",
+      "atk": 2500,
+      "def": 2000,
+      "visualApproval": "APPROVED",
+      "assetSpec": {
+        "format": "webp",
+        "width": 1024,
+        "height": 1434,
+        "maxKB": 300,
+        "status": "PREPARED_LOCALLY_PENDING_REPO_BINARY_UPLOAD"
+      },
+      "abilities": [
+        {
+          "name": "Pétalo Protector",
+          "text": "+1000 DEF a otra criatura LUZ hasta final del turno."
+        },
+        {
+          "name": "Juramento de Rose",
+          "text": "Al destruirse otra criatura LUZ, recuperas 500 HP del Líder."
+        }
+      ],
+      "flavor": "Mientras una rosa permanezca en pie, la luz no desaparecerá."
+    }
+  ]
+}
