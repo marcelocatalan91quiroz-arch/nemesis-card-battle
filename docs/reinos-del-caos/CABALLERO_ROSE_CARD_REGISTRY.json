@@ -29,7 +29,8 @@
         "width": 1024,
         "height": 1434,
         "maxKB": 300,
-        "status": "PREPARED_LOCALLY_PENDING_REPO_BINARY_UPLOAD"
+        "status": "APPROVED_PERSISTENT_BACKUP_GITHUB_BINARY_PENDING",
+        "persistentBackup": "/NEMESIS/Reinos-del-Caos/Caballero-Rose/approved-assets/CARTA_01_Guardian_de_la_Rosa_Blanca.webp"
       },
       "abilities": [
         {
@@ -58,7 +59,8 @@
         "height": 1434,
         "maxKB": 300,
         "actualKB": 294.9,
-        "status": "APPROVED_BINARY_PENDING_REPO_UPLOAD"
+        "status": "APPROVED_PERSISTENT_BACKUP_GITHUB_BINARY_PENDING",
+        "persistentBackup": "/NEMESIS/Reinos-del-Caos/Caballero-Rose/approved-assets/CARTA_02_Espadachin_de_Petalos.webp"
       },
       "abilities": [
         {
