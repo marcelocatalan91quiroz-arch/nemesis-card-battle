@@ -101,30 +101,107 @@
 1. **Nivel 1 — Caballero Rose**: Líder N1, 10.000 HP, atributo LUZ. Mazo estratégico de 20 cartas.
 2. **Nivel 2 — Caballero Oscuro de Gaia**: Líder N3, 10.000 HP, atributo OSCURIDAD. Bloqueado hasta vencer Nivel 1.
 
-## Caballero Rose — cartas aprobadas 1–5
-1. **Guardián de la Rosa Blanca** — Monstruo, LUZ, RARA, ATQ 2500 / DEF 2000.
+## Caballero Rose — mazo aprobado 20/20
+
+### Monstruos (9)
+1. **Guardián de la Rosa Blanca** — LUZ, RARA, ATQ 2500 / DEF 2000.
    - Pétalo Protector: 1/turno, otra criatura LUZ +1000 DEF hasta fin del turno.
    - Juramento de Rose: cuando otra criatura LUZ controlada sea destruida, recupera 500 HP.
-   - Ambientación: “Mientras una rosa permanezca en pie, la luz no desaparecerá.”
-2. **Espadachín de Pétalos** — Monstruo, LUZ, COMÚN, ATQ 2000 / DEF 1500.
+2. **Espadachín de Pétalos** — LUZ, COMÚN, ATQ 2000 / DEF 1500.
    - Corte de Rosas: al destruir criatura rival en combate, otra criatura LUZ +500 ATQ hasta fin del turno.
    - Guardia Floral: 1/turno, si otra criatura LUZ es objetivo de ataque, puede convertirse en el objetivo.
-   - Ambientación: “Su espada no protege una corona; protege el último jardín de la luz.”
-3. **Doncella del Jardín Celestial** — Monstruo, LUZ, RARA, ATQ 1500 / DEF 2500.
+3. **Doncella del Jardín Celestial** — LUZ, RARA, ATQ 1500 / DEF 2500.
    - Luz Restauradora: 1/turno, recupera 500 HP.
    - Jardín Protector: mientras esté en Defensa, otra criatura LUZ controlada +500 DEF.
-   - Ambientación: “Donde sus pétalos caen, incluso las heridas recuerdan cómo sanar.”
-4. **Caballero de la Espina Dorada** — Monstruo, LUZ, ÉPICA, ATQ 3500 / DEF 2500.
+4. **Caballero de la Espina Dorada** — LUZ, ÉPICA, ATQ 3500 / DEF 2500.
    - Espina de Castigo: al ser atacada, atacante recibe 500 daño de efecto tras resolver combate si el duelo continúa.
    - Juramento Dorado: 1/turno, si controlas otra criatura LUZ, +1000 ATQ hasta fin del turno.
-   - Ambientación: “La belleza de la rosa termina donde comienza su espada.”
-5. **Arquero de la Rosa Lunar** — Monstruo, LUZ, RARA, ATQ 2200 / DEF 1800.
+5. **Arquero de la Rosa Lunar** — LUZ, RARA, ATQ 2200 / DEF 1800.
    - Flecha de Pétalo: 1/turno, criatura rival -500 DEF hasta fin del turno.
-   - Disparo de Apertura: si esa criatura queda en 0 DEF por este efecto, otra criatura LUZ +500 ATQ hasta fin del turno.
-   - Ambientación: “Un solo pétalo señala dónde caerá la próxima flecha.”
+   - Disparo de Apertura: si queda en 0 DEF por este efecto, otra criatura LUZ +500 ATQ hasta fin del turno.
+6. **Paladín de la Rosa Solar** — LUZ, ÉPICA, ATQ 3000 / DEF 3000.
+   - Escudo Solar: 1/turno, evita destrucción por efecto de otra criatura LUZ; Paladín -1000 DEF hasta fin del turno.
+   - Contraofensiva Radiante: tras evitarla, otra criatura LUZ +1000 ATQ hasta fin del turno.
+7. **Sacerdotisa de la Rosa Eterna** — LUZ, ÉPICA, ATQ 1500 / DEF 3000.
+   - Plegaria de los Pétalos: 1/turno, recupera 1000 HP.
+   - Renacer de la Rosa: 1/duelo, en Principal, devuelve 1 Monstruo LUZ del Cementerio a la mano.
+8. **León Sagrado del Rosal** — LUZ, LEGENDARIA, ATQ 4000 / DEF 3500.
+   - Rugido del Santuario: al invocarse, criatura rival queda Debilitada hasta fin de su próximo turno y -1000 ATQ mientras dure.
+   - Instinto del Guardián: 1/turno, puede sustituir a otra criatura LUZ que fuera a ser destruida en combate; el combate continúa con sus estadísticas.
+9. **Caballero Rose** — LUZ, LEGENDARIA, ATQ 5000 / DEF 4500. Monstruo insignia y más poderoso del mazo.
+   - Espada de la Rosa Suprema: 1/turno en Principal, otra criatura LUZ +1000 ATQ/+1000 DEF hasta fin del turno; si destruye rival en combate, recupera 500 HP.
+   - Último Juramento de Rose: 1/duelo, evita su destrucción y obtiene +1000 ATQ hasta fin de tu próximo turno.
+
+### Mágicas (4)
+10. **Jardín Sagrado de Rose** — Mágica de Campo, LUZ, ÉPICA.
+   - Reino de los Pétalos: tus criaturas LUZ +500 ATQ/+500 DEF.
+   - Rocío Sagrado: en Fase Final, con al menos 2 criaturas LUZ, recupera 500 HP.
+   - Último Pétalo: si rival destruye esta Mágica, 1 criatura LUZ +1000 DEF hasta fin de su próximo turno.
+11. **Lluvia de Pétalos Sagrados** — LUZ, RARA.
+   - Recupera 1500 HP.
+   - Hasta 2 criaturas LUZ +500 DEF hasta fin de su próximo turno.
+   - Elimina 1 estado negativo de una criatura propia.
+12. **Espada de Luz del Rosal** — LUZ, ÉPICA.
+   - 1 criatura LUZ +1500 ATQ hasta fin del turno.
+   - Si destruye rival en combate, elimina 1 estado negativo de una criatura propia.
+   - Si es Caballero Rose, recupera además 500 HP tras esa destrucción.
+13. **Renacimiento del Rosal** — LUZ, LEGENDARIA.
+   - Devuelve 1 Monstruo LUZ del Cementerio a la mano.
+   - Si tiene 3500+ ATQ, recupera 1000 HP.
+   - Si es Caballero Rose, permite 1 Invocación Normal adicional de Caballero Rose ese turno, respetando las demás reglas.
+
+### Trampas (3)
+14. **Espinas del Juicio** — LUZ, ÉPICA.
+   - Al declarar ataque contra criatura LUZ: esa criatura +1500 DEF durante ese combate.
+   - Si sobrevive, atacante recibe 1000 daño de efecto.
+   - Si era Caballero Rose, recupera 500 HP tras resolver.
+15. **Reflejo de la Rosa Blanca** — LUZ, ÉPICA.
+   - Cuando Mágica/Trampa rival seleccione criatura LUZ propia: anula ese efecto sobre la criatura.
+   - La protegida +500 ATQ/+500 DEF hasta fin del turno.
+   - Si era Caballero Rose, recupera 500 HP.
+16. **Último Pétalo del Destino** — LUZ, LEGENDARIA, 1/duelo.
+   - Cuando ataque rival fuera a reducir HP a 0: evita solo el daño de ese ataque.
+   - Tras cadena, HP quedan en 1000.
+   - 1 criatura LUZ propia +1500 ATQ hasta fin de tu próximo turno.
+
+### Equipamiento (2)
+17. **Espada Sagrada de Rose** — Arma, LUZ, LEGENDARIA.
+   - Solo criatura LUZ. Equipada +1500 ATQ.
+   - 1/turno, al destruir rival en combate, recupera 500 HP.
+   - Si equipada a Caballero Rose, además +500 DEF.
+18. **Armadura del Rosal Celestial** — Armadura, LUZ, LEGENDARIA.
+   - Solo criatura LUZ. Equipada +1500 DEF.
+   - 1/turno, reducción rival de ATQ/DEF se reduce en 500 puntos.
+   - Si equipada a Caballero Rose, además +500 ATQ.
+
+### Reliquias (2)
+19. **Corazón de la Rosa Eterna** — LUZ, LEGENDARIA.
+   - Fase Final, si controlas criatura LUZ, recupera 500 HP.
+   - 1/turno, pérdida de DEF por efecto rival a criatura LUZ se reduce en 500.
+   - Mientras controles Caballero Rose, protege esta Reliquia de la primera destrucción por efecto rival; protección se consume 1/duelo.
+20. **Corona del Reino de las Rosas** — LUZ, LEGENDARIA.
+   - Con al menos 2 criaturas LUZ, todas tus criaturas LUZ +500 ATQ.
+   - 1/turno, cuando criatura LUZ fuera a ser destruida por efecto rival, puede perder 1000 ATQ hasta fin del turno para evitar destrucción.
+   - Mientras controles Caballero Rose, este obtiene +500 DEF.
+
+## Auditoría estratégica del mazo Rose
+- Composición válida: 9 Monstruos + 4 Mágicas + 3 Trampas + 1 Arma + 1 Armadura + 2 Reliquias = **20/20**.
+- Sin Fusiones en este primer mazo/Nivel 1: reduce complejidad para la primera prueba.
+- Identidad coherente con LUZ: protección, recuperación, purificación, defensa y contraataque.
+- Plan IA: establecer soporte → proteger piezas → reservar respuestas → potenciar atacante → cerrar con Caballero Rose/equipamiento.
+- No usar curación cuando HP esté completo; reservar Reflejo/Espinas para amenazas de valor; no consumir Último Pétalo salvo daño letal.
+- La IA debe priorizar Caballero Rose como pieza de cierre, no jugarlo sin protección cuando exista una línea más segura.
+- Riesgo de balance identificado: múltiples curaciones/protecciones pueden alargar duelos. Requiere simulación runtime antes de fijar balance definitivo.
+- Riesgo de apilamiento: Jardín + Corona + Espada + Armadura pueden llevar a Caballero Rose a estadísticas muy altas. Es intencional como combo de varias piezas, pero debe probarse contra eliminación de soporte/equipamiento.
+- Aclaración de implementación: efectos “evitar destrucción”, sustitución de defensor, reducción de pérdida de estadísticas y “HP quedan en 1000” necesitan eventos deterministas y orden de resolución explícito en el motor.
+- Aclaración de balance: ningún efecto de esta lista debe interpretarse como invulnerabilidad global; cada protección cubre solo el evento y condiciones descritos.
+- Compatibilidad RULES_v1: estadísticas enteras, curaciones exactas, máximo 2 habilidades por Monstruo y estados oficiales respetados.
+- Antes de arte final: asignar IDs/familias oficiales, normalizar wording técnico y ejecutar validación de catálogo.
+- Antes de producción: pruebas unitarias de cada efecto + combinaciones críticas + simulación IA + prueba completa Nivel 1. **No desplegar aún.**
 
 ## Punto exacto de continuación
-- NO crear todavía niveles 3–10.
-- Continuar desde **Carta 6 del mazo de Caballero Rose**.
-- Completar y probar los 2 niveles de punta a punta antes de ampliar campaña.
+- Mazo Caballero Rose definido: **20/20**.
+- Siguiente paso: normalización técnica/IDs y luego creación visual de las 20 cartas, o definir el mazo de Caballero Oscuro de Gaia según el orden aprobado.
+- NO crear niveles 3–10.
+- Completar y probar SOLO los 2 niveles antes de ampliar campaña.
 - Esta especificación es diseño guardado; implementación debe inspeccionar primero las rutas y arquitectura reales del proyecto.
